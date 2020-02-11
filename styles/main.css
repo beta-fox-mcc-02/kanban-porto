@@ -71,3 +71,17 @@ body {
     color: rgb(75, 75, 75, 0.5);
     text-decoration: none;
 }
+
+.card-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.action-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.action-container i:hover {
+    cursor: pointer;
+}
