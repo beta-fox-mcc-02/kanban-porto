@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <title>MKanban</title>
+</head>
+<body>
+  <header>
+      <nav id="navbar">
+        <div class="nav-wrapper">
+          <a href="#" class="brand-logo center"><i><img src="./icons/favicon.ico" style="margin-top: 9px;"></i> MKanban</a>
+          <span class="left" style="margin-left: 15px;">Welcome User!</span>
+          <a href="#" class="right" style="margin-right: 15px;">Logout</a>
+        </div>
+        <div class="nav-wrapper">
+        </div>
+      </nav>
+  </header>
+
+  <!-- register -->
+  <div class="row" id="register">
+    <div class="col s4 push-s4">
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title center">Register</span>
+          <form id="register">
+            <div class="row">
+              <div class="col s12 input-field">
+                <i class="material-icons prefix">account_circle</i>
+                <input id="registerUsername" type="text" class="validate">
+                <label for="registerUsername">Username</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 input-field">
+                <i class="material-icons prefix">email</i>
+                <input id="registerEmail" type="email" class="validate">
+                <label for="registerEmail">Email</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 input-field">
+                <i class="material-icons prefix">security</i>
+                <input id="registerPassowrd" type="password" class="validate">
+                <label for="registerPassowrd">Password</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 center">
+                <button class="btn waves-effect waves-dark" type="submit" name="action">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- login -->
+  <div class="row" id="login">
+    <div class="row" id="register">
+      <div class="col s4 push-s4">
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title center">Login</span>
+            <form id="register">
+              <div class="row">
+                <div class="col s12 input-field">
+                  <input id="user" type="text" class="validate">
+                  <label for="user">Username</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 input-field">
+                  <input id="password" type="password" class="validate">
+                  <label for="password">Password</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 center">
+                  <button class="btn waves-effect waves-dark" type="submit" name="action">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- kanban -->
+  <div class="row" id="kanban">
+    
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.js"></script>
+</body>
+</html>
