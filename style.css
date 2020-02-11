@@ -85,7 +85,7 @@ nav {
 }
 
 .home .plan #plan-card-title-bottom #next {
-    font-size: 35px;
+    font-size: 20px;
     color: greenyellow;
 }
 
@@ -139,7 +139,7 @@ nav {
     padding: 5px 5px;
     display: flex;
     justify-content: space-between;
-    font-size: 35px;
+    font-size: 20px;
 }
 
 .home .do #do-card-title-bottom #next-do {
