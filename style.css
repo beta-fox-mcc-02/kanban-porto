@@ -2,6 +2,10 @@
     margin: 0;
 }
 
+body {
+    background-image: url("https://static.vecteezy.com/system/resources/previews/000/153/301/non_2x/vector-old-dirty-grunge-note-paper-background.jpg");
+}
+
 nav {
     padding: 20px 30px;
     display: flex;
@@ -24,7 +28,6 @@ nav {
 .nav-center ul li a {
     color: white;
     text-decoration: none;
-    padding: 20px 30px;
 }
 
 .home {
@@ -34,10 +37,57 @@ nav {
 }
 
 .home .plan {
-    height: 50vh;
+    height: fit-content;
     width: 20vw;
-    padding: 20px 30px;
+    max-height: 100vh;
+    padding: 20px 10px;
+    border-radius: 5px;
+    /* background-color: grey; */
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.home .plan::-webkit-scrollbar {
+    display: none;
+}
+  
+  /* Hide scrollbar for IE and Edge */
+.home .plan {
+    -ms-overflow-style: none;
+}
+
+.home .plan .title {
+    padding: 10px 20px;
     background-color: red;
+    border-radius: 5px;
+    font-size: 30px;
+}
+
+#card-title {
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+#plan-card-title-center {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 20px;
+    padding: 10px 10px;
+}
+
+#plan-card-title-bottom {
+    padding: 5px 5px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.home .plan #plan-card-title-bottom #next {
+    font-size: 35px;
+    color: greenyellow;
 }
 
 .home .do {
