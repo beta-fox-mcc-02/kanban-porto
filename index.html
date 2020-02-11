@@ -66,24 +66,60 @@
                 </div>
             </section>
         </main> -->
+        <!-- ---------------------------------------------- REGISTER FORM ---------------------------------------------- -->
         <div class="register">
-            <section id="register-header">KANBAN</section>
+            <section id="register-header">
+                <H1>WELCOME</H1>
+                <small>Registration form</small>
+            </section>
             <form id="register-form">
+                <div class="err-message">Error message here...</div>
                 <div id="register-main">
                     <div>
-                        <input id="register-name" type="text" placeholder="Your name..." autocapitalize="words" required><br>
+                        <small>Name:</small>
+                        <input id="register-name" type="text" autocapitalize="words">
                     </div>
                     <div>
-                        <input id="register-email" type="email" placeholder="Your email..." required><br>
+                        <small>Email:</small>
+                        <input id="register-email" type="email" required>
+                        <i class="fas fa-exclamation-triangle"></i>
                     </div>
                     <div>
-                        <input id="register-password" type="password" placeholder="Your password..." required><br>
+                        <small>Password:</small>
+                        <input id="register-password" type="password" required>
+                        <i class="fas fa-exclamation-triangle"></i>
                     </div>
                     <button id="register-btn">Submit</button>
                 </div>
             </form>
-            <section id="register-footer">Have an account? <a href="#">Login</a></section>
+            <section id="register-footer">Have an account? <a id="redirect-to-login">Login</a></section>
         </div>
+        <!-- ---------------------------------------------- REGISTER FORM ---------------------------------------------- -->
+        <!-- ---------------------------------------------- LOGIN FORM ---------------------------------------------- -->
+        <!-- <div class="login">
+            <section id="login-header">
+                <H1>WELCOME</H1>
+                <small>Login form</small>
+            </section>
+            <form id="login-form">
+                <div class="err-message">Error message here...</div>
+                <div id="login-main">
+                    <div>
+                        <small>Email:</small>
+                        <input id="login-email" type="email" required>
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div>
+                        <small>Password:</small>
+                        <input id="login-password" type="password" required>
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <button id="login-btn">Submit</button>
+                </div>
+            </form>
+            <section id="login-footer">Not a member yet? <a id="redirect-to-register">Register</a></section>
+        </div> -->
+        <!-- ---------------------------------------------- LOGIN FORM ---------------------------------------------- -->
     </body>
 </html>
 
@@ -96,6 +132,7 @@
 body{
     font-family: 'Courier New', Courier, monospace;
     background-color: #f5f8ff;
+    max-width: 1500px;
 }
 
 nav#upperbar{
@@ -199,19 +236,34 @@ div.add-new-content:hover{
     border-radius: 0.3rem;
 }
 
-div.register{
-    margin: auto;
+/* --------------------------------------------- CSS REGISTER & LOGIN FORM --------------------------------------------- */
+div.register, div.login{
+    margin: 5rem auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #f5f8ff;
-    box-shadow: 0rem 0rem 0.5rem;
-    width: 30rem;
-    height: 25rem;
+    background-color: #ffffff;
+    box-shadow: 0rem 0rem 0.5rem #d4e0fb;
+    width: 20rem;
+    height: 30rem;
     justify-content: space-around;
 }
 
-div#register-main div, div#register-main button{
+section#register-header, section#login-header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 16rem;
+    padding-bottom: 1rem;
+    border-bottom: 0.1rem solid #ececec;
+}
+
+section#register-header h1, section#login-header h1{
+    font-size: 20pt;
+    font-weight: 900;
+}
+
+div#register-main div, div#login-main div, div#register-main button, div#login-main button{
     margin: 0.5rem;
     padding: 0.5rem;
     width: 15rem;
@@ -219,15 +271,57 @@ div#register-main div, div#register-main button{
     border-radius: 0.3rem
 }
 
-div#register-main button{
+div#register-main button, div#login-main button{
     width: 16rem;
+    cursor: pointer;
+    background-color: #4bcccc;
+    border-style: none;
+    color: white;
+    font-weight: 900;
 }
 
-div#register-main div input{
+div#register-main div, div#login-main div{
+    background-color: rgb(236, 236, 236);
+}
+
+div#register-main div small, div#login-main div small{
+    font-style: italic;
+    color: rgb(143, 143, 143);
+}
+
+div#register-main div input, div#login-main div input{
     border-style: none;
     outline: 0;
     overflow: hidden;
     width: 13rem;
+    background-color: inherit;
+}
+
+.fa-exclamation-triangle{
+    color: red;
+}
+
+.err-message{
+    text-align: center;
+    color: red;
+    font-style: italic;
+    font-size: 10pt;
+    padding-bottom: 0.5rem;
+}
+
+section#register-footer, section#login-footer{
+    font-size: 10pt;
+    width: 16rem;
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 0.1rem solid #ececec
+}
+
+section#register-footer a, section#login-footer a{
+    text-decoration: none;
+    font-weight: 900;
+    color: rgb(77, 189, 189);
+    cursor: pointer;
 }
 
 </style>
