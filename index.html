@@ -2,10 +2,232 @@
 <html>
     <head>
         <title>KANBAN PROJECT</title>
+        <script src="https://kit.fontawesome.com/33c7f9b4f6.js" crossorigin="anonymous"></script>
     </head>
     <body>
+        <!-- <header>
+            <nav id="upperbar">
+                <div class="upperbar-menu">LOGO</div>
+                <div class="upperbar-menu">MENUS</div>
+                <div class="upperbar-menu">LOGOUT</div>
+            </nav>
+        </header>
+        <aside id="sidebar">
+            <div><i class="fas fa-users"></i></div>
+            <div><i class="fas fa-th-list"></i></div>
+        </aside>
         <main>
-            <h1>HELLO WORLD</h1>
-        </main>
+            <section class="content-box">
+                <div class="content-header">
+                    <h3>Backlog</h3>
+                </div>
+                <div class="content-card">
+                    <span class="content-title">loriseufsubds sdsdasdsdas dasdsadas sada dsASsASasA AasaSAsaSA</span>
+                    <span class="content-edit"><i class="fas fa-ellipsis-v"></i></span>
+                </div>
+                <div class="add-new-content">
+                    <i class="fas fa-plus"> Add new card</i>
+                </div>
+            </section>
+            <section class="content-box">
+                <div class="content-header">
+                    <h3>Product</h3>
+                </div>
+                <div class="content-card">
+                    <span class="content-title">loriseufsubds sdsdasdsdas dasdsadas sada dsASsASasA AasaSAsaSA</span>
+                    <span class="content-edit"><i class="fas fa-ellipsis-v"></i></span>
+                </div>
+                <div class="add-new-content">
+                    <i class="fas fa-plus"> Add new card</i>
+                </div>
+            </section>
+            <section class="content-box">
+                <div class="content-header">
+                    <h3>Development</h3>
+                </div>
+                <div class="content-card">
+                    <span class="content-title">loriseufsubds sdsdasdsdas dasdsadas sada dsASsASasA AasaSAsaSA</span>
+                    <span class="content-edit"><i class="fas fa-ellipsis-v"></i></span>
+                </div>
+                <div class="add-new-content">
+                    <i class="fas fa-plus"> Add new card</i>
+                </div>
+            </section>
+            <section class="content-box">
+                <div class="content-header">
+                    <h3>Done</h3>
+                </div>
+                <div class="content-card">
+                    <span class="content-title">loriseufsubds sdsdasdsdas dasdsadas sada dsASsASasA AasaSAsaSA</span>
+                    <span class="content-edit"><i class="fas fa-ellipsis-v"></i></span>
+                </div>
+                <div class="add-new-content">
+                    <i class="fas fa-plus"> Add new card</i>
+                </div>
+            </section>
+        </main> -->
+        <div class="register">
+            <section id="register-header">KANBAN</section>
+            <form id="register-form">
+                <div id="register-main">
+                    <div>
+                        <input id="register-name" type="text" placeholder="Your name..." autocapitalize="words" required><br>
+                    </div>
+                    <div>
+                        <input id="register-email" type="email" placeholder="Your email..." required><br>
+                    </div>
+                    <div>
+                        <input id="register-password" type="password" placeholder="Your password..." required><br>
+                    </div>
+                    <button id="register-btn">Submit</button>
+                </div>
+            </form>
+            <section id="register-footer">Have an account? <a href="#">Login</a></section>
+        </div>
     </body>
 </html>
+
+<style>
+
+* {
+    margin: 0;
+}
+
+body{
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #f5f8ff;
+}
+
+nav#upperbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(112, 163, 173);
+    height: 3rem;
+}
+
+aside#sidebar {
+    width: 5rem;
+    position: fixed;
+    background-color: white;
+    height: 48rem;
+    justify-content: center;
+    align-items: center;
+    font-size: 25pt;
+    display: flex;
+    flex-direction: column;
+    border-right: 0.2rem solid #eaf1f6;
+}
+
+aside#sidebar div i{
+    padding: 1rem;
+}
+
+div.upperbar-menu{
+    padding: 1.25rem;
+    font-weight: bolder;
+    color: #ffffff;
+}
+
+main{
+    display: flex;
+    width: 71.5rem;
+    align-items: flex-start;
+    margin-left: 7.5rem;
+}
+
+section.content-box{
+    background-color: rgb(245, 248, 255);
+    margin: 1rem;
+    padding: 0 0.5rem;
+    width: 16rem;
+    text-align: center;
+    border-radius: 0.5rem;
+    box-shadow: 0rem 0.5rem 0.5rem #c3d8d37a;
+    border-top: 0.2rem solid #70a3ad;
+}
+
+div.content-container{
+    max-height: 30rem;
+    overflow-y: auto;
+}
+
+div.content-card{
+    background-color: #ffffff;
+    margin: 0.1rem 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    text-align: justify;
+    box-shadow: 0 0.2rem 0.3rem rgb(223, 234, 236);
+    border-radius: 0.3rem
+}
+
+div.content-card span.content-edit i{
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+div.content-card span.content-edit i:hover{
+    background-color: rgb(112, 163, 173);
+    border-radius: 50%;
+    color: white;
+}
+
+div.content-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 3rem;
+}
+
+div.add-new-content{
+    padding: 0.5rem 0;
+    margin: 0.5rem 0;
+    text-align: center;
+    color: rgb(143, 143, 143);
+    cursor: pointer;
+}
+
+div.add-new-content:hover{
+    background-color: rgb(112, 163, 173);
+    color: white;
+    border-radius: 0.3rem;
+}
+
+div.register{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f5f8ff;
+    box-shadow: 0rem 0rem 0.5rem;
+    width: 30rem;
+    height: 25rem;
+    justify-content: space-around;
+}
+
+div#register-main div, div#register-main button{
+    margin: 0.5rem;
+    padding: 0.5rem;
+    width: 15rem;
+    background-color: white;
+    border-radius: 0.3rem
+}
+
+div#register-main button{
+    width: 16rem;
+}
+
+div#register-main div input{
+    border-style: none;
+    outline: 0;
+    overflow: hidden;
+    width: 13rem;
+}
+
+</style>
