@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="google-signin-client_id" content="517803177625-n77g91t2rv39th4tuhksmj7dlvisfno6.apps.googleusercontent.com">
+
+    <title>Document</title>
+
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css?family=Modak|Quicksand&display=swap" rel="stylesheet"> 
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    
+    <!-- styles -->
+    <link rel="stylesheet" href="./styles/main.css">
+
+    <!-- icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+</head>
+<body style="background-color: #ffffff;">
+    <div class="col-12 p-0 header d-flex align-items-center">
+        <div class="col-3 header-center d-flex justify-content-start">
+        </div>
+        <div class="col-6 p-0 d-flex justify-content-center header-left">
+            <p class="m-0 logo">KANBAN</p>
+        </div>
+            <div class="col-3 d-flex justify-content-end header-right">
+        </div>
+    </div>
+
+    <!-- sign up -->
+    <div class="container d-flex justify-content-center flex-wrap">
+        <div class="p-2 m-3 form-container">
+            <div class="d-flex justify-content-center title">
+                <p>Sign Up</p>
+            </div>
+            <form class="form">
+                <div class="form-group">
+                  <label for="email">Email:</label>
+                  <input type="email" class="form-control" id="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" placeholder="Password" required>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button id="btn-signUp" type="submit" class="mr-2 btn btn-dark">Sign up</button>
+                    <p id="btn-to-signIn" class="mb-0 btn-to-signIn">already have an acount?</p>
+                </div>
+            </form>
+        </div>
+
+        <!-- sign in -->
+        <div class="p-2 m-3 form-container">
+            <div class="d-flex justify-content-center title">
+                <p>Sign In</p>
+            </div>
+            <form class="form">
+                <div class="form-group">
+                  <label for="email">Email:</label>
+                  <input type="email" class="form-control" id="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" placeholder="Password" required>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button id="btn-signIn" type="submit" class="mr-2 btn btn-dark">Sign In</button>
+                    <p id="btn-to-signUp" class="mb-0 btn-to-signUp">sign up for kanban</p>
+                    <div class="g-signin2" data-longtitle="true" data-onsuccess="onSignIn"></div>
+                </div>
+            </form>
+        </div>
+
+        <!-- add card -->
+        <div class="p-2 m-3  form-container">
+            <div class="d-flex justify-content-center title">
+                <p>Add card</p>
+                <p>Edit card</p>
+            </div>
+            <form class="form">
+                <div class="form-group">
+                  <label for="title">Title:</label>
+                  <input type="text" class="form-control" id="title" placeholder="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea name="description" id="description" class="form-control" placeholder="Description" cols="30" rows="5" required></textarea>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button id="btn-add-card" type="submit" class="mr-2 btn btn-dark">Add card</button>
+                    <button id="btn-edit-card" type="submit" class="mr-2 btn btn-dark">Edit card</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
