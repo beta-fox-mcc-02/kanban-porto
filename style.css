@@ -1,0 +1,199 @@
+body {
+    margin: 0;
+}
+
+.container-menu {
+    display: flex;
+    background-color: dodgerblue;
+}
+
+.kanban {
+    width: 350px;
+    display: flex;
+    list-style: none;
+    justify-content: space-around;
+    padding-left: 2px;
+}
+
+.kanban a {
+    color: white;
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+.container-kanban {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    /* background-color: red; */
+
+    /* background-color: cadetblue; */
+    /* height: 100vh; */
+}
+
+.backlog {
+    color: black;
+    /* background-color: yellow; */
+    padding: 8px;
+    width: 30%;
+    /* border-radius: 7px; */
+    /* height: ; */
+    /* height: fit-content; */
+}
+
+.backlog-content {
+    background-color: gainsboro;
+    border-radius: 7px;
+    padding: 8px;
+    /* overflow: scroll; */
+    /* height: 400px; */
+    /* overflow: auto; */
+}
+
+
+.product {
+    color: black;
+    /* background-color: yellow; */
+    padding: 8px;
+    width: 30%;
+    height: fit-content;
+}
+
+.product-content {
+    background-color: gainsboro;
+    border-radius: 7px;
+    padding: 8px;
+    /* height: 400px; */
+    /* overflow: auto; */
+}
+
+.development {
+    color: black;
+    /* background-color: gainsboro; */
+    padding: 8px;
+    width: 30%;
+    border-radius: 7px;
+    height: fit-content;
+}
+
+.development-content {
+    background-color: gainsboro;
+    border-radius: 7px;
+    padding: 8px;
+    /* height: 400px; */
+    /* overflow: auto; */
+}
+
+
+.done {
+    color: black;
+    /* background-color: gainsboro; */
+    padding: 8px;
+    width: 30%;
+    border-radius: 7px;
+    height: fit-content;
+}
+
+.done-content {
+    background-color: gainsboro;
+    border-radius: 7px;
+    padding: 8px;
+    /* height: 400px; */
+    /* overflow: auto; */
+}
+
+.backlog-col {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+.product-col {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+.development-col {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+.done-col {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+.add-backlog {
+    display: flex;
+    justify-content: end;
+    margin: 5px;
+}
+
+.add-product {
+    display: flex;
+    align-items: flex-end;
+    justify-content: end;
+    margin: 5px;
+}
+
+.add-development {
+    display: flex;
+    justify-content: end;
+    margin: 5px;
+}
+
+.add-done {
+    display: flex;
+    justify-content: end;
+    margin: 5px;
+}
+
+.backlog-list {
+    display: flex;
+    padding: 4px;
+    justify-content: space-between;
+    background-color: whitesmoke;
+    margin: 2px;
+    border-radius: 5px;
+}
+
+.product-list {
+    display: flex;
+    padding: 4px;
+    justify-content: space-between;
+    background-color: whitesmoke;
+    margin: 2px;
+    border-radius: 5px;
+}
+
+.development-list {
+    display: flex;
+    padding: 4px;
+    justify-content: space-between;
+    background-color: whitesmoke;
+    margin: 2px;
+    border-radius: 5px;
+}
+
+.done-list {
+    display: flex;
+    padding: 4px;
+    justify-content: space-between;
+    background-color: whitesmoke;
+    margin: 2px;
+    border-radius: 5px;
+}
