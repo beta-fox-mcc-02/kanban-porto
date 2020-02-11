@@ -1,3 +1,7 @@
+* {
+    margin: 0;
+}
+
 nav {
     padding: 20px 30px;
     display: flex;
@@ -5,5 +9,54 @@ nav {
     color: white;
     justify-content: space-between;
     align-items: center;
-    font-size: 20pt;
+    font-size: 15pt;
+}
+
+.nav-center ul{
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-center ul li{
+    list-style: none;
+}
+
+.nav-center ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 20px 30px;
+}
+
+.home {
+    margin-top: 100px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.home .plan {
+    height: 50vh;
+    width: 20vw;
+    padding: 20px 30px;
+    background-color: red;
+}
+
+.home .do {
+    height: 50vh;
+    width: 20vw;
+    padding: 20px 30px;
+    background-color: yellow;
+}
+
+.home .actual {
+    height: 50vh;
+    width: 20vw;   
+    padding: 20px 30px;
+    background-color: green;
+}
+
+.home .done {
+    height: 50vh;
+    width: 20vw;
+    padding: 20px 30px;
+    background-color: blue;
 }
