@@ -14,7 +14,6 @@ app.use(express.json())
 app.use('/', router)
 app.use('/', errorHandler)
 
-app.listen(`${port}`, () => {
+app.listen(port, () => {
    console.log(`connected with love and gawl in port ${port}`);
-   
 })
