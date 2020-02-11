@@ -1,0 +1,27 @@
+header {
+    margin-bottom: 10px;
+}
+
+nav {
+    background-color: inherit;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-wrapper {
+    width: 90%;
+}
+
+.navbar-container {
+    display: flex;
+}
+
+.side-navbar-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.drag-target {
+    z-index: -1;
+}

@@ -1,0 +1,9 @@
+@import './variables';
+
+* {
+    margin: 0;
+    background-color: $boardBackgroundColor;
+}
+
+@import './header';
+@import './board';

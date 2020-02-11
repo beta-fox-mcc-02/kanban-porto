@@ -1,0 +1,63 @@
+.board-container {
+    width: 98%;
+}
+
+.row {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-content: center;
+}
+
+.t {
+    background-color: $columnBackgroundColor;
+    border-radius: 10px;
+    margin: 5px 5px;
+}
+
+.card {
+    padding: 5px;
+}
+
+.cards-column {
+    background-color: inherit;
+    max-height: 60vh;
+    overflow: auto;
+    margin-top: 10px;
+}
+
+.card-text{
+    background-color: inherit;
+    margin-bottom: 8px;
+
+}
+
+.card-title {
+    margin-top: 8px;
+    padding: 8px 0px;
+    border-radius: 10px 10px 0px 0px;
+    font-weight: bold;
+    color: white;
+    font-size: 18pt;
+}
+
+
+.card-text-achor {
+    background-color: white;
+    padding: 3px;
+    border-radius: 0px 0px 0px 10px;
+    margin-bottom: 12px;
+    margin-top: 9px;
+    margin-right: 9px;
+    &:hover {
+        background-color: $hoverAddCardBgColor;
+        color: white;
+    }
+}
+
+.card-text-achor a {
+    margin: 10px;
+    &::before {
+        color: white;
+    }
+}
