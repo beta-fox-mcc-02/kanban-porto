@@ -3,9 +3,10 @@
     <head>
         <title>KANBAN PROJECT</title>
         <script src="https://kit.fontawesome.com/33c7f9b4f6.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" src="style.css">
     </head>
     <body>
-        <!-- <header>
+        <header>
             <nav id="upperbar">
                 <div class="upperbar-menu">LOGO</div>
                 <div class="upperbar-menu">MENUS</div>
@@ -65,7 +66,7 @@
                     <i class="fas fa-plus"> Add new card</i>
                 </div>
             </section>
-        </main> -->
+        </main>
         <!-- ---------------------------------------------- REGISTER FORM ---------------------------------------------- -->
         <div class="register">
             <section id="register-header">
@@ -96,7 +97,7 @@
         </div>
         <!-- ---------------------------------------------- REGISTER FORM ---------------------------------------------- -->
         <!-- ---------------------------------------------- LOGIN FORM ---------------------------------------------- -->
-        <!-- <div class="login">
+        <div class="login">
             <section id="login-header">
                 <H1>WELCOME</H1>
                 <small>Login form</small>
@@ -118,8 +119,37 @@
                 </div>
             </form>
             <section id="login-footer">Not a member yet? <a id="redirect-to-register">Register</a></section>
-        </div> -->
+        </div>
         <!-- ---------------------------------------------- LOGIN FORM ---------------------------------------------- -->
+        <!-- ---------------------------------------------- ADDING TASK FORM ---------------------------------------------- -->
+        <div class="add-task">
+            <section id="add-task-header">
+                <H1>ADD NEW TASK HERE</H1>
+            </section>
+            <div class="err-message">Error message here...</div>
+            <form id="add-task-form">
+                <div id="add-task-main">
+                    <div>
+                        <small>Task title:</small>
+                        <input id="add-task-email" type="email" required>
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div>
+                        <small>Task tag:</small>
+                        <select class="tag-selection">
+                            <option>low priority</option>
+                            <option>medium priority</option>
+                            <option>high priority</option>
+                        </select>
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <button id="add-task-btn">Submit</button>
+                </div>
+            </form>
+        </div>
+        <!-- ---------------------------------------------- ADDING TASK FORM ---------------------------------------------- -->
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="main.js"></script>
     </body>
 </html>
 
@@ -197,7 +227,8 @@ div.content-card{
     padding: 0.5rem;
     text-align: justify;
     box-shadow: 0 0.2rem 0.3rem rgb(223, 234, 236);
-    border-radius: 0.3rem
+    border-radius: 0.3rem;
+    cursor: grab;
 }
 
 div.content-card span.content-edit i{
@@ -237,7 +268,7 @@ div.add-new-content:hover{
 }
 
 /* --------------------------------------------- CSS REGISTER & LOGIN FORM --------------------------------------------- */
-div.register, div.login{
+div.register, div.login, div.add-task{
     margin: 5rem auto;
     display: flex;
     flex-direction: column;
@@ -249,7 +280,7 @@ div.register, div.login{
     justify-content: space-around;
 }
 
-section#register-header, section#login-header{
+section#register-header, section#login-header, section#add-task-header{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -258,12 +289,13 @@ section#register-header, section#login-header{
     border-bottom: 0.1rem solid #ececec;
 }
 
-section#register-header h1, section#login-header h1{
+section#register-header h1, section#login-header h1, section#add-task-header h1{
     font-size: 20pt;
     font-weight: 900;
+    text-align: center;
 }
 
-div#register-main div, div#login-main div, div#register-main button, div#login-main button{
+div#register-main div, div#login-main div, div#add-task-main div, div#register-main button, div#login-main button, div#add-task-main button{
     margin: 0.5rem;
     padding: 0.5rem;
     width: 15rem;
@@ -271,7 +303,7 @@ div#register-main div, div#login-main div, div#register-main button, div#login-m
     border-radius: 0.3rem
 }
 
-div#register-main button, div#login-main button{
+div#register-main button, div#login-main button, div#add-task-main button{
     width: 16rem;
     cursor: pointer;
     background-color: #4bcccc;
@@ -280,21 +312,32 @@ div#register-main button, div#login-main button{
     font-weight: 900;
 }
 
-div#register-main div, div#login-main div{
+div#register-main div, div#login-main div, div#add-task-main div{
     background-color: rgb(236, 236, 236);
 }
 
-div#register-main div small, div#login-main div small{
+div#register-main div small, div#login-main div small, div#add-task-main div small{
     font-style: italic;
     color: rgb(143, 143, 143);
 }
 
-div#register-main div input, div#login-main div input{
+div#register-main div input, div#login-main div input, div#add-task-main div input{
     border-style: none;
     outline: 0;
     overflow: hidden;
     width: 13rem;
     background-color: inherit;
+}
+
+select.tag-selection{
+    border-style: none;
+    outline: 0;
+    overflow: hidden;
+    width: 13rem;
+    background-color: inherit;
+    font-size: 10pt;
+    font-style: italic;
+    cursor: pointer;
 }
 
 .fa-exclamation-triangle{
