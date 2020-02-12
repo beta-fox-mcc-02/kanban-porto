@@ -5,8 +5,9 @@ module.exports = (sequelize, DataTypes) => {
 
   class User extends sequelize.Sequelize.Model {
     static associate(models) {
-    //   // User.hasMany(models.UserTask)
-    //   User.belongsToMany(models.Task, {through: models.UserTask})
+      //   // User.hasMany(models.UserTask)
+      //   User.belongsToMany(models.Task, {through: models.UserTask})
+      User.belongsToMany(models.Project, { through: models.UserProject })
     }
   }
 
@@ -26,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           args: true,
           msg: `title can't be empty`
-        },    
+        },
         isEmail: {
           args: true,
           msg: `email must be according to email format`

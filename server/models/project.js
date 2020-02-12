@@ -1,10 +1,15 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Project = sequelize.define('Project', {
+  class Project extends sequelize.Sequelize.Model {
+    static associate (models) {
+      Project.belongsToMany(models.User, {through: models.UserProject})
+      Project.hasMany(models.Task)
+    }
+  }
+  Project.init({
     title: DataTypes.STRING
-  }, {});
-  Project.associate = function(models) {
-    // associations can be defined here
-  };
+  }, {
+    sequelize
+  });
   return Project;
 };
