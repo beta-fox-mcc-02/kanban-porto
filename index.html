@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lemonada&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="./style.css">
@@ -13,19 +14,22 @@
 <body>
     <div id="kanban">
         <nav>
-            <div class="nav-left">KIRI</div>
+            <div class="nav-left">
+                <i class="fab fa-dochub" style="font-size: 30px;"></i>
+            </div>
             <div class="nav-center">
                 <button type="button" class="btn btn-primary" v-if="currentPage === 'landing'">ADD PROJECT</button>
             </div>
             <div class="nav-right">
                 <button type="button" class="btn btn-primary" v-if="currentPage === 'register'" v-on:click.prevent="currentPage = 'login'">LOGIN</button>
                 <button type="button" class="btn btn-success" v-if="currentPage === 'login'" v-on:click.prevent="currentPage = 'register'">REGISTER</button>
-                <button type="button" class="btn btn-danger" v-if="currentPage === 'landing'">LOGOUT</button>
+                <button type="button" class="btn btn-danger" v-if="currentPage === 'landing'" @click="logout">LOGOUT</button>
             </div>
         </nav>
         
         <div class="container" v-if="currentPage === 'register'">
             <div id="form-regis">
+                <h1 style="font-family: 'Lemonada', cursive;">REGISTER</h1>
                 <form  v-on:submit.prevent="regis">
                     <label>FIRST NAME</label>
                     <input id="first-name-regis" type="text" required v-model="register.first_name"></input>
@@ -42,6 +46,7 @@
 
         <div class="container" v-else-if="currentPage === 'login'">
             <div id="form-login">
+                <h1 style="font-family: 'Lemonada', cursive;">LOG IN</h1>
                 <form v-on:submit.prevent="login">
                     <label>EMAIL</label>
                     <input type="email" required v-model="valLogin.email"></input>

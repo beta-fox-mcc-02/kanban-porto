@@ -12,7 +12,7 @@ new Vue ({
             password: ""
         },
         cards: [],
-        currentPage: 'landing',
+        currentPage: 'register',
     },
     methods: {
         regis() {
@@ -53,6 +53,12 @@ new Vue ({
                 .catch(err => {
                     console.log(err)
                 })
+        },
+        logout() {
+            localStorage.clear()
+            this.currentPage = 'login'
+            this.valLogin.email = ""
+            this.valLogin.password = ""
         },
         fetchTask() {
             axios({
