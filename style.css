@@ -16,7 +16,12 @@ nav {
     font-size: 15pt;
 }
 
-
+.container {
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 
 .nav-center ul{

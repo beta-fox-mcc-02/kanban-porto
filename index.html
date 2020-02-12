@@ -29,21 +29,35 @@
             </div>
         </nav>
         
-        <div class="container" id="register">
-            <form>
-                <label>FIRST NAME</label>
-                <input id="first-name-regis" type="text" required></input>
-                <label>LAST NAME</label>
-                <input id="last-name-regis" type="text" required></input>
-                <label>EMAIL</label>
-                <input id="email-regis" type="email" required></input>
-                <label>PASSWORD</label>
-                <input id="password-regis" type="password" required></input>
-                <button type="submit" class="btn btn-primary">SUBMIT</button>
-            </form>
+        <div class="container" v-if="currentPage === 'register'">
+            <div id="form-regis">
+                <form>
+                    <label @click="currentPage = 'login'">FIRST NAME</label>
+                    <input id="first-name-regis" type="text" required></input>
+                    <label>LAST NAME</label>
+                    <input id="last-name-regis" type="text" required></input>
+                    <label>EMAIL</label>
+                    <input id="email-regis" type="email" required></input>
+                    <label>PASSWORD</label>
+                    <input id="password-regis" type="password" required></input>
+                    <button type="submit" class="btn btn-primary">SUBMIT</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="container" v-else-if="currentPage === 'login'">
+            <div id="form-login">
+                <form>
+                    <label @click="currentPage = 'landing'">EMAIL</label>
+                    <input id="email-regis" type="email" required></input>
+                    <label>PASSWORD</label>
+                    <input id="password-regis" type="password" required></input>
+                    <button type="submit" class="btn btn-primary">SUBMIT</button>
+                </form>
+            </div>
         </div>
     
-        <div class="home" v-show="currentPage === 'landing'">
+        <div class="home" v-else-if="currentPage === 'landing'">
             <div class="plan">
                 <div class="title">
                     <i class="fab fa-telegram-plane"></i> PLAN
