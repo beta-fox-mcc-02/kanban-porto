@@ -1,6 +1,7 @@
 const { Project } = require('../models')
 const { UserProject } = require('../models')
 const { Task } = require('../models')
+const { User } = require('../models')
 
 class ProjectController {
    static create(req, res, next) {
@@ -32,11 +33,11 @@ class ProjectController {
          }
       })
          .then(data => {
-            if(data) {
+            if (data) {
                res.status(200).json(data)
             }
             else {
-               next({code: 404, message: `Project with id ${req.params.id} not found`})
+               next({ code: 404, message: `Project with id ${req.params.id} not found` })
             }
          })
          .catch(err => {
@@ -90,7 +91,94 @@ class ProjectController {
             })
          })
          .then(_ => {
-            res.status(200).json({msg: `Project with id ${req.params.id} has been deleted`})
+            res.status(200).json({ msg: `Project with id ${req.params.id} has been deleted` })
+         })
+         .catch(err => {
+            next(err)
+         })
+   }
+
+   static addCollaborator(req, res, next) {
+      
+      let newCollaborator = {
+         UserId: req.body.UserId,
+         ProjectId: req.body.ProjectId
+      }
+      
+      // UserProject.findAll({
+      //    where: {
+      //       UserId: req.body.UserId,
+      //       ProjectId: req.body.ProjectId
+      //    },
+      //    include: [
+      //       {model: User},
+      //       {model: Project}
+      //    ]
+      // })
+      //    .then(data => {
+      //       if(data) {
+      //          res.status(400).json({msg: `User already collaborating in this project`})
+      //       }
+      //       else{
+      //          return UserProject.create(newCollaborator)
+      //       }
+      //    })
+      //    .then(data => {
+      //       res.status(201).json(data)
+      //    })
+      //    .catch(err => {
+      //       next(err)
+      //    })
+
+      User.findOne({
+         where : {
+            id : req.body.UserId
+         }
+      })
+         .then(user => {
+            if (!user) {
+               next({code: 404, message: `user doesn't exists`})
+            }
+            else {
+               return UserProject.findOne({
+                  where: {
+                     UserId: req.body.UserId,
+                     ProjectId: req.body.ProjectId
+                  },
+                  include:[
+                     {model: User},
+                     {model: Project}
+                  ]
+               })
+            }
+         })
+         .then(collaborator => {
+            if (collaborator) {
+               res.status(400).json({msg: `User already collaborating in this project`})
+            }
+            else {
+               return UserProject.create(newCollaborator)
+            }
+         })
+         .then(data => {
+            res.status(201).json(data)
+         })
+         .catch(err => {
+            next(err)
+         })
+   } //wtffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+
+
+
+
+   static deleteCollaborator (req, res, next) {
+      UserProject.destroy({
+         where: {
+            UserId: req.params.id
+         }
+      })
+         .then(data => {
+            res.status(200).json({msg: `remove user with id ${req.params.id} from project`})
          })
          .catch(err => {
             next(err)

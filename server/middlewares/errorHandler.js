@@ -1,4 +1,6 @@
 module.exports = (err, req, res, next) => {
+   console.log(err, `ini niioiiiiiiiihhh`);
+   
    let status = 500
    let message = err.message
 
