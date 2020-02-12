@@ -6,148 +6,119 @@
         <link rel="stylesheet" src="style.css">
     </head>
     <body>
-        <header>
-            <nav id="upperbar">
-                <div class="upperbar-menu">LOGO</div>
-                <div class="upperbar-menu">MENUS</div>
-                <div class="upperbar-menu">LOGOUT</div>
-            </nav>
-        </header>
-        <aside id="sidebar">
-            <div><i class="fas fa-users"></i></div>
-            <div><i class="fas fa-th-list"></i></div>
-        </aside>
-        <main>
-            <section class="content-box">
-                <div class="content-header">
-                    <h3>Backlog</h3>
-                </div>
-                <div class="content-card">
-                    <span class="content-title">loriseufsubds sdsdasdsdas dasdsadas sada dsASsASasA AasaSAsaSA</span>
-                    <span class="content-edit"><i class="fas fa-ellipsis-v"></i></span>
-                </div>
-                <div class="add-new-content">
-                    <i class="fas fa-plus"> Add new card</i>
-                </div>
-            </section>
-            <section class="content-box">
-                <div class="content-header">
-                    <h3>Product</h3>
-                </div>
-                <div class="content-card">
-                    <span class="content-title">loriseufsubds sdsdasdsdas dasdsadas sada dsASsASasA AasaSAsaSA</span>
-                    <span class="content-edit"><i class="fas fa-ellipsis-v"></i></span>
-                </div>
-                <div class="add-new-content">
-                    <i class="fas fa-plus"> Add new card</i>
-                </div>
-            </section>
-            <section class="content-box">
-                <div class="content-header">
-                    <h3>Development</h3>
-                </div>
-                <div class="content-card">
-                    <span class="content-title">loriseufsubds sdsdasdsdas dasdsadas sada dsASsASasA AasaSAsaSA</span>
-                    <span class="content-edit"><i class="fas fa-ellipsis-v"></i></span>
-                </div>
-                <div class="add-new-content">
-                    <i class="fas fa-plus"> Add new card</i>
-                </div>
-            </section>
-            <section class="content-box">
-                <div class="content-header">
-                    <h3>Done</h3>
-                </div>
-                <div class="content-card">
-                    <span class="content-title">loriseufsubds sdsdasdsdas dasdsadas sada dsASsASasA AasaSAsaSA</span>
-                    <span class="content-edit"><i class="fas fa-ellipsis-v"></i></span>
-                </div>
-                <div class="add-new-content">
-                    <i class="fas fa-plus"> Add new card</i>
-                </div>
-            </section>
-        </main>
-        <!-- ---------------------------------------------- REGISTER FORM ---------------------------------------------- -->
-        <div class="register">
-            <section id="register-header">
-                <H1>WELCOME</H1>
-                <small>Registration form</small>
-            </section>
-            <form id="register-form">
+        <div id="app">
+            <header v-if="currentPage === 'member'">
+                <nav id="upperbar">
+                    <div class="upperbar-menu">LOGO</div>
+                    <div class="upperbar-menu">MENUS</div>
+                    <div class="upperbar-menu">LOGOUT</div>
+                </nav>
+            </header>
+            <aside id="sidebar" v-if="currentPage === 'member'">
+                <div><i class="fas fa-users"></i></div>
+                <div><i class="fas fa-th-list"></i></div>
+            </aside>
+            <main v-if="currentPage === 'member'">
+                <section class="content-box" v-for="category in categories">
+                    <div class="content-header">
+                        <h3> {{ category.name }} </h3>
+                    </div>
+                    <div class="content-container">
+                        <div class="content-card" v-for="task in category.data">
+                            <div>
+                                <span class="content-tag" v-bind:style="task.tag === 'low priority' ? 'background-color: #3d92a2' : 'background-color: #b71b1b'"> {{ task.tag }} </span>
+                                <span class="content-title">{{task.title}}</span>
+                            </div>
+                            <span class="content-edit"><i class="fas fa-ellipsis-v"></i></span>
+                        </div>
+                    </div>
+                    <div class="add-new-content">
+                        <i class="fas fa-plus"> Add new card</i>
+                    </div>
+                </section>
+            </main>
+            <!-- ---------------------------------------------- REGISTER FORM ---------------------------------------------- -->
+            <div class="register" v-if="currentPage === 'register'">
+                <section id="register-header">
+                    <H1>WELCOME</H1>
+                    <small>Registration form</small>
+                </section>
+                <form id="register-form">
+                    <div class="err-message">Error message here...</div>
+                    <div id="register-main">
+                        <div>
+                            <small>Name:</small>
+                            <input id="register-name" type="text" autocapitalize="words">
+                        </div>
+                        <div>
+                            <small>Email:</small>
+                            <input id="register-email" type="email" required>
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div>
+                            <small>Password:</small>
+                            <input id="register-password" type="password" required>
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <button id="register-btn" type="submit">Submit</button>
+                    </div>
+                </form>
+                <section id="register-footer">Have an account? <a id="redirect-to-login">Login</a></section>
+            </div>
+            <!-- ---------------------------------------------- REGISTER FORM ---------------------------------------------- -->
+            <!-- ---------------------------------------------- LOGIN FORM ---------------------------------------------- -->
+            <div class="login" v-if="currentPage === 'login'">
+                <section id="login-header">
+                    <H1>WELCOME</H1>
+                    <small>Login form</small>
+                </section>
+                <form id="login-form">
+                    <div class="err-message">Error message here...</div>
+                    <div id="login-main">
+                        <div>
+                            <small>Email:</small>
+                            <input id="login-email" type="email" required>
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div>
+                            <small>Password:</small>
+                            <input id="login-password" type="password" required>
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <button id="login-btn">Submit</button>
+                    </div>
+                </form>
+                <section id="login-footer">Not a member yet? <a id="redirect-to-register">Register</a></section>
+            </div>
+            <!-- ---------------------------------------------- LOGIN FORM ---------------------------------------------- -->
+            <!-- ---------------------------------------------- ADDING TASK FORM ---------------------------------------------- -->
+            <div class="add-task" v-if="currentPage === 'newtask'">
+                <section id="add-task-header">
+                    <H1>ADD NEW TASK HERE</H1>
+                </section>
                 <div class="err-message">Error message here...</div>
-                <div id="register-main">
-                    <div>
-                        <small>Name:</small>
-                        <input id="register-name" type="text" autocapitalize="words">
+                <form id="add-task-form">
+                    <div id="add-task-main">
+                        <div>
+                            <small>Task title:</small>
+                            <input id="add-task-email" type="email" required>
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div>
+                            <small>Task tag:</small>
+                            <select class="tag-selection">
+                                <option>low priority</option>
+                                <option>medium priority</option>
+                                <option>high priority</option>
+                            </select>
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <button id="add-task-btn">Submit</button>
                     </div>
-                    <div>
-                        <small>Email:</small>
-                        <input id="register-email" type="email" required>
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <div>
-                        <small>Password:</small>
-                        <input id="register-password" type="password" required>
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <button id="register-btn">Submit</button>
-                </div>
-            </form>
-            <section id="register-footer">Have an account? <a id="redirect-to-login">Login</a></section>
+                </form>
+            </div>
+            <!-- ---------------------------------------------- ADDING TASK FORM ---------------------------------------------- -->
         </div>
-        <!-- ---------------------------------------------- REGISTER FORM ---------------------------------------------- -->
-        <!-- ---------------------------------------------- LOGIN FORM ---------------------------------------------- -->
-        <div class="login">
-            <section id="login-header">
-                <H1>WELCOME</H1>
-                <small>Login form</small>
-            </section>
-            <form id="login-form">
-                <div class="err-message">Error message here...</div>
-                <div id="login-main">
-                    <div>
-                        <small>Email:</small>
-                        <input id="login-email" type="email" required>
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <div>
-                        <small>Password:</small>
-                        <input id="login-password" type="password" required>
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <button id="login-btn">Submit</button>
-                </div>
-            </form>
-            <section id="login-footer">Not a member yet? <a id="redirect-to-register">Register</a></section>
-        </div>
-        <!-- ---------------------------------------------- LOGIN FORM ---------------------------------------------- -->
-        <!-- ---------------------------------------------- ADDING TASK FORM ---------------------------------------------- -->
-        <div class="add-task">
-            <section id="add-task-header">
-                <H1>ADD NEW TASK HERE</H1>
-            </section>
-            <div class="err-message">Error message here...</div>
-            <form id="add-task-form">
-                <div id="add-task-main">
-                    <div>
-                        <small>Task title:</small>
-                        <input id="add-task-email" type="email" required>
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <div>
-                        <small>Task tag:</small>
-                        <select class="tag-selection">
-                            <option>low priority</option>
-                            <option>medium priority</option>
-                            <option>high priority</option>
-                        </select>
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <button id="add-task-btn">Submit</button>
-                </div>
-            </form>
-        </div>
-        <!-- ---------------------------------------------- ADDING TASK FORM ---------------------------------------------- -->
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="main.js"></script>
     </body>
@@ -208,6 +179,7 @@ section.content-box{
     margin: 1rem;
     padding: 0 0.5rem;
     width: 16rem;
+    max-height: 35rem;
     text-align: center;
     border-radius: 0.5rem;
     box-shadow: 0rem 0.5rem 0.5rem #c3d8d37a;
@@ -215,7 +187,7 @@ section.content-box{
 }
 
 div.content-container{
-    max-height: 30rem;
+    max-height: 25rem;
     overflow-y: auto;
 }
 
@@ -231,7 +203,23 @@ div.content-card{
     cursor: grab;
 }
 
-div.content-card span.content-edit i{
+div.content-card div{
+    display: flex;
+    flex-direction: column;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+div.content-card div span.content-tag{
+    padding: 0.3rem;
+    margin: 0.3rem;
+    color: white;
+    font-style: italic;
+    font-size: 10pt;
+    border-radius: 0.3rem;
+    background-color: #70a3ad;
+}
+
+div.content-card span i{
     width: 2rem;
     height: 2rem;
     display: flex;
@@ -240,7 +228,7 @@ div.content-card span.content-edit i{
     cursor: pointer;
 }
 
-div.content-card span.content-edit i:hover{
+div.content-card span i:hover{
     background-color: rgb(112, 163, 173);
     border-radius: 50%;
     color: white;
