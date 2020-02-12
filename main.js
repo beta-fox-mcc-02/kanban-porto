@@ -12,12 +12,6 @@ new Vue ({
             password: ""
         },
         cards: [],
-        // category: {
-        //     plan: [],
-        //     do: [],
-        //     actual: [],
-        //     done: []
-        // },
         currentPage: 'landing',
     },
     methods: {
@@ -69,22 +63,14 @@ new Vue ({
                 }
             })
                 .then(({data}) => {
-                    // for (let i in data.tasks) {
-                    //     if (data.tasks[i].CategoryId === 1) {
-                    //         this.category.plan.push(data.tasks[i])
-                    //     } else if (data.tasks[i].CategoryId === 2) {
-                    //         this.category.do.push(data.tasks[i])
-                    //     } else if (data.tasks[i].CategoryId === 3) {
-                    //         this.category.actual.push(data.tasks[i])
-                    //     } else if (data.tasks[i].CategoryId === 3) {
-                    //         this.category.done.push(data.tasks[i])
-                    //     }
-                    // }
                     this.cards = data
                 })
                 .catch(err => {
                     console.log(err);
                 })
+        },
+        hapus(id) {
+            console.log(id)
         }
     },
     created() {
@@ -94,12 +80,49 @@ new Vue ({
         }
     },
     computed: {
-        ganang() {
+        dataPlan() {
             if(this.cards.tasks) {
-                return this.cards.tasks[0]
-
+                const data = []
+                for (let i in this.cards.tasks) {
+                    if (this.cards.tasks[i].CategoryId === 1) {
+                        data.push(this.cards.tasks[i])
+                    }
+                }
+                return data
             }
-            // console.log(this.cards.tasks)
+        },
+        dataDo() {
+            if(this.cards.tasks) {
+                const data = []
+                for (let i in this.cards.tasks) {
+                    if (this.cards.tasks[i].CategoryId === 2) {
+                        data.push(this.cards.tasks[i])
+                    }
+                }
+                return data
+            }
+        },
+        dataActual() {
+            if(this.cards.tasks) {
+                const data = []
+                for (let i in this.cards.tasks) {
+                    if (this.cards.tasks[i].CategoryId === 3) {
+                        data.push(this.cards.tasks[i])
+                    }
+                }
+                return data
+            }
+        },
+        dataDone() {
+            if(this.cards.tasks) {
+                const data = []
+                for (let i in this.cards.tasks) {
+                    if (this.cards.tasks[i].CategoryId === 4) {
+                        data.push(this.cards.tasks[i])
+                    }
+                }
+                return data
+            }
         }
     }
 })
