@@ -1,5 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
+  
   class UserProject extends sequelize.Sequelize.Model {
     static associate (models) {
       UserProject.belongsTo(models.User)

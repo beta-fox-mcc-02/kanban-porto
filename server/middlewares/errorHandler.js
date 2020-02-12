@@ -1,5 +1,4 @@
 module.exports = (err, req, res, next) => {
-   // console.log(err);
    let status = 500
    let message = err.message
 
@@ -12,6 +11,7 @@ module.exports = (err, req, res, next) => {
       res.status(status).json({ errors: errors })
    }
    else if (err.code === 404) {
+      
       status = 404
       message = err.message
       res.status(status).json({ msg: message })
