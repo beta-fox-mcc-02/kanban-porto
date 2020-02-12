@@ -99,7 +99,7 @@ class ProjectController {
    }
 
    static addCollaborator(req, res, next) {
-      
+
       let newCollaborator = {
          UserId: req.body.UserId,
          ProjectId: req.body.ProjectId
@@ -178,7 +178,7 @@ class ProjectController {
          }
       })
          .then(data => {
-            res.status(200).json({msg: `remove user with id ${req.params.id} from project`})
+            res.status(200).json({msg: `removed user with id ${req.params.id} from project`})
          })
          .catch(err => {
             next(err)
