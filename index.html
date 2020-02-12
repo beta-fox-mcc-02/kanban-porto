@@ -7,16 +7,22 @@
     </head>
     <body>
         <div id="app">
-            <header v-if="currentPage === 'member'">
+            <header v-if="currentPage !== 'register' || currentPage !== 'login'">
                 <nav id="upperbar">
                     <div class="upperbar-menu">LOGO</div>
                     <div class="upperbar-menu">MENUS</div>
-                    <div class="upperbar-menu">LOGOUT</div>
+                    <div class="upperbar-menu"><button id="logout" v-on:click="logout">Logout</button></div>
                 </nav>
             </header>
-            <aside id="sidebar" v-if="currentPage === 'member'">
-                <div><i class="fas fa-users"></i></div>
-                <div><i class="fas fa-th-list"></i></div>
+            <aside id="sidebar" v-if="currentPage !== 'register' || currentPage !== 'login'">
+                <div>
+                    <button><i class="fas fa-users"></i></button>
+                    <small>Members</small>
+                </div>
+                <div>
+                    <button><i class="fas fa-plus-circle" v-on:click="showFormAdd"></i></button>
+                    <small>Add new task</small>
+                </div>
             </aside>
             <main v-if="currentPage === 'member'">
                 <section class="content-box" v-for="category in categories">
@@ -24,16 +30,16 @@
                         <h3> {{ category.name }} </h3>
                     </div>
                     <div class="content-container">
-                        <div class="content-card" v-for="task in category.data">
+                        <div class="content-card" v-for="task in category.Tasks">
                             <div>
                                 <span class="content-tag" v-bind:style="task.tag === 'low priority' ? 'background-color: #3d92a2' : 'background-color: #b71b1b'"> {{ task.tag }} </span>
                                 <span class="content-title">{{task.title}}</span>
                             </div>
-                            <span class="content-edit"><i class="fas fa-ellipsis-v"></i></span>
+                            <span class="content-edit">
+                                <i class="fas fa-ellipsis-v" v-on:click=""></i>
+                                <i class="far fa-trash-alt"></i>
+                            </span>
                         </div>
-                    </div>
-                    <div class="add-new-content">
-                        <i class="fas fa-plus"> Add new card</i>
                     </div>
                 </section>
             </main>
@@ -43,27 +49,27 @@
                     <H1>WELCOME</H1>
                     <small>Registration form</small>
                 </section>
-                <form id="register-form">
-                    <div class="err-message">Error message here...</div>
+                <form id="register-form" v-on:submit.prevent="register">
+                    <div class="err-message">{{ errorMessage }}</div>
                     <div id="register-main">
                         <div>
                             <small>Name:</small>
-                            <input id="register-name" type="text" autocapitalize="words">
+                            <input id="register-name" type="text" autocapitalize="words" v-model="name">
                         </div>
                         <div>
                             <small>Email:</small>
-                            <input id="register-email" type="email" required>
-                            <i class="fas fa-exclamation-triangle"></i>
+                            <input id="register-email" type="email" v-model="email">
+                            <i class="fas fa-exclamation-triangle" v-if="unfilledInput"></i>
                         </div>
                         <div>
                             <small>Password:</small>
-                            <input id="register-password" type="password" required>
-                            <i class="fas fa-exclamation-triangle"></i>
+                            <input id="register-password" type="password" v-model="password">
+                            <i class="fas fa-exclamation-triangle" v-if="unfilledInput"></i>
                         </div>
                         <button id="register-btn" type="submit">Submit</button>
                     </div>
                 </form>
-                <section id="register-footer">Have an account? <a id="redirect-to-login">Login</a></section>
+                <section id="register-footer">Have an account? <a id="redirect-to-login" v-on:click="redirect">Login</a></section>
             </div>
             <!-- ---------------------------------------------- REGISTER FORM ---------------------------------------------- -->
             <!-- ---------------------------------------------- LOGIN FORM ---------------------------------------------- -->
@@ -72,23 +78,23 @@
                     <H1>WELCOME</H1>
                     <small>Login form</small>
                 </section>
-                <form id="login-form">
-                    <div class="err-message">Error message here...</div>
+                <form id="login-form" v-on:submit.prevent="login">
+                    <div class="err-message">{{ errorMessage }}</div>
                     <div id="login-main">
                         <div>
                             <small>Email:</small>
-                            <input id="login-email" type="email" required>
-                            <i class="fas fa-exclamation-triangle"></i>
+                            <input id="login-email" type="email" v-model="email">
+                            <i class="fas fa-exclamation-triangle" v-if="unfilledInput"></i>
                         </div>
                         <div>
                             <small>Password:</small>
-                            <input id="login-password" type="password" required>
-                            <i class="fas fa-exclamation-triangle"></i>
+                            <input id="login-password" type="password" v-model="password">
+                            <i class="fas fa-exclamation-triangle" v-if="unfilledInput"></i>
                         </div>
-                        <button id="login-btn">Submit</button>
+                        <button id="login-btn" type="submit">Submit</button>
                     </div>
                 </form>
-                <section id="login-footer">Not a member yet? <a id="redirect-to-register">Register</a></section>
+                <section id="login-footer">Not a member yet? <a id="redirect-to-register" v-on:click="redirect">Register</a></section>
             </div>
             <!-- ---------------------------------------------- LOGIN FORM ---------------------------------------------- -->
             <!-- ---------------------------------------------- ADDING TASK FORM ---------------------------------------------- -->
@@ -96,30 +102,30 @@
                 <section id="add-task-header">
                     <H1>ADD NEW TASK HERE</H1>
                 </section>
-                <div class="err-message">Error message here...</div>
-                <form id="add-task-form">
+                <div class="err-message">{{ errorMessage }}</div>
+                <form id="add-task-form" v-on:submit.prevent="addTask">
                     <div id="add-task-main">
                         <div>
                             <small>Task title:</small>
-                            <input id="add-task-email" type="email" required>
-                            <i class="fas fa-exclamation-triangle"></i>
+                            <input id="add-task-email" type="text" v-model="taskTitle">
+                            <i class="fas fa-exclamation-triangle" v-if="unfilledInput"></i>
                         </div>
                         <div>
                             <small>Task tag:</small>
-                            <select class="tag-selection">
+                            <select class="tag-selection" v-model="taskTag">
                                 <option>low priority</option>
-                                <option>medium priority</option>
                                 <option>high priority</option>
                             </select>
-                            <i class="fas fa-exclamation-triangle"></i>
+                            <i class="fas fa-exclamation-triangle" v-if="unfilledInput"></i>
                         </div>
-                        <button id="add-task-btn">Submit</button>
+                        <button id="add-task-btn" type="submit">Submit</button>
                     </div>
                 </form>
             </div>
             <!-- ---------------------------------------------- ADDING TASK FORM ---------------------------------------------- -->
         </div>
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="main.js"></script>
     </body>
 </html>
@@ -147,6 +153,7 @@ nav#upperbar{
 aside#sidebar {
     width: 5rem;
     position: fixed;
+    top: 0px;
     background-color: white;
     height: 48rem;
     justify-content: center;
@@ -157,14 +164,46 @@ aside#sidebar {
     border-right: 0.2rem solid #eaf1f6;
 }
 
-aside#sidebar div i{
-    padding: 1rem;
+aside#sidebar div{
+    position: relative;
 }
 
-div.upperbar-menu{
-    padding: 1.25rem;
+aside#sidebar div button {
+    outline: 0;
+    border-style: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+aside#sidebar div small{
+    position: absolute;
+    font-size: 12pt;
+    white-space: nowrap;
+    background-color: #4da2b3;
+    padding: 0.5rem;
+    color: white;
+    border-radius: 0.3rem;
+}
+
+aside#sidebar div button i{
+    font-size: 30pt;
+    margin: 1rem auto;
+    width: 3rem;
+}
+
+div.upperbar-menu, button#logout{
+    margin: 1.25rem;
     font-weight: bolder;
     color: #ffffff;
+    background-color: transparent;
+    border: none;
+    outline: 0;
+    cursor: pointer;
+}
+
+button#logout:hover{
+    text-shadow: 0rem 0rem 1rem white;
+    color: #f1ff28;
 }
 
 main{
@@ -189,6 +228,7 @@ section.content-box{
 div.content-container{
     max-height: 25rem;
     overflow-y: auto;
+    margin-bottom: 2rem;
 }
 
 div.content-card{
@@ -201,11 +241,13 @@ div.content-card{
     box-shadow: 0 0.2rem 0.3rem rgb(223, 234, 236);
     border-radius: 0.3rem;
     cursor: grab;
+    color: #676464;
 }
 
 div.content-card div{
     display: flex;
     flex-direction: column;
+    word-break: break-word;
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
@@ -213,8 +255,10 @@ div.content-card div span.content-tag{
     padding: 0.3rem;
     margin: 0.3rem;
     color: white;
+    width: 5rem;
     font-style: italic;
     font-size: 10pt;
+    border-style: double;
     border-radius: 0.3rem;
     background-color: #70a3ad;
 }
@@ -241,20 +285,6 @@ div.content-header{
     height: 3rem;
 }
 
-div.add-new-content{
-    padding: 0.5rem 0;
-    margin: 0.5rem 0;
-    text-align: center;
-    color: rgb(143, 143, 143);
-    cursor: pointer;
-}
-
-div.add-new-content:hover{
-    background-color: rgb(112, 163, 173);
-    color: white;
-    border-radius: 0.3rem;
-}
-
 /* --------------------------------------------- CSS REGISTER & LOGIN FORM --------------------------------------------- */
 div.register, div.login, div.add-task{
     margin: 5rem auto;
@@ -266,6 +296,10 @@ div.register, div.login, div.add-task{
     width: 20rem;
     height: 30rem;
     justify-content: space-around;
+}
+
+div.add-task{
+    justify-content: space-evenly;
 }
 
 section#register-header, section#login-header, section#add-task-header{
@@ -338,6 +372,8 @@ select.tag-selection{
     font-style: italic;
     font-size: 10pt;
     padding-bottom: 0.5rem;
+    width: 15rem;
+    margin: 0 auto;
 }
 
 section#register-footer, section#login-footer{
