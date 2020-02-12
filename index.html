@@ -7,23 +7,122 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="style/style.css">
   <title>Kanban</title>
 </head>
 
 <body>
-  <h1>Hello World</h1>
-  <table class="table" id="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Email</th>
-      </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
 
+
+
+
+  <!-- main page -->
+  <div id="app">
+
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Kanban</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item" 
+              v-if="currentPage !== 'register' && currentPage !== 'login'"
+              @click="logout"
+              >
+            <a class="nav-link" href="#">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- container -->
+    <div class="container mt-3">
+
+      <!-- error alert -->
+      <div class="alert alert-danger alert-dismissible fade show" role="alert" 
+            v-if="showErrorAlert">
+        {{ errorMsg }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+          @click="closeErrorMessage">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- success alert -->
+      <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="showSuccessAlert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- register form -->
+      <form class="register-login-form center mx-auto" 
+            v-if="currentPage === 'register'"
+            @submit="register">
+        <h2 class="text-center mb-4">Register</h2>
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" class="form-control" placeholder="Enter username" 
+                  v-model="registerInput.username">
+        </div>
+        <div class="form-group">
+          <label>Email address</label>
+          <input type="email" class="form-control" placeholder="Enter email" 
+                  v-model="registerInput.email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" class="form-control" placeholder="Password" 
+                  v-model="registerInput.password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        <p class="text-center mt-3">
+          <a href="#" 
+            @click="changePageTo('login')">I Already Have an Account</a>
+        </p>
+      </form>
+
+
+      <!-- login form -->
+      <form class="register-login-form center mx-auto" 
+            v-else-if="currentPage === 'login'"
+            @submit="login"
+            >
+        <h2 class="text-center mb-4">Log In</h2>
+        <div class="form-group">
+          <label>Email address</label>
+          <input type="email" class="form-control" placeholder="Enter email" 
+                  v-model="loginInput.email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" class="form-control" placeholder="Password" 
+                  v-model="loginInput.password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        <p class="text-center mt-3">
+          <a href="#" 
+            @click="changePageTo('register')">Create an Account</a>
+        </p>
+      </form>
+
+      <!-- main page -->
+      <div class="" v-else-if="currentPage === 'home'">
+        <h1>Main Page</h1>
+      </div>
+    </div>
+    <!-- end div container -->
+  </div>
+
+
+
+
+
+  <!-- CDN -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
     integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
@@ -32,10 +131,13 @@
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
 
+  <!-- vue -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+  <!-- axios -->
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-
-  <script src="./src/api.js"></script>
+  <!-- script -->
   <script src="./src/main.js"></script>
 </body>
 
