@@ -77,6 +77,21 @@ const app = new Vue({
     emptyLoginInput(){
       this.loginInput.email = '';
       this.loginInput.password = '';
+    },
+    toHome(){
+      axios({
+        method: 'GET',
+        url: 'http://localhost:3000/kanban',
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          this.errorMessages(err.response.data);
+        })
     }
   },
   created(){
