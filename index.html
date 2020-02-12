@@ -17,10 +17,10 @@
             <div class="nav-center">
                 <ul>
                     <li>
-                        <a href="#">TENGAH SATU</a>
+                        <p v-on:click="currentPage = 'login'">LOG IN</p>
                     </li>
                     <li>
-                        <a href="#">TENGAH DUA</a>
+                        <p v-on:click="currentPage = 'register'">REGISTER</p>
                     </li>
                 </ul>
             </div>
@@ -33,13 +33,13 @@
             <div id="form-regis">
                 <form  v-on:submit.prevent="regis">
                     <label>FIRST NAME</label>
-                    <input id="first-name-regis" type="text" required v-model="first_name"></input>
+                    <input id="first-name-regis" type="text" required v-model="register.first_name"></input>
                     <label>LAST NAME</label>
-                    <input id="last-name-regis" type="text" required v-model="last_name"></input>
+                    <input id="last-name-regis" type="text" required v-model="register.last_name"></input>
                     <label>EMAIL</label>
-                    <input id="email-regis" type="email" required v-model="email"></input>
+                    <input id="email-regis" type="email" required v-model="register.email"></input>
                     <label>PASSWORD</label>
-                    <input id="password-regis" type="password" required v-model="password"></input>
+                    <input id="password-regis" type="password" required v-model="register.password"></input>
                     <button type="submit" class="btn btn-primary">SUBMIT</button>
                 </form>
             </div>
@@ -49,9 +49,9 @@
             <div id="form-login">
                 <form v-on:submit.prevent="login">
                     <label>EMAIL</label>
-                    <input id="email-regis" type="email" required v-model="email"></input>
+                    <input id="email-regis" type="email" required v-model="valLogin.email"></input>
                     <label>PASSWORD</label>
-                    <input id="password-regis" type="password" required v-model="password"></input>
+                    <input id="password-regis" type="password" required v-model="valLogin.password"></input>
                     <button type="submit" class="btn btn-primary">SUBMIT</button>
                 </form>
             </div>
@@ -141,6 +141,7 @@
     
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./main.js"></script>
 </body>
 </html>
