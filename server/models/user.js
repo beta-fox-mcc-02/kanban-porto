@@ -2,9 +2,11 @@
 const bcrypt = require('bcryptjs')
 
 module.exports = (sequelize, DataTypes) => {
+
   class User extends sequelize.Sequelize.Model {
     static associate(models) {
-      User.hasMany(models.UserTask)
+    //   // User.hasMany(models.UserTask)
+    //   User.belongsToMany(models.Task, {through: models.UserTask})
     }
   }
 

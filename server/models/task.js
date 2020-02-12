@@ -1,34 +1,12 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-
-  class Task extends sequelize.Sequelize.Model {
-    static associate (models) {
-      Task.hasMany(models.UserTask)
-      Task.belongsTo(models.Category)
-    }
-  }
-  Task.init({
-    title: {
-      type: DataTypes.STRING,
-      validate: {
-        notEmpty: {
-          args: true,
-          msg: `title can't be empty`
-        }      
-      }
-    },
-    CategoryId: {
-      type: DataTypes.INTEGER,
-      validate: {
-        notEmpty: {
-          args: true,
-          msg: `title can't be empty`
-        }        
-      }
-    }
-  }, {
-    sequelize
-  });
-
+  const Task = sequelize.define('Task', {
+    title: DataTypes.STRING,
+    status: DataTypes.STRING,
+    ProjectId: DataTypes.INTEGER
+  }, {});
+  Task.associate = function(models) {
+    // associations can be defined here
+  };
   return Task;
 };
