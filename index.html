@@ -31,15 +31,15 @@
         
         <div class="container" v-if="currentPage === 'register'">
             <div id="form-regis">
-                <form>
-                    <label @click="currentPage = 'login'">FIRST NAME</label>
-                    <input id="first-name-regis" type="text" required></input>
+                <form  v-on:submit.prevent="regis">
+                    <label>FIRST NAME</label>
+                    <input id="first-name-regis" type="text" required v-model="first_name"></input>
                     <label>LAST NAME</label>
-                    <input id="last-name-regis" type="text" required></input>
+                    <input id="last-name-regis" type="text" required v-model="last_name"></input>
                     <label>EMAIL</label>
-                    <input id="email-regis" type="email" required></input>
+                    <input id="email-regis" type="email" required v-model="email"></input>
                     <label>PASSWORD</label>
-                    <input id="password-regis" type="password" required></input>
+                    <input id="password-regis" type="password" required v-model="password"></input>
                     <button type="submit" class="btn btn-primary">SUBMIT</button>
                 </form>
             </div>
@@ -47,11 +47,11 @@
 
         <div class="container" v-else-if="currentPage === 'login'">
             <div id="form-login">
-                <form>
-                    <label @click="currentPage = 'landing'">EMAIL</label>
-                    <input id="email-regis" type="email" required></input>
+                <form v-on:submit.prevent="login">
+                    <label>EMAIL</label>
+                    <input id="email-regis" type="email" required v-model="email"></input>
                     <label>PASSWORD</label>
-                    <input id="password-regis" type="password" required></input>
+                    <input id="password-regis" type="password" required v-model="password"></input>
                     <button type="submit" class="btn btn-primary">SUBMIT</button>
                 </form>
             </div>
