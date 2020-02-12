@@ -15,17 +15,12 @@
         <nav>
             <div class="nav-left">KIRI</div>
             <div class="nav-center">
-                <ul>
-                    <li>
-                        <p v-on:click="currentPage = 'login'">LOG IN</p>
-                    </li>
-                    <li>
-                        <p v-on:click="currentPage = 'register'">REGISTER</p>
-                    </li>
-                </ul>
+                <button type="button" class="btn btn-primary" v-if="currentPage === 'landing'">ADD PROJECT</button>
             </div>
             <div class="nav-right">
-                <i class="fas fa-sign-out-alt"></i>
+                <button type="button" class="btn btn-primary" v-if="currentPage === 'register'" v-on:click.prevent="currentPage = 'login'">LOGIN</button>
+                <button type="button" class="btn btn-success" v-if="currentPage === 'login'" v-on:click.prevent="currentPage = 'register'">REGISTER</button>
+                <button type="button" class="btn btn-danger" v-if="currentPage === 'landing'">LOGOUT</button>
             </div>
         </nav>
         
@@ -49,9 +44,9 @@
             <div id="form-login">
                 <form v-on:submit.prevent="login">
                     <label>EMAIL</label>
-                    <input id="email-regis" type="email" required v-model="valLogin.email"></input>
+                    <input type="email" required v-model="valLogin.email"></input>
                     <label>PASSWORD</label>
-                    <input id="password-regis" type="password" required v-model="valLogin.password"></input>
+                    <input type="password" required v-model="valLogin.password"></input>
                     <button type="submit" class="btn btn-primary">SUBMIT</button>
                 </form>
             </div>
@@ -64,12 +59,12 @@
                 </div>
                 <div class="card" id="card-title">
                     <div class="card-content">
-                      <p>Nam ab tenetur explicabo sint hic vitae accusamus voluptas earum vero distinctio consequuntur laboriosam cum, optio vel saepe porro voluptates? Deserunt, officia.</p>
+                      <p>{{ ganang }}</p>
                     </div>
                     <div class="card-tabs" id="plan-card-title-center">
                         <i class="fas fa-user"></i>
                         <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt" style="color: red;"></i>
+                        <i class="fas fa-trash-alt"></i>
                     </div>
                     <div class="card-content grey lighten-4" id="plan-card-title-bottom">
                         <i class="fas fa-forward" id="next"></i>
@@ -83,12 +78,12 @@
                 </div>
                 <div class="card" id="card-title-do">
                     <div class="card-content">
-                      <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita obcaecati odit dignissimos repellat at impedit accusantium possimus sequi quae ducimus quia hic dolores, quas nulla exercitationem modi adipisci, ipsum fuga? Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, vero cumque accusantium autem a consectetur quasi sit error, reprehenderit modi quisquam officia temporibus deleniti pariatur nisi nemo quidem aut ratione.</p>
+                      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. At suscipit iste excepturi velit! Illo molestiae aut delectus, officia maxime, porro ducimus deserunt ipsa iusto nostrum atque assumenda, rerum similique excepturi.</p>
                     </div>
                     <div class="card-tabs" id="do-card-title-center">
                         <i class="fas fa-user"></i>
                         <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt" style="color: red;"></i>
+                        <i class="fas fa-trash-alt"></i>
                     </div>
                     <div class="card-content grey lighten-4" id="do-card-title-bottom">
                         <i class="fas fa-backward" id="prev-do"></i>
@@ -108,7 +103,7 @@
                     <div class="card-tabs" id="actual-card-title-center">
                         <i class="fas fa-user"></i>
                         <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt" style="color: red;"></i>
+                        <i class="fas fa-trash-alt"></i>
                     </div>
                     <div class="card-content grey lighten-4" id="actual-card-title-bottom">
                         <i class="fas fa-backward" id="prev-do"></i>
@@ -128,11 +123,10 @@
                     <div class="card-tabs" id="done-card-title-center">
                         <i class="fas fa-user"></i>
                         <i class="fas fa-edit"></i>
-                        <i class="fas fa-trash-alt" style="color: red;"></i>
+                        <i class="fas fa-trash-alt"></i>
                     </div>
                     <div class="card-content grey lighten-4" id="done-card-title-bottom">
                         <i class="fas fa-backward" id="prev-do"></i>
-                        <!-- <i class="fas fa-forward" id="next-do"></i> -->
                     </div>
                 </div>
             </div>

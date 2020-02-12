@@ -16,13 +16,6 @@ nav {
     font-size: 15pt;
 }
 
-.container {
-    height: 70vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 
 .nav-center ul{
     display: flex;
@@ -36,6 +29,13 @@ nav {
 .nav-center ul li a {
     color: white;
     text-decoration: none;
+}
+
+.container {
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .home {
