@@ -1,5 +1,7 @@
 <template>
- 
+  <div id="login">
+    ini login
+  </div>
 </template>
 
 <script>

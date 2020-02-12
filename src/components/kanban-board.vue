@@ -1,5 +1,7 @@
 <template>
-  
+  <div id="kanban">
+    ini kanban
+  </div>
 </template>
 
 <script>

@@ -1,5 +1,7 @@
 <template>
-  
+  <div id="register">
+    ini register
+  </div>
 </template>
 
 <script>
