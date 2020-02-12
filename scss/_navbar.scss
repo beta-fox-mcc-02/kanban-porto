@@ -1,0 +1,46 @@
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 15px;
+  background-color: #0079bf;
+
+  a {
+    text-decoration: none;
+    color: #fff;
+    &:hover {
+      color: #fff;
+    }
+
+    &.btn-title {
+      text-transform: uppercase;
+      font-size: 1.5rem;
+    }
+
+    &.btn-register {
+      background-color: #fff;
+      color: #0079bf !important;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .dropdown-menu {
+    .dropdown-item {
+      color: #000;
+    }
+    left: -70px;
+  }
+
+  .profile-user {
+    span.user-initial {
+      width: 32px;
+      height: 32px;
+      padding: 5px;
+      border-radius: 100%;
+      border: 1px solid #ccc;
+      color: #ccc;
+    }
+  }
+}

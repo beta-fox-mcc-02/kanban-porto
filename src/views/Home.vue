@@ -1,6 +1,6 @@
 <template>
-  <fragment>
-    <Navbar></Navbar>
+  <Fragment>
+    <Navbar :is-login="isLogin"></Navbar>
     <main role="main">
       <div class="jumbotron">
         <img src="../assets/images/computer-2982270_1280.jpg" />
@@ -17,7 +17,6 @@
                 id="input-register-email"
                 placeholder="Email"
                 v-model="email"
-                v-on:keyup="email = $event.target.value"
               />
             </div>
             <router-link
@@ -28,70 +27,46 @@
         </div>
       </div>
     </main>
-  </fragment>
+  </Fragment>
 </template>
 
 <script>
 import Navbar from "../components/Navbar";
+import { Fragment } from "vue-fragment";
+import isAuthenticated from "../helpers/isAuthenticated";
 export default {
   name: "Home",
   components: {
-    Navbar
+    Navbar,
+    Fragment
   },
-  data: () => {
+  data() {
     return {
-      email: ""
+      email: "",
+      isLogin: false
     };
+  },
+  created() {},
+  beforeRouteEnter(to, from, next) {
+    if (localStorage.token) {
+      next();
+      isAuthenticated()
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          if (error.response) {
+            console.log(error.response.data);
+          } else if (error.request) {
+            console.log(error.request);
+          } else {
+            console.log("Error", error.message);
+          }
+        });
+      next();
+    } else {
+      next("/login");
+    }
   }
 };
 </script>
-
-
-<style lang="scss" scoped>
-.jumbotron {
-  margin-top: 70px;
-  height: 80vh;
-  color: #fff;
-  position: relative;
-  background-color: transparent;
-  padding: 0;
-
-  img {
-    z-index: -100;
-    position: absolute;
-    filter: brightness(60%);
-    width: 100%;
-    height: auto;
-    top: 0;
-    right: 0;
-  }
-
-  h1 {
-    &.heading {
-      padding-top: 50px;
-      word-spacing: 10px;
-    }
-  }
-
-  .heading-description {
-    width: 50%;
-    word-spacing: 4px;
-  }
-
-  .mt-20 {
-    margin-top: 20px;
-  }
-
-  .form-inline {
-    display: flex;
-    .form-group {
-      flex: 0.4 1 auto;
-    }
-  }
-
-  .email-register {
-    width: 100%;
-    margin-right: 10px;
-  }
-}
-</style>

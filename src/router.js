@@ -4,7 +4,7 @@ import Home from './views/Home.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -17,5 +17,17 @@ export default new Router({
       name: 'login',
       component: () => import('./views/Login.vue')
     },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('./views/Register.vue')
+    },
+    {
+      path: '/board',
+      name: 'board',
+      component: () => import('./views/Board.vue')
+    }
   ]
 })
+
+export default router

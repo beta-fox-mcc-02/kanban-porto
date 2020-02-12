@@ -1,0 +1,46 @@
+.jumbotron {
+  margin-top: 70px;
+  height: 80vh;
+  color: #fff;
+  position: relative;
+  background-color: transparent;
+  padding: 0;
+
+  img {
+    z-index: -100;
+    position: absolute;
+    filter: brightness(60%);
+    width: 100%;
+    height: auto;
+    top: 0;
+    right: 0;
+  }
+
+  h1 {
+    &.heading {
+      padding-top: 50px;
+      word-spacing: 10px;
+    }
+  }
+
+  .heading-description {
+    width: 50%;
+    word-spacing: 4px;
+  }
+
+  .mt-20 {
+    margin-top: 20px;
+  }
+
+  .form-inline {
+    display: flex;
+    .form-group {
+      flex: 0.4 1 auto;
+    }
+  }
+
+  .email-register {
+    width: 100%;
+    margin-right: 10px;
+  }
+}

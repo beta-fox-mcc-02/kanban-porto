@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "GoogleSignInButton",
+  name: "GoogleSigninButton",
   methods: {
     onSignIn(user) {
       const profile = user.getBasicProfile();
