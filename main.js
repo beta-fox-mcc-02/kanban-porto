@@ -119,6 +119,17 @@ new Vue({
                 this.unfilledInput = true
                 this.errorMessage = `Please fill in required inputs`
             }
+        },
+        editTask(){
+            console.log(this.taskTitle, this.taskTag)
+        },
+        deleteTask(taskId) {
+            axios({
+                method: "DELETE",
+                url: `http://localhost:3000/task/delete/${taskId}`
+            })
+            .then(() => this.fetchAll())
+            .catch((err) => console.log(err))
         }
     },
     created() {

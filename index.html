@@ -32,12 +32,19 @@
                     <div class="content-container">
                         <div class="content-card" v-for="task in category.Tasks">
                             <div>
+                                <!-- <input type="text" class="task-id-container" hidden v-bind:value=task.id></input> -->
                                 <span class="content-tag" v-bind:style="task.tag === 'low priority' ? 'background-color: #3d92a2' : 'background-color: #b71b1b'"> {{ task.tag }} </span>
                                 <span class="content-title">{{task.title}}</span>
                             </div>
                             <span class="content-edit">
-                                <i class="fas fa-ellipsis-v" v-on:click=""></i>
-                                <i class="far fa-trash-alt"></i>
+                                <i class="fas fa-ellipsis-v" v-on:click="updateTask(task)"></i>
+                                <i class="far fa-trash-alt" v-on:click="deleteTask(task.id)"></i>
+                            </span>
+                            <span class="edit-form">
+                                <form v-on:submit="editTask">
+                                    <input v-model="taskTitle" value="task.title">
+                                    <button type="submit">EDIT</button>
+                                </form>
                             </span>
                         </div>
                     </div>
@@ -227,8 +234,12 @@ section.content-box{
 
 div.content-container{
     max-height: 25rem;
-    overflow-y: auto;
+    overflow-y: scroll;
     margin-bottom: 2rem;
+}
+
+div.content-container::-webkit-scrollbar{
+    display: none;
 }
 
 div.content-card{
@@ -242,6 +253,7 @@ div.content-card{
     border-radius: 0.3rem;
     cursor: grab;
     color: #676464;
+    position: relative;
 }
 
 div.content-card div{
@@ -276,6 +288,35 @@ div.content-card span i:hover{
     background-color: rgb(112, 163, 173);
     border-radius: 50%;
     color: white;
+}
+
+div.content-card span.edit-form{
+    position: absolute;
+    padding: 1.5rem;
+    background-color: white;
+    box-shadow: 0 0 0.6rem #00000033;
+}
+
+div.content-card span.edit-form form{
+    display: flex;
+    flex-direction: column;
+}
+
+div.content-card span.edit-form form input{
+    width: 10rem;
+    border-style: none;
+    outline: 0;
+    border-bottom: 0.1rem solid #70a3ad;
+    margin: 0.1rem;
+}
+
+div.content-card span.edit-form form button {
+    border-radius: 0.5rem;
+    background-color: #5b6bad;
+    color: white;
+    font-family: monospace;
+    font-weight: 900;
+    cursor: pointer;
 }
 
 div.content-header{
