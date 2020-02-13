@@ -26,6 +26,7 @@ export default {
     methods: {
         showFormAdd() { 
             this.currentPage = 'newtask'
+            this.$emit('changePage', { page: this.currentPage })
         },
         changePage(fromChild) {
             this.currentPage = fromChild.page

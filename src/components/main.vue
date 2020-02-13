@@ -1,12 +1,11 @@
 <template>
     <main>
-        <section class="content-box" v-for="category in categories" v-bind:key="category.id" v-bind:category="category">
+        <section class="content-box" v-for="category in categories" v-bind:key="category.id">
             <div class="content-header">
                 <h3> {{ category.name }} </h3>
-                {{category.id}}
             </div>
             <div class="content-container">
-                <MainCards></MainCards>
+                <MainCards  v-bind:category="category" v-on:changePage="changePage"></MainCards>
             </div>
         </section>
     </main>
@@ -20,7 +19,12 @@ export default {
     props: {
         categories: Array
     },
-    components: { MainCards }
+    components: { MainCards },
+    methods: {
+        changePage(fromChild) {
+            this.$emit('changePage', { page: fromChild.page })
+        }
+    }
 }
 </script>
 

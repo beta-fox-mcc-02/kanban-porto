@@ -1,8 +1,7 @@
 <template>
     <div>
-        <div class="content-card" v-for="task in category" v-bind:key="task.id" v-bind:task="task">
-            <MainCardsChild></MainCardsChild>
-            {{ task }}
+        <div class="content-card" v-for="task in category.Tasks" v-bind:key="task.id">
+            <MainCardsChild v-bind:task="task" v-on:changePage="changePage"></MainCardsChild>
         </div>
     </div>
 </template>
@@ -15,7 +14,12 @@ export default {
     props: {
         category: Object
     },
-    components: { MainCardsChild }
+    components: { MainCardsChild },
+    methods: {
+        changePage(fromChild) {
+            this.$emit('changePage', { page: fromChild.page })
+        }
+    }
 }
 </script>
 

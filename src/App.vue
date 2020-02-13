@@ -1,30 +1,13 @@
 <template>
     <div>
         <RegisterComponent v-if="currentPage === 'register'" v-on:changePage="changePage"></RegisterComponent>
-        <LoginComponent v-if="currentPage === 'login'" v-on:changePage="changePage"></LoginComponent>
-        <HeaderComponent v-if="currentPage === 'member'" v-on:changePage="changePage"></HeaderComponent>
-        <AsideComponent v-if="currentPage === 'member'" v-on:changePage="changePage"></AsideComponent>
-        <MainComponent v-if="currentPage === 'member'" v-on:changePage="changePage" v-bind:categories="categories"></MainComponent>
+        <LoginComponent v-else-if="currentPage === 'login'" v-on:changePage="changePage"></LoginComponent>
+        <div v-else-if="currentPage == 'member'">
+            <HeaderComponent v-on:changePage="changePage" v-bind:loginUserName="loginUserName"></HeaderComponent>
+            <MainComponent v-on:changePage="changePage" v-bind:categories="categories"></MainComponent>
+        </div>
+        <AsideComponent v-if="currentPage == 'member' || currentPage == 'newtask'" v-on:changePage="changePage"></AsideComponent>
     </div>
-    <!-- <main v-if="currentPage === 'member'">
-        <section class="content-box" v-for="category in categories">
-            <div class="content-header">
-                <h3> {{ category.name }} </h3>
-            </div>
-            <div class="content-container">
-                <div class="content-card" v-for="task in category.Tasks">
-                    <div>
-                        <span class="content-tag" v-bind:style="task.tag === 'low priority' ? 'background-color: #3d92a2' : 'background-color: #b71b1b'"> {{ task.tag }} </span>
-                        <span class="content-title">{{task.title}}</span>
-                    </div>
-                    <span class="content-edit">
-                        <i class="fas fa-ellipsis-v" v-on:click="updateTask(task)"></i>
-                        <i class="far fa-trash-alt" v-on:click="deleteTask(task.id)"></i>
-                    </span>
-                </div>
-            </div>
-        </section>
-    </main> -->
 </template>
 
 <script>
@@ -39,7 +22,8 @@ export default {
     data() {
         return {
             currentPage: 'register',
-            categories: []
+            categories: [],
+            loginUserName: ''
         }
     },
     components: { RegisterComponent, LoginComponent, MainComponent, HeaderComponent, AsideComponent },
@@ -47,8 +31,11 @@ export default {
         changePage(fromChild) {
             this.currentPage = fromChild.page
             if(fromChild.page === 'member') {
+                this.fetchAll()
                 if(fromChild.token) {
+                    this.loginUserName = fromChild.name
                     localStorage.setItem('access_token', fromChild.token)
+                    localStorage.setItem('login_name', fromChild.name)
                 }
             }
             else if (fromChild.page === 'register') localStorage.clear()
@@ -58,22 +45,18 @@ export default {
                 method: "GET",
                 url: "http://localhost:3000/task/findAll"
             })
-            .then((result) => {
-                console.log(result.data)
-                this.categories = result.data})
+            .then((result) => this.categories = result.data)
             .catch((err) => console.log(err))
         }
     },
     created() {
         let access_token = localStorage.getItem('access_token')
+        let login_name = localStorage.getItem('login_name')
         if(access_token) {
+            this.loginUserName = login_name
             this.currentPage = 'member'
             this.fetchAll()
         }
     }
 }
 </script>
-
-<style>
-
-</style>

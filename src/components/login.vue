@@ -46,9 +46,8 @@ export default {
                     }
                 })
                 .then((result) => {
-                    console.log(result.data.token)
                     this.clearInputs()
-                    this.$emit('changePage', { page: 'member', token: result.data.token })
+                    this.$emit('changePage', { page: 'member', token: result.data.token, name: result.data.name })
                 })
                 .catch((err) => this.errorMessage = `You have not registered yet, please register first`)
             }

@@ -24,6 +24,12 @@ body{
     max-width: 1500px;
 }
 
+header{
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+}
+
 nav#upperbar{
     display: flex;
     justify-content: space-between;
@@ -65,6 +71,11 @@ aside#sidebar div small{
     padding: 0.5rem;
     color: white;
     border-radius: 0.3rem;
+    visibility: hidden;
+}
+
+aside#sidebar div:hover small{
+    visibility: visible;
 }
 
 aside#sidebar div button i{
@@ -101,6 +112,7 @@ section.content-box{
     padding: 0 0.5rem;
     width: 16rem;
     max-height: 35rem;
+    margin: 5rem 1rem;
     text-align: center;
     border-radius: 0.5rem;
     box-shadow: 0rem 0.5rem 0.5rem #c3d8d37a;
@@ -128,16 +140,22 @@ div.content-card{
     border-radius: 0.3rem;
     cursor: grab;
     color: #676464;
+    max-width: 14rem;
 }
 
-div.content-card div{
+div.content-card section{
+    display: flex;
+}
+
+div.content-card section div{
     display: flex;
     flex-direction: column;
+    min-width: 11.9rem;
     word-break: break-word;
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
-div.content-card div span.content-tag{
+div.content-card section div span.content-tag{
     padding: 0.3rem;
     margin: 0.3rem;
     color: white;
@@ -149,7 +167,11 @@ div.content-card div span.content-tag{
     background-color: #70a3ad;
 }
 
-div.content-card span i{
+div.content-card section span{
+    float: right;
+}
+
+div.content-card section span i{
     width: 2rem;
     height: 2rem;
     display: flex;
@@ -158,40 +180,11 @@ div.content-card span i{
     cursor: pointer;
 }
 
-div.content-card span i:hover{
+div.content-card section span i:hover{
     background-color: rgb(112, 163, 173);
     border-radius: 50%;
     color: white;
 }
-
-/* div.content-card span.edit-form{
-    position: absolute;
-    padding: 1.5rem;
-    background-color: white;
-    box-shadow: 0 0 0.6rem #00000033;
-}
-
-div.content-card span.edit-form form{
-    display: flex;
-    flex-direction: column;
-}
-
-div.content-card span.edit-form form input{
-    width: 10rem;
-    border-style: none;
-    outline: 0;
-    border-bottom: 0.1rem solid #70a3ad;
-    margin: 0.1rem;
-}
-
-div.content-card span.edit-form form button {
-    border-radius: 0.5rem;
-    background-color: #5b6bad;
-    color: white;
-    font-family: monospace;
-    font-weight: 900;
-    cursor: pointer;
-} */
 
 div.content-header{
     display: flex;
