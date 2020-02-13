@@ -21,7 +21,6 @@ import List from './List'
 
 export default {
     created: async function() {
-        // Kita ambil semua data list yaw
         this.$store
             .dispatch('getLists', this.$route.params.id)
             .then(lists => {
@@ -46,7 +45,6 @@ export default {
                         BoardId: this.$route.params.id
                     }
                     this.$store.dispatch('newList', task)
-                    // this.$buefy.toast.open(`Your name is: ${value}`)
                 }
             })
         },

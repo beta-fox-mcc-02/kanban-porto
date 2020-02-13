@@ -23,6 +23,18 @@ export default new Vuex.Store({
         newList(state, list) {
             state.lists.push(list)
         },
+        newCard(state, card) {
+            state.lists.forEach(el => {
+                if (el.id == card.ListId) {
+                    if (el.Cards) {
+                        el.Cards.push(card)
+                    } else {
+                        el.Cards = []
+                        el.Cards.push(card)
+                    }
+                }
+            })
+        },
         auth(state, token) {
             state.token = token
             localStorage.setItem('token', token)
@@ -142,6 +154,20 @@ export default new Vuex.Store({
                     .then(response => {
                         commit('removeList', id)
                         resolve()
+                    })
+                    .catch(e => {
+                        reject(e)
+                    })
+            })
+        },
+        async newCard({ commit }, data) {
+            // cari ListId, terus push ya ke Cardnya
+            return new Promise((resolve, reject) => {
+                axios
+                    .post('http://localhost:3000/cards', data)
+                    .then(response => {
+                        commit('newCard', response.data.data)
+                        resolve(response.data.data)
                     })
                     .catch(e => {
                         reject(e)

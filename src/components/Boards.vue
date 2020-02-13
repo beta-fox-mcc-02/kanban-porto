@@ -54,7 +54,6 @@ export default {
                 trapFocus: true,
                 onConfirm: value => {
                     this.$store.dispatch('newBoard', value)
-                    // this.$buefy.toast.open(`Your name is: ${value}`)
                 }
             })
         }
