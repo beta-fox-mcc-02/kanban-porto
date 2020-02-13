@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     name: 'login',
     data () {
@@ -21,7 +23,30 @@ export default {
             email: '',
             password: ''
         }
-    }
+    },
+    methods: {
+        login () {
+            axios({
+                method: "post",
+                url: "http://localhost:3000/login",
+                data: {
+                    email: this.email,
+                    password: this.password
+                }
+            })
+                .then(({data}) => {
+                    localStorage.setItem('token', data.token)
+                    this.changePage('landing')
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        changePage(page) {
+            this.$emit('changePage', page)
+        }
+    } 
+
 }
 </script>
 

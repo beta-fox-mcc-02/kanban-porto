@@ -1,16 +1,16 @@
 <template>
-    <div class="plan">
-        <div class="title">
-            <i class="fab fa-telegram-plane"></i> PLAN
+    <div class="plan" >
+        <div class="title" :style="getColor">
+            <i :class="box.icon"></i> {{box.name}}
         </div>
-        <div class="card" id="card-title" v-for="data in dataPlan" :key="data.id">
+        <div class="card" id="card-title">
             <div class="card-content">
-                <p>{{ data.title }}</p>
+                <p> {{ tasks }} </p>
             </div>
             <div class="card-tabs" id="plan-card-title-center">
                 <i class="fas fa-user"></i>
                 <i class="fas fa-edit"></i>
-                <a @click="hapus(data.id)"><i class="fas fa-trash-alt" ></i></a>
+                <!-- <a @click="hapus(data.id)"><i class="fas fa-trash-alt" ></i></a> -->
             </div>
             <div class="card-content grey lighten-4" id="plan-card-title-bottom">
                 <i class="fas fa-forward" id="next"></i>
@@ -22,15 +22,25 @@
 
 <script>
 export default {
-    name: 'card',
+    name: 'kanbanCard',
+    props: {
+        box:Object,
+        tasks: Array
+    },
     data () {
         return {
             
+        }
+    },
+    computed: {
+        getColor () {
+            return {
+                "background-color": this.box.color
+            }
         }
     }
 }
 </script>
 
-<style>
-
+<style scoped>
 </style>

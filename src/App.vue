@@ -2,7 +2,7 @@
     <div>
         <Navbar @changePage="changePage" :currentPage="currentPage"></Navbar>
         <Register @changePage="changePage" v-if="currentPage === 'register'"></Register>
-        <Login v-else-if="currentPage === 'login'"></Login>
+        <Login @changePage="changePage" v-else-if="currentPage === 'login'"></Login>
         <Home v-else-if="currentPage === 'landing'"></Home>
     </div>
 </template>
@@ -12,6 +12,7 @@ import Navbar from './components/navbar'
 import Register from './components/register'
 import Login from './components/login'
 import Home from './components/home'
+
 
 export default {
     data () {
@@ -28,6 +29,11 @@ export default {
     methods: {
         changePage(page) {
             this.currentPage = page
+        }
+    },
+    created() {
+        if (localStorage.token) {
+            this.currentPage = 'landing'
         }
     }
 }
