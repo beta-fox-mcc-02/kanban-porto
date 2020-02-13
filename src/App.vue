@@ -4,6 +4,7 @@
         <Register @changePage="changePage" v-if="currentPage === 'register'"></Register>
         <Login @changePage="changePage" v-else-if="currentPage === 'login'"></Login>
         <Home v-else-if="currentPage === 'landing'"></Home>
+        <AddTask v-else-if="currentPage === 'addtask'" @changePage="changePage"></AddTask>
     </div>
 </template>
 
@@ -12,6 +13,7 @@ import Navbar from './components/navbar'
 import Register from './components/register'
 import Login from './components/login'
 import Home from './components/home'
+import AddTask from './components/addTask'
 
 
 export default {
@@ -24,7 +26,8 @@ export default {
         Navbar,
         Register,
         Login,
-        Home
+        Home,
+        AddTask
     },
     methods: {
         changePage(page) {

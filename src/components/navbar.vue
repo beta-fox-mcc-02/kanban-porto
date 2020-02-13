@@ -4,7 +4,7 @@
             <i class="fab fa-dochub" style="font-size: 30px;"></i>
         </div>
         <div class="nav-center">
-            <button type="button" class="btn btn-primary" v-if="currentPage === 'landing'">ADD TASK</button>
+            <button type="button" class="btn btn-primary" v-if="currentPage === 'landing'" v-on:click="addTask">ADD TASK</button>
         </div>
         <div class="nav-right">
             <button type="button" class="btn btn-primary" v-if="currentPage === 'register'" v-on:click.prevent="changePage('login')">LOGIN</button>
@@ -32,6 +32,9 @@ export default {
         logout () {
             localStorage.clear()
             this.changePage(page)
+        },
+        addTask () {
+            this.changePage('addtask')
         }
     }
 }
