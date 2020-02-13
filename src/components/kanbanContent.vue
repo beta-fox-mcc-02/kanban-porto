@@ -9,7 +9,7 @@
         {{ task.desc }}
       </div>
     </div>
-    <div class="card-footer">
+    <div class="card-footer text-center">
       <button
         class="btn-sm m-2"
         v-if="box.name !== 'backLog'"

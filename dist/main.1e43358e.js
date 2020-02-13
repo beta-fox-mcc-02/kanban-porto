@@ -11269,7 +11269,16 @@ exports.default = void 0;
 //
 //
 //
-name: 'navbarHome';
+//
+//
+//
+//
+//
+//
+//
+//
+//
+name: "navbarHome";
 
 var _default = {
   data: function data() {
@@ -11281,17 +11290,17 @@ var _default = {
   methods: {
     changePage: function changePage(laman) {
       // console.log('dari login page',laman);
-      this.$emit('change-Page', laman);
+      this.$emit("change-Page", laman);
     },
     signOut: function signOut() {
       var _this = this;
 
       var auth2 = gapi.auth2.getAuthInstance();
       auth2.signOut().then(function () {
-        console.log('User signed out.');
+        console.log("User signed out.");
         localStorage.clear();
 
-        _this.changePage('login');
+        _this.changePage("login");
       });
     }
   }
@@ -11379,7 +11388,7 @@ var staticRenderFns = [
     return _c("ul", { staticClass: "navbar-nav mr-auto" }, [
       _c("li", { staticClass: "nav-item active" }, [
         _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-          _vm._v("Home "),
+          _vm._v("\n          Home\n          "),
           _c("span", { staticClass: "sr-only" }, [_vm._v("(current)")])
         ])
       ]),
@@ -11424,7 +11433,7 @@ render._withStripped = true
       
       }
     })();
-},{"_css_loader":"../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/homePage.vue":[function(require,module,exports) {
+},{"_css_loader":"../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/projectCard.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11479,17 +11488,640 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-name: 'homePage';
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+name: "projectCard";
 
 var _default = {
   data: function data() {
     return {
-      projectName: '',
+      projectName: "",
+      projectId: null
+    };
+  },
+  props: {
+    project: Object
+  },
+  methods: {
+    updateProject: function updateProject(id, name) {
+      console.log(name, "ini nama");
+      this.projectName = name;
+      this.projectId = id;
+    },
+    projectUpdate: function projectUpdate() {
+      var _this = this;
+
+      (0, _axiosInstance.default)({
+        method: "put",
+        url: "/project/".concat(this.projectId),
+        data: {
+          name: this.projectName
+        }
+      }).then(function (_ref) {
+        var data = _ref.data;
+        _this.projectName = "";
+        _this.projectId = "";
+        _this.projectEdit = false;
+
+        _this.fetchProject();
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    currentProject: function currentProject(id, name) {
+      // console.log(id, 'dari home');
+      var payload = {
+        id: id,
+        name: name
+      };
+      this.$emit("project-Page", payload);
+      this.changePage("project");
+    },
+    changePage: function changePage(laman) {
+      // console.log('dari home page',laman);
+      this.$emit("change-Page", laman);
+    },
+    removeProject: function removeProject(id) {
+      var _this2 = this;
+
+      (0, _axiosInstance.default)({
+        method: "delete",
+        url: "/project/".concat(id)
+      }).then(function (_ref2) {
+        var data = _ref2.data;
+
+        _this2.fetchProject();
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+  },
+  created: function created() {
+    if (localStorage.token) {
+      // this.fetchProject();
+      this.projectName = this.project.name;
+    }
+  }
+};
+exports.default = _default;
+        var $e48182 = exports.default || module.exports;
+      
+      if (typeof $e48182 === 'function') {
+        $e48182 = $e48182.options;
+      }
+    
+        /* template */
+        Object.assign($e48182, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "card bg-info ml-3 mt-3",
+      staticStyle: { "border-raidus": "5px", width: "16rem" }
+    },
+    [
+      _c(
+        "div",
+        {
+          staticClass: "card-body text-center",
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              return _vm.currentProject(_vm.project.id, _vm.project.name)
+            }
+          }
+        },
+        [
+          _c("h5", { staticClass: "card-text" }, [
+            _vm._v(_vm._s(_vm.project.name))
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-footer text-center" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-danger",
+            on: {
+              click: function($event) {
+                return _vm.removeProject(_vm.project.id)
+              }
+            }
+          },
+          [_vm._v("delete")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-warning",
+            attrs: {
+              "data-toggle": "modal",
+              "data-target": "#modal" + _vm.project.id
+            },
+            on: {
+              click: function($event) {
+                return _vm.updateProject(_vm.project.id, _vm.project.name)
+              }
+            }
+          },
+          [_vm._v("edit")]
+        )
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "modal" + _vm.project.id,
+            tabindex: "-1",
+            role: "dialog",
+            "aria-labelledby": "exampleModalCenterTitle",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "modal-dialog modal-dialog-centered",
+              attrs: { role: "document" }
+            },
+            [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-body" }, [
+                  _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                    _vm._v("Project Name")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.projectName,
+                        expression: "projectName"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      "aria-describedby": "emailHelp",
+                      placeholder: "Enter name"
+                    },
+                    domProps: { value: _vm.projectName },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.projectName = $event.target.value
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Close")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-warning",
+                      attrs: { type: "submit", "data-dismiss": "modal" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.projectUpdate($event)
+                        }
+                      }
+                    },
+                    [_vm._v("Update")]
+                  )
+                ])
+              ])
+            ]
+          )
+        ]
+      )
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLongTitle" } },
+        [_vm._v("New Project Name ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$e48182', $e48182);
+          } else {
+            api.reload('$e48182', $e48182);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"../api/axiosInstance":"src/api/axiosInstance.js","_css_loader":"../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/addProject.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _axiosInstance = _interopRequireDefault(require("../api/axiosInstance"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+name: 'addProject';
+
+var _default = {
+  data: function data() {
+    return {
+      projectName: ""
+    };
+  },
+  methods: {
+    addProject: function addProject() {
+      var _this = this;
+
+      (0, _axiosInstance.default)({
+        method: "post",
+        url: "/project",
+        data: {
+          name: this.projectName
+        }
+      }).then(function (_ref) {
+        var data = _ref.data;
+        _this.projectName = "";
+        _this.projectForm = false;
+
+        _this.fetchProject();
+
+        console.log(data);
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+  }
+};
+exports.default = _default;
+        var $967cb1 = exports.default || module.exports;
+      
+      if (typeof $967cb1 === 'function') {
+        $967cb1 = $967cb1.options;
+      }
+    
+        /* template */
+        Object.assign($967cb1, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-primary",
+        attrs: {
+          type: "button",
+          "data-toggle": "modal",
+          "data-target": "#projectModal"
+        }
+      },
+      [_vm._v("Add Project")]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "projectModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "exampleModalCenterTitle",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                  _vm._v("Project Name")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.projectName,
+                      expression: "projectName"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    "aria-describedby": "emailHelp",
+                    placeholder: "Enter name"
+                  },
+                  domProps: { value: _vm.projectName },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.projectName = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Close")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "submit", "data-dismiss": "modal" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.addProject($event)
+                      }
+                    }
+                  },
+                  [_vm._v("Add")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLongTitle" } },
+        [_vm._v("Add Project")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$967cb1', $967cb1);
+          } else {
+            api.reload('$967cb1', $967cb1);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"../api/axiosInstance":"src/api/axiosInstance.js","_css_loader":"../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/homePage.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _projectCard = _interopRequireDefault(require("./projectCard"));
+
+var _addProject = _interopRequireDefault(require("./addProject"));
+
+var _axiosInstance = _interopRequireDefault(require("../api/axiosInstance"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+name: "homePage";
+
+var _default = {
+  data: function data() {
+    return {
+      projectName: "",
       projectForm: false,
       projects: [],
       projectEdit: false,
       projectId: null
     };
+  },
+  components: {
+    addProject: _addProject.default,
+    porjectCard: _projectCard.default
   },
   props: {
     page: String,
@@ -11500,15 +12132,15 @@ var _default = {
       var _this = this;
 
       (0, _axiosInstance.default)({
-        method: 'put',
+        method: "put",
         url: "/project/".concat(this.projectId),
         data: {
           name: this.projectName
         }
       }).then(function (_ref) {
         var data = _ref.data;
-        _this.projectName = '';
-        _this.projectId = '';
+        _this.projectName = "";
+        _this.projectId = "";
         _this.projectEdit = false;
 
         _this.fetchProject();
@@ -11531,7 +12163,7 @@ var _default = {
       var _this2 = this;
 
       (0, _axiosInstance.default)({
-        method: 'delete',
+        method: "delete",
         url: "/project/".concat(id)
       }).then(function (_ref2) {
         var data = _ref2.data;
@@ -11550,27 +12182,27 @@ var _default = {
         this.projectForm = false;
       }
     },
-    currentProject: function currentProject(id) {
+    currentProject: function currentProject(payload) {
       // console.log(id, 'dari home');
-      this.$emit('project-Page', id);
-      this.changePage('project');
+      this.$emit("project-Page", payload);
+      this.changePage("project");
     },
     changePage: function changePage(laman) {
       // console.log('dari home page',laman);
-      this.$emit('change-Page', laman);
+      this.$emit("change-Page", laman);
     },
     addProject: function addProject() {
       var _this3 = this;
 
       (0, _axiosInstance.default)({
-        method: 'post',
-        url: '/project',
+        method: "post",
+        url: "/project",
         data: {
           name: this.projectName
         }
       }).then(function (_ref3) {
         var data = _ref3.data;
-        _this3.projectName = '';
+        _this3.projectName = "";
         _this3.projectForm = false;
 
         _this3.fetchProject();
@@ -11584,8 +12216,8 @@ var _default = {
       var _this4 = this;
 
       (0, _axiosInstance.default)({
-        method: 'get',
-        url: '/project'
+        method: "get",
+        url: "/project"
       }).then(function (_ref4) {
         var data = _ref4.data;
         _this4.projects = data;
@@ -11599,12 +12231,12 @@ var _default = {
 
     if (localStorage.token) {
       this.fetchProject();
-      this.page = 'home';
-      this.socket.on('project', function (data) {
+      this.page = "home";
+      this.socket.on("project", function (data) {
         // console.log(data, 'ini dari io');
         _this5.projects.push(data);
       });
-      this.socket.on('fetchProject', function (data) {
+      this.socket.on("fetchProject", function (data) {
         _this5.fetchProject();
       });
     }
@@ -11627,72 +12259,7 @@ exports.default = _default;
     ? _c("div", { staticClass: "container" }, [
         _c("div", { staticClass: "row" }),
         _vm._v(" "),
-        _c("div", { staticClass: "float-right" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary",
-              on: {
-                click: function($event) {
-                  $event.preventDefault()
-                  return _vm.formProject($event)
-                }
-              }
-            },
-            [_vm._v("Add Project")]
-          )
-        ]),
-        _vm._v(" "),
-        _vm.projectForm == true
-          ? _c("form", [
-              _c("div", { staticClass: "form-group mt-5" }, [
-                _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-                  _vm._v("Project Name")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.projectName,
-                      expression: "projectName"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    id: "exampleInputEmail1",
-                    "aria-describedby": "emailHelp",
-                    placeholder: "Enter name"
-                  },
-                  domProps: { value: _vm.projectName },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.projectName = $event.target.value
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  attrs: { type: "submit" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.addProject($event)
-                    }
-                  }
-                },
-                [_vm._v("Submit")]
-              )
-            ])
-          : _vm._e(),
+        _c("div", { staticClass: "float-right" }, [_c("addProject")], 1),
         _vm._v(" "),
         _vm.projectEdit == true
           ? _c(
@@ -11753,61 +12320,16 @@ exports.default = _default;
           "div",
           { staticClass: "container row" },
           _vm._l(_vm.projects, function(project) {
-            return _c(
-              "div",
-              {
-                key: project.id,
-                staticClass: "card bg-info ml-3 mt-3 ",
-                staticStyle: { "border-raidus": "5px", width: "16rem" }
-              },
-              [
-                _c("div", { staticClass: "card-body text-center" }, [
-                  _c(
-                    "h5",
-                    {
-                      staticClass: "card-text",
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.currentProject(project.id)
-                        }
-                      }
-                    },
-                    [_vm._v(_vm._s(project.name))]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-footer text-center" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-danger",
-                      on: {
-                        click: function($event) {
-                          return _vm.removeProject(project.id)
-                        }
-                      }
-                    },
-                    [_vm._v("delete")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-warning",
-                      on: {
-                        click: function($event) {
-                          return _vm.updateProject(project.id, project.name)
-                        }
-                      }
-                    },
-                    [_vm._v("edit")]
-                  )
-                ])
-              ]
-            )
+            return _c("porjectCard", {
+              key: project.id,
+              attrs: { project: project },
+              on: {
+                "change-Page": _vm.changePage,
+                "project-Page": _vm.currentProject
+              }
+            })
           }),
-          0
+          1
         )
       ])
     : _vm._e()
@@ -11835,6 +12357,854 @@ render._withStripped = true
             api.createRecord('$6b995d', $6b995d);
           } else {
             api.reload('$6b995d', $6b995d);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"./projectCard":"src/components/projectCard.vue","./addProject":"src/components/addProject.vue","../api/axiosInstance":"src/api/axiosInstance.js","_css_loader":"../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/addTask.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _axiosInstance = _interopRequireDefault(require("../api/axiosInstance"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+name: 'addTask';
+
+var _default = {
+  data: function data() {
+    return {
+      title: '',
+      assignee: '',
+      desc: ''
+    };
+  },
+  props: {
+    currentProject: Object
+  },
+  methods: {
+    addtask: function addtask() {
+      var _this = this;
+
+      // console.log('keluar');
+      (0, _axiosInstance.default)({
+        method: 'post',
+        url: "/task",
+        data: {
+          title: this.title,
+          assignee: this.assignee,
+          desc: this.desc,
+          status: 'backLog',
+          ProjectId: this.currentProject.id
+        }
+      }).then(function (_ref) {
+        var data = _ref.data;
+        // this.tasks = data
+        _this.title = '';
+        _this.assignee = '';
+        _this.desc = '';
+        console.log(data);
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+  }
+};
+exports.default = _default;
+        var $2d7fad = exports.default || module.exports;
+      
+      if (typeof $2d7fad === 'function') {
+        $2d7fad = $2d7fad.options;
+      }
+    
+        /* template */
+        Object.assign($2d7fad, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-primary",
+        attrs: {
+          type: "button",
+          "data-toggle": "modal",
+          "data-target": "#taskModal"
+        }
+      },
+      [_vm._v("Add Task")]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "taskModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "exampleModalCenterTitle",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "" } }, [_vm._v("title")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.title,
+                        expression: "title"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      "aria-describedby": "emailHelp",
+                      placeholder: "Enter title"
+                    },
+                    domProps: { value: _vm.title },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.title = $event.target.value
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "" } }, [_vm._v("Assignee")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.assignee,
+                        expression: "assignee"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      "aria-describedby": "emailHelp",
+                      placeholder: "Enter assignee"
+                    },
+                    domProps: { value: _vm.assignee },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.assignee = $event.target.value
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "" } }, [_vm._v("Description")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.desc,
+                        expression: "desc"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      "aria-describedby": "emailHelp",
+                      placeholder: "Enter description"
+                    },
+                    domProps: { value: _vm.desc },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.desc = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Close")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "submit", "data-dismiss": "modal" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.addtask($event)
+                      }
+                    }
+                  },
+                  [_vm._v("Add")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLongTitle" } },
+        [_vm._v("Add Project")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$2d7fad', $2d7fad);
+          } else {
+            api.reload('$2d7fad', $2d7fad);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"../api/axiosInstance":"src/api/axiosInstance.js","_css_loader":"../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/addUser.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _axiosInstance = _interopRequireDefault(require("../api/axiosInstance"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+name: 'addUser';
+
+var _default = {
+  data: function data() {
+    return {
+      userEmail: ''
+    };
+  },
+  props: {
+    currentProject: Object
+  },
+  methods: {
+    addUser: function addUser() {
+      var _this = this;
+
+      // console.log(this.userEmail);
+      (0, _axiosInstance.default)({
+        method: 'post',
+        url: "/project/collab",
+        data: {
+          projectId: this.currentProject.id,
+          email: this.userEmail
+        },
+        headers: {
+          token: localStorage.token
+        }
+      }).then(function (_ref) {
+        var data = _ref.data;
+        console.log(data);
+
+        if (data.id) {
+          console.log('user added to this project');
+        } else {
+          console.log('user already in this project');
+        }
+
+        _this.userEmail = '';
+        addUserForm = false;
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+  }
+};
+exports.default = _default;
+        var $856254 = exports.default || module.exports;
+      
+      if (typeof $856254 === 'function') {
+        $856254 = $856254.options;
+      }
+    
+        /* template */
+        Object.assign($856254, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-primary ml-4 mr-4",
+        attrs: {
+          type: "button",
+          "data-toggle": "modal",
+          "data-target": "#projectModal"
+        }
+      },
+      [_vm._v("Add User")]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "projectModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "exampleModalCenterTitle",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                  _vm._v("User's Email")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.userEmail,
+                      expression: "userEmail"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    "aria-describedby": "emailHelp",
+                    placeholder: "Enter name"
+                  },
+                  domProps: { value: _vm.userEmail },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.userEmail = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Close")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "submit", "data-dismiss": "modal" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.addUser($event)
+                      }
+                    }
+                  },
+                  [_vm._v("Add")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLongTitle" } },
+        [_vm._v("Add User")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$856254', $856254);
+          } else {
+            api.reload('$856254', $856254);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"../api/axiosInstance":"src/api/axiosInstance.js","_css_loader":"../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/viewUser.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _axiosInstance = _interopRequireDefault(require("../api/axiosInstance"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+name: 'viewUser';
+
+var _default = {
+  data: function data() {
+    return {
+      userList: []
+    };
+  },
+  props: {
+    currentProject: Object
+  },
+  methods: {
+    getUserLits: function getUserLits() {
+      var _this = this;
+
+      (0, _axiosInstance.default)({
+        method: "get",
+        url: "/project/".concat(this.currentProject.id)
+      }).then(function (_ref) {
+        var data = _ref.data;
+        _this.userList = data[0].Users;
+        console.log(data);
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+  }
+};
+exports.default = _default;
+        var $ed69a2 = exports.default || module.exports;
+      
+      if (typeof $ed69a2 === 'function') {
+        $ed69a2 = $ed69a2.options;
+      }
+    
+        /* template */
+        Object.assign($ed69a2, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-primary",
+        attrs: {
+          type: "button",
+          "data-toggle": "modal",
+          "data-target": "#listUserModal"
+        },
+        on: {
+          click: function($event) {
+            $event.preventDefault()
+            return _vm.getUserLits($event)
+          }
+        }
+      },
+      [_vm._v("\n  Project's User\n")]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "listUserModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "exampleModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "modal-body" },
+                _vm._l(_vm.userList, function(user, i) {
+                  return _c("div", { key: i }, [
+                    _c("p", [
+                      _vm._v(
+                        "name: " +
+                          _vm._s(user.name) +
+                          ", email: " +
+                          _vm._s(user.email)
+                      )
+                    ])
+                  ])
+                }),
+                0
+              ),
+              _vm._v(" "),
+              _vm._m(1)
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
+        [_vm._v("User's list")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Close")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "button" } },
+        [_vm._v("Save changes")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$ed69a2', $ed69a2);
+          } else {
+            api.reload('$ed69a2', $ed69a2);
           }
         }
 
@@ -12015,7 +13385,7 @@ exports.default = _default;
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "card-footer" }, [
+    _c("div", { staticClass: "card-footer text-center" }, [
       _vm.box.name !== "backLog"
         ? _c(
             "button",
@@ -12234,10 +13604,30 @@ exports.default = void 0;
 
 var _axiosInstance = _interopRequireDefault(require("../api/axiosInstance"));
 
+var _addTask = _interopRequireDefault(require("./addTask"));
+
+var _addUser = _interopRequireDefault(require("./addUser"));
+
+var _viewUser = _interopRequireDefault(require("./viewUser"));
+
 var _kanbanCard = _interopRequireDefault(require("./kanbanCard"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -12321,11 +13711,14 @@ var _default = {
     };
   },
   components: {
-    kanbanCard: _kanbanCard.default
+    kanbanCard: _kanbanCard.default,
+    addTask: _addTask.default,
+    addUser: _addUser.default,
+    viewUser: _viewUser.default
   },
   props: {
     page: String,
-    currentProject: Number,
+    currentProject: Object,
     kanbanTasks: Array
   },
   methods: {
@@ -12407,7 +13800,7 @@ var _default = {
       var _this3 = this;
 
       var result = this.kanbanTasks.filter(function (i) {
-        return i.ProjectId == _this3.currentProject;
+        return i.ProjectId == _this3.currentProject.id;
       });
       return result;
     }
@@ -12431,148 +13824,33 @@ exports.default = _default;
       ? _c("div", { staticClass: "container mt-4" }, [
           _c("div", { staticClass: "row" }),
           _vm._v(" "),
-          _c("div", { staticClass: "float-right" }, [
+          _c("div", { staticClass: "float-right row" }, [
             _c(
-              "button",
-              {
-                staticClass: "btn btn-primary",
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.formTask($event)
-                  }
-                }
-              },
-              [_vm._v("Add Task")]
+              "div",
+              [
+                _c("addTask", { attrs: { currentProject: _vm.currentProject } })
+              ],
+              1
             ),
             _vm._v(" "),
             _c(
-              "button",
-              {
-                staticClass: "btn btn-primary",
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.formUser($event)
-                  }
-                }
-              },
-              [_vm._v("Add User")]
+              "div",
+              [
+                _c("addUser", { attrs: { currentProject: _vm.currentProject } })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              [
+                _c("viewUser", {
+                  attrs: { currentProject: _vm.currentProject }
+                })
+              ],
+              1
             )
           ]),
-          _vm._v(" "),
-          _vm.taskForm == true
-            ? _c(
-                "form",
-                {
-                  on: {
-                    submit: function($event) {
-                      $event.preventDefault()
-                      return _vm.addtask($event)
-                    }
-                  }
-                },
-                [
-                  _c("div", { staticClass: "form-group mt-5" }, [
-                    _c("label", { attrs: { for: "" } }, [_vm._v("title")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.title,
-                          expression: "title"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        "aria-describedby": "emailHelp",
-                        placeholder: "Enter title"
-                      },
-                      domProps: { value: _vm.title },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.title = $event.target.value
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group mt-5" }, [
-                    _c("label", { attrs: { for: "" } }, [_vm._v("Assignee")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.assignee,
-                          expression: "assignee"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        "aria-describedby": "emailHelp",
-                        placeholder: "Enter assignee"
-                      },
-                      domProps: { value: _vm.assignee },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.assignee = $event.target.value
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group mt-5" }, [
-                    _c("label", { attrs: { for: "" } }, [
-                      _vm._v("Description")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.desc,
-                          expression: "desc"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: {
-                        "aria-describedby": "emailHelp",
-                        placeholder: "Enter description"
-                      },
-                      domProps: { value: _vm.desc },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.desc = $event.target.value
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary",
-                      attrs: { type: "submit" }
-                    },
-                    [_vm._v("Submit")]
-                  )
-                ]
-              )
-            : _vm._e(),
           _vm._v(" "),
           _vm.addUserForm == true
             ? _c(
@@ -12627,7 +13905,13 @@ exports.default = _default;
               )
             : _vm._e(),
           _vm._v(" "),
-          _c("h1", [_vm._v("Kanban Tasks " + _vm._s(_vm.currentProject))])
+          _c("h1", [
+            _vm._v(
+              _vm._s(_vm.currentProject.name) +
+                " " +
+                _vm._s(_vm.currentProject.id)
+            )
+          ])
         ])
       : _vm._e(),
     _vm._v(" "),
@@ -12677,7 +13961,7 @@ render._withStripped = true
       
       }
     })();
-},{"../api/axiosInstance":"src/api/axiosInstance.js","./kanbanCard":"src/components/kanbanCard.vue","_css_loader":"../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"node_modules/parseuri/index.js":[function(require,module,exports) {
+},{"../api/axiosInstance":"src/api/axiosInstance.js","./addTask":"src/components/addTask.vue","./addUser":"src/components/addUser.vue","./viewUser":"src/components/viewUser.vue","./kanbanCard":"src/components/kanbanCard.vue","_css_loader":"../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"node_modules/parseuri/index.js":[function(require,module,exports) {
 /**
  * Parses an URI
  *
@@ -21619,7 +22903,7 @@ var _default = {
       newTask: {},
       baru: '',
       page: 'login',
-      currentProject: 0,
+      currentProject: {},
       kanbanTasks: []
     };
   },
@@ -21638,10 +22922,10 @@ var _default = {
       // }
       // this.getArticle()
     },
-    projectPage: function projectPage(id) {
+    projectPage: function projectPage(payload) {
       // console.log('ini masuk');
       // console.log(id, 'ini dari app');
-      this.currentProject = id;
+      this.currentProject = payload;
     },
     addTask: function addTask() {
       var obj = {
@@ -21818,7 +23102,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44087" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36507" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -72,7 +72,7 @@ export default {
       newTask: {},
       baru:'',
       page:'login',
-      currentProject: 0,
+      currentProject: {},
       kanbanTasks:[]
     };
   },
@@ -92,12 +92,12 @@ export default {
       // }
       // this.getArticle()
     },
-    projectPage(id){
+    projectPage(payload){
       // console.log('ini masuk');
       
       // console.log(id, 'ini dari app');
       
-      this.currentProject = id
+      this.currentProject = payload
     },
     addTask(){
       let obj = {

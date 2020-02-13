@@ -3,13 +3,27 @@
   <div class="container mt-4" v-if="page == 'project'">
     <!-- <h1>halaman project {{currentProject}}</h1> -->
      <div class="row"></div>
-    <div class="float-right">
-      <button class="btn btn-primary" @click.prevent="formTask">Add Task</button>
-      <button class="btn btn-primary" @click.prevent="formUser">Add User</button>
+    <div class="float-right row">
+      <div>
+      <addTask
+      :currentProject="currentProject"
+      />
+      </div>
+      <div>
+      <addUser 
+      :currentProject="currentProject"
+      />
+      </div>
+      <div>
+        <viewUser
+        :currentProject="currentProject"
+        />
+      </div>
+      <!-- <button class="btn btn-primary mr-5" @click.prevent="formUser">Add User</button> -->
     </div>
 
     <!-- task form -->
-    <form v-if="taskForm == true"  @submit.prevent="addtask">
+    <!-- <form v-if="taskForm == true"  @submit.prevent="addtask">
   <div class="form-group mt-5">
     <label for="">title</label>
     <input class="form-control" aria-describedby="emailHelp" placeholder="Enter title" v-model="title">
@@ -23,7 +37,7 @@
     <input class="form-control" aria-describedby="emailHelp" placeholder="Enter description" v-model="desc">
   </div>
   <button type="submit" class="btn btn-primary" >Submit</button>
-</form>
+</form> -->
 
 <!-- user  -->
 <form v-if="addUserForm == true"  @submit.prevent="addUser">
@@ -34,7 +48,7 @@
 
   <button type="submit" class="btn btn-primary" >Submit</button>
 </form>
-    <h1>Kanban Tasks {{currentProject}}</h1>
+    <h1>{{currentProject.name}} {{currentProject.id}}</h1>
   </div>
 
     <!-- {{filterin}} -->
@@ -55,6 +69,9 @@
 </template>
 <script>
 import axios from '../api/axiosInstance'
+import addTask from './addTask' 
+import addUser from './addUser'
+import viewUser from './viewUser'
 import kanbanCard from './kanbanCard'
 name: 'projectPage'
 export default {
@@ -83,11 +100,14 @@ export default {
     }
   },
   components:{
-    kanbanCard
+    kanbanCard,
+    addTask,
+    addUser,
+    viewUser
   },
   props:{
     page: String,
-    currentProject: Number,
+    currentProject: Object,
     kanbanTasks: Array
   },
   methods:{
@@ -165,7 +185,7 @@ export default {
   },
   computed:{
     filterin(){
-      let result = this.kanbanTasks.filter(i => i.ProjectId == this.currentProject);
+      let result = this.kanbanTasks.filter(i => i.ProjectId == this.currentProject.id);
       return result
     }
   }
