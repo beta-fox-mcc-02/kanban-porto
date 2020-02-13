@@ -12,8 +12,8 @@
     <title>Document</title>
 </head>
 <body>
-    <div id="kanban">
-        <nav>
+    <div id="app">
+        <!-- <nav>
             <div class="nav-left">
                 <i class="fab fa-dochub" style="font-size: 30px;"></i>
             </div>
@@ -25,9 +25,9 @@
                 <button type="button" class="btn btn-success" v-if="currentPage === 'login'" v-on:click.prevent="currentPage = 'register'">REGISTER</button>
                 <button type="button" class="btn btn-danger" v-if="currentPage === 'landing'" @click="logout">LOGOUT</button>
             </div>
-        </nav>
+        </nav> -->
         
-        <div class="container" v-if="currentPage === 'register'">
+        <!-- <div class="container" v-if="currentPage === 'register'">
             <div id="form-regis">
                 <h1 style="font-family: 'Lemonada', cursive;">REGISTER</h1>
                 <form  v-on:submit.prevent="regis">
@@ -42,9 +42,9 @@
                     <button type="submit" class="btn btn-primary">SUBMIT</button>
                 </form>
             </div>
-        </div>
+        </div> -->
 
-        <div class="container" v-else-if="currentPage === 'login'">
+        <!-- <div class="container" v-else-if="currentPage === 'login'">
             <div id="form-login">
                 <h1 style="font-family: 'Lemonada', cursive;">LOG IN</h1>
                 <form v-on:submit.prevent="login">
@@ -55,7 +55,7 @@
                     <button type="submit" class="btn btn-primary">SUBMIT</button>
                 </form>
             </div>
-        </div>
+        </div> -->
     
         <div class="home" v-else-if="currentPage === 'landing'">
             <div class="plan">
@@ -141,6 +141,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="./main.js"></script>
+    <script src="./src/main.js"></script>
 </body>
 </html>
