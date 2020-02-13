@@ -86,12 +86,17 @@ nav {
 #plan-card-title-bottom {
     padding: 5px 5px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 
 .home .kanban-card #plan-card-title-bottom #next {
     font-size: 20px;
     color: greenyellow;
+}
+
+.home .kanban-card #plan-card-title-bottom #prev {
+    font-size: 20px;
+    color: red;
 }
 
 

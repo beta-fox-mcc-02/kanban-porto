@@ -1,12 +1,15 @@
 <template>
-    <div class="card-content grey lighten-4" id="plan-card-title-bottom">
-        <i class="fas fa-forward" id="next"></i>
+    <div>
+        <i :class="next.icon" :id="next.name"></i>
     </div>
 </template>
 
 <script>
 export default {
-    name: "nextBack",
+    name: "NextBack",
+    props: {
+        next:Object
+    },
     data () {
         return {
 
