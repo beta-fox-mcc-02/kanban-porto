@@ -46,7 +46,7 @@ export default {
                     token: localStorage.token
                 }
             })
-                .then(({data}) => {                 
+                .then(({data}) => {
                     this.tasks = data.tasks
                 })
                 .catch(err => {
