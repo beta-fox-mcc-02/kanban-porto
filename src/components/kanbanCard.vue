@@ -3,24 +3,29 @@
         <div class="title" :style="getColor">
             <i :class="box.icon"></i> {{box.name}}
         </div>
-        <div class="card" id="card-title">
+        <kanbanContent
+        :tasks="tasks"
+        ></kanbanContent>
+        <!-- <div class="card" id="card-title">
             <div class="card-content">
-                <p> {{ tasks }} </p>
+                <p> {{ tasks.tasks[0].Category.name }} </p>
             </div>
             <div class="card-tabs" id="plan-card-title-center">
                 <i class="fas fa-user"></i>
                 <i class="fas fa-edit"></i>
-                <!-- <a @click="hapus(data.id)"><i class="fas fa-trash-alt" ></i></a> -->
+                <a @click="hapus(data.id)"><i class="fas fa-trash-alt" ></i></a>
             </div>
             <div class="card-content grey lighten-4" id="plan-card-title-bottom">
                 <i class="fas fa-forward" id="next"></i>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
 
 <script>
+import kanbanContent from './kanbanContent'
+
 export default {
     name: 'kanbanCard',
     props: {
@@ -32,6 +37,9 @@ export default {
             
         }
     },
+    components: {
+
+    },
     computed: {
         getColor () {
             return {
@@ -42,5 +50,5 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 </style>
