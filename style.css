@@ -8,7 +8,8 @@ body {
 }
 
 .kanban {
-    width: 350px;
+    width: 450px;
+    /* background-color: yellow; */
     display: flex;
     list-style: none;
     justify-content: space-around;
@@ -28,6 +29,7 @@ a {
     margin-top: 20px;
     display: flex;
     justify-content: space-evenly;
+    /* width: 1000px; */
     /* background-color: red; */
 
     /* background-color: cadetblue; */
@@ -196,4 +198,112 @@ a {
     background-color: whitesmoke;
     margin: 2px;
     border-radius: 5px;
+}
+
+.container-login {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    /* background-color: aqua; */
+}
+
+.login-content {
+    background-color: gainsboro;
+    border-radius: 7px;
+    padding: 15px;
+    width: 40%;
+}
+
+.button-primary {
+    background-color: rgb(18, 84, 207);
+    color: white;
+    padding: 6px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    width: 95%;
+    margin: 4px;
+}
+
+.button-primary:hover {
+    background-color: rgb(2, 2, 175);
+    /* Green */
+    color: white;
+}
+
+.button-success {
+    background-color: rgba(6, 151, 38, 0.979);
+    color: white;
+    padding: 6px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    width: 95%;
+    margin: 4px;
+}
+
+.button-success:hover {
+    background-color: rgb(1, 71, 10);
+    /* Green */
+    color: white;
+}
+
+.input-text {
+    width: 93%;
+}
+
+.container-register {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    /* background-color: aqua; */
+}
+
+.register-content {
+    background-color: gainsboro;
+    border-radius: 7px;
+    padding: 15px;
+    width: 40%;
+}
+
+.container-task {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    /* background-color: aqua; */
+}
+
+.task-content {
+    background-color: gainsboro;
+    border-radius: 7px;
+    padding: 15px;
+    width: 40%;
+}
+
+@media only screen and (max-width: 576px) {
+    .container-kanban {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        /* background-color: yellowgreen; */
+    }
+
+    .backlog {
+        width: 90%;
+        /* background-color: brown; */
+    }
+
+    .product {
+        width: 90%;
+    }
+
+    .development {
+        width: 90%;
+    }
+
+    .done {
+        width: 90%;
+    }
 }
