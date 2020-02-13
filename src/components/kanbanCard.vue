@@ -1,11 +1,13 @@
 <template>
-    <div class="plan" >
+    <div class = 'plan'>
         <div class="title" :style="getColor">
             <i :class="box.icon"></i> {{box.name}}
         </div>
         <kanbanContent
-        v-for="(category, i) in getCategory"
+        v-for="(category, i) in getCategory" 
         :key="i"
+        :list="category"
+        :task="getCategory"
         ></kanbanContent>
     </div>
 </template>

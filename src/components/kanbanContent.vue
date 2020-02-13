@@ -1,8 +1,7 @@
 <template>
     <div class="card" id="card-title">
-        {{ tasks[0].Category.name }}
         <div class="card-content">
-            <p> {{ category.title }} </p>
+            <p> {{ list.title }} </p>
         </div>
         <div class="card-tabs" id="plan-card-title-center">
             <i class="fas fa-user"></i>
@@ -19,17 +18,13 @@
 export default {
     name: 'kanbanContent',
     props: {
-        tasks: Array
+        task: Array,
+        list: Object
     },
     data () {
         return {
 
         }
-    },
-    computed: {
-        // getCategory () {
-        //     let result = this.tasks.filter(i => i.Category.name === )
-        // }
     }
 }
 </script>
