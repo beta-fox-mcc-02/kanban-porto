@@ -8856,11 +8856,10 @@ var _default = {
   methods: {
     signOut: function signOut() {
       this.$emit('changeIsLogedIn', false);
-      localStorage.removeItem('token');
-      var auth2 = gapi.auth2.getAuthInstance();
-      auth2.signOut().then(function () {
-        console.log('User signed out.');
-      });
+      localStorage.removeItem('token'); // var auth2 = gapi.auth2.getAuthInstance();
+      // auth2.signOut().then(function () {
+      // console.log('User signed out.');
+      // });
     }
   },
   created: function created() {
@@ -10711,7 +10710,74 @@ module.exports.default = axios;
 
 },{"./utils":"node_modules/axios/lib/utils.js","./helpers/bind":"node_modules/axios/lib/helpers/bind.js","./core/Axios":"node_modules/axios/lib/core/Axios.js","./core/mergeConfig":"node_modules/axios/lib/core/mergeConfig.js","./defaults":"node_modules/axios/lib/defaults.js","./cancel/Cancel":"node_modules/axios/lib/cancel/Cancel.js","./cancel/CancelToken":"node_modules/axios/lib/cancel/CancelToken.js","./cancel/isCancel":"node_modules/axios/lib/cancel/isCancel.js","./helpers/spread":"node_modules/axios/lib/helpers/spread.js"}],"node_modules/axios/index.js":[function(require,module,exports) {
 module.exports = require('./lib/axios');
-},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"src/components/SignIn.vue":[function(require,module,exports) {
+},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
+
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
+
+  return bundleURL;
+}
+
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+
+function updateLink(link) {
+  var newLink = link.cloneNode();
+
+  newLink.onload = function () {
+    link.remove();
+  };
+
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":"../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"src/components/SignIn.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10757,7 +10823,10 @@ var _default = {
   data: function data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      googleSignInParams: {
+        clientId: '425308161759-glmhm9ugin8corvgojjurm2u0pd101pf.apps.googleusercontent.com'
+      }
     };
   },
   methods: {
@@ -10781,7 +10850,21 @@ var _default = {
       }).catch(function (err) {
         console.log(err.response.data);
       });
-    }
+    } // onSignIn (googleUser) {
+    //     console.log('google sign in')
+    //     var id_token = googleUser.getAuthResponse().id_token;
+    //     console.log('====== ', id_token)
+    //     // this.gToken = id_token
+    //     // localStorage.setItem('gToken', this.gToken)
+    //     // localStorage.setItem('token', 'token')
+    //     // console.log(gToken)
+    //     // this.fetchTask()
+    //     // this.board = true
+    //     // this.toSignIn = false
+    //     // this.toSignUp = false
+    //     // this.isLogedIn = true
+    // }
+
   }
 };
 exports.default = _default;
@@ -10904,15 +10987,7 @@ exports.default = _default;
                     },
                     [_vm._v("sign up for kanban")]
                   )
-                ]),
-                _vm._v(" "),
-                _c("div", {
-                  staticClass: "g-signin2",
-                  attrs: {
-                    "data-longtitle": "true",
-                    "data-onsuccess": "onSignIn"
-                  }
-                })
+                ])
               ]
             )
           ]
@@ -10936,7 +11011,7 @@ render._withStripped = true
             render: render,
             staticRenderFns: staticRenderFns,
             _compiled: true,
-            _scopeId: null,
+            _scopeId: "data-v-e803f5",
             functional: undefined
           };
         })());
@@ -10956,9 +11031,13 @@ render._withStripped = true
         }
 
         
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
       }
     })();
-},{"axios":"node_modules/axios/index.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/SignUp.vue":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","_css_loader":"../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/SignUp.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11188,74 +11267,203 @@ render._withStripped = true
         
       }
     })();
-},{"axios":"node_modules/axios/index.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
+},{"axios":"node_modules/axios/index.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/AddCard.vue":[function(require,module,exports) {
+"use strict";
 
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = {
+  name: 'AddCard',
+  data: function data() {
+    return {
+      title: '',
+      description: ''
+    };
   }
-
-  return bundleURL;
-}
-
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
-
-    if (matches) {
-      return getBaseURL(matches[0]);
-    }
-  }
-
-  return '/';
-}
-
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
-}
-
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-
-function updateLink(link) {
-  var newLink = link.cloneNode();
-
-  newLink.onload = function () {
-    link.remove();
-  };
-
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
+};
+exports.default = _default;
+        var $eb842c = exports.default || module.exports;
+      
+      if (typeof $eb842c === 'function') {
+        $eb842c = $eb842c.options;
       }
-    }
-
-    cssTimeout = null;
-  }, 50);
+    
+        /* template */
+        Object.assign($eb842c, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "p-2 m-3 align-self-center form-container",
+      attrs: { id: "form-container" }
+    },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "form",
+        {
+          staticClass: "form",
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.addCardFunction($event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "title" } }, [_vm._v("Title:")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.title,
+                  expression: "title"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                id: "title",
+                placeholder: "title",
+                required: ""
+              },
+              domProps: { value: _vm.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.title = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "description" } }, [
+              _vm._v("Description:")
+            ]),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.description,
+                  expression: "description"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                name: "description",
+                id: "description",
+                placeholder: "Description",
+                cols: "30",
+                rows: "5",
+                required: ""
+              },
+              domProps: { value: _vm.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.description = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _vm._m(1)
+        ]
+      )
+    ]
+  )
 }
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "d-flex justify-content-center title" }, [
+      _c("p", [_vm._v("Add card")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "d-flex align-items-center" }, [
+      _c(
+        "button",
+        {
+          staticClass: "mr-2 btn btn-dark",
+          attrs: { id: "btn-add-card", type: "submit" }
+        },
+        [_vm._v("Add card")]
+      )
+    ])
+  }
+]
+render._withStripped = true
 
-module.exports = reloadCSS;
-},{"./bundle-url":"../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"src/components/Board.vue":[function(require,module,exports) {
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$eb842c', $eb842c);
+          } else {
+            api.reload('$eb842c', $eb842c);
+          }
+        }
+
+        
+      }
+    })();
+},{"vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CatBacklog.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11285,6 +11493,107 @@ exports.default = void 0;
 //
 //
 //
+var _default = {
+  name: 'Backlog',
+  props: {
+    backlogs: Array
+  },
+  data: function data() {
+    return {};
+  }
+};
+exports.default = _default;
+        var $65b7df = exports.default || module.exports;
+      
+      if (typeof $65b7df === 'function') {
+        $65b7df = $65b7df.options;
+      }
+    
+        /* template */
+        Object.assign($65b7df, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "mb-2 all-cards" },
+    _vm._l(_vm.backlogs, function(task) {
+      return _c("div", { key: task.id, staticClass: "my-1 card" }, [
+        _c("div", { staticClass: "p-1 card-body" }, [
+          _c("div", { staticClass: "title-container" }, [
+            _c("p", { staticClass: "m-0 card-title" }, [
+              _vm._v(_vm._s(task.title))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "description-container" }, [
+            _c("p", { staticClass: "card-text" }, [
+              _vm._v(_vm._s(task.description))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "action-container" }, [
+            _c("i", {
+              staticClass: "m-1 fas fa-pencil-alt",
+              on: { click: _vm.editCardForm }
+            }),
+            _vm._v(" "),
+            _c("i", { staticClass: "m-1 far fa-trash-alt" })
+          ])
+        ])
+      ])
+    }),
+    0
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$65b7df', $65b7df);
+          } else {
+            api.reload('$65b7df', $65b7df);
+          }
+        }
+
+        
+      }
+    })();
+},{"vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CatTodo.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -11297,67 +11606,335 @@ exports.default = void 0;
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+var _default = {
+  name: 'Todo',
+  props: {
+    todos: Array
+  },
+  data: function data() {
+    return {};
+  }
+};
+exports.default = _default;
+        var $0bea59 = exports.default || module.exports;
+      
+      if (typeof $0bea59 === 'function') {
+        $0bea59 = $0bea59.options;
+      }
+    
+        /* template */
+        Object.assign($0bea59, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "mb-2 all-cards" },
+    _vm._l(_vm.todos, function(task) {
+      return _c("div", { key: task.id, staticClass: "my-1 card" }, [
+        _c("div", { staticClass: "p-1 card-body" }, [
+          _c("div", { staticClass: "title-container" }, [
+            _c("p", { staticClass: "m-0 card-title" }, [
+              _vm._v(_vm._s(task.title))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "description-container" }, [
+            _c("p", { staticClass: "card-text" }, [
+              _vm._v(_vm._s(task.description))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "action-container" }, [
+            _c("i", {
+              staticClass: "m-1 fas fa-pencil-alt",
+              on: { click: _vm.editCardForm }
+            }),
+            _vm._v(" "),
+            _c("i", { staticClass: "m-1 far fa-trash-alt" })
+          ])
+        ])
+      ])
+    }),
+    0
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$0bea59', $0bea59);
+          } else {
+            api.reload('$0bea59', $0bea59);
+          }
+        }
+
+        
+      }
+    })();
+},{"vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CatDone.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = {
+  name: 'Done',
+  props: {
+    dones: Array
+  },
+  data: function data() {
+    return {};
+  }
+};
+exports.default = _default;
+        var $898c00 = exports.default || module.exports;
+      
+      if (typeof $898c00 === 'function') {
+        $898c00 = $898c00.options;
+      }
+    
+        /* template */
+        Object.assign($898c00, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "mb-2 all-cards" },
+    _vm._l(_vm.dones, function(task) {
+      return _c("div", { key: task.id, staticClass: "my-1 card" }, [
+        _c("div", { staticClass: "p-1 card-body" }, [
+          _c("div", { staticClass: "title-container" }, [
+            _c("p", { staticClass: "m-0 card-title" }, [
+              _vm._v(_vm._s(task.title))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "description-container" }, [
+            _c("p", { staticClass: "card-text" }, [
+              _vm._v(_vm._s(task.description))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "action-container" }, [
+            _c("i", {
+              staticClass: "m-1 fas fa-pencil-alt",
+              on: { click: _vm.editCardForm }
+            }),
+            _vm._v(" "),
+            _c("i", { staticClass: "m-1 far fa-trash-alt" })
+          ])
+        ])
+      ])
+    }),
+    0
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$898c00', $898c00);
+          } else {
+            api.reload('$898c00', $898c00);
+          }
+        }
+
+        
+      }
+    })();
+},{"vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CatComplete.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = {
+  name: 'Done',
+  props: {
+    completes: Array
+  },
+  data: function data() {
+    return {};
+  }
+};
+exports.default = _default;
+        var $4b426c = exports.default || module.exports;
+      
+      if (typeof $4b426c === 'function') {
+        $4b426c = $4b426c.options;
+      }
+    
+        /* template */
+        Object.assign($4b426c, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "mb-2 all-cards" },
+    _vm._l(_vm.completes, function(task) {
+      return _c("div", { key: task.id, staticClass: "my-1 card" }, [
+        _c("div", { staticClass: "p-1 card-body" }, [
+          _c("div", { staticClass: "title-container" }, [
+            _c("p", { staticClass: "m-0 card-title" }, [
+              _vm._v(_vm._s(task.title))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "description-container" }, [
+            _c("p", { staticClass: "card-text" }, [
+              _vm._v(_vm._s(task.description))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "action-container" }, [
+            _c("i", {
+              staticClass: "m-1 fas fa-pencil-alt",
+              on: { click: _vm.editCardForm }
+            }),
+            _vm._v(" "),
+            _c("i", { staticClass: "m-1 far fa-trash-alt" })
+          ])
+        ])
+      ])
+    }),
+    0
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$4b426c', $4b426c);
+          } else {
+            api.reload('$4b426c', $4b426c);
+          }
+        }
+
+        
+      }
+    })();
+},{"vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/Board.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _AddCard = _interopRequireDefault(require("./AddCard"));
+
+var _CatBacklog = _interopRequireDefault(require("./CatBacklog"));
+
+var _CatTodo = _interopRequireDefault(require("./CatTodo"));
+
+var _CatDone = _interopRequireDefault(require("./CatDone"));
+
+var _CatComplete = _interopRequireDefault(require("./CatComplete"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 //
 //
 //
@@ -11389,7 +11966,76 @@ var _default = {
     isLogedIn: Boolean
   },
   data: function data() {
-    return {};
+    return {
+      key: null,
+      categoryDisplay: '',
+      backlog: 'Backlog',
+      todo: 'Todo',
+      done: 'Done',
+      complete: 'Complete',
+      categories: [],
+      backlogs: [],
+      todos: [],
+      dones: [],
+      completes: []
+    };
+  },
+  components: {
+    AddCard: _AddCard.default,
+    CatBacklog: _CatBacklog.default,
+    CatTodo: _CatTodo.default,
+    CatDone: _CatDone.default,
+    CatComplete: _CatComplete.default
+  },
+  methods: {
+    fetchCategories: function fetchCategories() {
+      var _this = this;
+
+      axios({
+        method: 'GET',
+        url: 'http://localhost:3000/categories'
+      }).then(function (_ref) {
+        var data = _ref.data;
+        var result = data.data;
+        result.forEach(function (data) {
+          _this.categories.push(data);
+
+          if (data.name === 'Backlog') {
+            if (data.Tasks.length) {
+              data.Tasks.forEach(function (task) {
+                _this.backlogs.push(task);
+              });
+            }
+          } else if (data.name === 'Todo') {
+            if (data.Tasks.length) {
+              data.Tasks.forEach(function (task) {
+                _this.todos.push(task);
+              });
+            }
+          } else if (data.name === 'Done') {
+            if (data.Tasks.length) {
+              data.Tasks.forEach(function (task) {
+                _this.dones.push(task);
+              });
+            }
+          } else if (data.name === 'Complete') {
+            if (data.Tasks.length) {
+              data.Tasks.forEach(function (task) {
+                _this.completes.push(task);
+              });
+            }
+          }
+        });
+        console.log(_this.categories);
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+  },
+  created: function created() {
+    if (this.isLogedIn) {
+      this.fetchCategories();
+    }
   }
 };
 exports.default = _default;
@@ -11406,14 +12052,43 @@ exports.default = _default;
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _vm.isLogedIn
-    ? _c("div", { staticClass: "col-12 p-0 d-flex cards-container" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _vm._m(1),
-        _vm._v(" "),
-        _vm._m(2),
-        _vm._v(" "),
-        _vm._m(3)
+    ? _c("div", [
+        _c(
+          "div",
+          { staticClass: "col-12 p-0 d-flex cards-container" },
+          _vm._l(_vm.categories, function(category) {
+            return _c("div", { staticClass: "pl-2 my-2 cards-group" }, [
+              _c("p", { staticClass: "m-0 p-1 categori" }, [
+                _vm._v(_vm._s(category.name))
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                [
+                  _vm.backlog === category.name
+                    ? _c("CatBacklog", { attrs: { backlogs: _vm.backlogs } })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.todo === category.name
+                    ? _c("CatTodo", { attrs: { todos: _vm.todos } })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.done === category.name
+                    ? _c("CatDone", { attrs: { dones: _vm.dones } })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.complete === category.name
+                    ? _c("CatComplete", { attrs: { completes: _vm.completes } })
+                    : _vm._e()
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _vm._m(0, true)
+            ])
+          }),
+          0
+        )
       ])
     : _vm._e()
 }
@@ -11422,75 +12097,13 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "pl-2 my-1 cards-group" }, [
-      _c("p", { staticClass: "m-0 p-1 categori" }, [_vm._v("Backlog")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "all-cards" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "add-card" }, [
+    return _c("div", { staticClass: "mt-2 add-card" }, [
+      _c("p", { staticClass: "icon-add-card" }, [
         _c("i", {
           staticClass: "fa fa-plus",
           attrs: { "aria-hidden": "true" }
         }),
-        _vm._v("\n          Add a card\n        "),
-        _c("p")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "pl-2 my-1 cards-group" }, [
-      _c("p", { staticClass: "m-0 p-1 categori" }, [_vm._v("Todo")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "all-cards" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "add-card" }, [
-        _c("i", {
-          staticClass: "fa fa-plus",
-          attrs: { "aria-hidden": "true" }
-        }),
-        _vm._v("\n          Add a card\n        "),
-        _c("p")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "pl-2 my-1 cards-group" }, [
-      _c("p", { staticClass: "m-0 p-1 categori" }, [_vm._v("Done")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "all-cards" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "add-card" }, [
-        _c("i", {
-          staticClass: "fa fa-plus",
-          attrs: { "aria-hidden": "true" }
-        }),
-        _vm._v("\n          Add a card\n        "),
-        _c("p")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "pl-2 my-1 cards-group" }, [
-      _c("p", { staticClass: "m-0 p-1 categori" }, [_vm._v("Complete")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "all-cards" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "add-card" }, [
-        _c("i", {
-          staticClass: "fa fa-plus",
-          attrs: { "aria-hidden": "true" }
-        }),
-        _vm._v("\n          Add a card\n        "),
-        _c("p")
+        _vm._v("\n            Add a card\n          ")
       ])
     ])
   }
@@ -11521,13 +12134,9 @@ render._withStripped = true
         }
 
         
-        var reloadCSS = require('_css_loader');
-        module.hot.dispose(reloadCSS);
-        module.hot.accept(reloadCSS);
-      
       }
     })();
-},{"_css_loader":"../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
+},{"./AddCard":"src/components/AddCard.vue","./CatBacklog":"src/components/CatBacklog.vue","./CatTodo":"src/components/CatTodo.vue","./CatDone":"src/components/CatDone.vue","./CatComplete":"src/components/CatComplete.vue","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11710,7 +12319,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39677" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33145" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

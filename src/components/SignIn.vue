@@ -17,7 +17,7 @@
                 <button id="btn-signIn" type="submit" class="mr-2 btn btn-dark">Sign In</button>
                 <p id="btn-to-signUp" class="mb-0 btn-to-signUp" @click="goToSignUp('signUp')">sign up for kanban</p>
               </div>
-              <div class="g-signin2" data-longtitle="true" data-onsuccess="onSignIn"></div>
+              <!-- <div class="g-signin2" data-longtitle="true" @data-onsuccess.prevent="onSignIn"></div> -->
             </div>
         </form>
     </div>
@@ -35,7 +35,8 @@ export default {
     data() {
         return {
             email: '',
-            password: ''
+            password: '',
+            googleSignInParams: {clientId: '425308161759-glmhm9ugin8corvgojjurm2u0pd101pf.apps.googleusercontent.com'}
         }
     },
     methods: {
@@ -59,6 +60,35 @@ export default {
                     console.log(err.response.data)
                 })
         }
+        // onSignIn (googleUser) {
+        //     console.log('google sign in')
+        //     var id_token = googleUser.getAuthResponse().id_token;
+        //     console.log('====== ', id_token)
+
+        //     // this.gToken = id_token
+        //     // localStorage.setItem('gToken', this.gToken)
+        //     // localStorage.setItem('token', 'token')
+        //     // console.log(gToken)
+
+        //     // this.fetchTask()
+        //     // this.board = true
+        //     // this.toSignIn = false
+        //     // this.toSignUp = false
+        //     // this.isLogedIn = true
+        // }
     }
 }
 </script>
+
+<style scoped>
+    g-signin-button {
+  /* This is where you control how the button looks. Be creative! */
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 3px;
+  background-color: #3c82f7;
+  color: #fff;
+  box-shadow: 0 3px 0 #0f69ff;
+  cursor: pointer;
+}
+</style>

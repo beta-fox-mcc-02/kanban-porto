@@ -42,14 +42,14 @@ body {
 .cards-container {
     display: flex;
     justify-content: space-evenly;
-    height: 100vh;
+    height: 90vh;
 }
 
 .cards-group {
     width: 24vw;
     background-color: rgb(204, 204, 204);
     height: max-content;
-    max-height: 81vh;
+    max-height: 100%;
     overflow: hidden;
     border-radius: 5px;
 }
