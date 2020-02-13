@@ -123,8 +123,8 @@ export default {
                     token: localStorage.token
                 }
             })
-                .then(({data}) => {                  
-                    this.tasks = data
+                .then(({data}) => {                 
+                    this.tasks = data.tasks
                 })
                 .catch(err => {
                     console.log(err)

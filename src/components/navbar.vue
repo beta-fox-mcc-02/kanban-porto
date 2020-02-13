@@ -28,6 +28,9 @@ export default {
     methods: {
         changePage(page) {
             this.$emit('changePage', page)
+        },
+        logout () {
+
         }
     }
 }
