@@ -5,7 +5,13 @@
       <label>{{ tasks.length }} {{ tasks.length && tasks.length > 1 ? 'Tasks' : 'Task' }}</label>
     </div>
     <draggable group="people" v-model="tasks" @start="drag=true" @end="drag=false">
-      <Task @updateTask="updateTask" v-for="task in tasks" :key="task.id" :task-info="task"></Task>
+      <Task
+        @openModalDelete="openModalDelete"
+        @updateTask="updateTask"
+        v-for="task in tasks"
+        :key="task.id"
+        :task="task"
+      ></Task>
     </draggable>
     <div class="add-task-container">
       <form>
@@ -93,6 +99,9 @@ export default {
     },
     updateTask(payload) {
       this.$emit("updateTask", payload);
+    },
+    openModalDelete(payload) {
+      this.$emit("openModalDelete", payload);
     }
   },
   data() {
@@ -103,7 +112,12 @@ export default {
     };
   },
   created() {
-    this.fetchTasks();
+    this.tasks = this.category.Tasks;
+  },
+  watch: {
+    category(val) {
+      this.tasks = val.Tasks;
+    }
   }
 };
 </script>

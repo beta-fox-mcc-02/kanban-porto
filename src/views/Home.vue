@@ -46,27 +46,27 @@ export default {
       isLogin: false
     };
   },
-  created() {},
   beforeRouteEnter(to, from, next) {
-    if (localStorage.token) {
-      next();
-      isAuthenticated()
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(error => {
-          if (error.response) {
-            console.log(error.response.data);
-          } else if (error.request) {
-            console.log(error.request);
-          } else {
-            console.log("Error", error.message);
-          }
-        });
-      next();
-    } else {
-      next("/login");
-    }
+    next(vm => {
+      if (localStorage.token) {
+        isAuthenticated()
+          .then(response => {
+            next("/board");
+          })
+          .catch(error => {
+            if (error.response) {
+              console.log(error.response.data);
+            } else if (error.request) {
+              console.log(error.request);
+            } else {
+              console.log("Error", error.message);
+            }
+            next();
+          });
+      } else {
+        next("/login");
+      }
+    });
   }
 };
 </script>

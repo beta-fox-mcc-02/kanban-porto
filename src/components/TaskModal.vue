@@ -11,6 +11,7 @@
             @blur="cancelEditTitle"
             type="text"
             v-model="title"
+            required
             class="form-control input-title-task"
           />
         </form>
@@ -132,6 +133,7 @@ export default {
       })
         .then(response => {
           this.getTask();
+          this.$emit("refreshCategories");
         })
         .catch(err => {
           this.isEditTitle = false;

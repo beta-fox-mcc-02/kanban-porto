@@ -12,6 +12,7 @@
           >
             <TaskCategory
               @updateTask="updateTask"
+              @openModalDelete="openModalDelete"
               v-for="cat in categories"
               :key="cat.id"
               :category="cat"
@@ -44,7 +45,17 @@
               </div>
             </form>
           </div>
-          <TaskModal @closeModal="closeModal" v-if="isOpenModal" :task-id="taskId"></TaskModal>
+          <TaskModal
+            @refreshCategories="refreshCategories"
+            @closeModal="closeModal"
+            v-if="isOpenModal"
+            :task-id="taskId"
+          ></TaskModal>
+          <DeleteModal
+            @deleteTask="deleteUserTask"
+            @closeModalDelete="closeModalDelete"
+            v-if="isOpenModalDelete"
+          ></DeleteModal>
         </div>
       </div>
     </main>
@@ -55,6 +66,7 @@
 import Profile from "../components/Profile";
 import TaskCategory from "../components/TaskCategory";
 import TaskModal from "../components/TaskModal";
+import DeleteModal from "../components/DeleteModal";
 import isAuthenticated from "../helpers/isAuthenticated";
 import draggable from "vuedraggable";
 import { Fragment } from "vue-fragment";
@@ -67,7 +79,8 @@ export default {
     Fragment,
     TaskCategory,
     draggable,
-    TaskModal
+    TaskModal,
+    DeleteModal
   },
   data() {
     return {
@@ -77,10 +90,14 @@ export default {
       category: "",
       categories: [],
       taskId: null,
-      isOpenModal: false
+      isOpenModal: false,
+      isOpenModalDelete: false
     };
   },
   methods: {
+    refreshCategories() {
+      this.getCategories();
+    },
     showHideFormAddCategory() {
       this.isAddCategory = !this.isAddCategory;
     },
@@ -125,6 +142,33 @@ export default {
     },
     closeModal(payload) {
       this.isOpenModal = payload;
+    },
+    openModalDelete(payload) {
+      this.isOpenModalDelete = payload.isOpen;
+      this.taskId = payload.taskId;
+      console.log(this.taskId);
+    },
+    closeModalDelete(payload) {
+      this.isOpenModalDelete = payload;
+    },
+    deleteTask() {
+      axios({
+        method: "DELETE",
+        url: BASE_URL + "/tasks/" + this.taskId,
+        headers: {
+          Authorization: "Bearer " + localStorage.token
+        }
+      })
+        .then(response => {
+          this.getCategories();
+          this.isOpenModalDelete = false;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    deleteUserTask() {
+      this.deleteTask();
     }
   },
   beforeRouteEnter(to, from, next) {

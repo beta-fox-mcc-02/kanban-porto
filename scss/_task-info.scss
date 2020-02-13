@@ -1,6 +1,7 @@
 .task-wrapper {
   cursor: pointer;
-
+  display: flex;
+  position: relative;
   .task-content {
     display: block;
     width: 100%;
@@ -8,10 +9,21 @@
 
   .task-title {
     width: 100%;
-    height: 40px;
+    height: 50px;
     background: #fff;
     margin-bottom: 10px;
     padding: 5px 10px;
     border-radius: 10px;
+  }
+
+  .delete-task {
+    width: 20px;
+    height: 50px;
+    position: absolute;
+    top: 5px;
+    left: 90%;
+    .fa {
+      color: #dc3545;
+    }
   }
 }

@@ -95,7 +95,6 @@ export default {
           this.isLoading = false;
         });
     }
-  },
-  created() {}
+  }
 };
 </script>
