@@ -8,6 +8,8 @@
         :key="i"
         :list="category"
         :task="getCategory"
+        @changePage="changePage"
+        @fetch="fetch"
         ></kanbanContent>
     </div>
 </template>
@@ -29,6 +31,14 @@ export default {
     },
     components: {
         kanbanContent
+    },
+    methods: {
+        changePage(page) {
+            this.$emit('changePage', page)
+        },
+        fetch() {
+            this.$emit('fetch')
+        }
     },
     computed: {
         getColor () {

@@ -5,6 +5,8 @@
         :key="i" 
         :box="box"
         :tasks="tasks"
+        @changePage="changePage"
+        @fetch="fetchTask"
         ></kanbanCard>
     </div>
 </template>
@@ -52,7 +54,10 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
-        }
+        },
+        changePage(page) {
+            this.$emit(page)
+        },
     },
     components: {
         kanbanCard

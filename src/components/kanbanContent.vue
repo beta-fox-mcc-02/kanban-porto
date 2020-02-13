@@ -9,11 +9,13 @@
             <a @click="destroy(list.id)"><i class="fas fa-trash-alt" ></i></a>
         </div>
         <div  class="card-content grey lighten-4" id="plan-card-title-bottom">
-            <!-- {{ getStatus }} -->
             <NextBack
             v-for="(next, i) in getStatus"
             :key="i"
             :next="next"
+            :list="list"
+            @fetch="fetch"
+            @changePage="changePage"
             ></NextBack>
         </div>
     </div>
@@ -39,9 +41,27 @@ export default {
     },
     methods: {
         destroy(id) {
+            console.log(id, "-------")
             axios({
-                
+                method: 'delete',
+                url: `http://localhost:3000/tasks/${id}`,
+                headers: {
+                    token: localStorage.token
+                }
             })
+                .then(data => {
+                    this.fetch()
+                    this.changePage('landing')
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        changePage(page) {
+            this.$emit('changePage', page)
+        },
+        fetch() {
+            this.$emit('fetch')
         }
     }, 
     computed: {

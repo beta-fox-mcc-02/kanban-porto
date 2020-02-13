@@ -1,10 +1,25 @@
 <template>
     <div>
-        <Navbar @changePage="changePage" :currentPage="currentPage"></Navbar>
-        <Register @changePage="changePage" v-if="currentPage === 'register'"></Register>
-        <Login @changePage="changePage" v-else-if="currentPage === 'login'"></Login>
-        <Home v-else-if="currentPage === 'landing'"></Home>
-        <AddTask v-else-if="currentPage === 'addtask'" @changePage="changePage"></AddTask>
+        <Navbar 
+        @changePage="changePage" 
+        :currentPage="currentPage"
+        ></Navbar>
+        <Register 
+        @changePage="changePage" 
+        v-if="currentPage === 'register'"
+        ></Register>
+        <Login 
+        @changePage="changePage" 
+        v-else-if="currentPage === 'login'"
+        ></Login>
+        <Home 
+        @changePaqe="changePage" 
+        v-else-if="currentPage === 'landing'"
+        ></Home>
+        <AddTask 
+        v-else-if="currentPage === 'addtask'" 
+        @changePage="changePage"
+        ></AddTask>
     </div>
 </template>
 
