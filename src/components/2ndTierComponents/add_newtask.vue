@@ -1,0 +1,69 @@
+<template>
+    <div class="add-task">
+        <section id="add-task-header">
+            <H1>ADD NEW TASK HERE</H1>
+        </section>
+        <div class="err-message">{{ errorMessage }}</div>
+        <form id="add-task-form" v-on:submit.prevent="addTask">
+            <div id="add-task-main">
+                <div>
+                    <small>Task title:</small>
+                    <input id="add-task-email" type="text" v-model="taskTitle">
+                    <i class="fas fa-exclamation-triangle" v-if="unfilledInput"></i>
+                </div>
+                <div>
+                    <small>Task tag:</small>
+                    <select class="tag-selection" v-model="taskTag">
+                        <option>low priority</option>
+                        <option>high priority</option>
+                    </select>
+                    <i class="fas fa-exclamation-triangle" v-if="unfilledInput"></i>
+                </div>
+                <button id="add-task-btn" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</template>
+
+<script>
+export default {
+    data() {
+        return {
+            taskTitle: '',
+            taskTag: '',
+            unfilledInput: false,
+            errorMessage: ''
+        }
+    },
+    methods: {
+        addTask() {
+            if(this.taskTitle && this.taskTag) {
+                let token = localStorage.getItem('access_token')
+                axios({
+                    method: "POST",
+                    url: "http://localhost:3000/task/create",
+                    headers: { token },
+                    data: {
+                        title: this.taskTitle,
+                        tag: this.taskTag
+                    }
+                })
+                .then((result) => {
+                    this.clearInputs()
+                    this.$emit('changePage', { page: `member` })
+                })
+                .catch((err) => { this.errorMessage = `Title length is inapproriate (maximum 200 letter)` })
+            }
+            else {
+                this.unfilledInput = true
+                this.errorMessage = `Please fill in required inputs`
+            }
+        },
+        clearInputs() {
+            this.taskTitle = '',
+            this.taskTag = '',
+            this.unfilledInput = false
+        }
+    }
+}
+</script>

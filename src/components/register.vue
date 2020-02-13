@@ -24,7 +24,7 @@
                 <button id="register-btn" type="submit">Submit</button>
             </div>
         </form>
-        <section id="register-footer">Have an account? <a id="redirect-to-login">Login</a></section>
+        <section id="register-footer">Have an account? <a id="redirect-to-login" v-on:click="redirect">Login</a></section>
     </div>
 </template>
 
@@ -55,7 +55,7 @@ export default {
                 })
                 .then((result) => {
                     this.clearInputs()
-                    this.$emit(`changePage`, `login`)
+                    this.$emit(`changePage`, { page: `login` })
                 })
                 .catch((err) => {
                     this.clearInputs()
@@ -72,6 +72,10 @@ export default {
             this.email = '',
             this.password = ''
             this.unfilledInput = false
+        },
+        redirect(){
+            this.clearInputs()
+            this.$emit('changePage', { page: `login` })
         }
     }
 }
