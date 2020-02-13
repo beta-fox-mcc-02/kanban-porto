@@ -66,6 +66,18 @@
 
   .task-title {
     color: #172b4d;
+    a {
+      display: block;
+      width: 80%;
+      cursor: pointer;
+    }
+  }
+
+  .form-edit-title {
+    margin-bottom: 10px;
+    .form-control {
+      width: 80%;
+    }
   }
 }
 
@@ -74,29 +86,41 @@
   flex: 1 1 auto;
   padding: 1rem;
 
-  .description-label {
-    display: flex;
-    h5 {
-      font-size: 1rem;
-      margin-bottom: 0px;
-      margin-left: 10px;
-      line-height: 0.9;
-    }
-  }
+  .description-task {
+    .description-form {
+      display: flex;
+      .right {
+       margin-left: 10px;
+       flex: 0.6;
+        .add-more-description {
+          margin-top: 20px;
+          color: #434343;
+          font-weight: 100;
+          background-color: #ccc;
+          opacity: 0.7;
+          padding: 10px;
+          border-radius: 10px;
+          cursor: pointer;
+          padding-bottom: 40px;
+          display: block;
+        }
+        .description-edit {
+          display: flex;
+          .btn-light {
+            margin-left: 15px;
+          }
+        }
+        .description-task-value {
+          margin-top: 20px;
+        }
+      }
 
-  .description-input {
-    a {
-      margin-left: 25px;
-      margin-top: 20px;
-      color: #434343;
-      font-weight: 100;
-      background-color: #ccc;
-      opacity: 0.7;
-      padding: 10px;
-      border-radius: 10px;
-      cursor: pointer;
-      padding-bottom: 40px;
-      display: block;
+      .description-task-input {
+        margin-top: 10px;
+        .input-description {
+          margin-bottom: 10px;
+        }
+      }
     }
   }
 }

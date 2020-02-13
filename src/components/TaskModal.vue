@@ -3,7 +3,17 @@
     <div class="modal-content">
       <div class="modal-header">
         <span @click="closeModal" class="close">&times;</span>
-        <h5 class="task-title">{{ task.title }}</h5>
+        <h5 @click="editTitle" v-if="!isEditTitle" class="task-title">
+          <a>{{ task.title }}</a>
+        </h5>
+        <form class="form-edit-title" v-if="isEditTitle" @submit.prevent="editTask">
+          <input
+            @blur="cancelEditTitle"
+            type="text"
+            v-model="title"
+            class="form-control input-title-task"
+          />
+        </form>
         <h6 class="in-list">
           in list
           <b>{{ task.Category.name }}</b>
@@ -11,18 +21,34 @@
       </div>
       <div class="modal-body">
         <div class="description-task">
-          <div class="description-label">
-            <i class="fa fa-tasks" aria-hidden="true"></i>
-            <h5>Description<h5>
-          </div>
-          <div class="description-input">
-            <a>Add more detailed description</a>
-          </div>
-          <div class="description-task-input">
-            <form>
-              <textarea rows="2" class="form-control"></textarea>
-              <input type="submit" value="Add" class="btn btn-success">
-            </form>
+          <div class="description-form">
+            <div class="left">
+              <i class="fa fa-tasks" aria-hidden="true"></i>
+            </div>
+            <div class="right">
+              <div class="description-edit">
+                <h5>Description</h5>
+                <a @click="toggleForm" v-if="task.description" class="btn btn-light">Edit</a>
+              </div>
+              <a
+                @click="toggleForm"
+                v-if="!isShowForm && !task.description"
+                class="add-more-description"
+              >Add more detailed description</a>
+              <p
+                class="description-task-value"
+                v-if="task.description && !isShowForm"
+              >{{ task.description }}</p>
+              <div v-if="isShowForm" class="description-task-input">
+                <form @submit.prevent="editTask">
+                  <textarea rows="2" v-model="description" class="form-control input-description"></textarea>
+                  <input type="submit" :value="btnName" class="btn btn-success" />
+                  <a @click="toggleForm" class="cancel-add">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                  </a>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -46,7 +72,12 @@ export default {
   props: ["taskId"],
   data() {
     return {
-      task: null
+      task: null,
+      isShowForm: false,
+      btnName: "Add",
+      isEditTitle: false,
+      title: "",
+      description: ""
     };
   },
   methods: {
@@ -59,8 +90,16 @@ export default {
         }
       })
         .then(response => {
-          console.log(response.data);
           this.task = response.data;
+          this.title = response.data.title;
+          this.description = response.data.description;
+          if (this.description) {
+            this.btnName = "Edit";
+          } else {
+            this.btnName = "Add";
+          }
+          this.isEditTitle = false;
+          this.isShowForm = false;
         })
         .catch(err => {
           console.log(err);
@@ -68,6 +107,35 @@ export default {
     },
     closeModal() {
       this.$emit("closeModal", false);
+    },
+    toggleForm() {
+      this.isShowForm = !this.isShowForm;
+    },
+    editTitle() {
+      this.isEditTitle = true;
+    },
+    cancelEditTitle() {
+      this.isEditTitle = false;
+      this.title = this.task.title;
+    },
+    editTask() {
+      axios({
+        method: "PUT",
+        url: BASE_URL + "/tasks/" + this.taskId,
+        headers: {
+          Authorization: "Bearer " + localStorage.token
+        },
+        data: {
+          title: this.title,
+          description: this.description
+        }
+      })
+        .then(response => {
+          this.getTask();
+        })
+        .catch(err => {
+          this.isEditTitle = false;
+        });
     }
   },
   created() {
