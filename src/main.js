@@ -1,17 +1,17 @@
-import Vue from 'vue';
-import App from './App.vue';
-import GAuth from 'vue-google-oauth2';
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
+import Vue from 'vue'
+import App from './App.vue'
+import GAuth from 'vue-google-oauth2'
+import gauthOption from './plugins/gAuth'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import '../assets/css/all.css'
 
-const gauthOption = {
-  clientId: '',
-  scope: 'profile email',
-  prompt: 'select_account'
-}
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
+
 Vue.use(GAuth, gauthOption)
-Vue.use(Vuetify)
 
 new Vue({
   render: h => h(App),
-}).$mount('#app');
+}).$mount('#app')
