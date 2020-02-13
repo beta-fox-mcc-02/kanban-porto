@@ -17,9 +17,6 @@
           <li class="nav-item">
             <p class="nav-link" style="cursor: pointer">My Project</p>
           </li>
-          <li class="nav-item">
-            <p class="nav-link" style="cursor: pointer">#</p>
-          </li>
         </ul>
         <button type="button" class="btn btn-danger mr-4" @click="logout">
           <i class="fas fa-sign-out-alt"></i>
@@ -27,16 +24,16 @@
       </div>
     </nav>
 
-    <h1 class="text-center mt-5" style="color: white">My Project</h1>
+    <h1 class="text-center mt-5 mb-5" style="color: white">My Project</h1>
 
     <div class="container">
       <div class="row" style="display: flex; justify-content: space-around">
         <div v-for="project in myProject" :key="project.id">
           <!-- ini content project -->
-          <div class="card my-4 mx-3 shadow" style="width: 18rem;">
+          <div class="card my-3 mx-0 shadow" style="width: 18rem;">
             <img
               class="card-img-top"
-              src="https://blog.vidupm.com/wp-content/uploads/2018/09/Implementation-Outsourcing-Project-Manager.jpg"
+              src="https://cdn.dribbble.com/users/539938/screenshots/4314205/logo-gif.gif"
               alt="Card image cap"
             />
             <div class="card-body">
@@ -51,7 +48,7 @@
                   data-target="#exampleModalCenter"
                   @click="fetchUpdate(project.id)"
                 >Edit</button>
-                <button class="btn btn-success mx-2 btn-sm">Open</button>
+                <button class="btn btn-success mx-2 btn-sm" @click="openProject(project.id)">Open</button>
                 <button class="btn btn-danger mx-2 btn-sm" @click="deleteProject(project.id)">Delete</button>
               </div>
             </div>
@@ -62,7 +59,7 @@
 
     <button
       class="btn btn-danger btn-lg"
-      style="position:absolute;
+      style="position:fixed;
       bottom: 50px;
       right: 50px;"
       data-toggle="modal"
@@ -275,6 +272,10 @@ export default {
          .catch(err => {
             console.log(err);            
          })
+    },
+    openProject(id) {
+      this.$emit('changePage', 'kanban')
+      this.$emit('getProject', id)
     }
   },
   created() {
