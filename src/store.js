@@ -7,7 +7,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         boards: [],
-        token: localStorage.getItem('token') || ''
+        token: localStorage.getItem('token') || '',
+        lists: []
     },
     mutations: {
         updateBoards(state, boards) {
@@ -15,6 +16,12 @@ export default new Vuex.Store({
         },
         newBoard(state, board) {
             state.boards.push(board)
+        },
+        updateLists(state, lists) {
+            state.lists = lists
+        },
+        newList(state, list) {
+            state.lists.push(list)
         },
         auth(state, token) {
             state.token = token
@@ -24,8 +31,11 @@ export default new Vuex.Store({
             state.token = ''
             localStorage.clear('token')
         },
-        remove(state, id) {
+        removeBoard(state, id) {
             state.boards = this.state.boards.filter(i => i.id !== id)
+        },
+        removeList(state, id) {
+            state.lists = this.state.lists.filter(i => i.id !== id)
         }
     },
     actions: {
@@ -58,10 +68,9 @@ export default new Vuex.Store({
             }
         },
         async removeBoard({ commit }, id) {
-            // delete disini a
             try {
                 await axios.delete(`http://localhost:3000/boards/${id}`)
-                commit('remove', id)
+                commit('removeBoard', id)
             } catch (e) {
                 console.log(e)
             }
@@ -71,8 +80,6 @@ export default new Vuex.Store({
                 axios
                     .post('http://localhost:3000/users/register', data)
                     .then(response => {
-                        axios.defaults.headers.common['Authorization'] =
-                            response.data.token
                         commit('auth', response.data.token)
                         resolve('/')
                     })
@@ -86,8 +93,6 @@ export default new Vuex.Store({
                 axios
                     .post('http://localhost:3000/users/login', data)
                     .then(response => {
-                        axios.defaults.headers.common['Authorization'] =
-                            response.data.token
                         commit('auth', response.data.token)
                         resolve('/')
                     })
@@ -102,11 +107,54 @@ export default new Vuex.Store({
                 localStorage.removeItem('token')
                 resolve()
             })
+        },
+        getLists({ commit }, BoardId) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .get(`http://localhost:3000/lists?BoardId=${BoardId}`)
+                    .then(response => {
+                        console.log(response)
+                        commit('updateLists', response.data.data)
+                        resolve(response.data.data)
+                    })
+                    .catch(e => {
+                        reject(e)
+                    })
+            })
+        },
+        newList({ commit }, data) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .post('http://localhost:3000/lists', data)
+                    .then(response => {
+                        commit('newList', response.data.data)
+                        resolve(response.data.data)
+                    })
+                    .catch(e => {
+                        reject(e)
+                    })
+            })
+        },
+        async removeList({ commit }, id) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .delete(`http://localhost:3000/lists/${id}`)
+                    .then(response => {
+                        commit('removeList', id)
+                        resolve()
+                    })
+                    .catch(e => {
+                        reject(e)
+                    })
+            })
         }
     },
     getters: {
         isAuthenticated: function(state) {
             return !!state.token || false
+        },
+        token: function(state) {
+            return state.token
         }
     }
 })

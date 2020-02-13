@@ -10,7 +10,15 @@
                         />
                     </b-navbar-item>
                 </template>
-                <template slot="start"></template>
+                <template slot="start">
+                    <b-navbar-item
+                        tag="router-link"
+                        v-if="$store.state.token"
+                        to="/"
+                    >
+                        Home
+                    </b-navbar-item>
+                </template>
 
                 <template slot="end">
                     <b-navbar-item tag="div">

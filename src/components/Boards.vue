@@ -25,7 +25,8 @@
                 </header>
                 <footer class="card-footer">
                     <a href="#" class="card-footer-item">Edit</a>
-                    <a href="#"
+                    <a
+                        href="#"
                         class="card-footer-item"
                         @click="deleteBoard(board.id)"
                     >
@@ -56,9 +57,6 @@ export default {
                     // this.$buefy.toast.open(`Your name is: ${value}`)
                 }
             })
-        },
-        deleteBoard(id) {
-            this.$store.dispatch('removeBoard', id)
         }
     }
 }

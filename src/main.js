@@ -3,12 +3,15 @@ import App from './App.vue'
 import store from './store'
 import Boards from './components/Boards'
 import NewBoard from './components/NewBoard'
-import Board from './components/Board'
+import BoardDetail from './components/BoardDetail'
 import Register from './components/Register'
 import Login from './components/Login'
 import VueRouter from 'vue-router'
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
+import interceptors from './helpers/interceptors'
+
+interceptors()
 
 Vue.use(VueRouter)
 Vue.use(Buefy)
@@ -18,7 +21,7 @@ function isAuthenticated(to, from, next) {
         next()
     } else {
         next({
-            path: '/login' // back to safety route //
+            path: '/login'
         })
     }
 }
@@ -30,8 +33,11 @@ const routes = [
         component: NewBoard,
         beforeEnter: isAuthenticated
     },
-    { path: '/board/', component: Board, beforeEnter: isAuthenticated },
-    { path: '/board/:id', component: Board, beforeEnter: isAuthenticated },
+    {
+        path: '/board/:id',
+        component: BoardDetail,
+        beforeEnter: isAuthenticated
+    },
     { path: '/register', component: Register },
     { path: '/login', component: Login }
 ]
