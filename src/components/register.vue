@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     name: 'register',
     data () {
@@ -26,6 +28,29 @@ export default {
             last_name: '',
             email: '',
             password: ''
+        }
+    }, 
+    methods: {
+        regis() {
+            axios({
+                method: 'POST',
+                url: 'http://localhost:3000/register',
+                data: {
+                    first_name: this.first_name, 
+                    last_name: this.last_name, 
+                    email: this.email, 
+                    password: this.password
+                }
+            }) 
+                .then((response) => {
+                    this.changePage('login')
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        changePage(page) {
+            this.$emit('changePage', page)
         }
     }
 }

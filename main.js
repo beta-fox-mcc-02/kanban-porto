@@ -15,26 +15,26 @@ new Vue ({
         currentPage: 'register',
     },
     methods: {
-        regis() {
-            axios({
-                method: 'post',
-                url: 'http://localhost:3000/register',
-                data: {
-                    first_name: this.register.first_name,
-                    last_name: this.register.last_name,
-                    email: this.register.email,
-                    password: this.register.password
-                }
-            })
-                .then((response) => {
-                    this.currentPage = 'login'
-                    console.log(response)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+        // regis() {
+        //     axios({
+        //         method: 'post',
+        //         url: 'http://localhost:3000/register',
+        //         data: {
+        //             first_name: this.register.first_name,
+        //             last_name: this.register.last_name,
+        //             email: this.register.email,
+        //             password: this.register.password
+        //         }
+        //     })
+        //         .then((response) => {
+        //             this.currentPage = 'login'
+        //             console.log(response)
+        //         })
+        //         .catch(err => {
+        //             console.log(err)
+        //         })
 
-        },
+        // },
         login() {
             axios({
                 method: 'post',
