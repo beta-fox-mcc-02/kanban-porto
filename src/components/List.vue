@@ -1,34 +1,33 @@
 <template>
-    <div class="card">
-        <header class="card-header">
-            <p class="card-header-title">
-                {{ list.title }}
-            </p>
+    <nav class="panel">
+        <p class="panel-heading">
+            {{ list.title }}
+        </p>
 
-            <a class="card-header-icon" aria-label="more options">
-                + Add Card
-            </a>
-
-            <!-- <router-link
-                :to="{ path: `/lists/${list.id}` }"
-                class="card-header-icon"
-                aria-label="more options"
-            >
-                Show
-            </router-link> -->
-        </header>
-        <footer class="card-footer">
-            <a href="#" class="card-footer-item">Edit</a>
-            <a href="#" class="card-footer-item" @click="deleteList(list.id)">
-                Delete
-            </a>
-        </footer>
-    </div>
+        <Card v-for="card in list.Cards" :key="card.id" :card="card"></Card>
+        <form @submit.prevent="addCard">
+            <label class="panel-block">
+                <input type="text" v-model="title" class="input" />
+            </label>
+            <div class="panel-block">
+                <div class="buttons">
+                    <button class="button is-link">
+                        + New Card
+                    </button>
+                </div>
+            </div>
+        </form>
+    </nav>
 </template>
 
 <script>
+import Card from './Card'
+
 export default {
     name: 'List',
+    data: function() {
+        return { title: null }
+    },
     props: {
         list: Object
     },
@@ -50,10 +49,33 @@ export default {
                         BoardId: this.$route.params.id
                     }
                     this.$store.dispatch('newList', task)
-                    // this.$buefy.toast.open(`Your name is: ${value}`)
                 }
             })
+        },
+        addCard: function() {
+            let data = {
+                title: this.title,
+                ListId: this.list.id
+            }
+            this.$store
+                .dispatch('newCard', data)
+                .then(result => {
+                    this.$buefy.toast.open(`Success adding new card.`)
+                    this.title = ''
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
+    },
+    components: {
+        Card
     }
 }
 </script>
+
+<style scoped>
+.card-container {
+    margin: 5px;
+}
+</style>
