@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="wrapper fadeInDown" style="margin-top: 50px">
+    <div class="wrapper fadeInDown" style="margin-top: 10px">
       <div id="formContent">
         <!-- Tabs Titles -->
 
@@ -96,7 +96,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 html {
   background-color: #56baed;
 }

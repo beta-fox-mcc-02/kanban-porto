@@ -1,12 +1,15 @@
 <template>
   <div>
-    <Login v-if="page===`login`" 
+    <Login v-if="page===`login`" @changePage="changePage" ></Login>
+
+    <Register v-if="page === `register`" @changePage="changePage"></Register>
+    
+    <Home
+    v-if="page === `home`"
     @changePage="changePage"
-    ></Login>
-   
-    <Register v-if="page === `register`"
-    @changePage="changePage"
-    ></Register>
+    ></Home>
+
+    
   </div>
 </template>
 
@@ -14,43 +17,30 @@
 import axios from "axios";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Home from "./components/Home";
 
 export default {
   name: `App`,
   components: {
     Login,
-    Register
+    Register,
+    Home
   },
   data() {
     return {
       message: "halo",
       page: "login",
-      myProject: []
-    };
+    }
   },
   methods: {
     changePage(page) {
       this.page = page;
-    },
-    fetchProject() {
-      axios({
-        method: `GET`,
-        url: `http://localhost:3000/users/projects`,
-        headers: {
-          token: localStorage.token
-        }
-      })
-        .then(({ data }) => {
-          console.log(data);
-          this.myProject = data;
-        })
-        .catch(err => {
-          console.log(err);
-        });
     }
   },
   created() {
-
+     if (localStorage.token) {
+        this.page = `home`
+     }
   }
 };
 </script>
