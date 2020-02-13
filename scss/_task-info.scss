@@ -1,6 +1,11 @@
 .task-wrapper {
   cursor: pointer;
-  
+
+  .task-content {
+    display: block;
+    width: 100%;
+  }
+
   .task-title {
     width: 100%;
     height: 40px;

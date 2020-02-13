@@ -10,7 +10,12 @@
             @start="drag=true"
             @end="drag=false"
           >
-            <TaskCategory v-for="cat in categories" :key="cat.id" :category="cat"></TaskCategory>
+            <TaskCategory
+              @updateTask="updateTask"
+              v-for="cat in categories"
+              :key="cat.id"
+              :category="cat"
+            ></TaskCategory>
           </draggable>
           <div class="board-add-category">
             <form @submit.prevent="addCategory" class="form-board-add-category">
@@ -39,6 +44,7 @@
               </div>
             </form>
           </div>
+          <TaskModal @closeModal="closeModal" v-if="isOpenModal" :task-id="taskId"></TaskModal>
         </div>
       </div>
     </main>
@@ -48,6 +54,7 @@
 <script>
 import Profile from "../components/Profile";
 import TaskCategory from "../components/TaskCategory";
+import TaskModal from "../components/TaskModal";
 import isAuthenticated from "../helpers/isAuthenticated";
 import draggable from "vuedraggable";
 import { Fragment } from "vue-fragment";
@@ -59,7 +66,8 @@ export default {
     Profile,
     Fragment,
     TaskCategory,
-    draggable
+    draggable,
+    TaskModal
   },
   data() {
     return {
@@ -67,7 +75,9 @@ export default {
       isLogin: false,
       isAddCategory: false,
       category: "",
-      categories: []
+      categories: [],
+      taskId: null,
+      isOpenModal: false
     };
   },
   methods: {
@@ -108,6 +118,13 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    updateTask(payload) {
+      this.taskId = payload;
+      this.isOpenModal = true;
+    },
+    closeModal(payload) {
+      this.isOpenModal = payload;
     }
   },
   beforeRouteEnter(to, from, next) {

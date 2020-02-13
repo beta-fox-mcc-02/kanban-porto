@@ -5,7 +5,7 @@
       <label>{{ tasks.length }} {{ tasks.length && tasks.length > 1 ? 'Tasks' : 'Task' }}</label>
     </div>
     <draggable group="people" v-model="tasks" @start="drag=true" @end="drag=false">
-      <Task v-for="task in tasks" :key="task.id" :task-info="task"></Task>
+      <Task @updateTask="updateTask" v-for="task in tasks" :key="task.id" :task-info="task"></Task>
     </draggable>
     <div class="add-task-container">
       <form>
@@ -76,7 +76,7 @@ export default {
     fetchTasks() {
       axios({
         method: "GET",
-        url: BASE_URL + "/tasks/" + this.category.id,
+        url: BASE_URL + "/tasks/category/" + this.category.id,
         headers: {
           Authorization: "Bearer " + localStorage.token
         }
@@ -90,6 +90,9 @@ export default {
     },
     saveNewTask() {
       this.addNewTask();
+    },
+    updateTask(payload) {
+      this.$emit("updateTask", payload);
     }
   },
   data() {
