@@ -16,7 +16,6 @@ nav {
     font-size: 15pt;
 }
 
-
 .nav-center ul{
     display: flex;
     flex-direction: row;
@@ -44,7 +43,7 @@ nav {
     justify-content: space-evenly;
 }
 
-.home .plan {
+.home .kanban-card {
     height: fit-content;
     width: 20vw;
     max-height: 100vh;
@@ -55,17 +54,15 @@ nav {
     flex-direction: column;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-.home .plan::-webkit-scrollbar {
+.home .kanban-card::-webkit-scrollbar {
     display: none;
 }
-  
-  /* Hide scrollbar for IE and Edge */
-.home .plan {
+
+.home .kanban-card {
     -ms-overflow-style: none;
 }
 
-.home .plan .title {
+.home .kanban-card .title {
     background-color: red;
     padding: 10px 20px;
     border-radius: 5px;
@@ -92,7 +89,7 @@ nav {
     justify-content: flex-end;
 }
 
-.home .plan #plan-card-title-bottom #next {
+.home .kanban-card #plan-card-title-bottom #next {
     font-size: 20px;
     color: greenyellow;
 }
@@ -101,7 +98,7 @@ nav {
 
 
 
-.home .do {
+/* .home .do {
     height: fit-content;
     width: 20vw;
     max-height: 100vh;
@@ -110,47 +107,45 @@ nav {
     overflow: scroll;
     display: flex;
     flex-direction: column;
-}
+} */
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-.home .do::-webkit-scrollbar {
+/* .home .do::-webkit-scrollbar {
     display: none;
-}
+} */
   
-  /* Hide scrollbar for IE and Edge */
-.home .do {
+/* .home .do {
     -ms-overflow-style: none;
-}
+} */
 
-.home .do .title {
+/* .home .do .title {
     background-color:yellow;
     padding: 10px 20px;
     border-radius: 5px;
     font-size: 30px;
-}
+} */
 
-#card-title-do {
+/* #card-title-do {
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-}
+} */
 
-#do-card-title-center {
+/* #do-card-title-center {
     display: flex;
     justify-content: space-around;
     align-items: center;
     font-size: 20px;
     padding: 10px 10px;
-}
+} */
 
-#do-card-title-bottom {
+/* #do-card-title-bottom {
     padding: 5px 5px;
     display: flex;
     justify-content: space-between;
     font-size: 20px;
-}
+} */
 
-.home .do #do-card-title-bottom #next-do {
+/* .home .do #do-card-title-bottom #next-do {
     color: greenyellow;
 }
 
@@ -269,4 +264,4 @@ nav {
 
 .home .done #done-card-title-bottom #prev-do {
     color: red;
-}
+} */

@@ -1,5 +1,5 @@
 <template>
-    <div class = 'plan'>
+    <div class = 'kanban-card'>
         <div class="title" :style="getColor">
             <i :class="box.icon"></i> {{box.name}}
         </div>
