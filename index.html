@@ -6,86 +6,57 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="manifest" href="/site.webmanifest">
+  <!-- <link rel="manifest" href="/site.webmanifest"> -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <title>MKanban</title>
 </head>
 <body>
-  <header>
-      <nav id="navbar">
-        <div class="nav-wrapper">
-          <a href="#" class="brand-logo center"><i><img src="./icons/favicon.ico" style="margin-top: 9px;"></i> MKanban</a>
-          <span class="left" style="margin-left: 15px;">Welcome User!</span>
-          <a href="#" class="right" style="margin-right: 15px;">Logout</a>
-        </div>
-        <div class="nav-wrapper">
-        </div>
-      </nav>
-  </header>
-
-  <!-- register -->
-  <div class="row" id="register">
-    <div class="col s4 push-s4">
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title center">Register</span>
-          <form id="register">
-            <div class="row">
-              <div class="col s12 input-field">
-                <i class="material-icons prefix">account_circle</i>
-                <input id="registerUsername" type="text" class="validate">
-                <label for="registerUsername">Username</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col s12 input-field">
-                <i class="material-icons prefix">email</i>
-                <input id="registerEmail" type="email" class="validate">
-                <label for="registerEmail">Email</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col s12 input-field">
-                <i class="material-icons prefix">security</i>
-                <input id="registerPassowrd" type="password" class="validate">
-                <label for="registerPassowrd">Password</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col s12 center">
-                <button class="btn waves-effect waves-dark" type="submit" name="action">Submit</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- login -->
-  <div class="row" id="login">
-    <div class="row" id="register">
-      <div class="col s4 push-s4">
-        <div class="card">
+  <div id="doc">
+    <header>
+        <nav id="navbar">
+          <div class="nav-wrapper">
+            <a href="#" class="brand-logo center"><i><img src="./icons/favicon.ico" style="margin-top: 8px;"></i> MKanban</a>
+            <span class="left" style="margin-left: 15px;">Welcome User!</span>
+            <a href="#" class="right btn-flat" style="margin-right: 15px;" @click.prevent="logout">Logout</a>
+          </div>
+          <div class="nav-wrapper">
+          </div>
+        </nav>
+    </header>
+  
+    <!-- register -->
+    <div class="row" id="register" v-show="currentPage === 'registerPage'" style="margin: 2rem;">
+      <div class="col s4 offset-s4">
+        <div class="card z-depth-3">
           <div class="card-content">
-            <span class="card-title center">Login</span>
-            <form id="register">
+            <span class="card-title center">Register</span>
+            <form id="register-form" @submit.prevent="register">
               <div class="row">
                 <div class="col s12 input-field">
-                  <input id="user" type="text" class="validate">
-                  <label for="user">Username</label>
+                  <i class="material-icons prefix">account_circle</i>
+                  <input id="registerUsername" type="text" class="validate" v-model="registerData.username">
+                  <label for="registerUsername">Username</label>
                 </div>
               </div>
               <div class="row">
                 <div class="col s12 input-field">
-                  <input id="password" type="password" class="validate">
-                  <label for="password">Password</label>
+                  <i class="material-icons prefix">email</i>
+                  <input id="registerEmail" type="email" class="validate" v-model="registerData.email">
+                  <label for="registerEmail">Email</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12 input-field">
+                  <i class="material-icons prefix">security</i>
+                  <input id="registerPassword" type="password" class="validate" v-model="registerData.password">
+                  <label for="registerPassowrd">Password</label>
                 </div>
               </div>
               <div class="row">
                 <div class="col s12 center">
-                  <button class="btn waves-effect waves-dark" type="submit" name="action">Submit</button>
+                  <button class="btn waves-effect waves-dark" type="submit" name="action">Register</button>
                 </div>
               </div>
             </form>
@@ -93,13 +64,93 @@
         </div>
       </div>
     </div>
+  
+    <!-- login -->
+    <div class="row" id="login" v-if="currentPage === 'loginPage'" style="margin: 10rem;">
+      <div class="row" id="register">
+        <div class="col s4 push-s4">
+          <div class="card z-depth-3">
+            <div class="card-content">
+              <span class="card-title center">Login</span>
+              <form id="login-form" @submit.prevent="login">
+                <div class="row">
+                  <div class="col s12 input-field">
+                    <input id="user" type="text" class="validate" v-model="loginData.user">
+                    <label for="user">Username /  Email</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s12 input-field">
+                    <input id="password" type="password" class="validate" v-model="loginData.password">
+                    <label for="password">Password</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s12 center">
+                    <button class="btn waves-effect waves-dark" type="submit" name="action">Login</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- content -->
+    <div class="row center" style="width: 90%;" id="content" v-if="currentPage === 'content'">
+      <div class="col s12">
+        <div class="row center" id="kanban" style="margin-top:3rem;">
+          <div class="col s3" id="backlog">
+            <nav>
+              <div class="nav-wrapper z-depth-3" id="backlog-nav">
+                <p>Backlog</p>
+                <!-- <div class="right">
+                  <a href="#" class="btn-floating red" id="add-backlog"><i class="material-icons">add</i></a>
+                </div> -->
+              </div>
+            </nav>
+            <div class="card hoverable" v-for="task in tasks" :key="task.id">
+              <div class="card-content">
+                <span class="card-title" id="title">{{task.title}}</span>
+                <div class="row">
+                  <div class="col s12">
+                    <p id="description">{{task.description}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col s3" id="todo">
+            <nav>
+              <div class="nav-wrapper z-depth-3" id="backlog-nav">
+                <p>Todo</p>
+              </div>
+            </nav>
+          </div>
+          <div class="col s3" id="ongoing">
+            <nav>
+              <div class="nav-wrapper z-depth-3" id="backlog-nav">
+                <p>Ongoing</p>
+              </div>
+            </nav>
+          </div>
+          <div class="col s3" id="done">
+            <nav>
+              <div class="nav-wrapper z-depth-3" id="backlog-nav">
+                <p>Done</p>
+              </div>
+              </nav>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- kanban -->
-  <div class="row" id="kanban">
-    
-  </div>
-
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script src="./scripts/main.js"></script>
 </body>
 </html>
