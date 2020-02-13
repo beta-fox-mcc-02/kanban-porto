@@ -1,3 +1,33 @@
 .board-container {
   margin-top: 80px;
+
+  .board-wrapper {
+    padding: 20px;
+    display: flex;
+
+    .board-add-category {
+      width: 272px;
+
+      .form-board-add-category {
+        cursor: pointer;
+
+        .open-add {
+          width: 100%;
+          display: inline-block;
+          padding: 0.5rem;
+          background-color: #ccc;
+          opacity: 0.5;
+          &:hover {
+            opacity: 1;
+          }
+        }
+
+        .input-category-container {
+          .input-category {
+            margin-bottom: 10px;
+          }
+        }
+      }
+    }
+  }
 }

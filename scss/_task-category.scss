@@ -1,0 +1,39 @@
+.category-wrapper {
+  display: flex;
+  align-items: flex-start;
+}
+
+.category-list-wrapper {
+  width: 272px;
+  height: 100%;
+  cursor: pointer;
+  background-color: #ccc;
+  margin-right: 15px;
+  border-radius: 5px;
+  padding: 10px;
+  flex: 1 auto;
+}
+
+.add-task-container {
+  .add-task {
+    width: 100%;
+    opacity: 0.5;
+    display: inline-block;
+    background: transparent;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    #addon-wrapping {
+      padding-left: 0;
+    }
+  }
+}
+
+.form-add-task {
+  .new-task {
+    margin-bottom: 10px;
+    height: 50px;
+  }
+}
