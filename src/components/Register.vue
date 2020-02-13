@@ -16,13 +16,21 @@
         </div>
 
         <!-- Login Form -->
-        <form @submit.prevent="login">
+        <form @submit.prevent="register">
           <input
             type="text"
             id="login"
             class="fadeIn second"
             name="login"
-            placeholder="login"
+            placeholder="name"
+            v-model="name"
+          />
+          <input
+            type="text"
+            id="login"
+            class="fadeIn second"
+            name="login"
+            placeholder="email"
             v-model="email"
           />
           <input
@@ -32,18 +40,17 @@
             placeholder="password"
             v-model="password"
           />
-          <input type="submit" class="fadeIn fourth" value="Log In" />
+          <input type="submit" class="fadeIn fourth" value="Register" />
         </form>
 
         <!-- Remind Passowrd -->
         <div id="formFooter">
           <p>
-            Dont' have an account?
             <span
               class="underlineHover"
               style="cursor: pointer; color: #FA9090"
-              @click="changePage('register')"
-            >Click to sign up</span>
+              @click="changePage('login')"
+            >Back to Login</span>
           </p>
         </div>
       </div>
@@ -55,40 +62,41 @@
 import axios from "axios";
 
 export default {
-  name: `Login`,
+  name: `Register`,
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      name: ""
     };
   },
   methods: {
-    login() {
+    changePage(page) {
+      this.$emit("changePage", page);
+    },
+    register() {
       axios({
         method: `POST`,
-        url: `http://localhost:3000/users/login`,
+        url: `http://localhost:3000/users/register`,
         data: {
           email: this.email,
-          password: this.password
+          password: this.password,
+          name: this.name
         }
       })
-        .then(({data}) => {
-          console.log(data);
-          localStorage.setItem(`token`, data.token)
-          this.$emit('changePage', 'home')
-        })
-        .catch(err => {
-          console.log(err);          
-        })
-    },
-    changePage(page) {
-      this.$emit('changePage', page)
+         .then(({data}) => {
+            console.log(data);
+            this.changePage('login')
+         })
+         .catch (err => {
+            console.log(err);            
+         })
     }
   }
 };
 </script>
 
-<style scoped>
+<style>
 html {
   background-color: #56baed;
 }
