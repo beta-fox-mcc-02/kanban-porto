@@ -12,6 +12,7 @@
   </head>
   <body>
     <div id="app">
+      <!-- {{message}} -->
       <!-- REGISTER -->
       <div id="register" v-if="currentPage === 'registerPage'">
           <center>
@@ -65,7 +66,7 @@
             <ul>
               <li><a><i class="fas fa-user-circle"></i></a></li>
               <li><a><i class="fas fa-search"></i></a></li>
-              <li><a v-on:click="addNewTask" style="cursor: pointer"><i class="fas fa-plus"></i></a></li>
+              <li><a v-on:click="showFormAdd" style="cursor: pointer"><i class="fas fa-plus"></i></a></li>
             </ul>
           </div>
           <div class="bottom">
@@ -119,13 +120,13 @@
                   <div class="card bg-light mb-3" style="max-width: 18rem;">
                       <div class="card-header">Backlog</div>
                       <div id="tempat-card" class="isi-task">
-                          <div class="issue" v-for="task in tasks" v-bind:key="task.id">
+                          <div class="issue" v-for="task in backlogTask" v-bind:key="task.id">
                               <div class="card-body">
                                 <h5 class="card-title">{{task.title}}</h5>
                                 <p class="card-text">{{task.description}}</p>
                                 <div class= "event-issue">
-                                  <a>Edit</a>
-                                  <a><i class="fas fa-trash-alt"></i></a>
+                                  <a v-on:click="showFormEdit(task.id)" style="cursor: pointer">Edit</a>
+                                  <a v-on:click="deleteTask(task.id)" style="cursor: pointer"><i class="fas fa-trash-alt"></i></a>
                                 </div>
                               </div>
                           </div>
@@ -135,90 +136,111 @@
               <!-- PRODUCT -->
               <div class="product">
                   <div class="card bg-light mb-3" style="max-width: 18rem;">
-                    <div class="card-header">Product</div>
-                    <div class="isi-task">
-                        <div class="issue">
-                            <div class="card-body">
-                              <h5 class="card-title">Light card title</h5>
-                              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                              <div class= "event-issue">
-                                <a>Edit</a>
-                                <a><i class="fas fa-trash-alt"></i></a>
+                      <div class="card-header">Product</div>
+                      <div id="tempat-card" class="isi-task">
+                          <div class="issue" v-for="task in productTask" v-bind:key="task.id">
+                              <div class="card-body">
+                                <h5 class="card-title">{{task.title}}</h5>
+                                <p class="card-text">{{task.description}}</p>
+                                <div class= "event-issue">
+                                  <a v-on:click="showFormEdit(task.id)" style="cursor: pointer">Edit</a>
+                                  <a v-on:click="deleteTask(task.id)" style="cursor: pointer"><i class="fas fa-trash-alt"></i></a>
+                                </div>
                               </div>
-                            </div>
-                        </div>
-                    </div>
+                          </div>
+                      </div>
                   </div>
-              </div>  
+              </div>
 
               <!-- DEVELOPMENT -->
               <div class="development">
                   <div class="card bg-light mb-3" style="max-width: 18rem;">
-                    <div class="card-header">Header</div>
-                    <div class="isi-task">
-                        <div class="issue">
-                            <div class="card-body">
-                              <h5 class="card-title">Light card title</h5>
-                              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                              <div class= "event-issue">
-                                <a>Edit</a>
-                                <a><i class="fas fa-trash-alt"></i></a>
+                      <div class="card-header">Development</div>
+                      <div id="tempat-card" class="isi-task">
+                          <div class="issue" v-for="task in developmentTask" v-bind:key="task.id">
+                              <div class="card-body">
+                                <h5 class="card-title">{{task.title}}</h5>
+                                <p class="card-text">{{task.description}}</p>
+                                <div class= "event-issue">
+                                  <a v-on:click="showFormEdit(task.id)" style="cursor: pointer">Edit</a>
+                                  <a v-on:click="deleteTask(task.id)" style="cursor: pointer"><i class="fas fa-trash-alt"></i></a>
+                                </div>
                               </div>
-                            </div>
-                        </div>
-                    </div>
+                          </div>
+                      </div>
                   </div>
               </div>
 
               <!-- DONE -->
               <div class="done">
                   <div class="card bg-light mb-3" style="max-width: 18rem;">
-                    <div class="card-header">Header</div>
-                    <div class="isi-task">
-                        <div class="issue">
-                            <div class="card-body">
-                              <h5 class="card-title">Light card title</h5>
-                              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                              <div class= "event-issue">
-                                <a>Edit</a>
-                                <a><i class="fas fa-trash-alt"></i></a>
+                      <div class="card-header">Done</div>
+                      <div id="tempat-card" class="isi-task">
+                          <div class="issue" v-for="task in doneTask" v-bind:key="task.id">
+                              <div class="card-body">
+                                <h5 class="card-title">{{task.title}}</h5>
+                                <p class="card-text">{{task.description}}</p>
+                                <div class= "event-issue">
+                                  <a v-on:click="showFormEdit(task.id)" style="cursor: pointer">Edit</a>
+                                  <a v-on:click="deleteTask(task.id)" style="cursor: pointer"><i class="fas fa-trash-alt"></i></a>
+                                </div>
                               </div>
-                            </div>
-                        </div>
-                    </div>
+                          </div>
+                      </div>
                   </div>
-              </div> 
+              </div>
 
           </div>
         </div>
       </div>
+      <div id="add-task" v-else-if="currentPage === 'addTaskPage'">
+          <center>
+              <form style="width:25%;" v-on:submit.prevent="addNewTask">
+                  <h2>Add Todo</h2>
+                  <div class="form-group">
+                      <label for="title">Title</label>
+                      <input type="text" id="title" class="form-control" v-model="newTask.title">
+                  </div>
+                  <div class="form-group">
+                      <label for="description">Description</label>
+                      <input type="text" id="description" class="form-control" v-model="newTask.description">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+          </center>
+      </div>
+      <div id="update-todo" v-else-if="currentPage === 'updateTaskPage'">
+          <center>
+              <form style="width:25%;" v-on:submit.prevent="updateTask(dataTask.id)">
+                  <h2>Update Task</h2>
+                  <div class="form-group">
+                      <label for="title">Title</label>
+                      <input type="text" id="edit-title" class="form-control" v-model="dataTask.title">
+                  </div>
+                  <div class="form-group">
+                      <label for="description">Description</label>
+                      <input type="text" id="edit-description" class="form-control" v-model="dataTask.description">
+                  </div>
+                  <div id="edit-status">
+                      <label>Category : </label>
+                      <select name="status" v-model="dataTask.CategoryId">
+                          <option v-for="category in categories" v-bind:value="category.id">{{category.name}}</option>
+                          <!-- <option v-for="category in categories" :selected="category.id === dataTask.CategoryId ? true : false" v-bind:key="category.id">{{category.name}}</option> -->
+                      </select>
+                  </div>
+                  <br>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+          </center>
+      </div>
     </div>
-    <div id="add-task" v-else-if="currentPage === 'addTaskPage'">
-        <center>
-            <form style="width:25%;">
-                <h2>Add Todo</h2>
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" id="title" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <input type="text" id="description" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="due_Date">Due Date</label>
-                    <input type="date" id="due_date" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </center>
-    </div>
+    
     
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://kit.fontawesome.com/73f2e01f19.js" crossorigin="anonymous"></script>
     <script src="js/main.js"></script>
