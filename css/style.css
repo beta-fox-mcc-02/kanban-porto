@@ -126,8 +126,9 @@
     background-color: #D3D3D3;
 }
 
-#tempat-card {
-    overflow: auto;
+.kanban-board .card {
+    overflow: auto; 
+    max-height: 75vh;
 }
 
 .main-view .content .kanban-board {
