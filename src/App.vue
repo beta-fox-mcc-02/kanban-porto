@@ -41,9 +41,11 @@ export default {
             else if (fromChild.page === 'register') localStorage.clear()
         },
         fetchAll() {
+            let token = localStorage.getItem('access_token')
             axios({
                 method: "GET",
-                url: "http://localhost:3000/task/findAll"
+                url: "http://localhost:3000/task/findAll",
+                headers: { token }
             })
             .then((result) => this.categories = result.data)
             .catch((err) => console.log(err))
