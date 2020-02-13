@@ -33,12 +33,21 @@
       <h2 class="font-weight-light">Kanban Board</h2>
       <div class="small">Create your beautiful Kanban in here</div>
       <div class="row flex-row flex-sm-nowrap py-3" >
-        <div class="col-sm-6 col-md-4 col-xl-3">
-          <PanelVue class=""></PanelVue>
+        <div class="col-sm-6 col-md-4 col-xl-3 my-3">
+          <PanelVue :panelTitle="panelTitle[0]" :panelId="1"></PanelVue>
         </div>
-        <button class="btn btn-light">Add category</button>
+        <div class="col-sm-6 col-md-4 col-xl-3 my-3">
+          <PanelVue :panelTitle="panelTitle[1]" :panelId="2"></PanelVue>
+        </div>
+        <div class="col-sm-6 col-md-4 col-xl-3 my-3">
+          <PanelVue :panelTitle="panelTitle[2]" :panelId="3"></PanelVue>
+        </div>
+        <div class="col-sm-6 col-md-4 col-xl-3 my-3">
+          <PanelVue :panelTitle="panelTitle[3]" :panelId="4"></PanelVue>
+        </div>
       </div>
     </div>
+
     </div>
   </div>
 </template>
@@ -57,7 +66,8 @@ export default {
       message: 'Hello world',
       currentPage: 'register',
       showAlert: false,
-      errorMessage: ''
+      errorMessage: '',
+      panelTitle: ['Backlog', 'Todo', 'Done', 'Completed']
     };
   },
   components: {
@@ -75,8 +85,13 @@ export default {
     logout(payload){
       localStorage.removeItem("access_token");
       this.changePageTo('register');
+      const auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function() {
+        console.log('User signed out from google sign');
+      })
     },
     toHome(payload){
+      // TODO: use fetch and if error show error message
       if(localStorage.access_token) this.changePageTo('home');
       else this.changePageTo('register')
     },

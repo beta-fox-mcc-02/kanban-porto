@@ -1,12 +1,14 @@
 <template>
   <div>
-    <div class="card shadow-sm" draggable="true">
+    <div class="card shadow-sm">
       <div class="card-body p-2">
-        <div class="card-title">
-          <h6>Title</h6>
+        <div class="card-title" :id="task.id">
+          <h6> {{ task.title }} </h6>
         </div>
-        <p >This is description</p>
-        <button class="btn btn-light btn-sm float-right">Edit</button>
+        <small class="float-right">
+          <a href="#"><i class="fas fa-edit"></i></a> |
+          <a href="#"><i class="fas fa-trash-alt"></i></a>
+          </small>
       </div>
     </div>
   </div>
@@ -14,6 +16,9 @@
 
 <script>
 export default {
+  props : {
+    task: Object
+  },
   name: 'Card',
   data(){
     return {
@@ -24,6 +29,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
 
 </style>

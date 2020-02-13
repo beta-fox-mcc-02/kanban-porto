@@ -10,7 +10,7 @@
         <label>Password</label>
         <input type="password" class="form-control" placeholder="Password" v-model="loginInput.password">
       </div>
-      <button type="submit" class="btn btn-primary btn-block">Submit</button>
+      <button type="submit" class="btn btn-primary btn-block login-register"><i class="fas fa-sign-in-alt"></i></button>
       <p class="text-center mt-3">
         <a href="#" @click="changePageTo('register')">Create an Account</a>
       </p>
@@ -45,8 +45,8 @@ export default {
       })
         .then(res => {
           localStorage.access_token = res.data.access_token;
-          // this.loginInput.email = '';
-          // this.loginInput.password = '';
+          this.loginInput.email = '';
+          this.loginInput.password = '';
           this.changePageTo('home');
         })
         .catch(err => {

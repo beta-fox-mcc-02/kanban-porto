@@ -14,17 +14,44 @@
         <label>Password</label>
         <input type="password" class="form-control" placeholder="Password" v-model="registerInput.password">
       </div>
-      <button type="submit" class="btn btn-primary btn-block">Submit</button>
+      <button type="submit" class="btn btn-primary btn-block login-register"><i class="fas fa-sign-in-alt"></i></button>
+      <h5 class="text-center my-3">Or</h5>
+      <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
       <p class="text-center mt-3">
         <a href="#" @click="changePageTo('login')">I Already Have an Account</a>
       </p>
     </form>
+
   </div>
   
 </template>
 
 <script>
 import axios from 'axios';
+
+function onSignIn(){
+  const id_token = googleUser.getAuthResponse().id_token;
+  console.log(id_token);
+  var profile = googleUser.getBasicProfile();
+  console.log('ID: ' + profile.getId()); 
+  console.log('Name: ' + profile.getName());
+  console.log('Image URL: ' + profile.getImageUrl());
+  console.log('Email: ' + profile.getEmail()); 
+  axios({
+    method: 'POST',
+    url: 'http://localhost:3000/gSignIn',
+    data: {
+      id_token
+    }
+  })
+    .then(res => {
+      console.log(res.data);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+}
 
 export default {
   name: 'Register',
@@ -52,9 +79,9 @@ export default {
       })
         .then(res => {
           localStorage.access_token = res.data.access_token;
-          // this.registerInput.username = '';
-          // this.registerInput.email = '';
-          // this.registerInput.password = '';
+          this.registerInput.username = '';
+          this.registerInput.email = '';
+          this.registerInput.password = '';
           console.log(self);
           self.changePageTo('home');
         })
@@ -62,11 +89,20 @@ export default {
           this.$emit('renderErrorMessage', err.response.data);
         })
     }
+   
   }
 
 }
 </script>
 
 <style>
+.g-signin2{
+  width: 100%;
+}
+
+.g-signin2 > div{
+  margin: 0 auto;
+}
 
 </style>
+
