@@ -90,6 +90,7 @@ const BASE_URL = "http://localhost:3000";
 import GoogleSigninButton from "../components/GoogleSigninButton";
 import ButtonLoading from "../components/ButtonLoading";
 import Alert from "../components/Alert";
+import isAuthenticated from "../helpers/isAuthenticated";
 import axios from "axios";
 export default {
   name: "Register",
@@ -145,6 +146,28 @@ export default {
   },
   mounted() {
     this.email = this.$route.query.email;
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (localStorage.token) {
+        isAuthenticated()
+          .then(response => {
+            next("/board");
+          })
+          .catch(error => {
+            if (error.response) {
+              console.log(error.response.data);
+            } else if (error.request) {
+              console.log(error.request);
+            } else {
+              console.log("Error", error.message);
+            }
+            next();
+          });
+      } else {
+        next();
+      }
+    });
   }
 };
 </script>

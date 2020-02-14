@@ -19,7 +19,7 @@
             <span class="user-initial">{{ user.initial }}</span>
           </a>
           <div class="dropdown-menu" aria-labelledby="dropdown-profile">
-            <a class="dropdown-item" href="#">Logout</a>
+            <a @click="logout" class="logout dropdown-item">Logout</a>
           </div>
         </li>
       </ul>
@@ -30,6 +30,12 @@
 <script>
 export default {
   name: "Navbar",
-  props: ["isLogin", "user"]
+  props: ["isLogin", "user"],
+  methods: {
+    logout() {
+      localStorage.clear();
+      this.$router.push({ path: "/" });
+    }
+  }
 };
 </script>
