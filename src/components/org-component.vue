@@ -42,7 +42,7 @@
                             </thead>
                             <tbody>
                               <tr v-for='org in myOrg' :key="org.id">
-                                <td class="btn" @click='readCategory(org.id)'>{{org.name}}</td>
+                                <td class="btn" @click='readCategory(org.id, org.name)'>{{org.name}}</td>
                               </tr>
                             </tbody>
                           </table>
@@ -107,7 +107,7 @@ export default {
                 console.log(err)
             })
         },
-        readCategory(id){
+        readCategory(id, name){
             axios.get('http://localhost:3000/tasks/category', {
                 headers : {
                     token : localStorage.token,
@@ -116,6 +116,7 @@ export default {
             })
             .then(({data}) => {
                 localStorage.id = id
+                localStorage.name = name
                 this.$emit('currentPage', 'taskPage')
             })
         },

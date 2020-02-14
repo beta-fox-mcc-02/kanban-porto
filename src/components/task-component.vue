@@ -191,7 +191,11 @@ export default {
         })
         .then(({data}) => {
             // console.log(data)
+            localStorage.removeItem('id')
             this.readCategory()
+        })
+        .catch(err => {
+          console.log(err)
         })
     },
     readCategory(){

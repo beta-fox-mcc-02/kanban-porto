@@ -91,7 +91,7 @@ export default {
             const temp = []
             for(let i = 0; i < this.compareUser.length; i++){
                 for(let j = 0; j < this.Users.length; j++){
-                    if(this.Users[j].id != this.compareUser[i].UserId){
+                    if(this.Users[j].id != this.compareUser[i].UserId && this.Users[j].name != localStorage.name){
                         this.Users.splice(j, 1)
                         break
                     }
