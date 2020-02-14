@@ -42,9 +42,9 @@ export default {
         fetch() {
             this.$emit('fetch')
         },
-        formEdit(title, CategoryId, UserId)  {
+        formEdit(id, title, CategoryId, UserId)  {
             console.log(title, CategoryId, UserId, "DARIIIIIII KANBVAANN CARRDDD > B+VUEEEE")
-            this.$emit('formEdit', title, CategoryId, UserId)
+            this.$emit('formEdit', id, title, CategoryId, UserId)
         }
     },
     computed: {

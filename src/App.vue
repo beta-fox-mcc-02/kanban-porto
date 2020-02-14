@@ -16,6 +16,7 @@
         @changePage="changePage" 
         @formEdit="formEdit"
         v-else-if="currentPage === 'landing'"
+        ref="home"
         ></Home>
         <AddTask 
         v-else-if="currentPage === 'addtask'" 
@@ -23,6 +24,7 @@
         ></AddTask>
         <EditForm
         v-else-if="currentPage === 'editForm'"
+        :id="id"
         :title="title"
         :CategoryId="CategoryId"
         :UserId="UserId"
@@ -44,6 +46,7 @@ export default {
     data () {
         return {
             currentPage: 'login',
+            id: "",
             title: "",
             CategoryId: "",
             UserId: ""
@@ -62,8 +65,9 @@ export default {
             console.log("SUDAAAAAHH MASUUKK SINI YYAASSSS")
             this.currentPage = page
         },
-        formEdit (title, CategoryId, UserId) {
-            console.log(title, CategoryId, UserId, "PUYEEENNGGSSSSS")
+        formEdit (id, title, CategoryId, UserId) {
+            console.log(id, title, CategoryId, UserId, "PUYEEENNGGSSSSS")
+            this.id = id
             this.title = title
             this.CategoryId = CategoryId
             this.UserId = UserId

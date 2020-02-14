@@ -9,6 +9,8 @@
                 <input type="password" required v-model="password">
                 <button type="submit" class="btn btn-primary">SUBMIT</button>
             </form>
+            <br>
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
         </div>
     </div>
 </template>

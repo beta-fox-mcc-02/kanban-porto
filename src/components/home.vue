@@ -50,6 +50,7 @@ export default {
                 }
             })
                 .then(({data}) => {
+                    console.log(data.tasks, " << trigger")
                     this.tasks = data.tasks
                 })
                 .catch(err => {
@@ -60,9 +61,9 @@ export default {
             console.log('KAKENYA KE TRIGGER', page)
             this.$emit('changePage', page)
         },
-        formEdit(title, CategoryId, UserId) {
+        formEdit(id, title, CategoryId, UserId) {
             console.log(title, CategoryId, UserId, "INIII DARIIIIIIIIIII USEEERRRRRRRR")
-            this.$emit('formEdit', title, CategoryId, UserId)
+            this.$emit('formEdit', id, title, CategoryId, UserId)
         }
     },
     components: {
