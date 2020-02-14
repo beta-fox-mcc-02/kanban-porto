@@ -1,0 +1,25 @@
+{
+  "name": "kanban-porto",
+  "version": "1.0.0",
+  "description": "This repo for your kanban client",
+  "main": "main.js",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bulma": "^0.8.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edycakra/kanban-porto.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edycakra/kanban-porto/issues"
+  },
+  "homepage": "https://github.com/edycakra/kanban-porto#readme"
+}
