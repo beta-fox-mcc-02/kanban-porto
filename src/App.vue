@@ -17,7 +17,7 @@ import LoginForm from './components/LoginForm'
 import Dashboard from './components/Dashboard'
 import AddForm from './components/AddForm'
 import EditForm from './components/EditForm'
-import axios from 'axios'
+import axios from './config'
 
 export default {
   name: 'App',
@@ -82,7 +82,7 @@ export default {
         fetchAll() {
             axios({
                 method: 'GET',
-                url: `http://localhost:3000/tasks`,
+                url: `/tasks`,
                 headers: {access_token: localStorage.access_token}
             })
             .then(response => {
@@ -96,7 +96,7 @@ export default {
             this.currentPage = 'editFormPage'
             axios({
                 method: 'GET',
-                url: `http://localhost:3000/tasks/${id}`,
+                url: `/tasks/${id}`,
                 headers: {access_token: localStorage.access_token}
             })
             .then(response => {
@@ -110,7 +110,7 @@ export default {
         editTask(id) {
             axios({
                 method: 'PUT',
-                url: `http://localhost:3000/tasks/${id}`,
+                url: `/tasks/${id}`,
                 data: {
                     title: this.editTaskObj.title,
                     category: this.editTaskObj.category
@@ -128,7 +128,7 @@ export default {
         deleteTask(id) {
             axios({
                 method: 'DELETE',
-                url: `http://localhost:3000/tasks/${id}`,
+                url: `/tasks/${id}`,
                 headers: {access_token: localStorage.access_token}
             })
             .then(response => {

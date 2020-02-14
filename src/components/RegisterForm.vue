@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import axios from '../config'
 export default {
     name: 'RegisterForm',
     data() {
@@ -52,7 +53,7 @@ export default {
         createUser() {
             axios({
                 method: 'POST',
-                url: `http://localhost:3000/register`,
+                url: `/register`,
                 data: {
                     username: this.register.username,
                     email: this.register.email,

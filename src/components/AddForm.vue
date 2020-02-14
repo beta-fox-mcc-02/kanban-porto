@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import axios from '../config'
 export default {
     name: 'AddForm',
     props: ['currentPage', 'newTask'],
@@ -27,7 +28,7 @@ export default {
         addTask() {
             axios({
                 method: 'POST',
-                url: `http://localhost:3000/tasks`,
+                url: `/tasks`,
                 data: {title: this.newTask.title},
                 headers: {access_token: localStorage.access_token}
             })

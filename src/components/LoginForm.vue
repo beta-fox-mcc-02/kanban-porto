@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import axios from '../config'
 export default {
     name: 'LoginForm',
     data() {
@@ -52,7 +53,7 @@ export default {
         loginUser() {
             axios({
                 method: 'POST',
-                url: `http://localhost:3000/login`,
+                url: `/login`,
                 data: {
                     email: this.login.email,
                     password: this.login.password
@@ -75,7 +76,7 @@ export default {
         var id_token = googleUser.getAuthResponse().id_token;
             axios({
                 method: 'POST',
-                url: `http://localhost:3000/googleSignIn`,
+                url: `/googleSignIn`,
                 headers: {access_token: id_token}
             })
             .then(({data}) => {
