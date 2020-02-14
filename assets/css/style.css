@@ -1,0 +1,117 @@
+* {
+    margin: 0rem;
+}
+
+#register {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    display: flex;
+}
+
+#login {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 10rem;
+    text-align: center;
+    border-style: solid;
+}
+
+#register {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 10rem;
+    text-align: center;
+    border-style: solid;
+}
+
+label {
+    font-size: 2rem;
+}
+
+#addTask {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 18pt;
+}
+
+#editTask {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 18pt;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: black;
+    color: goldenrod;
+    height: 60px;
+    align-items: center;
+}
+
+.kanbanBoard {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 3rem;
+}
+
+#backlog, #todo, #ongoing, #completed {
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+div.category-items {
+    overflow: scroll;
+    background-color: lightblue;
+    width: 20rem;
+    max-height: 10rem;
+}
+
+.task-card {
+    margin-bottom: 1rem;
+    margin: 0;
+}
+
+.box {
+    padding: 5rem;
+    background-color: black;
+    color: goldenrod;
+}
+
+.card-header {
+    background-color: goldenrod;
+    color: lightgoldenrodyellow;
+}
+
+.task-title {
+    color: goldenrod;
+    text-align: center;
+}
+
+.card-content {
+    background-color: black;
+    color: blanchedalmond;
+}
+
+.card-footer {
+    background-color: black;
+    color: lightgoldenrodyellow;
+    height: 2rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+

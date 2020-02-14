@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-signin-client_id" content="842930767637-kt3fe74b9som8sm73l936b092siea84a.apps.googleusercontent.com">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <link rel="icon" href="./assets/images/icon.png">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <title>Kanban by Adino Eleazar Manoppo</title>
+  </head>
+  <body>
+    <div id="app">
+
+    </div>
+    <!-- <div id="app">
+      <div v-if="currentPage === 'register'" id="register" class="card" style="width: 18rem;">
+          <div class="card-header">
+              <ul class="nav nav-tabs nav-fill">
+                  <li class="nav-item">
+                      <a class="nav-link active" >Register</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" id="login-btn" href="">Login</a>
+                  </li>
+              </ul>
+          </div>
+          <div class="card-body">
+              <form>
+                  <h4>Register</h4>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Email</label>
+                    <input id="register-email" type="email" class="form-control" aria-describedby="emailHelp">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input id="register-password" type="password" class="form-control" id="exampleInputPassword1">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+          </div>
+          <h5>OR</h5>
+          <div id="gOAuth" class="g-signin2" data-onsuccess="onSignIn"></div>
+      </div>
+
+
+
+
+      
+      <div id="addTask" class="addTask" v-if="currentPage === 'addTask'">
+        
+      </div>
+
+      <div v-if="currentPage === 'contentPage'" class="container">
+          <div class="kanbanBoard">
+              <div id="backlog">
+                <div class="card">
+                  <header class="card-header">
+                    <p class="card-header-title">
+                      BackLog
+                    </p>
+                    <a href="#" class="card-header-icon" aria-label="more options">
+                      <span class="icon">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                      </span>
+                    </a>
+                  </header>
+                  <div class="category-items">
+                    <div class="task-card" v-for="task in tasks" :key="task.id">
+                      <div class="card-content">
+                        <div class="task-title">
+                          {{ task.title }}
+                        </div>
+                        <div class="content">
+                          {{ task.description }}
+                        </div>
+                      </div>
+                      <footer class="card-footer">
+                        <a class="fas fa-edit"></a>
+                        <a href="#" class="fas fa-trash-alt"></a>
+                        <a href="#" class="fas fa-arrow-right"></a>
+                      </footer>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="task">
+                <div class="card">
+                  <header class="card-header">
+                    <p class="card-header-title">
+                      ToDo
+                    </p>
+                    <a href="#" class="card-header-icon" aria-label="more options">
+                      <span class="icon">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                      </span>
+                    </a>
+                  </header>
+                  <div class="card-content">
+                    <div class="content">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+                      <a href="#">@bulmaio</a>. <a href="#">#css</a> <a href="#">#responsive</a>
+                      <br>
+                      <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                    </div>
+                  </div>
+                  <footer class="card-footer">
+                    <a href="#" class="card-footer-item">Save</a>
+                    <a href="#" class="card-footer-item">Edit</a>
+                    <a href="#" class="card-footer-item">Delete</a>
+                  </footer>
+                </div>
+              </div>
+              <div id="ongoing">
+                <div class="card">
+                  <header class="card-header">
+                    <p class="card-header-title">
+                      Ongoing
+                    </p>
+                    <a href="#" class="card-header-icon" aria-label="more options">
+                      <span class="icon">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                      </span>
+                    </a>
+                  </header>
+                  <div class="card-content">
+                    <div class="content">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+                      <a href="#">@bulmaio</a>. <a href="#">#css</a> <a href="#">#responsive</a>
+                      <br>
+                      <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                    </div>
+                  </div>
+                  <footer class="card-footer">
+                    <a href="#" class="card-footer-item">Save</a>
+                    <a href="#" class="card-footer-item">Edit</a>
+                    <a href="#" class="card-footer-item">Delete</a>
+                  </footer>
+                </div>
+              </div>
+              <div id="completed">
+                <div class="card">
+                  <header class="card-header">
+                    <p class="card-header-title">
+                      Completed
+                    </p>
+                    <a href="#" class="card-header-icon" aria-label="more options">
+                      <span class="icon">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                      </span>
+                    </a>
+                  </header>
+                  <div class="card-content">
+                    <div class="content">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+                      <a href="#">@bulmaio</a>. <a href="#">#css</a> <a href="#">#responsive</a>
+                      <br>
+                      <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                    </div>
+                  </div>
+                  <footer class="card-footer">
+                    <a href="#" class="card-footer-item">Save</a>
+                    <a href="#" class="card-footer-item">Edit</a>
+                    <a href="#" class="card-footer-item">Delete</a>
+                  </footer>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div> -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="src/main.js"></script>
+  </body>
+</html>
