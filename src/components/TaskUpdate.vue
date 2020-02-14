@@ -1,10 +1,12 @@
 <template>
+<modal name="TaskUpdate" class="modal-content">
+
   <div class="row" id="TaskForm">
     <div class="col s4 offset-s4">
       <div class="card z-depth-3">
         <div class="card-content">
-          <span class="card-title center">Create New Task</span>
-          <form id="login-form" @submit.prevent="addTask">
+          <span class="card-title center">Update Task</span>
+          <form id="login-form" @submit.prevent="updateTask(task.id)">
             <div class="row">
               <div class="col s12 input-field">
                 <input id="title" type="text" class="validate" v-model="title">
@@ -19,7 +21,7 @@
             </div>
             <div class="row">
               <div class="col s12 center">
-                <button class="btn waves-effect waves-light" type="submit" name="action">Add Task</button>
+                <button class="btn waves-effect waves-light" type="submit" name="action">Update Task</button>
               </div>
             </div>
           </form>
@@ -27,44 +29,26 @@
       </div>
     </div>
   </div>
+</modal>
 </template>
 
 <script>
-import axios from 'axios'
 export default {
-  name: "TaskForm",
-
+  name: "TaskUpdate",
   data() {
     return {
-      title: '',
-      description: ''
+      title: "judul",
+      description: "deksripsi"
     }
   },
 
   methods: {
-    addTask() {
-      axios({
-        method: 'post',
-        url:'http://localhost:3000/tasks', 
-        data: {
-          title: this.title, 
-          description : this.description
-        },
-        headers: {
-          token: localStorage.token
-        }
-      })
-        .then(({data}) => {
-          this.title = ''
-          this.description = ''
-          this.$emit('showContent')
-          this.$emit('notification', null, data.msg)
-        })
-        .catch(err => {
-          this.title = ''
-          this.description = ''
-          this.$emit('notification', err)
-        })
+    findOneTask(taskId) {
+
+    },
+
+    updateTask(taskId) {
+
     }
   }
 }

@@ -72,22 +72,12 @@ export default {
         this.user = ''
         this.password = ''
         this.$emit('showContent')
-        Toastify({
-          text: "Login success",
-          position: 'center',
-          backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-          className: "success",
-        }).showToast();
+        this.$emit('notification', null, 'Login successful')
       })
       .catch(err => {
         this.user = ''
         this.password = ''
-        Toastify({
-          text: "Wrong username, email, or password",
-          position: 'center',
-          backgroundColor: "linear-gradient(to right, #EC6E55, #D74D35)",
-          className: "error",
-        }).showToast();
+        this.$emit('notification', err)
       })
     }
   }

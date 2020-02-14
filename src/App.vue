@@ -2,23 +2,28 @@
   <div>
     <NavBar 
       @showContent="showContent"
+      @notification="notification"
       :currentPage="currentPage"
       :username="username"
       ></NavBar>
     <LoginForm
       @showContent="showContent"
+      @notification="notification"
       v-if="currentPage === 'LoginPage'"
     ></LoginForm>
     <RegisterForm 
       @showContent="showContent"
+      @notification="notification"
       v-if="currentPage === 'LoginPage'"
     ></RegisterForm>
     <TaskForm
       @showContent="showContent"
+      @notification="notification"
       v-if="currentPage === 'content'"
     ></TaskForm>
     <TaskContainer 
       @showContent="showContent" 
+      @notification="notification"
       :tasks="tasks"
       v-if="currentPage === 'content'"
     ></TaskContainer>
@@ -32,7 +37,6 @@ import LoginForm from './components/LoginForm'
 import RegisterForm from './components/RegisterForm'
 import TaskForm from './components/TaskForm'
 import TaskContainer from './components/TaskContainer'
-import TaskCard from './components/TaskCard'
 export default {
   name: "App",
 
@@ -49,8 +53,7 @@ export default {
     LoginForm,
     RegisterForm,
     TaskForm,
-    TaskContainer,
-    TaskCard
+    TaskContainer
   },
 
 
@@ -77,38 +80,28 @@ export default {
         this.$emit('showContent')
       })
       .catch(err => {
+        this.notification(`${err}`)
+      })
+    },
+
+    notification(err, success) {
+      if(err) {
         Toastify({
-          text: "Error fetching data",
+          text: `${err}`,
           position: 'center',
           backgroundColor: "linear-gradient(to right, #EC6E55, #D74D35)",
           className: "error",
         }).showToast();
-      })
+      } else {
+        Toastify({
+            text: `${success}`,
+            position: 'center',
+            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            className: "success",
+          }).showToast();
+      }
     }
     
-  },
-
-  computed: {
-    backlog () {
-      if(this.tasks) {
-        let arr = []
-        this.tasks.forEach(task => {
-          if(task.CategoryId == 1) arr.push(task)
-        });
-      }
-      return arr
-    },
-
-    todo () {
-      if(this.tasks) {
-        let arr = []
-        this.tasks.forEach(task => {
-          if(task.CategoryId == 1) arr.push(task)
-        });
-      }
-      return arr
-    }
-  
   },
 
   //hook lifecycle

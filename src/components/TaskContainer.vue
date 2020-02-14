@@ -12,16 +12,13 @@
                 </div> -->
               </div>
             </nav>
-            <div class="card hoverable" v-for="task in tasks" :key="task.id">
-              <div class="card-content">
-                <span class="card-title" id="title">{{task.title}}</span>
-                <div class="row">
-                  <div class="col s12">
-                    <p id="description">{{task.description}}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <TaskCard
+              v-for="task in backlog"
+              :key="task.id"
+              :task="task"
+              @showContent="showContent"
+              @notification="notification"
+            ></TaskCard>
           </div>
           <div class="col s3" id="todo">
             <nav>
@@ -29,6 +26,13 @@
                 <p>Todo</p>
               </div>
             </nav>
+            <TaskCard
+              v-for="task in todo"
+              :key="task.id"
+              :task="task"
+              @showContent="showContent"
+              @notification="notification"
+            ></TaskCard>
           </div>
           <div class="col s3" id="ongoing">
             <nav>
@@ -36,6 +40,13 @@
                 <p>Ongoing</p>
               </div>
             </nav>
+            <TaskCard
+              v-for="task in ongoing"
+              :key="task.id"
+              :task="task"
+              @showContent="showContent"
+              @notification="notification"
+            ></TaskCard>
           </div>
           <div class="col s3" id="done">
             <nav>
@@ -43,6 +54,13 @@
                 <p>Done</p>
               </div>
               </nav>
+              <TaskCard
+              v-for="task in done"
+              :key="task.id"
+              :task="task"
+              @showContent="showContent"
+              @notification="notification"
+            ></TaskCard>
           </div>
         </div>
       </div>
@@ -51,6 +69,7 @@
 
 <script>
 import axios from 'axios'
+import TaskCard from './TaskCard'
 export default {
   name: "TaskContainer",
   data() {
@@ -63,9 +82,61 @@ export default {
     tasks: Array
   },
 
-  methods: {
-    
+  components: {
+    TaskCard
   },
+
+  methods: {
+    showContent() {
+      this.$emit('showContent')
+    },
+
+    notification(err, success) {
+      this.$emit('notification', err, success)
+    }
+  },
+  
+  computed: {
+    backlog (CategoryId) {
+      if(this.tasks) {
+        let arr = []
+        this.tasks.forEach(task => {
+          if(task.CategoryId == 1) arr.push(task)
+        });
+      return arr
+      }
+    },
+
+    todo () {
+      if(this.tasks) {
+        let arr = []
+        this.tasks.forEach(task => {
+          if(task.CategoryId == 2) arr.push(task)
+        });
+      return arr
+      }
+    },
+
+    ongoing () {
+      if(this.tasks) {
+        let arr = []
+        this.tasks.forEach(task => {
+          if(task.CategoryId == 3) arr.push(task)
+        });
+      return arr
+      }
+    },
+
+    done () {
+      if(this.tasks) {
+        let arr = []
+        this.tasks.forEach(task => {
+          if(task.CategoryId == 4) arr.push(task)
+        });
+      return arr
+      }
+    }
+  }
   
 }
 </script>
