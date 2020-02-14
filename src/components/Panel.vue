@@ -8,8 +8,9 @@
         <cardVue 
           :task="task" 
           class="m-1" 
-          @fetchDataAgain='fetchDataAgain'
-          :CategoryId="panelId">
+          @fetchDataAgain="fetchDataAgain"
+          :CategoryId="panelId"
+          @reloadOtherCategory="reloadOtherCategory">
         </cardVue>
 
       </div>
@@ -22,6 +23,10 @@
 
       <button class="btn btn-light btn-block add-task" @click="showAddTask">Add Task</button>
     </div>
+    <!-- <div 
+      v-if="reloadCat === panelId">
+      <div>{{reloadCat}}</div>
+    </div> -->
   </div>
 
 </template>
@@ -33,7 +38,8 @@ import axios from 'axios';
 export default {
   props: {
     panelTitle: String,
-    panelId: Number
+    panelId: Number,
+    reloadCat: Number
   },
   name: 'Panel',
   data(){
@@ -109,11 +115,27 @@ export default {
     },
     editTask(){
       this.isEditTask = true;
+    },
+    reloadOtherCategory(payload){
+      this.$emit('reloadOtherCategory', payload)
+    },
+    reloadThisPanel(payload){
+      if(this.reloadCat === this.panelId){
+        console.log('mausk');
+      }
     }
   },
   created(){
     if(localStorage.access_token){
       this.fetchData()
+    }
+  },
+  watch: {
+    reloadCat: function(val){
+      if(val === this.panelId){
+        this.fetchDataAgain();
+        this.$emit('reloadOtherCategory', 99);
+      }
     }
   }
 

@@ -34,16 +34,24 @@
       <div class="small">Create your beautiful Kanban in here</div>
       <div class="row flex-row flex-sm-nowrap py-3" >
         <div class="col-sm-6 col-md-4 col-xl-3 my-3">
-          <PanelVue :panelTitle="panelTitle[0]" :panelId="1" @renderErrorMessage="renderErrorMessage"></PanelVue>
+          <PanelVue :panelTitle="panelTitle[0]" :panelId="1" @renderErrorMessage="renderErrorMessage" 
+          @reloadOtherCategory="reloadOtherCategory"
+          :reloadCat="reloadCat"></PanelVue>
         </div>
         <div class="col-sm-6 col-md-4 col-xl-3 my-3">
-          <PanelVue :panelTitle="panelTitle[1]" :panelId="2" @renderErrorMessage="renderErrorMessage"></PanelVue>
+          <PanelVue :panelTitle="panelTitle[1]" :panelId="2" @renderErrorMessage="renderErrorMessage"
+          @reloadOtherCategory="reloadOtherCategory"
+          :reloadCat="reloadCat"></PanelVue>
         </div>
         <div class="col-sm-6 col-md-4 col-xl-3 my-3">
-          <PanelVue :panelTitle="panelTitle[2]" :panelId="3" @renderErrorMessage="renderErrorMessage"></PanelVue>
+          <PanelVue :panelTitle="panelTitle[2]" :panelId="3" @renderErrorMessage="renderErrorMessage"
+          @reloadOtherCategory="reloadOtherCategory"
+          :reloadCat="reloadCat"></PanelVue>
         </div>
         <div class="col-sm-6 col-md-4 col-xl-3 my-3">
-          <PanelVue :panelTitle="panelTitle[3]" :panelId="4" @renderErrorMessage="renderErrorMessage"></PanelVue>
+          <PanelVue :panelTitle="panelTitle[3]" :panelId="4" @renderErrorMessage="renderErrorMessage"
+          @reloadOtherCategory="reloadOtherCategory"
+          :reloadCat="reloadCat"></PanelVue>
         </div>
       </div>
     </div>
@@ -63,11 +71,12 @@ export default {
   name: 'App',
   data(){
     return {
+      reloadCat: 99,
       message: 'Hello world',
       currentPage: 'register',
       showAlert: false,
       errorMessage: '',
-      panelTitle: ['Backlog', 'Todo', 'Done', 'Completed']
+      panelTitle: ['Backlog', 'Todo', 'Done', 'Completed'],
     };
   },
   components: {
@@ -109,10 +118,12 @@ export default {
     },
     closeErrorMessage(){
       this.showAlert = false;
+    },
+    reloadOtherCategory(payload){
+      this.reloadCat = payload;
     }
   },
   created(){
-    console.log('ini dari app');
     if(localStorage.access_token){
       this.currentPage = 'home'
     }
