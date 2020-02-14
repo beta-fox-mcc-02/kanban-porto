@@ -1,25 +1,54 @@
-header {
-    margin-bottom: 10px;
-}
-
 nav {
-    background-color: inherit;
+    z-index: 10;
+    background-color: white;
     margin: 0 auto;
     display: flex;
     justify-content: center;
+    margin-bottom: 10px;
+    .nav-wrapper {
+        background-color: inherit;
+        width: 90%;
+        .brand-logo img {
+            background-color: inherit;
+            width: 82%;
+        }
+        .navbar-container {
+            display: flex;
+        }
+    }
 }
 
 .nav-wrapper {
-    width: 90%;
+    .sidenav-trigger {
+        i {
+            color: black;
+        }
+    }
 }
 
-.navbar-container {
-    display: flex;
+.sidenav {
+    .side-navbar-container {
+        display: flex;
+        flex-direction: column;
+        li a {
+            font-size: 10pt;
+            color: white;
+            text-decoration: none;
+        }
+    }
+    .user-view {
+        color: white;
+    }
 }
 
-.side-navbar-container {
-    display: flex;
-    flex-direction: column;
+.dropdown-content {
+    overflow: hidden;
+    li {
+        a {
+            color: white;
+            font-size: 13px;
+        }
+    }
 }
 
 .drag-target {

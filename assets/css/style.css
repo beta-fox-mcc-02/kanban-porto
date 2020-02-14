@@ -3,94 +3,191 @@
   background-color: #304ffe;
 }
 
-header {
-  margin-bottom: 10px;
+.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
 }
 
 nav {
-  background-color: inherit;
+  z-index: 10;
+  background-color: white;
   margin: 0 auto;
   display: flex;
   justify-content: center;
+  margin-bottom: 10px;
 }
-
-.nav-wrapper {
+nav .nav-wrapper {
+  background-color: inherit;
   width: 90%;
 }
-
-.navbar-container {
+nav .nav-wrapper .brand-logo img {
+  background-color: inherit;
+  width: 82%;
+}
+nav .nav-wrapper .navbar-container {
   display: flex;
 }
 
-.side-navbar-container {
+.nav-wrapper .sidenav-trigger i {
+  color: black;
+}
+
+.sidenav .side-navbar-container {
   display: flex;
   flex-direction: column;
+}
+.sidenav .side-navbar-container li a {
+  font-size: 10pt;
+  color: white;
+  text-decoration: none;
+}
+.sidenav .user-view {
+  color: white;
+}
+
+.dropdown-content {
+  overflow: hidden;
+}
+.dropdown-content li a {
+  color: white;
+  font-size: 13px;
 }
 
 .drag-target {
   z-index: -1;
 }
 
+#login-form, #register-form, #new-organization-form, #new-task-form, #update-task-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#login-form .row, #register-form .row, #new-organization-form .row, #new-task-form .row, #update-task-form .row {
+  border-radius: 10px;
+  padding: 10px;
+}
+#login-form .row form .row, #register-form .row form .row, #new-organization-form .row form .row, #new-task-form .row form .row, #update-task-form .row form .row {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 75vh;
+  background-color: #c5cae9;
+}
+#login-form .row form .row .form-title, #register-form .row form .row .form-title, #new-organization-form .row form .row .form-title, #new-task-form .row form .row .form-title, #update-task-form .row form .row .form-title {
+  font-size: 20pt;
+}
+#login-form .row form .row .alert, #register-form .row form .row .alert, #new-organization-form .row form .row .alert, #new-task-form .row form .row .alert, #update-task-form .row form .row .alert {
+  background-color: inherit;
+}
+#login-form .row form .row .input-field, #login-form .row form .row label, #register-form .row form .row .input-field, #register-form .row form .row label, #new-organization-form .row form .row .input-field, #new-organization-form .row form .row label, #new-task-form .row form .row .input-field, #new-task-form .row form .row label, #update-task-form .row form .row .input-field, #update-task-form .row form .row label {
+  background-color: inherit;
+  margin-right: 20px;
+}
+#login-form .row form .row .input-field .helper-text, #login-form .row form .row label .helper-text, #register-form .row form .row .input-field .helper-text, #register-form .row form .row label .helper-text, #new-organization-form .row form .row .input-field .helper-text, #new-organization-form .row form .row label .helper-text, #new-task-form .row form .row .input-field .helper-text, #new-task-form .row form .row label .helper-text, #update-task-form .row form .row .input-field .helper-text, #update-task-form .row form .row label .helper-text {
+  background-color: inherit;
+  margin-right: 25px;
+}
+#login-form .row form .row .input-field .select-wrapper, #login-form .row form .row label .select-wrapper, #register-form .row form .row .input-field .select-wrapper, #register-form .row form .row label .select-wrapper, #new-organization-form .row form .row .input-field .select-wrapper, #new-organization-form .row form .row label .select-wrapper, #new-task-form .row form .row .input-field .select-wrapper, #new-task-form .row form .row label .select-wrapper, #update-task-form .row form .row .input-field .select-wrapper, #update-task-form .row form .row label .select-wrapper {
+  background-color: inherit;
+}
+#login-form .row form .row .input-field .select-wrapper li span, #login-form .row form .row label .select-wrapper li span, #register-form .row form .row .input-field .select-wrapper li span, #register-form .row form .row label .select-wrapper li span, #new-organization-form .row form .row .input-field .select-wrapper li span, #new-organization-form .row form .row label .select-wrapper li span, #new-task-form .row form .row .input-field .select-wrapper li span, #new-task-form .row form .row label .select-wrapper li span, #update-task-form .row form .row .input-field .select-wrapper li span, #update-task-form .row form .row label .select-wrapper li span {
+  color: white;
+}
+#login-form .row form .row .form-title, #register-form .row form .row .form-title, #new-organization-form .row form .row .form-title, #new-task-form .row form .row .form-title, #update-task-form .row form .row .form-title {
+  background-color: #c5cae9;
+  color: black;
+}
+#login-form .row form .row .submit-container, #register-form .row form .row .submit-container, #new-organization-form .row form .row .submit-container, #new-task-form .row form .row .submit-container, #update-task-form .row form .row .submit-container {
+  margin-bottom: 20px;
+  background-color: transparent;
+}
+#login-form .row form .row .submit-container button i, #register-form .row form .row .submit-container button i, #new-organization-form .row form .row .submit-container button i, #new-task-form .row form .row .submit-container button i, #update-task-form .row form .row .submit-container button i {
+  background-color: inherit;
+  display: flex;
+  align-self: flex-start;
+}
+#login-form .row form .card-text, #register-form .row form .card-text, #new-organization-form .row form .card-text, #new-task-form .row form .card-text, #update-task-form .row form .card-text {
+  background-color: inherit;
+}
+#login-form .row form .oauth-container, #register-form .row form .oauth-container, #new-organization-form .row form .oauth-container, #new-task-form .row form .oauth-container, #update-task-form .row form .oauth-container {
+  background-color: inherit;
+  margin-bottom: 7px;
+}
+
 .board-container {
   width: 98%;
 }
-
-.row {
+.board-container .add-card-btn {
+  color: white;
+}
+.board-container .row {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   align-content: center;
 }
-
-.t {
+.board-container .row .t {
   background-color: #c5cae9;
   border-radius: 10px;
   margin: 5px 5px;
 }
-
-.card {
-  padding: 5px;
-}
-
-.cards-column {
-  background-color: inherit;
-  max-height: 60vh;
-  overflow: auto;
-  margin-top: 10px;
-}
-
-.card-text {
-  background-color: inherit;
-  margin-bottom: 8px;
-}
-
-.card-title {
+.board-container .row .t .card-title {
   margin-top: 8px;
   padding: 8px 0px;
+  margin-bottom: 8px;
   border-radius: 10px 10px 0px 0px;
   font-weight: bold;
   color: white;
   font-size: 18pt;
 }
+.board-container .row .t .cards-column {
+  background-color: inherit;
+  max-height: 60vh;
+  overflow: auto;
+  margin-top: 10px;
+}
+.board-container .row .t .cards-column .card {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+.board-container .row .t .cards-column .card .card-title {
+  border-radius: 0px;
+  color: black;
+  background-color: transparent;
+}
+.board-container .row .t .cards-column .card .card-text {
+  background-color: inherit;
+  margin-bottom: 8px;
+}
+.board-container .row .t .cards-column .card .task-actions {
+  background-color: transparent;
+  display: flex;
+  justify-content: space-between;
+}
+.board-container .row .t .cards-column .card .task-actions a {
+  margin: 0px 6px;
+}
 
-.card-text-achor {
-  background-color: white;
-  padding: 3px;
-  border-radius: 0px 0px 0px 10px;
-  margin-bottom: 12px;
-  margin-top: 9px;
-  margin-right: 9px;
+.dashboard-container .row .col .organization-card .card-image span.card-title {
+  background-color: transparent;
+  padding-bottom: 0px;
 }
-.card-text-achor:hover {
-  background-color: #536dfe;
-  color: white;
+.dashboard-container .row .col .organization-card .card-image span.card-title .row {
+  background-color: transparent;
+  display: flex;
+  flex-flow: column-reverse wrap;
+  justify-content: flex-end;
+}
+.dashboard-container .row .col .organization-card .card-image span.card-title .row button.btn {
+  margin: 5px;
 }
 
-.card-text-achor a {
-  margin: 10px;
-}
-.card-text-achor a::before {
-  color: white;
+i {
+  background-color: transparent;
 }
 
 /*# sourceMappingURL=style.css.map */

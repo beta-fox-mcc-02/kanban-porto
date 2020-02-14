@@ -5,5 +5,20 @@
     background-color: $boardBackgroundColor;
 }
 
+.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+
 @import './header';
-@import './board';
+@import './form';
+@import './kanbanBoard';
+@import './dashboard';
+
+i {
+    background-color: transparent
+}
