@@ -52,7 +52,7 @@ export default {
         registerSubmit () {
             axios({
                 method: 'POST',
-                url: 'http://localhost:3000/register',
+                url: 'https://kanban-day.herokuapp.com/register',
                 data: {
                     name: this.name,
                     email: this.email,

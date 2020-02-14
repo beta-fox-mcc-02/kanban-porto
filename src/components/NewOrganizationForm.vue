@@ -39,7 +39,7 @@ export default {
         newOrganizationSubmit() {
             axios({
                 method: 'POST',
-                url: 'http://localhost:3000/organization',
+                url: 'https://kanban-day.herokuapp.com/organization',
                 data: {
                     name: this.name
                 },

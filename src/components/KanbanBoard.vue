@@ -144,7 +144,7 @@ export default {
         nextCategory(id, status) {
             axios({
                 method: 'PATCH',
-                url: `http://localhost:3000/organization/${this.orgId}/task/${id}`,
+                url: `https://kanban-day.herokuapp.com/organization/${this.orgId}/task/${id}`,
                 data: {
                     category_id: status + 1
                 },
@@ -162,7 +162,7 @@ export default {
         previousCategory(id, status) {
             axios({
                 method: 'PATCH',
-                url: `http://localhost:3000/organization/${this.orgId}/task/${id}`,
+                url: `https://kanban-day.herokuapp.com/organization/${this.orgId}/task/${id}`,
                 data: {
                     category_id: status - 1
                 },
@@ -180,7 +180,7 @@ export default {
         deleteTask(id) {
             axios({
                 method: 'DELETE',
-                url: `http://localhost:3000/organization/${this.orgId}/task/${id}`,
+                url: `https://kanban-day.herokuapp.com/organization/${this.orgId}/task/${id}`,
                 headers: {
                     access_token: localStorage.access_token
                 }

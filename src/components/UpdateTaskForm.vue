@@ -82,7 +82,7 @@ export default {
         getTaskData() {
             axios({
                 method: 'GET',
-                url: `http://localhost:3000/organization/${this.orgId}/task/${this.taskId}`,
+                url: `https://kanban-day.herokuapp.com/organization/${this.orgId}/task/${this.taskId}`,
                 headers: {
                     access_token: localStorage.access_token
                 }
@@ -99,7 +99,7 @@ export default {
         updateTaskSubmit() {
             axios({
                 method: 'PUT',
-                url: `http://localhost:3000/organization/${this.orgId}/task/${this.taskId}`,
+                url: `https://kanban-day.herokuapp.com/organization/${this.orgId}/task/${this.taskId}`,
                 data: {
                     title: this.title,
                     description: this.description,

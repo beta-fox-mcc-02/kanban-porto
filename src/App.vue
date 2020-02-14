@@ -111,7 +111,7 @@ export default {
         fetchKanbanUser() {
             axios({
                 method: 'GET',
-                url: 'http://localhost:3000/users',
+                url: 'https://kanban-day.herokuapp.com/users',
             })
                 .then(({data}) => {
                     this.users = data
@@ -123,7 +123,7 @@ export default {
         genUserData() {
             axios({
                 method: 'GET',
-                url: 'http://localhost:3000/user',
+                url: 'https://kanban-day.herokuapp.com/user',
                 headers: {
                     access_token: localStorage.access_token
                 }
@@ -138,7 +138,7 @@ export default {
         fetchOrganizations() {
             axios({
                 method: 'GET',
-                url: 'http://localhost:3000/organization',
+                url: 'https://kanban-day.herokuapp.com/organization',
                 headers: {
                     access_token: localStorage.access_token
                 }
@@ -198,7 +198,7 @@ export default {
         genKanbanData(id) {
             axios({
                 method: 'GET',
-                url: `http://localhost:3000/organization/${id}`,
+                url: `https://kanban-day.herokuapp.com/organization/${id}`,
                 headers: {
                     access_token: localStorage.access_token
                 }

@@ -48,7 +48,7 @@ export default {
         newTaskSubmit(orgId) {
             axios({
                 method: 'POST',
-                url: `http://localhost:3000/organization/${orgId}/task`,
+                url: `https://kanban-day.herokuapp.com/organization/${orgId}/task`,
                 data: {
                     title: this.title,
                     description: this.description
