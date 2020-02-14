@@ -1,11 +1,8 @@
 <template>
   <div class="container-menu">
     <ul class="kanban">
-      <li v-if="page === 'kanban'">
-        <a href="#">Dashboard</a>
-      </li>
-      <li v-if="page === 'kanban' || page === 'task'">
-        <a href="#">Kanban</a>
+      <li v-if="page === 'kanban' || page === 'edit' || page === 'kanbanForm'">
+        <a href="#" v-on:click="kanbanBoard">Kanban</a>
       </li>
       <li v-if="page === 'register' || page === 'login'">
         <a href="#" v-on:click="loginForm">Login</a>
@@ -13,7 +10,7 @@
       <li v-if="page === 'login' || page === 'register'">
         <a href="#" v-on:click="registerForm">Register</a>
       </li>
-      <li v-if="page === 'kanban' || page === 'task'">
+      <li v-if="page === 'kanban' || page === 'edit' || page === 'kanbanForm'">
         <a href="#" v-on:click="logout">Logout</a>
       </li>
     </ul>
@@ -23,10 +20,8 @@
 <script>
 export default {
   name: "NavbarMenu",
-  data() {
-    return {
-      page: "login"
-    };
+  props: {
+    page: String
   },
   methods: {
     registerForm() {
@@ -37,6 +32,10 @@ export default {
     },
     kanbanBoard() {
       this.$emit("changePage", "kanban");
+    },
+    logout() {
+      localStorage.clear();
+      this.$emit("changePage", "login");
     }
   }
 };

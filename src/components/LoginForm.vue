@@ -25,9 +25,9 @@
           <br />
           <input type="submit" value="Login" class="button-primary" />
         </form>
-        <button class="button-success" v-on:click="registerForm">
-          Register
-        </button>
+        <button type="button" @click.prevent="onSignIn">Google Sign In</button>
+        <a href="#" @click="signOut">Sign out Google</a>
+        <button class="button-success" v-on:click="registerForm">Register</button>
       </center>
     </div>
   </div>
@@ -66,6 +66,41 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    onSignIn() {
+      // console.log("here");
+      this.$gAuth
+        .signIn()
+        .then(googleUser => {
+          //on success
+          console.log(googleUser, "dari zonsignin google user");
+          // this.isSignIn = this.$gAuth.isAuthorized;
+          let access_token = googleUser.getAuthResponse().id_token;
+          // console.log(access_token);
+          return axios({
+            method: "post",
+            url: "http://localhost:3000/gsignin",
+            headers: {
+              access_token: access_token
+            }
+          });
+        })
+        .then(response => {
+          //after ajax
+          console.log(response, "masuk response glogin");
+          localStorage.setItem("access_token", response.data.token);
+          this.$emit("changePage", "kanban");
+        })
+        .catch(error => {
+          //on fail do something
+          console.log(error, "error google login");
+        });
+    },
+    signOut() {
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function() {
+        console.log("User signed out.");
+      });
     },
     registerForm() {
       this.$emit("changePage", "register");

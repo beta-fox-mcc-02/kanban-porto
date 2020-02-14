@@ -1,10 +1,7 @@
 <template>
   <div>
     <NavbarMenu @changePage="changePage" :page="page"></NavbarMenu>
-    <KanbanBoard
-      v-if="page === 'kanban'"
-      @changePage="changePage"
-    ></KanbanBoard>
+    <KanbanBoard @changePage="changePage" :page="page"></KanbanBoard>
     <LoginForm v-if="page === 'login'" @changePage="changePage"></LoginForm>
     <RegisterForm
       v-else-if="page === 'register'"
@@ -23,6 +20,7 @@ import LoginForm from "./components/LoginForm.vue";
 import RegisterForm from "./components/RegisterForm.vue";
 import KanbanBoard from "./components/KanbanBoard.vue";
 import KanbanForm from "./components/KanbanForm.vue";
+// import UpdateForm from "./components/UpdateForm.vue";
 
 export default {
   data() {
@@ -30,16 +28,23 @@ export default {
       page: "login"
     };
   },
-  components: { NavbarMenu, LoginForm, RegisterForm, KanbanBoard, KanbanForm },
+  components: {
+    NavbarMenu,
+    LoginForm,
+    RegisterForm,
+    KanbanBoard,
+    KanbanForm
+  },
   methods: {
     changePage(page) {
       return (this.page = page);
     }
   },
   created() {
-    if (localStorage) {
+    if (localStorage.getItem("access_token")) {
       //   this.fetchAll();
       this.page = "kanban";
+      console.log(this.editId);
     } else {
       this.page = "login";
     }
