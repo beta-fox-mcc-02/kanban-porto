@@ -36,6 +36,7 @@
 
 <script>
 import axios from '../config/axios'
+
 export default {
   name:'LoginRegister',
   data(){
