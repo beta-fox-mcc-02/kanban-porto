@@ -178,6 +178,19 @@ export default new Vuex.Store({
                 resolve()
             })
         },
+        loginWithGoogle({ commit }, id_token) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .post('http://localhost:3000/users/gSignIn', { id_token })
+                    .then(response => {
+                        commit('auth', response.data.token)
+                        resolve('/')
+                    })
+                    .catch(e => {
+                        reject(e)
+                    })
+            })
+        },
 
         // END OF AUTH
 
