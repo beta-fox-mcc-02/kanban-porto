@@ -95,7 +95,7 @@ export default {
   methods : {
     next(category, task){
       const CategoryId = category+1
-      axios.patch(`http://localhost:3000/tasks/${task}`, {
+      axios.patch(`https://quiet-depths-10928.herokuapp.com/tasks/${task}`, {
         CategoryId
       }, {
         headers : {
@@ -114,7 +114,7 @@ export default {
     },
     back(category, task){
       const CategoryId = category-1
-      axios.patch(`http://localhost:3000/tasks/${task}`, {
+      axios.patch(`https://quiet-depths-10928.herokuapp.com/tasks/${task}`, {
         CategoryId
       }, {
         headers : {
@@ -132,7 +132,7 @@ export default {
       })
     },
     deleteTask(id){
-      axios.delete(`http://localhost:3000/tasks/${id}`, {
+      axios.delete(`https://quiet-depths-10928.herokuapp.com/tasks/${id}`, {
           headers : {
             token : localStorage.token
           }
@@ -162,7 +162,7 @@ export default {
       return task
     },
     readTask(){
-      axios.get('http://localhost:3000/tasks', {
+      axios.get('https://quiet-depths-10928.herokuapp.com/tasks', {
             headers : {
                 token : localStorage.token,
                 id : localStorage.id
@@ -180,7 +180,7 @@ export default {
       this.$emit('currentPage', 'mainPage')
     },
     addCategory(){
-        axios.post('http://localhost:3000/tasks/category',{
+        axios.post('https://quiet-depths-10928.herokuapp.com/tasks/category',{
             category : this.categoryName
         },
         {
@@ -200,7 +200,7 @@ export default {
     },
     readCategory(){
       console.log('masuuuk')
-        axios.get('http://localhost:3000/tasks/category', {
+        axios.get('https://quiet-depths-10928.herokuapp.com/category', {
             headers : {
                 token : localStorage.token,
                 id : localStorage.id

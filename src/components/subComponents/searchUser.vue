@@ -38,7 +38,7 @@ export default {
     },
     methods : {
         allUser () {
-            axios.get('http://localhost:3000/tasks/search', {
+            axios.get('https://quiet-depths-10928.herokuapp.com/tasks/search', {
                 headers : {
                     token : localStorage.token,
                     id : localStorage.id
@@ -53,7 +53,7 @@ export default {
             })
         },
         invite(id){
-            axios.post('http://localhost:3000/invite', {
+            axios.post('https://quiet-depths-10928.herokuapp.com/invite', {
                 UserId : id
             }, {
                 headers : {
@@ -69,7 +69,7 @@ export default {
             })
         },
         check(){
-            axios.get('http://localhost:3000/organizations/invites', {
+            axios.get('https://quiet-depths-10928.herokuapp.com/organizations/invites', {
                 headers : {
                     token : localStorage.token,
                     id : localStorage.id

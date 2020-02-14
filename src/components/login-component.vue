@@ -70,7 +70,7 @@ export default {
     },
     methods : {
         login(){
-            axios.post('http://localhost:3000/login',{
+            axios.post('https://quiet-depths-10928.herokuapp.com/login',{
                 username : this.username,
                 email : this.email,
                 password : this.password
@@ -85,7 +85,7 @@ export default {
             })
         },
         register(){
-            axios.post('http://localhost:3000/register',{
+            axios.post('https://quiet-depths-10928.herokuapp.com/register',{
                 username : this.username,
                 email : this.email,
                 password : this.password
@@ -101,7 +101,7 @@ export default {
         },
         OnGoogleAuthSuccess (idToken) {
         // Receive the idToken and make your magic with the backend
-            axios.post('http://localhost:3000/gLogin', {
+            axios.post('https://quiet-depths-10928.herokuapp.com/gLogin', {
                 gToken : idToken
             })
             .then(({data}) => {

@@ -76,7 +76,7 @@ export default {
   methods : {
         listOrganization (){
             this.$emit('currentPage', 'mainPage')
-            axios.get('http://localhost:3000/organizations', {
+            axios.get('https://quiet-depths-10928.herokuapp.com/organizations', {
                 headers : {
                     token : localStorage.token
                 }
@@ -91,7 +91,7 @@ export default {
             })
         },
         addOrg(){
-            axios.post('http://localhost:3000/organizations/creates', {
+            axios.post('https://quiet-depths-10928.herokuapp.com/organizations/creates', {
                 name : this.orgName
             },
             {
@@ -108,7 +108,7 @@ export default {
             })
         },
         readCategory(id, name){
-            axios.get('http://localhost:3000/tasks/category', {
+            axios.get('https://quiet-depths-10928.herokuapp.com/tasks/category', {
                 headers : {
                     token : localStorage.token,
                     id

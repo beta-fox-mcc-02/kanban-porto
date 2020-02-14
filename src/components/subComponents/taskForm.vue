@@ -46,7 +46,7 @@ export default {
         addTask(){
           const id = this.id
           // console.log(this.id)
-          axios.post('http://localhost:3000/tasks', {
+          axios.post('https://quiet-depths-10928.herokuapp.com/tasks', {
             title : this.taskName,
             description : this.taskDescription,
             CategoryId : id

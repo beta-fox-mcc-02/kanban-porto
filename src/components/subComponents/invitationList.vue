@@ -40,7 +40,7 @@ export default {
     },
     methods : {
         refuse(id){
-            axios.delete('http://localhost:3000/refuse', {
+            axios.delete('https://quiet-depths-10928.herokuapp.com/refuse', {
                 id
             },{
                 headers : {
@@ -55,7 +55,7 @@ export default {
             })
         },
         accept(id, name){
-            axios.post('http://localhost:3000/accept', {
+            axios.post('https://quiet-depths-10928.herokuapp.com/accept', {
                 id,
                 name 
             }, {
@@ -72,7 +72,7 @@ export default {
             })
         },
         list(){
-            axios.get('http://localhost:3000/userInvitation', {
+            axios.get('https://quiet-depths-10928.herokuapp.com/userInvitation', {
                 headers : {
                     token : localStorage.token
                 }
