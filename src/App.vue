@@ -72,11 +72,9 @@ export default {
     },
     methods: {
         changePage(page) {
-            console.log("SUDAAAAAHH MASUUKK SINI YYAASSSS")
             this.currentPage = page
         },
         formEdit (id, title, CategoryId, UserId) {
-            console.log(id, title, CategoryId, UserId, "PUYEEENNGGSSSSS")
             this.id = id
             this.title = title
             this.CategoryId = CategoryId
