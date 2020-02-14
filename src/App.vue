@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="homepage">
+        <img src="https://images.unsplash.com/photo-1495465798138-718f86d1a4bc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
         <MainNavbar :currentPage='currentPage' @showDashboard='showDashboard' @showRegister='showRegister' @showLogin='showLogin' @logout='logout'></MainNavbar>
         <RegisterForm :currentPage='currentPage' @changePage='changePage'></RegisterForm>
         <LoginForm :currentPage='currentPage' @changePage="changePage" @fetchAll="fetchAll" @showRegister="showRegister"></LoginForm>
@@ -67,7 +68,14 @@ export default {
             }
         },
         logout() {
-            localStorage.removeItem(`access_token`)
+            const auth2 = gapi.auth2.getAuthInstance();
+            if (auth2) {
+                auth2.signOut().then(function () {
+                console.log('user signed out');
+                localStorage.removeItem(`access_token`)
+            });   
+            }
+            localStorage.removeItem(`access_token`)       
             this.currentPage = 'frontPage'
         },
         //task section
@@ -142,3 +150,17 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    .homepage {
+        position: relative;
+
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: -9999;
+        }
+    }
+</style>

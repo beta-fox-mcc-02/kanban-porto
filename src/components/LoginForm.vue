@@ -25,6 +25,10 @@
                 <p class="has-text-grey">
                     Not registered yet? Create a new account <a href="#" @click.prevent="showRegister">here</a>
                 </p>
+                or
+                <p><g-signin-button :params="googleSignInParams" @success="onSignInSuccess" @error="onSignInError" >
+                Sign in with Google
+                </g-signin-button></p>
             </div>
         </div>
 </template>
@@ -37,7 +41,10 @@ export default {
             login: {
                 email: '',
                 password: ''
-            }           
+            },
+            googleSignInParams: {
+              client_id: '723559606797-1tj1i63gto78likd6lrmc5r6mogrkve9.apps.googleusercontent.com'
+            }                       
         }
     },
     props: ['currentPage'],
@@ -63,7 +70,26 @@ export default {
         },
         showRegister() {
             this.$emit('showRegister')
+        },
+        onSignInSuccess (googleUser) {
+        var id_token = googleUser.getAuthResponse().id_token;
+        },
+        onSignInError (error) {
+        console.log('OH NOES', error)
         }
     }
 }
 </script>
+
+<style>
+.g-signin-button {
+  /* This is where you control how the button looks. Be creative! */
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 3px;
+  background-color: #3c82f7;
+  color: #fff;
+  box-shadow: 0 3px 0 #0f69ff;
+  cursor: pointer;
+}
+</style>
