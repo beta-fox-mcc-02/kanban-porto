@@ -137,7 +137,7 @@
           .catch(err => {
             console.log(err.response)
             loader.hide()
-            this.$bvToast.toast(err.response.data.errors[0].msg, {
+            this.$bvToast.toast(err.response.data.msg, {
               title: `Error`,
               variant: 'danger',
               solid: true

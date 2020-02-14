@@ -30,7 +30,7 @@ export default {
         })
         .catch(err => {
           console.log(err.response)
-          this.$bvToast.toast('Error in fethcing categories', {
+          this.$bvToast.toast('Error in fetching categories', {
             title: `Error`,
             variant: 'danger',
             solid: true
