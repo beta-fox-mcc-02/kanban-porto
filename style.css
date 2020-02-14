@@ -1,0 +1,272 @@
+* {
+    margin: 0;
+}
+
+/* body {
+    background-image: url("https://static.vecteezy.com/system/resources/previews/000/153/301/non_2x/vector-old-dirty-grunge-note-paper-background.jpg");
+} */
+
+nav {
+    padding: 20px 30px;
+    display: flex;
+    background-color: black;
+    color: white;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15pt;
+}
+
+.nav-center ul{
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-center ul li{
+    list-style: none;
+}
+
+.nav-center ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.container {
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home {
+    margin-top: 100px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.home .kanban-card {
+    height: fit-content;
+    width: 20vw;
+    max-height: 100vh;
+    padding: 20px 10px;
+    border-radius: 5px;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+}
+
+.home .kanban-card::-webkit-scrollbar {
+    display: none;
+}
+
+.home .kanban-card {
+    -ms-overflow-style: none;
+}
+
+.home .kanban-card .title {
+    background-color: red;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 30px;
+}
+
+#card-title {
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+#plan-card-title-center {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 20px;
+    padding: 10px 10px;
+}
+
+#plan-card-title-bottom {
+    padding: 5px 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.home .kanban-card #plan-card-title-bottom #next {
+    font-size: 20px;
+    color: greenyellow;
+}
+
+.home .kanban-card #plan-card-title-bottom #prev {
+    font-size: 20px;
+    color: red;
+}
+
+
+
+
+
+/* .home .do {
+    height: fit-content;
+    width: 20vw;
+    max-height: 100vh;
+    padding: 20px 10px;
+    border-radius: 5px;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+} */
+
+/* .home .do::-webkit-scrollbar {
+    display: none;
+} */
+  
+/* .home .do {
+    -ms-overflow-style: none;
+} */
+
+/* .home .do .title {
+    background-color:yellow;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 30px;
+} */
+
+/* #card-title-do {
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+} */
+
+/* #do-card-title-center {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 20px;
+    padding: 10px 10px;
+} */
+
+/* #do-card-title-bottom {
+    padding: 5px 5px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+} */
+
+/* .home .do #do-card-title-bottom #next-do {
+    color: greenyellow;
+}
+
+.home .do #do-card-title-bottom #prev-do {
+    color: red;
+}
+
+
+.home .actual {
+    height: fit-content;
+    width: 20vw;
+    max-height: 100vh;
+    padding: 20px 10px;
+    border-radius: 5px;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+}
+
+.home .actual::-webkit-scrollbar {
+    display: none;
+}
+
+.home .actual {
+    -ms-overflow-style: none;
+}
+
+.home .actual .title {
+    background-color: greenyellow;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 30px;
+}
+
+#card-title-actual {
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+#actual-card-title-center {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 20px;
+    padding: 10px 10px;
+}
+
+#actual-card-title-bottom {
+    padding: 5px 5px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+}
+
+.home .actual #actual-card-title-bottom #next-do {
+    color: greenyellow;
+}
+
+.home .actual #actual-card-title-bottom #prev-do {
+    color: red;
+}
+
+
+
+.home .done {
+    height: fit-content;
+    width: 20vw;
+    max-height: 100vh;
+    padding: 20px 10px;
+    border-radius: 5px;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+}
+
+.home .done::-webkit-scrollbar {
+    display: none;
+}
+
+.home .done {
+    -ms-overflow-style: none;
+}
+
+.home .done .title {
+    background-color: blue;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 30px;
+}
+
+#card-title-done {
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+#done-card-title-center {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 20px;
+    padding: 10px 10px;
+}
+
+#done-card-title-bottom {
+    padding: 5px 5px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+}
+
+.home .done #done-card-title-bottom #next-do {
+    color: greenyellow;
+}
+
+.home .done #done-card-title-bottom #prev-do {
+    color: red;
+} */
