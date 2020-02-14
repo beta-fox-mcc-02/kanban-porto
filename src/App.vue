@@ -34,16 +34,16 @@
       <div class="small">Create your beautiful Kanban in here</div>
       <div class="row flex-row flex-sm-nowrap py-3" >
         <div class="col-sm-6 col-md-4 col-xl-3 my-3">
-          <PanelVue :panelTitle="panelTitle[0]" :panelId="1"></PanelVue>
+          <PanelVue :panelTitle="panelTitle[0]" :panelId="1" @renderErrorMessage="renderErrorMessage"></PanelVue>
         </div>
         <div class="col-sm-6 col-md-4 col-xl-3 my-3">
-          <PanelVue :panelTitle="panelTitle[1]" :panelId="2"></PanelVue>
+          <PanelVue :panelTitle="panelTitle[1]" :panelId="2" @renderErrorMessage="renderErrorMessage"></PanelVue>
         </div>
         <div class="col-sm-6 col-md-4 col-xl-3 my-3">
-          <PanelVue :panelTitle="panelTitle[2]" :panelId="3"></PanelVue>
+          <PanelVue :panelTitle="panelTitle[2]" :panelId="3" @renderErrorMessage="renderErrorMessage"></PanelVue>
         </div>
         <div class="col-sm-6 col-md-4 col-xl-3 my-3">
-          <PanelVue :panelTitle="panelTitle[3]" :panelId="4"></PanelVue>
+          <PanelVue :panelTitle="panelTitle[3]" :panelId="4" @renderErrorMessage="renderErrorMessage"></PanelVue>
         </div>
       </div>
     </div>
@@ -96,6 +96,7 @@ export default {
       else this.changePageTo('register')
     },
     renderErrorMessage(err){
+      console.log('isi error', err);
       this.errorMessage = '';
       const errMsgs = [];
       if(Array.isArray(err.message)){

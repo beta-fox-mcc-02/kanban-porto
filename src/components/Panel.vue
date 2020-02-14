@@ -5,7 +5,13 @@
         <h6 class="card-title text-uppercase text-truncate py-2 align-self d-inline">{{ panelTitle }}</h6>
       </div>
       <div class="items border border-light" v-for="task in tasks" :key="task.id">
-        <cardVue :task="task" class="m-1"></cardVue>
+        <cardVue 
+          :task="task" 
+          class="m-1" 
+          @fetchDataAgain='fetchDataAgain'
+          :CategoryId="panelId">
+        </cardVue>
+
       </div>
 
       <form v-if="addTaskInput" class="my-2" @submit.prevent="addNewTask">
@@ -34,7 +40,9 @@ export default {
     return {
       tasks: [],
       addTaskInput: false,
-      newTask: ''
+      newTask: '',
+      isEditTask: false,
+      editedTask: '',
     }
   },
   components: {
@@ -54,6 +62,7 @@ export default {
         })
         .catch(err => {
           console.log(err.response);
+          this.$emit('renderErrorMessage', err.response.data);
         })
     },
     showAddTask(){
@@ -91,7 +100,15 @@ export default {
         })
         .catch(err => {
           console.log(err.response);
+          this.$emit('renderErrorMessage', err.response.data);
         })
+    },
+    fetchDataAgain(){
+      this.tasks = [];
+      this.fetchData();
+    },
+    editTask(){
+      this.isEditTask = true;
     }
   },
   created(){
