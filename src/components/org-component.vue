@@ -10,18 +10,30 @@
                   <div class="row">
                     <div class="col-sm"></div>
                     <div class="col-sm">
-                      <div class="card card-signup z-depth-0" style="opacity: 0.7;">
+                      <div class="card card-signup z-depth-0">
                         <div class="card-header">
-                          <a class="btn btn-success text-light" data-toggle="collapse" data-target="#orgForm" aria-expanded="false" aria-controls="orgForm">Add Organization</a>
-                          <div class="card-body">
-                            <form id="orgForm" @submit.prevent="addOrg">
-                                <div class="form-group">
-                                    <label for="name">Name your Organization</label>
-                                    <input type="text" v-model="orgName" name="orgName" class="form-control" placeholder="input your organization" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary text-light">Add Organization</button>
-                            </form>
+                          <a class="btn btn-success text-light" data-toggle="modal" data-target="#orgForm">Add Organization</a>
+                          <div class="modal fade" id="orgForm" tabindex="-1" role="dialog" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header bg-info">
+                                      <label class="text-light">Your List Invitation</label> 
+                                    </div>
+                                    <div class="modal-body">
+                                      <div class="card-body">
+                                        <form id="orgForm" @submit.prevent="addOrg">
+                                            <div class="form-group">
+                                                <label for="name">Name your Organization</label>
+                                                <input type="text" v-model="orgName" name="orgName" class="form-control" placeholder="input your organization" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary text-light">Add Organization</button>
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                              </div>
                           </div>
+                          <Invitation class="text-right" @org='listOrganization'></Invitation>
                         </div>
                         <div class="card-body">
                           <table class="table">
@@ -33,7 +45,6 @@
                           </table>
                         </div>
                         <div class="card-footer">
-                          <a class="btn text-primary">Invitation</a>
                         </div>
                       </div>
                     </div>
@@ -46,6 +57,7 @@
 
 <script>
 import axios from 'axios'
+import Invitation from './subComponents/invitationList'
 export default {
   data () {
     return {
@@ -54,6 +66,9 @@ export default {
         board : [],
         categoryName : '',
     }
+  },
+  components : {
+    Invitation
   },
   methods : {
         listOrganization (){

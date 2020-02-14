@@ -25,7 +25,7 @@
                       </div>
                     </div>
                     <a class="btn btn-warning text-primary" @click="backToOrg">List Organization</a>
-                    <search class="text-right"></search>
+                    <search class="text-right" @read='readTask'></search>
                   </div>
                   <div class="card-body text-left">
                     <div class="row my-4">
