@@ -1,0 +1,90 @@
+.navbar{
+  color: white;
+  border-radius: 0%;
+  margin-bottom: 0px;
+  border-bottom: 2px solid #337ab7;
+}
+
+.navbar-light {
+  background-color: gray;
+  color: #ccc;
+}
+
+.navbar-light .navbar-brand {
+  color: rgba(142, 97, 97, 0.9);
+}
+
+body {
+  background-color: white;
+}
+
+.category {
+  background-color: gray;
+  border: 1px solid black;
+  padding: 0 10px;
+  /* height: 100px; */
+  max-height: 100px;
+  min-width: 320px;
+
+  margin: 10px 20px;
+  border-radius: 2px;
+  overflow: auto;
+}
+
+.card{
+  background-color:white;
+  border-radius: 3px;
+}
+
+#task{
+  width: 100vw;
+  display: flex;
+  min-height: 550px;
+  max-height: 580px;
+  align-items: flex-start;
+  margin-top: 0px;
+  overflow-x: scroll;
+  padding-left: 10px;
+}
+
+.login-form {
+  width: 385px;
+  margin: 10px auto;
+}
+  .login-form form {        
+    margin-bottom: 15px;
+      background: #f7f7f7;
+      box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+      padding: 30px;
+  }
+  .login-form h2 {
+      margin: 0 0 15px;
+  }
+  .form-control, .login-btn {
+      min-height: 38px;
+      border-radius: 2px;
+  }
+  .input-group-addon .fa {
+      font-size: 18px;
+  }
+  .login-btn {
+      font-size: 15px;
+      font-weight: bold;
+  }
+  .or-seperator {
+      margin-top: 20px;
+      text-align: center;
+      border-top: 1px solid #ccc;
+  }
+  .or-seperator i {
+      padding: 0 10px;
+      background: #f7f7f7;
+      position: relative;
+      top: -11px;
+      z-index: 1;
+  }
+
+  #alert{
+    width: 50%;
+    margin-top: 10px;
+  }
