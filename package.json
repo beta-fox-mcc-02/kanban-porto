@@ -5,7 +5,8 @@
   "main": "main.js",
   "dependencies": {
     "axios": "^0.19.2",
-    "bulma": "^0.8.0"
+    "bulma": "^0.8.0",
+    "vue": "^2.6.11"
   },
   "devDependencies": {},
   "scripts": {
