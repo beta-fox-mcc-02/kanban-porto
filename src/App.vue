@@ -3,14 +3,8 @@
     <NavbarMenu @changePage="changePage" :page="page"></NavbarMenu>
     <KanbanBoard @changePage="changePage" :page="page"></KanbanBoard>
     <LoginForm v-if="page === 'login'" @changePage="changePage"></LoginForm>
-    <RegisterForm
-      v-else-if="page === 'register'"
-      @changePage="changePage"
-    ></RegisterForm>
-    <KanbanForm
-      v-if="page === 'kanbanForm'"
-      @changePage="changePage"
-    ></KanbanForm>
+    <RegisterForm v-else-if="page === 'register'" @changePage="changePage"></RegisterForm>
+    <KanbanForm v-if="page === 'kanbanForm'" @changePage="changePage"></KanbanForm>
   </div>
 </template>
 
@@ -41,7 +35,7 @@ export default {
     }
   },
   created() {
-    if (localStorage.getItem("access_token")) {
+    if (localStorage.access_token) {
       //   this.fetchAll();
       this.page = "kanban";
       console.log(this.editId);

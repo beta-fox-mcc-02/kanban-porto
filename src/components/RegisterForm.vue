@@ -34,9 +34,7 @@
           <br />
           <input type="submit" value="register" class="button-primary" />
         </form>
-        <button class="button-success" v-on:click="loginForm">
-          Login
-        </button>
+        <button class="button-success" v-on:click="loginForm">Login</button>
       </center>
     </div>
   </div>
@@ -55,12 +53,12 @@ export default {
   },
   methods: {
     registerUser() {
-      const name = this.register.name;
-      const email = this.register.email;
-      const password = this.register.password;
+      const name = this.name;
+      const email = this.email;
+      const password = this.password;
       axios({
         method: "post",
-        url: "http://localhost:3000/register",
+        url: "https://frozen-sands-95268.herokuapp.com/register",
         data: {
           name: name,
           email: email,

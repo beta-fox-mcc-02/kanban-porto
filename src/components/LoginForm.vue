@@ -51,7 +51,7 @@ export default {
       console.log("masuk ke function login");
       axios({
         method: "post",
-        url: "http://localhost:3000/login",
+        url: "https://frozen-sands-95268.herokuapp.com/login",
         data: {
           email: email,
           password: password
@@ -79,7 +79,7 @@ export default {
           // console.log(access_token);
           return axios({
             method: "post",
-            url: "http://localhost:3000/gsignin",
+            url: "https://frozen-sands-95268.herokuapp.com/gsignin",
             headers: {
               access_token: access_token
             }

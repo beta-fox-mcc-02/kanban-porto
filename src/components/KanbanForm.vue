@@ -16,9 +16,7 @@
           <br />
           <input type="submit" value="Add new backlog" class="button-primary" />
         </form>
-        <button class="button-success" v-on:click="kanban">
-          Back to kanban
-        </button>
+        <button class="button-success" v-on:click="kanban">Back to kanban</button>
       </center>
     </div>
   </div>
@@ -41,7 +39,7 @@ export default {
       const access_token = localStorage.getItem("access_token");
       axios({
         method: "post",
-        url: "http://localhost:3000/create",
+        url: "https://frozen-sands-95268.herokuapp.com/create",
         data: {
           title: title,
           CategoryId: 1
