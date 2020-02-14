@@ -29,7 +29,7 @@
                   </div>
                   <div class="card-body text-left">
                     <div class="row my-4">
-                      <div class="col mb-4" v-for="board in boards" :key="board.OrganizationId" >
+                      <div class="col mb-4" v-for="(board, index) in boards" :key="board.OrganizationId" >
                         <div class="card">
                           <div class="card-header bg-success text-light">
                             <label>{{board.name}}</label>
@@ -50,9 +50,9 @@
                                 <label>{{task.description}}</label>
                               </div>
                               <div class="card-footer text-center" style="padding: 0.1rem">
-                                <a class="btn text-warning" @click="back(board.id, task.id)"><i class="fas fa-angle-double-left"></i></a>
+                                <a class="btn text-warning" v-if="index != 0" @click="back(board.id, task.id)"><i class="fas fa-angle-double-left"></i></a>
                                 <a class="btn text-danger" @click='deleteTask(task.id)'><i class="fa fa-trash" aria-hidden="true"></i></a>
-                                <a class="btn text-success"  @click="next(board.id, task.id)"><i class="fas fa-angle-double-right"></i></a>
+                                <a class="btn text-success" v-if="index < boardLength-1" @click="next(board.id, task.id)"><i class="fas fa-angle-double-right"></i></a>
                               </div>
                             </div>
                           </div>
@@ -78,7 +78,6 @@ export default {
         categoryName : '',
         taskName : '',
         taskDescription : '',
-        count : 0
     }
   },
   components : {
