@@ -9,8 +9,8 @@
                 <input type="password" required v-model="password">
                 <button type="submit" class="btn btn-primary">SUBMIT</button>
             </form>
-            <br>
-            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            <br> 
+            <button type="button" class="g-signin2" @click="googleLogin">GOOGLE LOGIN</button>
         </div>
     </div>
 </template>
@@ -38,6 +38,26 @@ export default {
             })
                 .then(({data}) => {
                     localStorage.setItem('token', data.token)
+                    this.changePage('landing')
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        googleLogin () {
+            this.$gAuth.signIn()
+                .then(authCode => {
+                    const id_token = authCode.getAuthResponse().id_token
+                    return axios ({
+                        method: 'POST', 
+                        url: "http://localhost:3000/googlelogin",
+                        headers: {
+                            token: id_token
+                        }
+                    })
+                })
+                .then(data =>  {
+                    localStorage.setItem('token', data.data.token)
                     this.changePage('landing')
                 })
                 .catch(err => {

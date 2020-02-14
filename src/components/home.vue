@@ -23,19 +23,19 @@ export default {
             tasks: [],
             boxes: [{
                 name: 'Plan',
-                color: 'red', 
+                color: '#f0cf85', 
                 icon: "fab fa-telegram-plane"
             }, {
                 name: 'Do',
-                color: 'yellow',
+                color: '#e7f0c3',
                 icon: "fab fa-telegram-plane"
             }, {
                 name: 'Actual',
-                color: 'greenyellow',
+                color: '#a4d4ae',
                 icon: "fab fa-telegram-plane"
             }, {
                 name: 'Done',
-                color: 'blue',
+                color: '#32afa9',
                 icon: "fab fa-telegram-plane"
             }]
         }
