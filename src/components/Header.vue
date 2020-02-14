@@ -27,14 +27,9 @@ export default {
     },
     methods: {
       signOut() {
-          this.$emit('changeIsLogedIn', false)
-
-          localStorage.removeItem('token')
-
-          // var auth2 = gapi.auth2.getAuthInstance();
-          // auth2.signOut().then(function () {
-          // console.log('User signed out.');
-          // });
+        this.$emit('changeIsLogedIn', false)
+        this.$emit('changePage', 'signIn')
+        localStorage.removeItem('token')
       }
     },
     created() {

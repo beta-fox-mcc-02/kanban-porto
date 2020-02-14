@@ -122,15 +122,38 @@ body {
 .btn-to-signIn:hover {
     cursor: pointer;
 }
+
+.btn-gSigIn {
+    font-size: 1.2rem;
+    border: 1px solid rgb(182, 182, 182);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.btn-gSigIn:hover {
+    cursor: pointer;
+}
+
+.g-logo {
+    width: 1.5em;
+}
 /* form sign in / sign up end */
 
 /* form add card begin */
 .form-container {
     position: absolute;
-    top: 20%;
+    top: 10%;
     width: 40%;
     border-radius: 10px;
     background-color: rgba(5, 30, 52);
     color: #ffffff;
+}
+
+.add-form-action {
+    justify-content: space-between;
+}
+
+.add-form-action p:hover {
+    cursor: pointer;
 }
 /* form add card end */

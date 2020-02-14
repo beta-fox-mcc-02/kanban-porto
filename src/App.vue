@@ -3,6 +3,7 @@
         <Header 
             :isLogedIn="isLogedIn"
             @changeIsLogedIn="changeIsLogedIn"
+            @changePage="changePage"
         ></Header>
         <SignIn 
             @changePage="changePage"
@@ -16,8 +17,10 @@
             :currentPage="currentPage"
             :isLogedIn="isLogedIn"
         ></SignUp>
-        <Board 
+        <Board
             :isLogedIn="isLogedIn"
+            v-if="currentPage === 'board' || isLogedIn"
+            @changePage="changePage"
         ></Board>
     </div>
 </template>
@@ -44,11 +47,9 @@
         },
         methods: {
             changePage: function(page) {
-                console.log(page)
                 this.currentPage = page
             },
             changeIsLogedIn(status) {
-                console.log(status)
                 this.isLogedIn = status
             }
         },

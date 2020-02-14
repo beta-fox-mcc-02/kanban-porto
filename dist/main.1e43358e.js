@@ -8856,10 +8856,8 @@ var _default = {
   methods: {
     signOut: function signOut() {
       this.$emit('changeIsLogedIn', false);
-      localStorage.removeItem('token'); // var auth2 = gapi.auth2.getAuthInstance();
-      // auth2.signOut().then(function () {
-      // console.log('User signed out.');
-      // });
+      this.$emit('changePage', 'signIn');
+      localStorage.removeItem('token');
     }
   },
   created: function created() {
@@ -10710,74 +10708,7 @@ module.exports.default = axios;
 
 },{"./utils":"node_modules/axios/lib/utils.js","./helpers/bind":"node_modules/axios/lib/helpers/bind.js","./core/Axios":"node_modules/axios/lib/core/Axios.js","./core/mergeConfig":"node_modules/axios/lib/core/mergeConfig.js","./defaults":"node_modules/axios/lib/defaults.js","./cancel/Cancel":"node_modules/axios/lib/cancel/Cancel.js","./cancel/CancelToken":"node_modules/axios/lib/cancel/CancelToken.js","./cancel/isCancel":"node_modules/axios/lib/cancel/isCancel.js","./helpers/spread":"node_modules/axios/lib/helpers/spread.js"}],"node_modules/axios/index.js":[function(require,module,exports) {
 module.exports = require('./lib/axios');
-},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
-
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
-  }
-
-  return bundleURL;
-}
-
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
-
-    if (matches) {
-      return getBaseURL(matches[0]);
-    }
-  }
-
-  return '/';
-}
-
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
-}
-
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-
-function updateLink(link) {
-  var newLink = link.cloneNode();
-
-  newLink.onload = function () {
-    link.remove();
-  };
-
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
-    }
-
-    cssTimeout = null;
-  }, 50);
-}
-
-module.exports = reloadCSS;
-},{"./bundle-url":"../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"src/components/SignIn.vue":[function(require,module,exports) {
+},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"src/components/SignIn.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10814,6 +10745,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 var _default = {
   name: 'SignIn',
   props: {
@@ -10825,7 +10764,7 @@ var _default = {
       email: '',
       password: '',
       googleSignInParams: {
-        clientId: '425308161759-glmhm9ugin8corvgojjurm2u0pd101pf.apps.googleusercontent.com'
+        client_id: '425308161759-glmhm9ugin8corvgojjurm2u0pd101pf.apps.googleusercontent.com'
       }
     };
   },
@@ -10846,25 +10785,36 @@ var _default = {
       }).then(function (response) {
         _this.$emit('changeIsLogedIn', true);
 
+        _this.$emit('changePage', 'board');
+
         localStorage.setItem('token', response.data.token);
       }).catch(function (err) {
         console.log(err.response.data);
       });
-    } // onSignIn (googleUser) {
-    //     console.log('google sign in')
-    //     var id_token = googleUser.getAuthResponse().id_token;
-    //     console.log('====== ', id_token)
-    //     // this.gToken = id_token
-    //     // localStorage.setItem('gToken', this.gToken)
-    //     // localStorage.setItem('token', 'token')
-    //     // console.log(gToken)
-    //     // this.fetchTask()
-    //     // this.board = true
-    //     // this.toSignIn = false
-    //     // this.toSignUp = false
-    //     // this.isLogedIn = true
-    // }
+    },
+    onSignInSuccess: function onSignInSuccess(googleUser) {
+      var _this2 = this;
 
+      var id_token = googleUser.getAuthResponse().id_token;
+      (0, _axios.default)({
+        method: 'POST',
+        url: 'http://localhost:3000/users/gSignIn',
+        headers: {
+          id_token: id_token
+        }
+      }).then(function (response) {
+        localStorage.setItem('token', response.data.token);
+
+        _this2.$emit('changeIsLogedIn', true);
+
+        _this2.$emit('changePage', 'board');
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    onSignInError: function onSignInError(error) {
+      console.log('OH NOES', error);
+    }
   }
 };
 exports.default = _default;
@@ -10987,8 +10937,32 @@ exports.default = _default;
                     },
                     [_vm._v("sign up for kanban")]
                   )
-                ])
-              ]
+                ]),
+                _vm._v(" "),
+                _c(
+                  "g-signin-button",
+                  {
+                    staticClass: "btn-gSigIn",
+                    attrs: { params: _vm.googleSignInParams },
+                    on: {
+                      success: _vm.onSignInSuccess,
+                      error: _vm.onSignInError
+                    }
+                  },
+                  [
+                    _c("img", {
+                      staticClass: "g-logo",
+                      attrs: {
+                        src:
+                          "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png",
+                        alt: "giSignInLogo"
+                      }
+                    }),
+                    _vm._v("\n            Sign in with Google\n          ")
+                  ]
+                )
+              ],
+              1
             )
           ]
         )
@@ -11011,7 +10985,7 @@ render._withStripped = true
             render: render,
             staticRenderFns: staticRenderFns,
             _compiled: true,
-            _scopeId: "data-v-e803f5",
+            _scopeId: null,
             functional: undefined
           };
         })());
@@ -11031,13 +11005,9 @@ render._withStripped = true
         }
 
         
-        var reloadCSS = require('_css_loader');
-        module.hot.dispose(reloadCSS);
-        module.hot.accept(reloadCSS);
-      
       }
     })();
-},{"axios":"node_modules/axios/index.js","_css_loader":"../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/SignUp.vue":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/SignUp.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11295,13 +11265,47 @@ exports.default = void 0;
 //
 //
 //
+//
 var _default = {
   name: 'AddCard',
+  props: {
+    categoryId: Number
+  },
   data: function data() {
     return {
       title: '',
       description: ''
     };
+  },
+  methods: {
+    closeAddForm: function closeAddForm() {
+      this.$emit('closeAddForm');
+    },
+    fetchCategoriesAfterAdd: function fetchCategoriesAfterAdd() {
+      this.$emit('fetchCategoriesAfterAdd');
+    },
+    addCard: function addCard() {
+      var _this = this;
+
+      axios({
+        method: 'POST',
+        url: 'http://localhost:3000/tasks',
+        data: {
+          title: this.title,
+          description: this.description,
+          CategoryId: this.categoryId
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      }).then(function (response) {
+        _this.$emit('fetchCategoriesAfterAdd');
+
+        _this.$emit('closeAddForm');
+      }).catch(function (err) {
+        console.log(err.response.data);
+      });
+    }
   }
 };
 exports.default = _default;
@@ -11333,7 +11337,7 @@ exports.default = _default;
           on: {
             submit: function($event) {
               $event.preventDefault()
-              return _vm.addCardFunction($event)
+              return _vm.addCard($event)
             }
           }
         },
@@ -11404,7 +11408,17 @@ exports.default = _default;
             })
           ]),
           _vm._v(" "),
-          _vm._m(1)
+          _c("div", { staticClass: "d-flex align-items-end add-form-action" }, [
+            _c(
+              "button",
+              { staticClass: "mr-2 btn btn-dark", attrs: { type: "submit" } },
+              [_vm._v("Add card")]
+            ),
+            _vm._v(" "),
+            _c("p", { staticClass: "m-0", on: { click: _vm.closeAddForm } }, [
+              _vm._v("cancel")
+            ])
+          ])
         ]
       )
     ]
@@ -11417,21 +11431,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "d-flex justify-content-center title" }, [
       _c("p", [_vm._v("Add card")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex align-items-center" }, [
-      _c(
-        "button",
-        {
-          staticClass: "mr-2 btn btn-dark",
-          attrs: { id: "btn-add-card", type: "submit" }
-        },
-        [_vm._v("Add card")]
-      )
     ])
   }
 ]
@@ -11500,6 +11499,14 @@ var _default = {
   },
   data: function data() {
     return {};
+  },
+  methods: {
+    editCardForm: function editCardForm(id) {
+      this.$emit('editCardForm', id);
+    },
+    deleteCard: function deleteCard(id) {
+      this.$emit('deleteCard', id);
+    }
   }
 };
 exports.default = _default;
@@ -11536,10 +11543,21 @@ exports.default = _default;
           _c("div", { staticClass: "action-container" }, [
             _c("i", {
               staticClass: "m-1 fas fa-pencil-alt",
-              on: { click: _vm.editCardForm }
+              on: {
+                click: function($event) {
+                  return _vm.editCardForm(task.id)
+                }
+              }
             }),
             _vm._v(" "),
-            _c("i", { staticClass: "m-1 far fa-trash-alt" })
+            _c("i", {
+              staticClass: "m-1 far fa-trash-alt",
+              on: {
+                click: function($event) {
+                  return _vm.deleteCard(task.id)
+                }
+              }
+            })
           ])
         ])
       ])
@@ -11613,6 +11631,14 @@ var _default = {
   },
   data: function data() {
     return {};
+  },
+  methods: {
+    editCardForm: function editCardForm(id) {
+      this.$emit('editCardForm', id);
+    },
+    deleteCard: function deleteCard(id) {
+      this.$emit('deleteCard', id);
+    }
   }
 };
 exports.default = _default;
@@ -11649,10 +11675,21 @@ exports.default = _default;
           _c("div", { staticClass: "action-container" }, [
             _c("i", {
               staticClass: "m-1 fas fa-pencil-alt",
-              on: { click: _vm.editCardForm }
+              on: {
+                click: function($event) {
+                  return _vm.editCardForm(task.id)
+                }
+              }
             }),
             _vm._v(" "),
-            _c("i", { staticClass: "m-1 far fa-trash-alt" })
+            _c("i", {
+              staticClass: "m-1 far fa-trash-alt",
+              on: {
+                click: function($event) {
+                  return _vm.deleteCard(task.id)
+                }
+              }
+            })
           ])
         ])
       ])
@@ -11726,6 +11763,14 @@ var _default = {
   },
   data: function data() {
     return {};
+  },
+  methods: {
+    editCardForm: function editCardForm(id) {
+      this.$emit('editCardForm', id);
+    },
+    deleteCard: function deleteCard(id) {
+      this.$emit('deleteCard', id);
+    }
   }
 };
 exports.default = _default;
@@ -11762,10 +11807,21 @@ exports.default = _default;
           _c("div", { staticClass: "action-container" }, [
             _c("i", {
               staticClass: "m-1 fas fa-pencil-alt",
-              on: { click: _vm.editCardForm }
+              on: {
+                click: function($event) {
+                  return _vm.editCardForm(task.id)
+                }
+              }
             }),
             _vm._v(" "),
-            _c("i", { staticClass: "m-1 far fa-trash-alt" })
+            _c("i", {
+              staticClass: "m-1 far fa-trash-alt",
+              on: {
+                click: function($event) {
+                  return _vm.deleteCard(task.id)
+                }
+              }
+            })
           ])
         ])
       ])
@@ -11833,12 +11889,20 @@ exports.default = void 0;
 //
 //
 var _default = {
-  name: 'Done',
+  name: 'Complete',
   props: {
     completes: Array
   },
   data: function data() {
     return {};
+  },
+  methods: {
+    editCardForm: function editCardForm(id) {
+      this.$emit('editCardForm', id);
+    },
+    deleteCard: function deleteCard(id) {
+      this.$emit('deleteCard', id);
+    }
   }
 };
 exports.default = _default;
@@ -11875,10 +11939,21 @@ exports.default = _default;
           _c("div", { staticClass: "action-container" }, [
             _c("i", {
               staticClass: "m-1 fas fa-pencil-alt",
-              on: { click: _vm.editCardForm }
+              on: {
+                click: function($event) {
+                  return _vm.editCardForm(task.id)
+                }
+              }
             }),
             _vm._v(" "),
-            _c("i", { staticClass: "m-1 far fa-trash-alt" })
+            _c("i", {
+              staticClass: "m-1 far fa-trash-alt",
+              on: {
+                click: function($event) {
+                  return _vm.deleteCard(task.id)
+                }
+              }
+            })
           ])
         ])
       ])
@@ -11915,6 +11990,224 @@ render._withStripped = true
         
       }
     })();
+},{"vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/EditCard.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = {
+  name: 'EditForm',
+  props: {
+    dataEdit: Object
+  },
+  data: function data() {
+    return {
+      taskId: this.dataEdit.id,
+      title: this.dataEdit.title,
+      description: this.dataEdit.description
+    };
+  },
+  methods: {
+    closeEditForm: function closeEditForm() {
+      this.$emit('closeEditForm');
+    },
+    editCard: function editCard() {
+      var _this = this;
+
+      var id = this.taskId;
+      axios({
+        method: 'PUT',
+        url: "http://localhost:3000/tasks/".concat(id),
+        data: {
+          title: this.title,
+          description: this.description
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      }).then(function (_ref) {
+        var data = _ref.data;
+        console.log(data);
+
+        _this.$emit('closeEditForm');
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+  }
+};
+exports.default = _default;
+        var $97f2c4 = exports.default || module.exports;
+      
+      if (typeof $97f2c4 === 'function') {
+        $97f2c4 = $97f2c4.options;
+      }
+    
+        /* template */
+        Object.assign($97f2c4, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "p-2 m-3 align-self-center form-container" },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "form",
+        {
+          staticClass: "form",
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.editCard($event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "title" } }, [_vm._v("Title:")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.title,
+                  expression: "title"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", required: "" },
+              domProps: { value: _vm.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.title = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "description" } }, [
+              _vm._v("Description:")
+            ]),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.description,
+                  expression: "description"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                name: "description",
+                cols: "30",
+                rows: "5",
+                required: ""
+              },
+              domProps: { value: _vm.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.description = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex align-items-end add-form-action" }, [
+            _c(
+              "button",
+              { staticClass: "mr-2 btn btn-dark", attrs: { type: "submit" } },
+              [_vm._v("Edit card")]
+            ),
+            _vm._v(" "),
+            _c("p", { staticClass: "m-0", on: { click: _vm.closeEditForm } }, [
+              _vm._v("cancel")
+            ])
+          ])
+        ]
+      )
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "d-flex justify-content-center title" }, [
+      _c("p", [_vm._v("Edit card")])
+    ])
+  }
+]
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$97f2c4', $97f2c4);
+          } else {
+            api.reload('$97f2c4', $97f2c4);
+          }
+        }
+
+        
+      }
+    })();
 },{"vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/Board.vue":[function(require,module,exports) {
 "use strict";
 
@@ -11933,8 +12226,40 @@ var _CatDone = _interopRequireDefault(require("./CatDone"));
 
 var _CatComplete = _interopRequireDefault(require("./CatComplete"));
 
+var _EditCard = _interopRequireDefault(require("./EditCard"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -11967,8 +12292,6 @@ var _default = {
   },
   data: function data() {
     return {
-      key: null,
-      categoryDisplay: '',
       backlog: 'Backlog',
       todo: 'Todo',
       done: 'Done',
@@ -11977,7 +12300,11 @@ var _default = {
       backlogs: [],
       todos: [],
       dones: [],
-      completes: []
+      completes: [],
+      categoryId: null,
+      addCardFormUp: false,
+      editCardFormUp: false,
+      dataEdit: null
     };
   },
   components: {
@@ -11985,57 +12312,209 @@ var _default = {
     CatBacklog: _CatBacklog.default,
     CatTodo: _CatTodo.default,
     CatDone: _CatDone.default,
-    CatComplete: _CatComplete.default
+    CatComplete: _CatComplete.default,
+    EditCard: _EditCard.default
   },
   methods: {
     fetchCategories: function fetchCategories() {
       var _this = this;
 
+      this.categories = [];
+      this.backlogs = [];
+      this.todos = [];
+      this.dones = [];
+      this.completes = [];
       axios({
         method: 'GET',
-        url: 'http://localhost:3000/categories'
+        url: 'http://localhost:3000/categories',
+        headers: {
+          token: localStorage.getItem('token')
+        }
       }).then(function (_ref) {
         var data = _ref.data;
         var result = data.data;
-        result.forEach(function (data) {
-          _this.categories.push(data);
 
-          if (data.name === 'Backlog') {
-            if (data.Tasks.length) {
-              data.Tasks.forEach(function (task) {
-                _this.backlogs.push(task);
-              });
+        if (result.length) {
+          result.forEach(function (data) {
+            _this.categories.push(data);
+
+            if (data.name === 'Backlog') {
+              if (data.Tasks.length) {
+                data.Tasks.forEach(function (task) {
+                  _this.backlogs.push(task);
+                });
+
+                _this.backlogs.sort(function (a, b) {
+                  return a.id - b.id;
+                });
+              }
+            } else if (data.name === 'Todo') {
+              if (data.Tasks.length) {
+                data.Tasks.forEach(function (task) {
+                  _this.todos.push(task);
+                });
+
+                _this.todos.sort(function (a, b) {
+                  return a.id - b.id;
+                });
+              }
+            } else if (data.name === 'Done') {
+              if (data.Tasks.length) {
+                data.Tasks.forEach(function (task) {
+                  _this.dones.push(task);
+                });
+
+                _this.dones.sort(function (a, b) {
+                  return a.id - b.id;
+                });
+              }
+            } else if (data.name === 'Complete') {
+              if (data.Tasks.length) {
+                data.Tasks.forEach(function (task) {
+                  _this.completes.push(task);
+                });
+
+                _this.completes.sort(function (a, b) {
+                  return a.id - b.id;
+                });
+              }
             }
-          } else if (data.name === 'Todo') {
-            if (data.Tasks.length) {
-              data.Tasks.forEach(function (task) {
-                _this.todos.push(task);
-              });
-            }
-          } else if (data.name === 'Done') {
-            if (data.Tasks.length) {
-              data.Tasks.forEach(function (task) {
-                _this.dones.push(task);
-              });
-            }
-          } else if (data.name === 'Complete') {
-            if (data.Tasks.length) {
-              data.Tasks.forEach(function (task) {
-                _this.completes.push(task);
-              });
-            }
+          });
+        } else {
+          _this.categories.push({
+            id: 1,
+            name: 'Backlog'
+          }, {
+            id: 2,
+            name: 'Todo'
+          }, {
+            id: 3,
+            name: 'Done'
+          }, {
+            id: 4,
+            name: 'Complete'
+          });
+        }
+
+        for (var i = 0; i < _this.categories.length; i++) {
+          if (_this.categories[i].name === 'Backlog') {
+            break;
           }
+
+          if (i === _this.categories.length - 1) {
+            _this.categories.push({
+              id: 1,
+              name: 'Backlog'
+            });
+          }
+        }
+
+        for (var _i = 0; _i < _this.categories.length; _i++) {
+          if (_this.categories[_i].name === 'Todo') {
+            break;
+          }
+
+          if (_i === _this.categories.length - 1) {
+            _this.categories.push({
+              id: 2,
+              name: 'Todo'
+            });
+          }
+        }
+
+        for (var _i2 = 0; _i2 < _this.categories.length; _i2++) {
+          if (_this.categories[_i2].name === 'Done') {
+            break;
+          }
+
+          if (_i2 === _this.categories.length - 1) {
+            _this.categories.push({
+              id: 3,
+              name: 'Done'
+            });
+          }
+        }
+
+        for (var _i3 = 0; _i3 < _this.categories.length; _i3++) {
+          if (_this.categories[_i3].name === 'Complete') {
+            break;
+          }
+
+          if (_i3 === _this.categories.length - 1) {
+            _this.categories.push({
+              id: 4,
+              name: 'Complete'
+            });
+          }
+        }
+
+        _this.categories.sort(function (a, b) {
+          return a.id - b.id;
         });
-        console.log(_this.categories);
       }).catch(function (err) {
         console.log(err);
       });
+    },
+    addCardForm: function addCardForm(id) {
+      this.categoryId = id;
+
+      if (this.addCardFormUp) {
+        this.addCardFormUp = false;
+      } else {
+        this.addCardFormUp = true;
+      }
+    },
+    editCardForm: function editCardForm(id) {
+      var _this2 = this;
+
+      if (this.editCardFormUp) {
+        this.editCardFormUp = false;
+        this.fetchCategories();
+      } else {
+        axios({
+          method: 'GET',
+          url: "http://localhost:3000/tasks/".concat(id),
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        }).then(function (_ref2) {
+          var data = _ref2.data;
+          var task = data.data;
+          _this2.dataEdit = task;
+          _this2.editCardFormUp = true;
+        }).catch(function (err) {
+          console.log(err.response.data);
+        });
+      }
+    },
+    deleteCard: function deleteCard(id) {
+      var _this3 = this;
+
+      axios({
+        method: 'DELETE',
+        url: "http://localhost:3000/tasks/".concat(id),
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      }).then(function (_ref3) {
+        var data = _ref3.data;
+        console.log(data);
+
+        _this3.fetchCategories();
+      }).catch(function (err) {
+        console.log(err.response.data);
+      });
+    },
+    changePage: function changePage(page) {
+      this.$emit('changePage', page);
     }
   },
   created: function created() {
     if (this.isLogedIn) {
       this.fetchCategories();
     }
+  },
+  mounted: function mounted() {// addCardFormDown()
   }
 };
 exports.default = _default;
@@ -12051,13 +12530,16 @@ exports.default = _default;
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.isLogedIn
-    ? _c("div", [
-        _c(
-          "div",
-          { staticClass: "col-12 p-0 d-flex cards-container" },
-          _vm._l(_vm.categories, function(category) {
-            return _c("div", { staticClass: "pl-2 my-2 cards-group" }, [
+  return _c("div", [
+    _c(
+      "div",
+      { staticClass: "col-12 p-0 d-flex cards-container" },
+      [
+        _vm._l(_vm.categories, function(category) {
+          return _c(
+            "div",
+            { key: category.id, staticClass: "pl-2 my-2 cards-group" },
+            [
               _c("p", { staticClass: "m-0 p-1 categori" }, [
                 _vm._v(_vm._s(category.name))
               ]),
@@ -12066,48 +12548,89 @@ exports.default = _default;
                 "div",
                 [
                   _vm.backlog === category.name
-                    ? _c("CatBacklog", { attrs: { backlogs: _vm.backlogs } })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.todo === category.name
-                    ? _c("CatTodo", { attrs: { todos: _vm.todos } })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.done === category.name
-                    ? _c("CatDone", { attrs: { dones: _vm.dones } })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.complete === category.name
-                    ? _c("CatComplete", { attrs: { completes: _vm.completes } })
+                    ? _c("CatBacklog", {
+                        attrs: { backlogs: _vm.backlogs },
+                        on: {
+                          editCardForm: _vm.editCardForm,
+                          deleteCard: _vm.deleteCard
+                        }
+                      })
+                    : _vm.todo === category.name
+                    ? _c("CatTodo", {
+                        attrs: { todos: _vm.todos },
+                        on: {
+                          editCardForm: _vm.editCardForm,
+                          deleteCard: _vm.deleteCard
+                        }
+                      })
+                    : _vm.done === category.name
+                    ? _c("CatDone", {
+                        attrs: { dones: _vm.dones },
+                        on: {
+                          editCardForm: _vm.editCardForm,
+                          deleteCard: _vm.deleteCard
+                        }
+                      })
+                    : _vm.complete === category.name
+                    ? _c("CatComplete", {
+                        attrs: { completes: _vm.completes },
+                        on: {
+                          editCardForm: _vm.editCardForm,
+                          deleteCard: _vm.deleteCard
+                        }
+                      })
                     : _vm._e()
                 ],
                 1
               ),
               _vm._v(" "),
-              _vm._m(0, true)
-            ])
-          }),
-          0
-        )
-      ])
-    : _vm._e()
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-2 add-card" }, [
-      _c("p", { staticClass: "icon-add-card" }, [
-        _c("i", {
-          staticClass: "fa fa-plus",
-          attrs: { "aria-hidden": "true" }
+              _c("div", { staticClass: "mt-2 add-card" }, [
+                _c(
+                  "p",
+                  {
+                    staticClass: "icon-add-card",
+                    on: {
+                      click: function($event) {
+                        return _vm.addCardForm(category.id)
+                      }
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fa fa-plus",
+                      attrs: { "aria-hidden": "true" }
+                    }),
+                    _vm._v("\n            Add a card\n          ")
+                  ]
+                )
+              ])
+            ]
+          )
         }),
-        _vm._v("\n            Add a card\n          ")
-      ])
-    ])
-  }
-]
+        _vm._v(" "),
+        _vm.addCardFormUp
+          ? _c("AddCard", {
+              attrs: { categoryId: _vm.categoryId },
+              on: {
+                closeAddForm: _vm.addCardForm,
+                changePage: _vm.changePage,
+                fetchCategoriesAfterAdd: _vm.fetchCategories
+              }
+            })
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.editCardFormUp
+          ? _c("EditCard", {
+              attrs: { dataEdit: _vm.dataEdit },
+              on: { closeEditForm: _vm.editCardForm }
+            })
+          : _vm._e()
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
           return {
@@ -12136,7 +12659,7 @@ render._withStripped = true
         
       }
     })();
-},{"./AddCard":"src/components/AddCard.vue","./CatBacklog":"src/components/CatBacklog.vue","./CatTodo":"src/components/CatTodo.vue","./CatDone":"src/components/CatDone.vue","./CatComplete":"src/components/CatComplete.vue","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
+},{"./AddCard":"src/components/AddCard.vue","./CatBacklog":"src/components/CatBacklog.vue","./CatTodo":"src/components/CatTodo.vue","./CatDone":"src/components/CatDone.vue","./CatComplete":"src/components/CatComplete.vue","./EditCard":"src/components/EditCard.vue","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12178,6 +12701,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
 var _default = {
   name: 'App',
   data: function data() {
@@ -12194,11 +12720,9 @@ var _default = {
   },
   methods: {
     changePage: function changePage(page) {
-      console.log(page);
       this.currentPage = page;
     },
     changeIsLogedIn: function changeIsLogedIn(status) {
-      console.log(status);
       this.isLogedIn = status;
     }
   },
@@ -12230,7 +12754,7 @@ exports.default = _default;
     [
       _c("Header", {
         attrs: { isLogedIn: _vm.isLogedIn },
-        on: { changeIsLogedIn: _vm.changeIsLogedIn }
+        on: { changeIsLogedIn: _vm.changeIsLogedIn, changePage: _vm.changePage }
       }),
       _vm._v(" "),
       _c("SignIn", {
@@ -12243,7 +12767,12 @@ exports.default = _default;
         on: { changePage: _vm.changePage, changeIsLogedIn: _vm.changeIsLogedIn }
       }),
       _vm._v(" "),
-      _c("Board", { attrs: { isLogedIn: _vm.isLogedIn } })
+      _vm.currentPage === "board" || _vm.isLogedIn
+        ? _c("Board", {
+            attrs: { isLogedIn: _vm.isLogedIn },
+            on: { changePage: _vm.changePage }
+          })
+        : _vm._e()
     ],
     1
   )
@@ -12277,21 +12806,29 @@ render._withStripped = true
         
       }
     })();
-},{"./components/Header":"src/components/Header.vue","./components/SignIn":"src/components/SignIn.vue","./components/SignUp":"src/components/SignUp.vue","./components/Board":"src/components/Board.vue","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/main.js":[function(require,module,exports) {
+},{"./components/Header":"src/components/Header.vue","./components/SignIn":"src/components/SignIn.vue","./components/SignUp":"src/components/SignUp.vue","./components/Board":"src/components/Board.vue","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"node_modules/vue-google-signin-button/dist/vue-google-signin-button.min.js":[function(require,module,exports) {
+var define;
+'use strict';var _typeof='function'==typeof Symbol&&'symbol'==typeof Symbol.iterator?function(obj){return typeof obj}:function(obj){return obj&&'function'==typeof Symbol&&obj.constructor===Symbol&&obj!==Symbol.prototype?'symbol':typeof obj};(function(){function a(c){'undefined'!=typeof console&&console.error('[g-signin-button] '+c)}function b(c){c.component('g-signin-button',{name:'g-signin-button',render:function render(d){return d('div',{attrs:{class:'g-signin-button'},ref:'signinBtn'},this.$slots.default)},props:{params:{type:Object,required:!0,default:function _default(){return{}}}},mounted:function mounted(){var _this=this;return window.gapi?this.params.client_id?void window.gapi.load('auth2',function(){var d=window.gapi.auth2.init(_this.params);d.attachClickHandler(_this.$refs.signinBtn,{},function(e){_this.$emit('success',e)},function(e){_this.$emit('error',e),_this.$emit('failure',e)})}):void a('params.client_id must be specified.'):void a('"https://apis.google.com/js/api:client.js" needs to be included as a <script>.')}})}'object'==('undefined'==typeof exports?'undefined':_typeof(exports))?module.exports=b:'function'==typeof define&&define.amd?define([],function(){return b}):window.Vue&&window.Vue.use(b)})();
+
+},{}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
 var _vue = _interopRequireDefault(require("vue"));
 
 var _App = _interopRequireDefault(require("./App.vue"));
 
+var _vueGoogleSigninButton = _interopRequireDefault(require("vue-google-signin-button"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_vue.default.use(_vueGoogleSigninButton.default);
 
 new _vue.default({
   render: function render(h) {
     return h(_App.default);
   }
 }).$mount('#app');
-},{"vue":"node_modules/vue/dist/vue.runtime.esm.js","./App.vue":"src/App.vue"}],"../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"vue":"node_modules/vue/dist/vue.runtime.esm.js","./App.vue":"src/App.vue","vue-google-signin-button":"node_modules/vue-google-signin-button/dist/vue-google-signin-button.min.js"}],"../../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -12319,7 +12856,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33145" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46467" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -11,8 +11,8 @@
         <p class="card-text">{{ task.description }}</p>
         </div>
         <div class="action-container">
-        <i class="m-1 fas fa-pencil-alt" v-on:click="editCardForm"></i>
-        <i class="m-1 far fa-trash-alt"></i>
+        <i class="m-1 fas fa-pencil-alt" @click="editCardForm(task.id)"></i>
+        <i class="m-1 far fa-trash-alt" @click="deleteCard(task.id)"></i>
         </div>
     </div>
     </div>
@@ -30,6 +30,14 @@ export default {
     data() {
         return {
 
+        }
+    },
+    methods: {
+        editCardForm(id) {
+            this.$emit('editCardForm', id)
+        },
+        deleteCard(id) {
+            this.$emit('deleteCard', id)
         }
     }
 }

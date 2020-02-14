@@ -18,6 +18,14 @@
                 <p id="btn-to-signUp" class="mb-0 btn-to-signUp" @click="goToSignUp('signUp')">sign up for kanban</p>
               </div>
               <!-- <div class="g-signin2" data-longtitle="true" @data-onsuccess.prevent="onSignIn"></div> -->
+              <g-signin-button
+                class="btn-gSigIn"
+                :params="googleSignInParams"
+                @success="onSignInSuccess"
+                @error="onSignInError">
+                <img class="g-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" alt="giSignInLogo">
+                Sign in with Google
+              </g-signin-button>
             </div>
         </form>
     </div>
@@ -36,7 +44,7 @@ export default {
         return {
             email: '',
             password: '',
-            googleSignInParams: {clientId: '425308161759-glmhm9ugin8corvgojjurm2u0pd101pf.apps.googleusercontent.com'}
+            googleSignInParams: {client_id: '425308161759-glmhm9ugin8corvgojjurm2u0pd101pf.apps.googleusercontent.com'}
         }
     },
     methods: {
@@ -54,41 +62,35 @@ export default {
             })
                 .then(response => {
                     this.$emit('changeIsLogedIn', true)
+                    this.$emit('changePage', 'board')
                     localStorage.setItem('token', response.data.token)
                 })
                 .catch(err => {
                     console.log(err.response.data)
                 })
+        },
+        onSignInSuccess (googleUser) {
+            const id_token = googleUser.getAuthResponse().id_token
+
+            axios({
+                method: 'POST',
+                url: 'http://localhost:3000/users/gSignIn',
+                headers: {
+                    id_token: id_token
+                }
+            })
+                .then(response => {
+                    localStorage.setItem('token', response.data.token)
+                    this.$emit('changeIsLogedIn', true)
+                    this.$emit('changePage', 'board')
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+        onSignInError (error) {
+            console.log('OH NOES', error)
         }
-        // onSignIn (googleUser) {
-        //     console.log('google sign in')
-        //     var id_token = googleUser.getAuthResponse().id_token;
-        //     console.log('====== ', id_token)
-
-        //     // this.gToken = id_token
-        //     // localStorage.setItem('gToken', this.gToken)
-        //     // localStorage.setItem('token', 'token')
-        //     // console.log(gToken)
-
-        //     // this.fetchTask()
-        //     // this.board = true
-        //     // this.toSignIn = false
-        //     // this.toSignUp = false
-        //     // this.isLogedIn = true
-        // }
     }
 }
 </script>
-
-<style scoped>
-    g-signin-button {
-  /* This is where you control how the button looks. Be creative! */
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 3px;
-  background-color: #3c82f7;
-  color: #fff;
-  box-shadow: 0 3px 0 #0f69ff;
-  cursor: pointer;
-}
-</style>
