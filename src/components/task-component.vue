@@ -35,20 +35,21 @@
                           </div>
                           <div class="card-body text-left" style="padding: 0.2rem">
                             <CreateTask 
-                            :id='board.id' 
-                            :read='readCategory()'
-                            @read='readCategory'
+                            :id='board.id'
+                            @read='readTask'
                             class="text-right text-dark">
                             </CreateTask>
                           </div>
-                          <div class="card-body" v-for="task in filterTask(board.id)" :key="task.id">
-                            <div></div>
+                          <div class="card-body" v-for="task in filterTask(board.id)" :key="task.OrganizationId">
                             <div class="card text-left" >
                               <div class="card-header">
                                 <label>{{task.title}}</label>
                               </div>
                               <div class="card-body">
                                 <label>{{task.description}}</label>
+                              </div>
+                              <div class="card-footer text-right" style="padding: 0.1rem">
+                                <a class="btn" @click='deleteTask(task.id)'>{{task.id}}</a>
                               </div>
                             </div>
                           </div>
@@ -79,6 +80,19 @@ export default {
     CreateTask
   },
   methods : {
+    deleteTask(id){
+      axios.delete(`http://localhost:3000/tasks/${id}`, {
+          headers : {
+            token : localStorage.token
+          }
+      })
+      .then(res => {
+        this.readTask()
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
     filterTask(id){
       const task = []
       this.tasks.forEach(el => {

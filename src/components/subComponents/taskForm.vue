@@ -32,13 +32,15 @@ import axios from 'axios'
 export default {
     data () {
         return {
-            taskName : '',
-            taskDescription : ''
+        boards : [],
+        tasks : [],
+        categoryName : '',
+        taskName : '',
+        taskDescription : ''
         }
     },
     props : {
-        id : Number,
-        read : Function
+        id : Number
     },
     methods : {
         addTask(){
@@ -64,7 +66,7 @@ export default {
         }
     },
     created () {
-        // this.addTask()
+        // this.read
         // console.log(this.id)
     },
     computed : {
