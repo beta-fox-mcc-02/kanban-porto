@@ -47,6 +47,28 @@
                                     <div class="card text-left" >
                                       <div class="card-header">
                                         <label>{{task.title}}</label>
+                                        <a class="btn text-right"  data-toggle="modal" :data-target="'#edit'+task.id"><i class="fas fa-edit"></i></a>
+                                        <div class="modal fade" :key="edit+task.id" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                          <div class="modal-content" style="width: 50%;">
+                                            <div class="card card-signup z-depth-0 text-center">
+                                              <div class="card-body">
+                                                <form @submit.prevent="edit(task.id)">
+                                                  <div class="form-group">
+                                                      <label for="name">Title</label>
+                                                      <input type="text" v-model="taskName" name="taskName" class="form-control" required>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="name">Description</label>
+                                                      <input type="text" v-model="taskDescription" name="taskDescription" class="form-control" required>
+                                                  </div>
+                                                  <button type="submit" class="btn btn-primary text-light">Edit</button>
+                                                </form>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
                                       </div>
                                       <div class="card-body">
                                         <label>{{task.description}}</label>
@@ -93,6 +115,24 @@ export default {
     draggable
   },
   methods : {
+    edit(id){
+      axios.put(`https://quiet-depths-10928.herokuapp.com/tasks/${id}`, {
+        title : this.taskName,
+        description : this.taskDescription
+      }, {
+        headers : {
+          token : localStorage.token,
+          id : localStorage.id
+        }
+      })
+      .then(({data}) => {
+        this.readTask()
+        this.readCategory()
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
     next(category, task){
       const CategoryId = category+1
       axios.patch(`https://quiet-depths-10928.herokuapp.com/tasks/${task}`, {
