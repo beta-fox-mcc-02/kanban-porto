@@ -55,7 +55,7 @@ export default {
             if(this.email && this.password) {
                 axios({
                     method: "POST",
-                    url: "http://localhost:3000/user/register",
+                    url: "https://desolate-mountain-17477.herokuapp.com/user/register",
                     data: {
                         name: this.name,
                         email: this.email,
@@ -90,7 +90,7 @@ export default {
             var id_token = googleUser.getAuthResponse().id_token;
             axios({
                 method: "POST",
-                url: "http://localhost:3000/user/glogin",
+                url: "https://desolate-mountain-17477.herokuapp.com/user/glogin",
                 data: { id_token }
             })
             .then((result) => { 

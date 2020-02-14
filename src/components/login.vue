@@ -39,7 +39,7 @@ export default {
             if(this.email && this.password) {
                 axios({
                     method: "POST",
-                    url: "http://localhost:3000/user/login",
+                    url: "https://desolate-mountain-17477.herokuapp.com/user/login",
                     data: {
                         email: this.email,
                         password: this.password

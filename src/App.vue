@@ -44,7 +44,7 @@ export default {
             let token = localStorage.getItem('access_token')
             axios({
                 method: "GET",
-                url: "http://localhost:3000/task/findAll",
+                url: "https://desolate-mountain-17477.herokuapp.com/task/findAll",
                 headers: { token }
             })
             .then((result) => {

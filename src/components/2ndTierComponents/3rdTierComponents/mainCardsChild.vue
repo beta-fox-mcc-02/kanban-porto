@@ -72,7 +72,7 @@ export default {
             let token = localStorage.getItem('access_token')
             axios({
                 method: 'GET',
-                url: `http://localhost:3000/task/update/${taskId}`,
+                url: `https://desolate-mountain-17477.herokuapp.com/task/update/${taskId}`,
                 headers: { token }
             })
             .then((result) => {
@@ -92,7 +92,7 @@ export default {
             console.log(this.title)
             axios({
                 method: "PUT",
-                url: `http://localhost:3000/task/update/${taskId}`,
+                url: `https://desolate-mountain-17477.herokuapp.com/task/update/${taskId}`,
                 headers: { token },
                 data: {
                     title: this.title,

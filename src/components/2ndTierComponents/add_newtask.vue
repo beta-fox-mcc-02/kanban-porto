@@ -41,7 +41,7 @@ export default {
                 let token = localStorage.getItem('access_token')
                 axios({
                     method: "POST",
-                    url: "http://localhost:3000/task/create",
+                    url: "https://desolate-mountain-17477.herokuapp.com/task/create",
                     headers: { token },
                     data: {
                         title: this.taskTitle,
