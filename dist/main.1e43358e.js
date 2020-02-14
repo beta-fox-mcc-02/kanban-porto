@@ -8546,406 +8546,7 @@ if (inBrowser) {
 
 var _default = Vue;
 exports.default = _default;
-},{}],"node_modules/vue-hot-reload-api/dist/index.js":[function(require,module,exports) {
-var Vue // late bind
-var version
-var map = Object.create(null)
-if (typeof window !== 'undefined') {
-  window.__VUE_HOT_MAP__ = map
-}
-var installed = false
-var isBrowserify = false
-var initHookName = 'beforeCreate'
-
-exports.install = function (vue, browserify) {
-  if (installed) { return }
-  installed = true
-
-  Vue = vue.__esModule ? vue.default : vue
-  version = Vue.version.split('.').map(Number)
-  isBrowserify = browserify
-
-  // compat with < 2.0.0-alpha.7
-  if (Vue.config._lifecycleHooks.indexOf('init') > -1) {
-    initHookName = 'init'
-  }
-
-  exports.compatible = version[0] >= 2
-  if (!exports.compatible) {
-    console.warn(
-      '[HMR] You are using a version of vue-hot-reload-api that is ' +
-        'only compatible with Vue.js core ^2.0.0.'
-    )
-    return
-  }
-}
-
-/**
- * Create a record for a hot module, which keeps track of its constructor
- * and instances
- *
- * @param {String} id
- * @param {Object} options
- */
-
-exports.createRecord = function (id, options) {
-  if(map[id]) { return }
-
-  var Ctor = null
-  if (typeof options === 'function') {
-    Ctor = options
-    options = Ctor.options
-  }
-  makeOptionsHot(id, options)
-  map[id] = {
-    Ctor: Ctor,
-    options: options,
-    instances: []
-  }
-}
-
-/**
- * Check if module is recorded
- *
- * @param {String} id
- */
-
-exports.isRecorded = function (id) {
-  return typeof map[id] !== 'undefined'
-}
-
-/**
- * Make a Component options object hot.
- *
- * @param {String} id
- * @param {Object} options
- */
-
-function makeOptionsHot(id, options) {
-  if (options.functional) {
-    var render = options.render
-    options.render = function (h, ctx) {
-      var instances = map[id].instances
-      if (ctx && instances.indexOf(ctx.parent) < 0) {
-        instances.push(ctx.parent)
-      }
-      return render(h, ctx)
-    }
-  } else {
-    injectHook(options, initHookName, function() {
-      var record = map[id]
-      if (!record.Ctor) {
-        record.Ctor = this.constructor
-      }
-      record.instances.push(this)
-    })
-    injectHook(options, 'beforeDestroy', function() {
-      var instances = map[id].instances
-      instances.splice(instances.indexOf(this), 1)
-    })
-  }
-}
-
-/**
- * Inject a hook to a hot reloadable component so that
- * we can keep track of it.
- *
- * @param {Object} options
- * @param {String} name
- * @param {Function} hook
- */
-
-function injectHook(options, name, hook) {
-  var existing = options[name]
-  options[name] = existing
-    ? Array.isArray(existing) ? existing.concat(hook) : [existing, hook]
-    : [hook]
-}
-
-function tryWrap(fn) {
-  return function (id, arg) {
-    try {
-      fn(id, arg)
-    } catch (e) {
-      console.error(e)
-      console.warn(
-        'Something went wrong during Vue component hot-reload. Full reload required.'
-      )
-    }
-  }
-}
-
-function updateOptions (oldOptions, newOptions) {
-  for (var key in oldOptions) {
-    if (!(key in newOptions)) {
-      delete oldOptions[key]
-    }
-  }
-  for (var key$1 in newOptions) {
-    oldOptions[key$1] = newOptions[key$1]
-  }
-}
-
-exports.rerender = tryWrap(function (id, options) {
-  var record = map[id]
-  if (!options) {
-    record.instances.slice().forEach(function (instance) {
-      instance.$forceUpdate()
-    })
-    return
-  }
-  if (typeof options === 'function') {
-    options = options.options
-  }
-  if (record.Ctor) {
-    record.Ctor.options.render = options.render
-    record.Ctor.options.staticRenderFns = options.staticRenderFns
-    record.instances.slice().forEach(function (instance) {
-      instance.$options.render = options.render
-      instance.$options.staticRenderFns = options.staticRenderFns
-      // reset static trees
-      // pre 2.5, all static trees are cached together on the instance
-      if (instance._staticTrees) {
-        instance._staticTrees = []
-      }
-      // 2.5.0
-      if (Array.isArray(record.Ctor.options.cached)) {
-        record.Ctor.options.cached = []
-      }
-      // 2.5.3
-      if (Array.isArray(instance.$options.cached)) {
-        instance.$options.cached = []
-      }
-
-      // post 2.5.4: v-once trees are cached on instance._staticTrees.
-      // Pure static trees are cached on the staticRenderFns array
-      // (both already reset above)
-
-      // 2.6: temporarily mark rendered scoped slots as unstable so that
-      // child components can be forced to update
-      var restore = patchScopedSlots(instance)
-      instance.$forceUpdate()
-      instance.$nextTick(restore)
-    })
-  } else {
-    // functional or no instance created yet
-    record.options.render = options.render
-    record.options.staticRenderFns = options.staticRenderFns
-
-    // handle functional component re-render
-    if (record.options.functional) {
-      // rerender with full options
-      if (Object.keys(options).length > 2) {
-        updateOptions(record.options, options)
-      } else {
-        // template-only rerender.
-        // need to inject the style injection code for CSS modules
-        // to work properly.
-        var injectStyles = record.options._injectStyles
-        if (injectStyles) {
-          var render = options.render
-          record.options.render = function (h, ctx) {
-            injectStyles.call(ctx)
-            return render(h, ctx)
-          }
-        }
-      }
-      record.options._Ctor = null
-      // 2.5.3
-      if (Array.isArray(record.options.cached)) {
-        record.options.cached = []
-      }
-      record.instances.slice().forEach(function (instance) {
-        instance.$forceUpdate()
-      })
-    }
-  }
-})
-
-exports.reload = tryWrap(function (id, options) {
-  var record = map[id]
-  if (options) {
-    if (typeof options === 'function') {
-      options = options.options
-    }
-    makeOptionsHot(id, options)
-    if (record.Ctor) {
-      if (version[1] < 2) {
-        // preserve pre 2.2 behavior for global mixin handling
-        record.Ctor.extendOptions = options
-      }
-      var newCtor = record.Ctor.super.extend(options)
-      // prevent record.options._Ctor from being overwritten accidentally
-      newCtor.options._Ctor = record.options._Ctor
-      record.Ctor.options = newCtor.options
-      record.Ctor.cid = newCtor.cid
-      record.Ctor.prototype = newCtor.prototype
-      if (newCtor.release) {
-        // temporary global mixin strategy used in < 2.0.0-alpha.6
-        newCtor.release()
-      }
-    } else {
-      updateOptions(record.options, options)
-    }
-  }
-  record.instances.slice().forEach(function (instance) {
-    if (instance.$vnode && instance.$vnode.context) {
-      instance.$vnode.context.$forceUpdate()
-    } else {
-      console.warn(
-        'Root or manually mounted instance modified. Full reload required.'
-      )
-    }
-  })
-})
-
-// 2.6 optimizes template-compiled scoped slots and skips updates if child
-// only uses scoped slots. We need to patch the scoped slots resolving helper
-// to temporarily mark all scoped slots as unstable in order to force child
-// updates.
-function patchScopedSlots (instance) {
-  if (!instance._u) { return }
-  // https://github.com/vuejs/vue/blob/dev/src/core/instance/render-helpers/resolve-scoped-slots.js
-  var original = instance._u
-  instance._u = function (slots) {
-    try {
-      // 2.6.4 ~ 2.6.6
-      return original(slots, true)
-    } catch (e) {
-      // 2.5 / >= 2.6.7
-      return original(slots, null, true)
-    }
-  }
-  return function () {
-    instance._u = original
-  }
-}
-
-},{}],"src/components/Header.vue":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default = {
-  name: 'Header',
-  props: {
-    isLogedIn: Boolean
-  },
-  data: function data() {
-    return {};
-  },
-  methods: {
-    signOut: function signOut() {
-      this.$emit('changeIsLogedIn', false);
-      this.$emit('changePage', 'signIn');
-      localStorage.removeItem('token');
-    }
-  },
-  created: function created() {
-    if (localStorage.getItem('token')) {
-      this.isLogedIn = true;
-    }
-  }
-};
-exports.default = _default;
-        var $e2af84 = exports.default || module.exports;
-      
-      if (typeof $e2af84 === 'function') {
-        $e2af84 = $e2af84.options;
-      }
-    
-        /* template */
-        Object.assign($e2af84, (function () {
-          var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "col-12 p-0 header d-flex align-items-center" },
-    [
-      _c("div", {
-        staticClass: "col-3 header-center d-flex justify-content-start"
-      }),
-      _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col-3 d-flex justify-content-end header-right" },
-        [
-          _vm.isLogedIn
-            ? _c(
-                "p",
-                { staticClass: "m-0 btn-signOut", on: { click: _vm.signOut } },
-                [_vm._v("Sign out")]
-              )
-            : _vm._e()
-        ]
-      )
-    ]
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "col-6 p-0 d-flex justify-content-center header-left" },
-      [_c("p", { staticClass: "m-0 logo" }, [_vm._v("KANBAN")])]
-    )
-  }
-]
-render._withStripped = true
-
-          return {
-            render: render,
-            staticRenderFns: staticRenderFns,
-            _compiled: true,
-            _scopeId: null,
-            functional: undefined
-          };
-        })());
-      
-    /* hot reload */
-    (function () {
-      if (module.hot) {
-        var api = require('vue-hot-reload-api');
-        api.install(require('vue'));
-        if (api.compatible) {
-          module.hot.accept();
-          if (!module.hot.data) {
-            api.createRecord('$e2af84', $e2af84);
-          } else {
-            api.reload('$e2af84', $e2af84);
-          }
-        }
-
-        
-      }
-    })();
-},{"vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
+},{}],"node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -10708,7 +10309,7 @@ module.exports.default = axios;
 
 },{"./utils":"node_modules/axios/lib/utils.js","./helpers/bind":"node_modules/axios/lib/helpers/bind.js","./core/Axios":"node_modules/axios/lib/core/Axios.js","./core/mergeConfig":"node_modules/axios/lib/core/mergeConfig.js","./defaults":"node_modules/axios/lib/defaults.js","./cancel/Cancel":"node_modules/axios/lib/cancel/Cancel.js","./cancel/CancelToken":"node_modules/axios/lib/cancel/CancelToken.js","./cancel/isCancel":"node_modules/axios/lib/cancel/isCancel.js","./helpers/spread":"node_modules/axios/lib/helpers/spread.js"}],"node_modules/axios/index.js":[function(require,module,exports) {
 module.exports = require('./lib/axios');
-},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"src/components/SignIn.vue":[function(require,module,exports) {
+},{"./lib/axios":"node_modules/axios/lib/axios.js"}],"src/config/axios.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10717,6 +10318,425 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var instance = _axios.default.create({
+  // baseURL: 'https://fierce-ridge-24187.herokuapp.com'
+  baseURL: 'https://fathomless-hamlet-44488.herokuapp.com' // baseURL: 'http://localhost:3000'
+
+});
+
+var _default = instance;
+exports.default = _default;
+},{"axios":"node_modules/axios/index.js"}],"node_modules/vue-hot-reload-api/dist/index.js":[function(require,module,exports) {
+var Vue // late bind
+var version
+var map = Object.create(null)
+if (typeof window !== 'undefined') {
+  window.__VUE_HOT_MAP__ = map
+}
+var installed = false
+var isBrowserify = false
+var initHookName = 'beforeCreate'
+
+exports.install = function (vue, browserify) {
+  if (installed) { return }
+  installed = true
+
+  Vue = vue.__esModule ? vue.default : vue
+  version = Vue.version.split('.').map(Number)
+  isBrowserify = browserify
+
+  // compat with < 2.0.0-alpha.7
+  if (Vue.config._lifecycleHooks.indexOf('init') > -1) {
+    initHookName = 'init'
+  }
+
+  exports.compatible = version[0] >= 2
+  if (!exports.compatible) {
+    console.warn(
+      '[HMR] You are using a version of vue-hot-reload-api that is ' +
+        'only compatible with Vue.js core ^2.0.0.'
+    )
+    return
+  }
+}
+
+/**
+ * Create a record for a hot module, which keeps track of its constructor
+ * and instances
+ *
+ * @param {String} id
+ * @param {Object} options
+ */
+
+exports.createRecord = function (id, options) {
+  if(map[id]) { return }
+
+  var Ctor = null
+  if (typeof options === 'function') {
+    Ctor = options
+    options = Ctor.options
+  }
+  makeOptionsHot(id, options)
+  map[id] = {
+    Ctor: Ctor,
+    options: options,
+    instances: []
+  }
+}
+
+/**
+ * Check if module is recorded
+ *
+ * @param {String} id
+ */
+
+exports.isRecorded = function (id) {
+  return typeof map[id] !== 'undefined'
+}
+
+/**
+ * Make a Component options object hot.
+ *
+ * @param {String} id
+ * @param {Object} options
+ */
+
+function makeOptionsHot(id, options) {
+  if (options.functional) {
+    var render = options.render
+    options.render = function (h, ctx) {
+      var instances = map[id].instances
+      if (ctx && instances.indexOf(ctx.parent) < 0) {
+        instances.push(ctx.parent)
+      }
+      return render(h, ctx)
+    }
+  } else {
+    injectHook(options, initHookName, function() {
+      var record = map[id]
+      if (!record.Ctor) {
+        record.Ctor = this.constructor
+      }
+      record.instances.push(this)
+    })
+    injectHook(options, 'beforeDestroy', function() {
+      var instances = map[id].instances
+      instances.splice(instances.indexOf(this), 1)
+    })
+  }
+}
+
+/**
+ * Inject a hook to a hot reloadable component so that
+ * we can keep track of it.
+ *
+ * @param {Object} options
+ * @param {String} name
+ * @param {Function} hook
+ */
+
+function injectHook(options, name, hook) {
+  var existing = options[name]
+  options[name] = existing
+    ? Array.isArray(existing) ? existing.concat(hook) : [existing, hook]
+    : [hook]
+}
+
+function tryWrap(fn) {
+  return function (id, arg) {
+    try {
+      fn(id, arg)
+    } catch (e) {
+      console.error(e)
+      console.warn(
+        'Something went wrong during Vue component hot-reload. Full reload required.'
+      )
+    }
+  }
+}
+
+function updateOptions (oldOptions, newOptions) {
+  for (var key in oldOptions) {
+    if (!(key in newOptions)) {
+      delete oldOptions[key]
+    }
+  }
+  for (var key$1 in newOptions) {
+    oldOptions[key$1] = newOptions[key$1]
+  }
+}
+
+exports.rerender = tryWrap(function (id, options) {
+  var record = map[id]
+  if (!options) {
+    record.instances.slice().forEach(function (instance) {
+      instance.$forceUpdate()
+    })
+    return
+  }
+  if (typeof options === 'function') {
+    options = options.options
+  }
+  if (record.Ctor) {
+    record.Ctor.options.render = options.render
+    record.Ctor.options.staticRenderFns = options.staticRenderFns
+    record.instances.slice().forEach(function (instance) {
+      instance.$options.render = options.render
+      instance.$options.staticRenderFns = options.staticRenderFns
+      // reset static trees
+      // pre 2.5, all static trees are cached together on the instance
+      if (instance._staticTrees) {
+        instance._staticTrees = []
+      }
+      // 2.5.0
+      if (Array.isArray(record.Ctor.options.cached)) {
+        record.Ctor.options.cached = []
+      }
+      // 2.5.3
+      if (Array.isArray(instance.$options.cached)) {
+        instance.$options.cached = []
+      }
+
+      // post 2.5.4: v-once trees are cached on instance._staticTrees.
+      // Pure static trees are cached on the staticRenderFns array
+      // (both already reset above)
+
+      // 2.6: temporarily mark rendered scoped slots as unstable so that
+      // child components can be forced to update
+      var restore = patchScopedSlots(instance)
+      instance.$forceUpdate()
+      instance.$nextTick(restore)
+    })
+  } else {
+    // functional or no instance created yet
+    record.options.render = options.render
+    record.options.staticRenderFns = options.staticRenderFns
+
+    // handle functional component re-render
+    if (record.options.functional) {
+      // rerender with full options
+      if (Object.keys(options).length > 2) {
+        updateOptions(record.options, options)
+      } else {
+        // template-only rerender.
+        // need to inject the style injection code for CSS modules
+        // to work properly.
+        var injectStyles = record.options._injectStyles
+        if (injectStyles) {
+          var render = options.render
+          record.options.render = function (h, ctx) {
+            injectStyles.call(ctx)
+            return render(h, ctx)
+          }
+        }
+      }
+      record.options._Ctor = null
+      // 2.5.3
+      if (Array.isArray(record.options.cached)) {
+        record.options.cached = []
+      }
+      record.instances.slice().forEach(function (instance) {
+        instance.$forceUpdate()
+      })
+    }
+  }
+})
+
+exports.reload = tryWrap(function (id, options) {
+  var record = map[id]
+  if (options) {
+    if (typeof options === 'function') {
+      options = options.options
+    }
+    makeOptionsHot(id, options)
+    if (record.Ctor) {
+      if (version[1] < 2) {
+        // preserve pre 2.2 behavior for global mixin handling
+        record.Ctor.extendOptions = options
+      }
+      var newCtor = record.Ctor.super.extend(options)
+      // prevent record.options._Ctor from being overwritten accidentally
+      newCtor.options._Ctor = record.options._Ctor
+      record.Ctor.options = newCtor.options
+      record.Ctor.cid = newCtor.cid
+      record.Ctor.prototype = newCtor.prototype
+      if (newCtor.release) {
+        // temporary global mixin strategy used in < 2.0.0-alpha.6
+        newCtor.release()
+      }
+    } else {
+      updateOptions(record.options, options)
+    }
+  }
+  record.instances.slice().forEach(function (instance) {
+    if (instance.$vnode && instance.$vnode.context) {
+      instance.$vnode.context.$forceUpdate()
+    } else {
+      console.warn(
+        'Root or manually mounted instance modified. Full reload required.'
+      )
+    }
+  })
+})
+
+// 2.6 optimizes template-compiled scoped slots and skips updates if child
+// only uses scoped slots. We need to patch the scoped slots resolving helper
+// to temporarily mark all scoped slots as unstable in order to force child
+// updates.
+function patchScopedSlots (instance) {
+  if (!instance._u) { return }
+  // https://github.com/vuejs/vue/blob/dev/src/core/instance/render-helpers/resolve-scoped-slots.js
+  var original = instance._u
+  instance._u = function (slots) {
+    try {
+      // 2.6.4 ~ 2.6.6
+      return original(slots, true)
+    } catch (e) {
+      // 2.5 / >= 2.6.7
+      return original(slots, null, true)
+    }
+  }
+  return function () {
+    instance._u = original
+  }
+}
+
+},{}],"src/components/Header.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = {
+  name: 'Header',
+  props: {
+    isLogedIn: Boolean
+  },
+  data: function data() {
+    return {};
+  },
+  methods: {
+    signOut: function signOut() {
+      this.$emit('changeIsLogedIn', false);
+      this.$emit('changePage', 'signIn');
+      localStorage.removeItem('token');
+    }
+  },
+  created: function created() {
+    if (localStorage.getItem('token')) {
+      this.isLogedIn = true;
+    }
+  }
+};
+exports.default = _default;
+        var $e2af84 = exports.default || module.exports;
+      
+      if (typeof $e2af84 === 'function') {
+        $e2af84 = $e2af84.options;
+      }
+    
+        /* template */
+        Object.assign($e2af84, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "col-12 p-0 header d-flex align-items-center" },
+    [
+      _c("div", {
+        staticClass: "col-3 header-center d-flex justify-content-start"
+      }),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col-3 d-flex justify-content-end header-right" },
+        [
+          _vm.isLogedIn
+            ? _c(
+                "p",
+                { staticClass: "m-0 btn-signOut", on: { click: _vm.signOut } },
+                [_vm._v("Sign out")]
+              )
+            : _vm._e()
+        ]
+      )
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "col-6 p-0 d-flex justify-content-center header-left" },
+      [_c("p", { staticClass: "m-0 logo" }, [_vm._v("KANBAN")])]
+    )
+  }
+]
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$e2af84', $e2af84);
+          } else {
+            api.reload('$e2af84', $e2af84);
+          }
+        }
+
+        
+      }
+    })();
+},{"vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/SignIn.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("../config/axios"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10777,7 +10797,7 @@ var _default = {
 
       (0, _axios.default)({
         method: 'POST',
-        url: 'http://localhost:3000/users/signIn',
+        url: '/users/signIn',
         data: {
           email: this.email,
           password: this.password
@@ -10798,7 +10818,7 @@ var _default = {
       var id_token = googleUser.getAuthResponse().id_token;
       (0, _axios.default)({
         method: 'POST',
-        url: 'http://localhost:3000/users/gSignIn',
+        url: '/users/gSignIn',
         headers: {
           id_token: id_token
         }
@@ -11007,7 +11027,7 @@ render._withStripped = true
         
       }
     })();
-},{"axios":"node_modules/axios/index.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/SignUp.vue":[function(require,module,exports) {
+},{"../config/axios":"src/config/axios.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/SignUp.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11015,7 +11035,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _axios = _interopRequireDefault(require("axios"));
+var _axios = _interopRequireDefault(require("../config/axios"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11062,7 +11082,7 @@ var _default = {
 
       (0, _axios.default)({
         method: 'POST',
-        url: 'http://localhost:3000/users/signUp',
+        url: '/users/signUp',
         data: {
           email: this.email,
           password: this.password
@@ -11237,13 +11257,18 @@ render._withStripped = true
         
       }
     })();
-},{"axios":"node_modules/axios/index.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/AddCard.vue":[function(require,module,exports) {
+},{"../config/axios":"src/config/axios.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/AddCard.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("../config/axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 //
 //
 //
@@ -11287,9 +11312,9 @@ var _default = {
     addCard: function addCard() {
       var _this = this;
 
-      axios({
+      (0, _axios.default)({
         method: 'POST',
-        url: 'http://localhost:3000/tasks',
+        url: '/tasks',
         data: {
           title: this.title,
           description: this.description,
@@ -11462,13 +11487,23 @@ render._withStripped = true
         
       }
     })();
-},{"vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CatBacklog.vue":[function(require,module,exports) {
+},{"../config/axios":"src/config/axios.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CatBacklog.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("../config/axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
 //
 //
 //
@@ -11498,7 +11533,10 @@ var _default = {
     backlogs: Array
   },
   data: function data() {
-    return {};
+    return {
+      categoryId: null,
+      move: ''
+    };
   },
   methods: {
     editCardForm: function editCardForm(id) {
@@ -11506,6 +11544,35 @@ var _default = {
     },
     deleteCard: function deleteCard(id) {
       this.$emit('deleteCard', id);
+    },
+    editCategory: function editCategory(id, catId, moveTo) {
+      var _this = this;
+
+      this.categoryId = catId;
+      this.move = moveTo;
+
+      if (this.move === 'right') {
+        this.categoryId++;
+      } else if (this.move === 'left') {
+        this.categoryId--;
+      }
+
+      (0, _axios.default)({
+        method: 'PUT',
+        url: "/tasks/".concat(id),
+        data: {
+          CategoryId: this.categoryId
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      }).then(function (_ref) {
+        var data = _ref.data;
+
+        _this.$emit('fetchCategories');
+      }).catch(function (err) {
+        console.log(err.response.data);
+      });
     }
   }
 };
@@ -11541,23 +11608,38 @@ exports.default = _default;
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "action-container" }, [
-            _c("i", {
-              staticClass: "m-1 fas fa-pencil-alt",
-              on: {
-                click: function($event) {
-                  return _vm.editCardForm(task.id)
+            _c("div", [
+              _c("i", {
+                staticClass: "m-1 fas fa-pencil-alt",
+                on: {
+                  click: function($event) {
+                    return _vm.editCardForm(task.id)
+                  }
                 }
-              }
-            }),
+              }),
+              _vm._v(" "),
+              _c("i", {
+                staticClass: "m-1 far fa-trash-alt",
+                on: {
+                  click: function($event) {
+                    return _vm.deleteCard(task.id)
+                  }
+                }
+              })
+            ]),
             _vm._v(" "),
-            _c("i", {
-              staticClass: "m-1 far fa-trash-alt",
-              on: {
-                click: function($event) {
-                  return _vm.deleteCard(task.id)
+            _c("div", [
+              _c("i", {
+                staticClass: "fa fa-arrow-right",
+                attrs: { "aria-hidden": "true" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.editCategory(task.id, task.CategoryId, "right")
+                  }
                 }
-              }
-            })
+              })
+            ])
           ])
         ])
       ])
@@ -11594,13 +11676,24 @@ render._withStripped = true
         
       }
     })();
-},{"vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CatTodo.vue":[function(require,module,exports) {
+},{"../config/axios":"src/config/axios.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CatTodo.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("../config/axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -11630,7 +11723,10 @@ var _default = {
     todos: Array
   },
   data: function data() {
-    return {};
+    return {
+      categoryId: null,
+      move: ''
+    };
   },
   methods: {
     editCardForm: function editCardForm(id) {
@@ -11638,6 +11734,36 @@ var _default = {
     },
     deleteCard: function deleteCard(id) {
       this.$emit('deleteCard', id);
+    },
+    editCategory: function editCategory(id, catId, moveTo) {
+      var _this = this;
+
+      this.categoryId = catId;
+      this.move = moveTo;
+
+      if (this.move === 'right') {
+        this.categoryId++;
+      } else if (this.move === 'left') {
+        this.categoryId--;
+      }
+
+      (0, _axios.default)({
+        method: 'PUT',
+        url: "/tasks/".concat(id),
+        data: {
+          CategoryId: this.categoryId
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      }).then(function (_ref) {
+        var data = _ref.data;
+        console.log(data);
+
+        _this.$emit('fetchCategories');
+      }).catch(function (err) {
+        console.log(err.response.data);
+      });
     }
   }
 };
@@ -11673,23 +11799,49 @@ exports.default = _default;
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "action-container" }, [
-            _c("i", {
-              staticClass: "m-1 fas fa-pencil-alt",
-              on: {
-                click: function($event) {
-                  return _vm.editCardForm(task.id)
+            _c("div", [
+              _c("i", {
+                staticClass: "m-1 fas fa-pencil-alt",
+                on: {
+                  click: function($event) {
+                    return _vm.editCardForm(task.id)
+                  }
                 }
-              }
-            }),
+              }),
+              _vm._v(" "),
+              _c("i", {
+                staticClass: "m-1 far fa-trash-alt",
+                on: {
+                  click: function($event) {
+                    return _vm.deleteCard(task.id)
+                  }
+                }
+              })
+            ]),
             _vm._v(" "),
-            _c("i", {
-              staticClass: "m-1 far fa-trash-alt",
-              on: {
-                click: function($event) {
-                  return _vm.deleteCard(task.id)
+            _c("div", [
+              _c("i", {
+                staticClass: "fa fa-arrow-left",
+                attrs: { "aria-hidden": "true" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.editCategory(task.id, task.CategoryId, "left")
+                  }
                 }
-              }
-            })
+              }),
+              _vm._v(" "),
+              _c("i", {
+                staticClass: "fa fa-arrow-right",
+                attrs: { "aria-hidden": "true" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.editCategory(task.id, task.CategoryId, "right")
+                  }
+                }
+              })
+            ])
           ])
         ])
       ])
@@ -11726,13 +11878,24 @@ render._withStripped = true
         
       }
     })();
-},{"vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CatDone.vue":[function(require,module,exports) {
+},{"../config/axios":"src/config/axios.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CatDone.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("../config/axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -11762,7 +11925,10 @@ var _default = {
     dones: Array
   },
   data: function data() {
-    return {};
+    return {
+      categoryId: null,
+      move: ''
+    };
   },
   methods: {
     editCardForm: function editCardForm(id) {
@@ -11770,6 +11936,36 @@ var _default = {
     },
     deleteCard: function deleteCard(id) {
       this.$emit('deleteCard', id);
+    },
+    editCategory: function editCategory(id, catId, moveTo) {
+      var _this = this;
+
+      this.categoryId = catId;
+      this.move = moveTo;
+
+      if (this.move === 'right') {
+        this.categoryId++;
+      } else if (this.move === 'left') {
+        this.categoryId--;
+      }
+
+      (0, _axios.default)({
+        method: 'PUT',
+        url: "/tasks/".concat(id),
+        data: {
+          CategoryId: this.categoryId
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      }).then(function (_ref) {
+        var data = _ref.data;
+        console.log(data);
+
+        _this.$emit('fetchCategories');
+      }).catch(function (err) {
+        console.log(err.response.data);
+      });
     }
   }
 };
@@ -11805,23 +12001,49 @@ exports.default = _default;
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "action-container" }, [
-            _c("i", {
-              staticClass: "m-1 fas fa-pencil-alt",
-              on: {
-                click: function($event) {
-                  return _vm.editCardForm(task.id)
+            _c("div", [
+              _c("i", {
+                staticClass: "m-1 fas fa-pencil-alt",
+                on: {
+                  click: function($event) {
+                    return _vm.editCardForm(task.id)
+                  }
                 }
-              }
-            }),
+              }),
+              _vm._v(" "),
+              _c("i", {
+                staticClass: "m-1 far fa-trash-alt",
+                on: {
+                  click: function($event) {
+                    return _vm.deleteCard(task.id)
+                  }
+                }
+              })
+            ]),
             _vm._v(" "),
-            _c("i", {
-              staticClass: "m-1 far fa-trash-alt",
-              on: {
-                click: function($event) {
-                  return _vm.deleteCard(task.id)
+            _c("div", [
+              _c("i", {
+                staticClass: "fa fa-arrow-left",
+                attrs: { "aria-hidden": "true" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.editCategory(task.id, task.CategoryId, "left")
+                  }
                 }
-              }
-            })
+              }),
+              _vm._v(" "),
+              _c("i", {
+                staticClass: "fa fa-arrow-right",
+                attrs: { "aria-hidden": "true" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.editCategory(task.id, task.CategoryId, "right")
+                  }
+                }
+              })
+            ])
           ])
         ])
       ])
@@ -11858,13 +12080,23 @@ render._withStripped = true
         
       }
     })();
-},{"vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CatComplete.vue":[function(require,module,exports) {
+},{"../config/axios":"src/config/axios.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CatComplete.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("../config/axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
 //
 //
 //
@@ -11894,7 +12126,10 @@ var _default = {
     completes: Array
   },
   data: function data() {
-    return {};
+    return {
+      categoryId: null,
+      move: ''
+    };
   },
   methods: {
     editCardForm: function editCardForm(id) {
@@ -11902,6 +12137,36 @@ var _default = {
     },
     deleteCard: function deleteCard(id) {
       this.$emit('deleteCard', id);
+    },
+    editCategory: function editCategory(id, catId, moveTo) {
+      var _this = this;
+
+      this.categoryId = catId;
+      this.move = moveTo;
+
+      if (this.move === 'right') {
+        this.categoryId++;
+      } else if (this.move === 'left') {
+        this.categoryId--;
+      }
+
+      (0, _axios.default)({
+        method: 'PUT',
+        url: "/tasks/".concat(id),
+        data: {
+          CategoryId: this.categoryId
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      }).then(function (_ref) {
+        var data = _ref.data;
+        console.log(data);
+
+        _this.$emit('fetchCategories');
+      }).catch(function (err) {
+        console.log(err.response.data);
+      });
     }
   }
 };
@@ -11937,23 +12202,38 @@ exports.default = _default;
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "action-container" }, [
-            _c("i", {
-              staticClass: "m-1 fas fa-pencil-alt",
-              on: {
-                click: function($event) {
-                  return _vm.editCardForm(task.id)
+            _c("div", [
+              _c("i", {
+                staticClass: "m-1 fas fa-pencil-alt",
+                on: {
+                  click: function($event) {
+                    return _vm.editCardForm(task.id)
+                  }
                 }
-              }
-            }),
+              }),
+              _vm._v(" "),
+              _c("i", {
+                staticClass: "m-1 far fa-trash-alt",
+                on: {
+                  click: function($event) {
+                    return _vm.deleteCard(task.id)
+                  }
+                }
+              })
+            ]),
             _vm._v(" "),
-            _c("i", {
-              staticClass: "m-1 far fa-trash-alt",
-              on: {
-                click: function($event) {
-                  return _vm.deleteCard(task.id)
+            _c("div", [
+              _c("i", {
+                staticClass: "fa fa-arrow-left",
+                attrs: { "aria-hidden": "true" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.editCategory(task.id, task.CategoryId, "left")
+                  }
                 }
-              }
-            })
+              })
+            ])
           ])
         ])
       ])
@@ -11990,13 +12270,18 @@ render._withStripped = true
         
       }
     })();
-},{"vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/EditCard.vue":[function(require,module,exports) {
+},{"../config/axios":"src/config/axios.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/EditCard.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("../config/axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 //
 //
 //
@@ -12043,9 +12328,9 @@ var _default = {
       var _this = this;
 
       var id = this.taskId;
-      axios({
+      (0, _axios.default)({
         method: 'PUT',
-        url: "http://localhost:3000/tasks/".concat(id),
+        url: "/tasks/".concat(id),
         data: {
           title: this.title,
           description: this.description
@@ -12208,13 +12493,15 @@ render._withStripped = true
         
       }
     })();
-},{"vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/Board.vue":[function(require,module,exports) {
+},{"../config/axios":"src/config/axios.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/Board.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("../config/axios"));
 
 var _AddCard = _interopRequireDefault(require("./AddCard"));
 
@@ -12230,6 +12517,10 @@ var _EditCard = _interopRequireDefault(require("./EditCard"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
+//
+//
 //
 //
 //
@@ -12324,14 +12615,15 @@ var _default = {
       this.todos = [];
       this.dones = [];
       this.completes = [];
-      axios({
+      (0, _axios.default)({
         method: 'GET',
-        url: 'http://localhost:3000/categories',
+        url: '/categories',
         headers: {
           token: localStorage.getItem('token')
         }
       }).then(function (_ref) {
         var data = _ref.data;
+        console.log(data);
         var result = data.data;
 
         if (result.length) {
@@ -12471,9 +12763,9 @@ var _default = {
         this.editCardFormUp = false;
         this.fetchCategories();
       } else {
-        axios({
+        (0, _axios.default)({
           method: 'GET',
-          url: "http://localhost:3000/tasks/".concat(id),
+          url: "/tasks/".concat(id),
           headers: {
             token: localStorage.getItem('token')
           }
@@ -12490,9 +12782,9 @@ var _default = {
     deleteCard: function deleteCard(id) {
       var _this3 = this;
 
-      axios({
+      (0, _axios.default)({
         method: 'DELETE',
-        url: "http://localhost:3000/tasks/".concat(id),
+        url: "/tasks/".concat(id),
         headers: {
           token: localStorage.getItem('token')
         }
@@ -12538,7 +12830,7 @@ exports.default = _default;
         _vm._l(_vm.categories, function(category) {
           return _c(
             "div",
-            { key: category.id, staticClass: "pl-2 my-2 cards-group" },
+            { key: category.id, staticClass: "px-2 my-2 cards-group" },
             [
               _c("p", { staticClass: "m-0 p-1 categori" }, [
                 _vm._v(_vm._s(category.name))
@@ -12552,7 +12844,8 @@ exports.default = _default;
                         attrs: { backlogs: _vm.backlogs },
                         on: {
                           editCardForm: _vm.editCardForm,
-                          deleteCard: _vm.deleteCard
+                          deleteCard: _vm.deleteCard,
+                          fetchCategories: _vm.fetchCategories
                         }
                       })
                     : _vm.todo === category.name
@@ -12560,7 +12853,8 @@ exports.default = _default;
                         attrs: { todos: _vm.todos },
                         on: {
                           editCardForm: _vm.editCardForm,
-                          deleteCard: _vm.deleteCard
+                          deleteCard: _vm.deleteCard,
+                          fetchCategories: _vm.fetchCategories
                         }
                       })
                     : _vm.done === category.name
@@ -12568,7 +12862,8 @@ exports.default = _default;
                         attrs: { dones: _vm.dones },
                         on: {
                           editCardForm: _vm.editCardForm,
-                          deleteCard: _vm.deleteCard
+                          deleteCard: _vm.deleteCard,
+                          fetchCategories: _vm.fetchCategories
                         }
                       })
                     : _vm.complete === category.name
@@ -12576,7 +12871,8 @@ exports.default = _default;
                         attrs: { completes: _vm.completes },
                         on: {
                           editCardForm: _vm.editCardForm,
-                          deleteCard: _vm.deleteCard
+                          deleteCard: _vm.deleteCard,
+                          fetchCategories: _vm.fetchCategories
                         }
                       })
                     : _vm._e()
@@ -12659,13 +12955,15 @@ render._withStripped = true
         
       }
     })();
-},{"./AddCard":"src/components/AddCard.vue","./CatBacklog":"src/components/CatBacklog.vue","./CatTodo":"src/components/CatTodo.vue","./CatDone":"src/components/CatDone.vue","./CatComplete":"src/components/CatComplete.vue","./EditCard":"src/components/EditCard.vue","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
+},{"../config/axios":"src/config/axios.js","./AddCard":"src/components/AddCard.vue","./CatBacklog":"src/components/CatBacklog.vue","./CatTodo":"src/components/CatTodo.vue","./CatDone":"src/components/CatDone.vue","./CatComplete":"src/components/CatComplete.vue","./EditCard":"src/components/EditCard.vue","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("./config/axios"));
 
 var _Header = _interopRequireDefault(require("./components/Header"));
 
@@ -12806,7 +13104,7 @@ render._withStripped = true
         
       }
     })();
-},{"./components/Header":"src/components/Header.vue","./components/SignIn":"src/components/SignIn.vue","./components/SignUp":"src/components/SignUp.vue","./components/Board":"src/components/Board.vue","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"node_modules/vue-google-signin-button/dist/vue-google-signin-button.min.js":[function(require,module,exports) {
+},{"./config/axios":"src/config/axios.js","./components/Header":"src/components/Header.vue","./components/SignIn":"src/components/SignIn.vue","./components/SignUp":"src/components/SignUp.vue","./components/Board":"src/components/Board.vue","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"node_modules/vue-google-signin-button/dist/vue-google-signin-button.min.js":[function(require,module,exports) {
 var define;
 'use strict';var _typeof='function'==typeof Symbol&&'symbol'==typeof Symbol.iterator?function(obj){return typeof obj}:function(obj){return obj&&'function'==typeof Symbol&&obj.constructor===Symbol&&obj!==Symbol.prototype?'symbol':typeof obj};(function(){function a(c){'undefined'!=typeof console&&console.error('[g-signin-button] '+c)}function b(c){c.component('g-signin-button',{name:'g-signin-button',render:function render(d){return d('div',{attrs:{class:'g-signin-button'},ref:'signinBtn'},this.$slots.default)},props:{params:{type:Object,required:!0,default:function _default(){return{}}}},mounted:function mounted(){var _this=this;return window.gapi?this.params.client_id?void window.gapi.load('auth2',function(){var d=window.gapi.auth2.init(_this.params);d.attachClickHandler(_this.$refs.signinBtn,{},function(e){_this.$emit('success',e)},function(e){_this.$emit('error',e),_this.$emit('failure',e)})}):void a('params.client_id must be specified.'):void a('"https://apis.google.com/js/api:client.js" needs to be included as a <script>.')}})}'object'==('undefined'==typeof exports?'undefined':_typeof(exports))?module.exports=b:'function'==typeof define&&define.amd?define([],function(){return b}):window.Vue&&window.Vue.use(b)})();
 
@@ -12856,7 +13154,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46467" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35175" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

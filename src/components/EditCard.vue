@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import axios from '../config/axios'
+
 export default {
     name: 'EditForm',
     props: {
@@ -46,7 +48,7 @@ export default {
 
             axios({
                 method: 'PUT',
-                url: `http://localhost:3000/tasks/${id}`,
+                url: `/tasks/${id}`,
                 data: {
                     title: this.title,
                     description: this.description

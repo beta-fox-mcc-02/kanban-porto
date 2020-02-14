@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '../config/axios'
 
 export default {
     name: 'SignUp',
@@ -42,7 +42,7 @@ export default {
         signUp() {
             axios({
                 method: 'POST',
-                url: 'http://localhost:3000/users/signUp',
+                url: '/users/signUp',
                 data: {
                     email: this.email,
                     password: this.password

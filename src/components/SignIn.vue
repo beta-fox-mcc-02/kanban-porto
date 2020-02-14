@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '../config/axios'
 
 export default {
     name: 'SignIn',
@@ -54,7 +54,7 @@ export default {
         signIn() {
             axios({
                 method: 'POST',
-                url: 'http://localhost:3000/users/signIn',
+                url: '/users/signIn',
                 data: {
                     email: this.email,
                     password: this.password
@@ -74,7 +74,7 @@ export default {
 
             axios({
                 method: 'POST',
-                url: 'http://localhost:3000/users/gSignIn',
+                url: '/users/gSignIn',
                 headers: {
                     id_token: id_token
                 }

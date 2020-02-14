@@ -11,8 +11,13 @@
         <p class="card-text">{{ task.description }}</p>
         </div>
         <div class="action-container">
-        <i class="m-1 fas fa-pencil-alt" @click="editCardForm(task.id)"></i>
-        <i class="m-1 far fa-trash-alt" @click="deleteCard(task.id)"></i>
+            <div>
+                <i class="m-1 fas fa-pencil-alt" @click="editCardForm(task.id)"></i>
+                <i class="m-1 far fa-trash-alt" @click="deleteCard(task.id)"></i>
+            </div>
+            <div>
+                <i class="fa fa-arrow-right" aria-hidden="true" @click.prevent="editCategory(task.id, task.CategoryId, 'right')"></i>
+            </div>
         </div>
     </div>
     </div>
@@ -22,6 +27,8 @@
 </template>
 
 <script>
+import axios from '../config/axios'
+
 export default {
     name: 'Backlog',
     props: {
@@ -29,7 +36,8 @@ export default {
     },
     data() {
         return {
-
+            categoryId: null,
+            move: ''
         }
     },
     methods: {
@@ -38,6 +46,33 @@ export default {
         },
         deleteCard(id) {
             this.$emit('deleteCard', id)
+        }, 
+        editCategory(id, catId, moveTo) {
+            this.categoryId = catId
+            this.move = moveTo
+
+            if (this.move === 'right') {
+                this.categoryId++
+            } else if (this.move === 'left') {
+                this.categoryId--
+            }
+
+            axios({
+                method: 'PUT',
+                url: `/tasks/${id}`,
+                data: {
+                    CategoryId: this.categoryId
+                },
+                headers: {
+                    token: localStorage.getItem('token')
+                }
+            })
+                .then(({ data }) => {
+                    this.$emit('fetchCategories')
+                })
+                .catch(err => {
+                    console.log(err.response.data)
+                })
         }
     }
 }

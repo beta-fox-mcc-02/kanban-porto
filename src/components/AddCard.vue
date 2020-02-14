@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import axios from '../config/axios'
+
 export default {
     name: 'AddCard',
     props: {
@@ -42,7 +44,7 @@ export default {
         addCard() {
             axios({
                 method: 'POST',
-                url: 'http://localhost:3000/tasks',
+                url: '/tasks',
                 data: {
                     title: this.title,
                     description: this.description,

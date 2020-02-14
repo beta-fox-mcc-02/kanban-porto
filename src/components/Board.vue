@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="col-12 p-0 d-flex cards-container">
-        <div class="pl-2 my-2 cards-group" v-for="category in categories" :key="category.id">
+        <div class="px-2 my-2 cards-group" v-for="category in categories" :key="category.id">
           <p class="m-0 p-1 categori">{{ category.name }}</p>
           <div>
             <CatBacklog 
@@ -9,24 +9,28 @@
               v-if="backlog === category.name"
               @editCardForm="editCardForm"
               @deleteCard="deleteCard"
+              @fetchCategories="fetchCategories"
             ></CatBacklog>
             <CatTodo 
               :todos="todos"
               v-else-if="todo === category.name"
               @editCardForm="editCardForm"
               @deleteCard="deleteCard"
+              @fetchCategories="fetchCategories"
             ></CatTodo>
             <CatDone 
               :dones="dones"
               v-else-if="done === category.name"
               @editCardForm="editCardForm"
               @deleteCard="deleteCard"
+              @fetchCategories="fetchCategories"
             ></CatDone>
             <CatComplete
               :completes="completes"
               v-else-if="complete === category.name"
               @editCardForm="editCardForm"
               @deleteCard="deleteCard"
+              @fetchCategories="fetchCategories"
             ></CatComplete>
           </div>
           <div class="mt-2 add-card">
@@ -54,6 +58,7 @@
 </template>
 
 <script>
+import axios from '../config/axios'
 import AddCard from './AddCard'
 import CatBacklog from './CatBacklog'
 import CatTodo from './CatTodo'
@@ -100,12 +105,13 @@ export default {
         this.completes = []
         axios({
           method: 'GET',
-          url: 'http://localhost:3000/categories',
+          url: '/categories',
           headers: {
             token: localStorage.getItem('token')
           }
         })
           .then(({ data }) => {
+            console.log(data)
             let result = data.data
             if (result.length) {
               result.forEach(data => {
@@ -240,7 +246,7 @@ export default {
         } else {
           axios({
             method: 'GET',
-            url: `http://localhost:3000/tasks/${id}`,
+            url: `/tasks/${id}`,
             headers: {
               token: localStorage.getItem('token')
             }
@@ -258,7 +264,7 @@ export default {
       deleteCard(id) {
         axios({
           method: 'DELETE',
-          url: `http://localhost:3000/tasks/${id}`,
+          url: `/tasks/${id}`,
           headers: {
             token: localStorage.getItem('token')
           }
