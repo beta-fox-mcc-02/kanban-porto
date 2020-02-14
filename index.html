@@ -2,12 +2,14 @@
 <html>
     <head>
         <title>KANBAN PROJECT</title>
+        <meta name="google-signin-client_id" content="146329937386-os4lmh278qt7on593p96os957soc0bdf.apps.googleusercontent.com">
         <script src="https://kit.fontawesome.com/33c7f9b4f6.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" src="style.css">
     </head>
     <body>
         <div id="app"></div>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
         <script src="src/main.js"></script>
     </body>
 </html>
@@ -36,6 +38,15 @@ nav#upperbar{
     align-items: center;
     background-color: rgb(112, 163, 173);
     height: 3rem;
+}
+
+#googlelogin{
+    padding: 0.5rem 4rem;
+}
+
+#googlelogin i{
+    color: rgba(248,80,50,1);
+    font-size: xx-large;
 }
 
 aside#sidebar {
@@ -202,6 +213,7 @@ div.content-card section span form{
     background-color: #efe41c73;
     padding: 1rem;
     box-shadow: 0rem 0rem 0.5rem #a9cbd2;
+    width: 17rem;
 }
 
 div.content-card section span form div{

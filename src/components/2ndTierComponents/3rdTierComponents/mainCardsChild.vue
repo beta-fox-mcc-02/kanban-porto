@@ -11,6 +11,7 @@
             <i class="far fa-trash-alt" v-if="validUser" v-on:click="deleteTask(task.id)"></i>
             <i class="far fa-trash-alt" v-else-if="!validUser" v-bind:style="!validUser ? 'background-color: white; color: red; border-radius: 50%; cursor: not-allowed' : ''"></i>
             <form class="update-form" v-if="showForm" v-on:submit.prevent="editTask(task.id)">
+                <i class="far fa-times-circle" v-on:click="closeForm"></i>
                 <div class="title-form">
                     <label>New title</label>
                     <input type="text" v-bind:value="title">
@@ -114,6 +115,10 @@ export default {
             this.showForm = false,
             this.categoryNames = [],
             this.validUser = true
+        },
+        closeForm() {
+            this.clearInputs()
+            this.$emit('changePage', { page: 'member' })
         }
     }
 }

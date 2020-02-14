@@ -31,12 +31,12 @@ export default {
         changePage(fromChild) {
             this.currentPage = fromChild.page
             if(fromChild.page === 'member') {
-                this.fetchAll()
                 if(fromChild.token) {
                     this.loginUserName = fromChild.name
                     localStorage.setItem('access_token', fromChild.token)
                     localStorage.setItem('login_name', fromChild.name)
                 }
+                this.fetchAll()
             }
             else if (fromChild.page === 'register') localStorage.clear()
         },
@@ -47,9 +47,12 @@ export default {
                 url: "http://localhost:3000/task/findAll",
                 headers: { token }
             })
-            .then((result) => this.categories = result.data)
+            .then((result) => {
+                console.log(result)
+                this.categories = result.data})
             .catch((err) => console.log(err))
         }
+
     },
     created() {
         let access_token = localStorage.getItem('access_token')

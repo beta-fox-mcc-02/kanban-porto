@@ -24,12 +24,17 @@
                 <button id="register-btn" type="submit">Submit</button>
             </div>
         </form>
+        <small>OR <b>Sign in</b> with Google below</small>
+        <GoogleLogin id="googlelogin" :params="params" :onSuccess="onSuccess">
+            <i class="fab fa-google"></i>
+        </GoogleLogin>
         <section id="register-footer">Have an account? <a id="redirect-to-login" v-on:click="redirect">Login</a></section>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
+import GoogleLogin from 'vue-google-login'
 
 export default {
     data() {
@@ -38,9 +43,13 @@ export default {
             email: '',
             password: '',
             errorMessage: '',
-            unfilledInput: false
+            unfilledInput: false,
+            params: {
+                client_id: "146329937386-os4lmh278qt7on593p96os957soc0bdf.apps.googleusercontent.com"
+            }
         }
     },
+    components: { GoogleLogin },
     methods: {
         register() {
             if(this.email && this.password) {
@@ -76,6 +85,19 @@ export default {
         redirect(){
             this.clearInputs()
             this.$emit('changePage', { page: `login` })
+        },
+        onSuccess(googleUser) {
+            var id_token = googleUser.getAuthResponse().id_token;
+            axios({
+                method: "POST",
+                url: "http://localhost:3000/user/glogin",
+                data: { id_token }
+            })
+            .then((result) => { 
+                this.clearInputs()
+                this.$emit('changePage', { page: 'member', token: result.data.token, name: result.data.name })
+            })
+            .catch(err => { console.log(err) })
         }
     }
 }
