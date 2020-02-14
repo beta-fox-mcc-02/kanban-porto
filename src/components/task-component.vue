@@ -25,6 +25,7 @@
                       </div>
                     </div>
                     <a class="btn btn-warning text-primary" @click="backToOrg">List Organization</a>
+                    <search class="text-right"></search>
                   </div>
                   <div class="card-body text-left">
                     <div class="row my-4">
@@ -40,7 +41,7 @@
                             class="text-right text-dark">
                             </CreateTask>
                           </div>
-                          <div class="card-body" v-for="task in filterTask(board.id)" :key="task.OrganizationId">
+                          <div class="card-body" v-for="task in filterTask(board.id)" :key="task.id">
                             <div class="card text-left" >
                               <div class="card-header">
                                 <label>{{task.title}}</label>
@@ -48,8 +49,10 @@
                               <div class="card-body">
                                 <label>{{task.description}}</label>
                               </div>
-                              <div class="card-footer text-right" style="padding: 0.1rem">
-                                <a class="btn" @click='deleteTask(task.id)'>{{task.id}}</a>
+                              <div class="card-footer text-center" style="padding: 0.1rem">
+                                <a class="btn text-warning" ><i class="fas fa-angle-double-left"></i></a>
+                                <a class="btn text-danger" @click='deleteTask(task.id)'><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                <a class="btn text-success" ><i class="fas fa-angle-double-right"></i></a>
                               </div>
                             </div>
                           </div>
@@ -66,6 +69,7 @@
 <script>
 import axios from 'axios'
 import CreateTask from './subComponents/taskForm'
+import Search from './subComponents/searchUser'
 export default {
   data () {
     return {
@@ -77,7 +81,8 @@ export default {
     }
   },
   components : {
-    CreateTask
+    CreateTask,
+    Search
   },
   methods : {
     deleteTask(id){
@@ -88,6 +93,7 @@ export default {
       })
       .then(res => {
         this.readTask()
+        this.readCategory()
       })
       .catch(err => {
         console.log(err)
@@ -99,6 +105,7 @@ export default {
         if(el.id === id){
           el.Tasks.forEach(els => {
             const temp = {
+              id : els.id,
               title : els.title,
               description : els.description
             }
