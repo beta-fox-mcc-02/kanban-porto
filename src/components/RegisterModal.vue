@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     register() {
-      axios.post('http://localhost:3000/users/register', {
+      axios.post('https://immense-refuge-43743.herokuapp.com/users/register', {
         username: this.username,
         email: this.email,
         password: this.password

@@ -76,13 +76,13 @@ export default {
 
   methods: {
     login() {
-      axios.post('http://localhost:3000/users', {
+      axios.post('https://immense-refuge-43743.herokuapp.com/users', {
         user: this.user,
         password: this.password
       })
       .then(({data}) => {
-        localStorage.token = token
-        localStorage.username = username
+        localStorage.token = data.token
+        localStorage.username = data.username
         this.user = ''
         this.password = ''
         this.$emit('showContent')
@@ -101,7 +101,7 @@ export default {
     console.log(id_token);
     
     // axios({
-    //   url: 'http://localhost:3000/users/gsignin',
+    //   url: 'https://immense-refuge-43743.herokuapp.com/users/gsignin',
     //   method: 'post',
     //   data: {
     //     id_token

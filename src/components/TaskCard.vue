@@ -87,7 +87,7 @@ export default {
     nextCategory(CategoryId) {
       CategoryId += 1
       axios({
-        url: `http://localhost:3000/tasks/${this.task.id}/update`,
+        url: `https://immense-refuge-43743.herokuapp.com/tasks/${this.task.id}/update`,
         method: 'PUT',
         data: {CategoryId},
         headers: {token: localStorage.token}
@@ -103,7 +103,7 @@ export default {
     previousCategory(CategoryId) {
       CategoryId -= 1
       axios({
-        url: `http://localhost:3000/tasks/${this.task.id}/update`,
+        url: `https://immense-refuge-43743.herokuapp.com/tasks/${this.task.id}/update`,
         method: 'PUT',
         data: {CategoryId},
         headers: {token: localStorage.token}
@@ -118,7 +118,7 @@ export default {
 
     deleteTask(CategoryId) {
       axios({
-        url: `http://localhost:3000/tasks/${this.task.id}/delete`,
+        url: `https://immense-refuge-43743.herokuapp.com/tasks/${this.task.id}/delete`,
         method: 'DELETE',
         headers: {token: localStorage.token}
       })

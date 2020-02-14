@@ -51,7 +51,7 @@ export default {
     updateTask(TaskId) {
       let id = TaskId
       Axios({
-        url: `http://localhost:3000/tasks/${this.task.id}/update`,
+        url: `https://immense-refuge-43743.herokuapp.com/tasks/${this.task.id}/update`,
         method: "PUT",
         data: {
           title: this.title,

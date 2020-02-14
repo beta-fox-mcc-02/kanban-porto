@@ -45,7 +45,7 @@ export default {
     addTask() {
       axios({
         method: 'post',
-        url:'http://localhost:3000/tasks', 
+        url:'https://immense-refuge-43743.herokuapp.com/tasks', 
         data: {
           title: this.title, 
           description : this.description

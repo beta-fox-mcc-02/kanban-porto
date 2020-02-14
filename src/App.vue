@@ -119,7 +119,6 @@ export default {
     },
 
     registerModalToggle() {
-      console.log(this.showRegisterModal)
       this.showRegisterModal = !this.showRegisterModal
     },
 
