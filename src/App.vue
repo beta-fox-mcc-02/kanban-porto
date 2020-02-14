@@ -36,7 +36,8 @@
         <div class="col-sm-6 col-md-4 col-xl-3 my-3">
           <PanelVue :panelTitle="panelTitle[0]" :panelId="1" @renderErrorMessage="renderErrorMessage" 
           @reloadOtherCategory="reloadOtherCategory"
-          :reloadCat="reloadCat"></PanelVue>
+          :reloadCat="reloadCat"
+          @changePageTo="changePageTo"></PanelVue>
         </div>
         <div class="col-sm-6 col-md-4 col-xl-3 my-3">
           <PanelVue :panelTitle="panelTitle[1]" :panelId="2" @renderErrorMessage="renderErrorMessage"
@@ -66,6 +67,7 @@ import PanelVue from './components/Panel.vue';
 import AlertVue from './components/Alert.vue';
 import LoginVue from './components/Login.vue';
 import RegisterVue from './components/Register.vue';
+import axios from 'axios';
 
 
 export default {
@@ -101,9 +103,9 @@ export default {
       })
     },
     toHome(payload){
-      // TODO: use fetch and if error show error message
       if(localStorage.access_token) this.changePageTo('home');
       else this.changePageTo('register')
+
     },
     renderErrorMessage(err){
       console.log('isi error', err);

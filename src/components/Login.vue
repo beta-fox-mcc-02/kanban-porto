@@ -25,7 +25,7 @@ export default {
   name: 'Login',
   data(){
     return {
-      loginInput: {email: 'mail@mail.com', password: '12345'}
+      loginInput: {email: '', password: ''}
     }
   },
   methods: {

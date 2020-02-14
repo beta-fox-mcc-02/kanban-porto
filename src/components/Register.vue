@@ -18,7 +18,6 @@
       <h5 class="text-center my-3">Or</h5>
 
       <!-- google sign in -->
-      <!-- <div class="g-signin2" data-onsuccess="coba"></div> -->
       <g-signin-button
         :params="googleSignInParams"
         @success="onSignInSuccess"

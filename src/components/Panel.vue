@@ -23,10 +23,6 @@
 
       <button class="btn btn-light btn-block add-task" @click="showAddTask">Add Task</button>
     </div>
-    <!-- <div 
-      v-if="reloadCat === panelId">
-      <div>{{reloadCat}}</div>
-    </div> -->
   </div>
 
 </template>
@@ -68,6 +64,7 @@ export default {
         })
         .catch(err => {
           console.log(err.response);
+          this.$emit('changePageTo', 'register')
           this.$emit('renderErrorMessage', err.response.data);
         })
     },
@@ -86,7 +83,6 @@ export default {
     },
     addNewTask(){
       this.addTaskInput = false;
-      // console.log(this.newTask);
       axios({
         method: 'POST',
         url: 'http://localhost:3000/kanban',
