@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '../config'
 
 export default {
     name: "EditForm",
@@ -31,7 +31,7 @@ export default {
         edit() {
             axios({
                 method: "put",
-                url: `http://localhost:3000/tasks/${this.id}`,
+                url: `/tasks/${this.id}`,
                 data: {
                     CategoryId: this.CategoryId,
                     title: this.dataTitle

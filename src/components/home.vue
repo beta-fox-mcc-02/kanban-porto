@@ -16,7 +16,7 @@
 
 <script>
 import kanbanCard from './kanbanCard'
-import axios from 'axios'
+import axios from '../config'
 
 export default {
     name: 'home',
@@ -46,7 +46,7 @@ export default {
         fetchTask() {
             axios({
                 method: "get",
-                url: "http://localhost:3000/tasks",
+                url: "/tasks",
                 headers: {
                     token: localStorage.token
                 }

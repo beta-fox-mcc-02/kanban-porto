@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '../config'
 
 export default {
     name: 'login',
@@ -31,7 +31,7 @@ export default {
         login () {
             axios({
                 method: "post",
-                url: "http://localhost:3000/login",
+                url: "/login",
                 data: {
                     email: this.email,
                     password: this.password
@@ -52,7 +52,7 @@ export default {
                     const id_token = authCode.getAuthResponse().id_token
                     return axios ({
                         method: 'POST', 
-                        url: "http://localhost:3000/googlelogin",
+                        url: "/googlelogin",
                         headers: {
                             token: id_token
                         }

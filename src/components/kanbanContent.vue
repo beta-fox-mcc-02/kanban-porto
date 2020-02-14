@@ -24,7 +24,7 @@
 
 <script>
 import NextBack from './nextBackContent'
-import axios from 'axios'
+import axios from '../config'
 
 export default {
     name: 'kanbanContent',
@@ -44,7 +44,7 @@ export default {
         destroy(id) {
             axios({
                 method: 'delete',
-                url: `http://localhost:3000/tasks/${id}`,
+                url: `/tasks/${id}`,
                 headers: {
                     token: localStorage.token
                 }

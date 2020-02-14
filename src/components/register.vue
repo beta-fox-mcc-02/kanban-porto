@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '../config'
 
 export default {
     name: 'register',
@@ -34,7 +34,7 @@ export default {
         regis() {
             axios({
                 method: 'POST',
-                url: 'http://localhost:3000/register',
+                url: '/register',
                 data: {
                     first_name: this.first_name, 
                     last_name: this.last_name, 

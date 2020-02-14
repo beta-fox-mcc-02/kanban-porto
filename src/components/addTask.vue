@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '../config'
 
 export default {
     name: "adaTask",
@@ -25,7 +25,7 @@ export default {
         task() {
             axios({
                 method: 'post',
-                url: 'http://localhost:3000/tasks',
+                url: '/tasks',
                 data: {
                     title: this.taskData,
                     category: 1

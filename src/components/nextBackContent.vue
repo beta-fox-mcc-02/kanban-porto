@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '../config'
 
 export default {
     name: "NextBack",
@@ -29,7 +29,7 @@ export default {
 
             axios({
                 method: "put",
-                url: `http://localhost:3000/tasks/${id}`,
+                url: `/tasks/${id}`,
                 data: {
                     CategoryId
                 },
