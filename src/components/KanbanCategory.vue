@@ -1,8 +1,13 @@
 <template>
-  <div class="col-sm-3">
+  <div class="col-sm-3 mantap">
     <b-card bg-variant="primary" text-variant="white" :header="category.name" class="text-center">
       <b-card-text>
-        <kanban-card @fetchCategories="fetchCategories" v-for="task in filteredTasks" :key="task.id" :task="task" class="mt-1"></kanban-card>
+        <draggable>
+          <transition-group>
+            <kanban-card @fetchCategories="fetchCategories" v-for="task in filteredTasks" :key="task.id" :task="task" class="mt-1"></kanban-card>
+          </transition-group>
+        </draggable>
+        
         <b-form-input v-if="addTask" v-model="title" placeholder="Add..." @keyup.enter="addTitle"></b-form-input>
       </b-card-text>
     </b-card>
@@ -12,6 +17,7 @@
 
 <script>
 import kanbanCard from './KanbanCard'
+import draggable from 'vuedraggable'
 import axios from '../helpers/axios'
 export default {
   name: 'KanbanCategory',
@@ -41,10 +47,20 @@ export default {
         })
           .then(({ data }) => {
             console.log(data)
+            this.$bvToast.toast(data.msg, {
+              title: `Success`,
+              variant: 'success',
+              solid: true
+            })
             this.$emit('fetchCategories')
           })
           .catch(({ response }) => {
             console.log(response)
+            this.$bvToast.toast(err.response.data.msg, {
+              title: `Error`,
+              variant: 'danger',
+              solid: true
+            })
           })
       }
       this.title = ''
@@ -55,7 +71,8 @@ export default {
     }
   },
   components: {
-    kanbanCard
+    kanbanCard,
+    draggable
   },
   computed: {
     filteredTasks () {

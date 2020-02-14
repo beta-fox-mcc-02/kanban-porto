@@ -3,7 +3,7 @@
     <!-- <b-button id="show-btn" @click="showModal">Open Modal</b-button> -->
     <b-button @click="showModal" pill class="pjg-10" variant="primary">{{ sign }}</b-button>
 
-    <b-modal ref="my-modal" hide-footer :title="sign">
+    <b-modal :ref="`my-modal${sign}`" hide-footer :title="sign">
       <div class="d-block text-center">
         <h3 class="mb-4">Please {{ sign }} here</h3>
         <b-form @submit.prevent="onSubmit">
@@ -67,10 +67,10 @@
     },
     methods: {
       showModal() {
-        this.$refs['my-modal'].show()
+        this.$refs[`my-modal${this.sign}`].show()
       },
       hideModal() {
-        this.$refs['my-modal'].hide()
+        this.$refs[`my-modal${this.sign}`].hide()
       },
       onSubmit () {
         if (this.sign === 'Login') this.login()
@@ -100,6 +100,11 @@
           })
           .catch(err => {
             console.log(err.response)
+            this.$bvToast.toast(err.response.data.msg, {
+              title: `Error`,
+              variant: 'danger',
+              solid: true
+            })
             loader.hide()
           })
       },
@@ -132,6 +137,11 @@
           .catch(err => {
             console.log(err.response)
             loader.hide()
+            this.$bvToast.toast(err.response.data.errors[0].msg, {
+              title: `Error`,
+              variant: 'danger',
+              solid: true
+            })
           })
             
       }

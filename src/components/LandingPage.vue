@@ -53,6 +53,11 @@ export default {
           //on fail do something
           console.log(err.response)
           console.log(err, 'ini error')
+          this.$bvToast.toast('Google sign is failed', {
+            title: `Error`,
+            variant: 'danger',
+            solid: true
+          })
         })
     },
     login () {

@@ -2,14 +2,12 @@
   <div>
     <navbar :isLoggedIn="isLoggedIn" @logout="logout"></navbar>
     <landingPage v-if="!isLoggedIn" @login="login"></landingPage>
-    <!-- <register-page v-if="currentPage === 'register'"></register-page> -->
     <kanban-board v-if="isLoggedIn"></kanban-board> 
   </div>
 </template>
 
 <script>
 import navbar from './components/NavbarN'
-import registerPage from './components/register'
 import kanbanBoard from './components/KanbanBoard'
 import landingPage from './components/LandingPage'
 
@@ -45,7 +43,6 @@ export default {
   },
   components: {
     navbar,
-    registerPage,
     kanbanBoard,
     landingPage
   },
