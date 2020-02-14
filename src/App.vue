@@ -9,13 +9,15 @@
     <LoginForm
       @showContent="showContent"
       @notification="notification"
+      @registerModalToggle="registerModalToggle"
       v-if="currentPage === 'LoginPage'"
     ></LoginForm>
-    <RegisterForm 
+    <RegisterModal 
       @showContent="showContent"
       @notification="notification"
-      v-if="currentPage === 'LoginPage'"
-    ></RegisterForm>
+      @registerModalToggle="registerModalToggle"
+      v-if="showRegisterModal"
+    ></RegisterModal>
     <TaskForm
       @showContent="showContent"
       @notification="notification"
@@ -24,9 +26,18 @@
     <TaskContainer 
       @showContent="showContent" 
       @notification="notification"
+      @updateModalToggle="updateModalToggle"
+      @getTask="getTask"
       :tasks="tasks"
       v-if="currentPage === 'content'"
     ></TaskContainer>
+    <UpdateModal
+      v-if="showUpdateModal"
+      @updateModalToggle="updateModalToggle"
+      @notification="notification"
+      @showContent="showContent"
+      :task="task"
+    ></UpdateModal>
   </div>
 </template>
 
@@ -34,9 +45,11 @@
 import axios from 'axios'
 import NavBar from './components/Navbar'
 import LoginForm from './components/LoginForm'
-import RegisterForm from './components/RegisterForm'
+import RegisterModal from './components/RegisterModal'
 import TaskForm from './components/TaskForm'
 import TaskContainer from './components/TaskContainer'
+import UpdateModal from './components/UpdateModal'
+
 export default {
   name: "App",
 
@@ -44,18 +57,21 @@ export default {
     return {
       currentPage : 'LoginPage',
       username: '',
-      tasks: []
+      tasks: [],
+      task: {},
+      showRegisterModal: false,
+      showUpdateModal: false,
     }
   },
 
   components: {
     NavBar,
     LoginForm,
-    RegisterForm,
+    RegisterModal,
     TaskForm,
-    TaskContainer
+    TaskContainer,
+    UpdateModal
   },
-
 
   methods: {
     showContent() {
@@ -80,7 +96,7 @@ export default {
         this.$emit('showContent')
       })
       .catch(err => {
-        this.notification(`${err}`)
+        this.notification(err)
       })
     },
 
@@ -100,6 +116,19 @@ export default {
             className: "success",
           }).showToast();
       }
+    },
+
+    registerModalToggle() {
+      console.log(this.showRegisterModal)
+      this.showRegisterModal = !this.showRegisterModal
+    },
+
+    updateModalToggle() {
+      this.showUpdateModal = !this.showUpdateModal
+    },
+
+    getTask(payload) {
+      this.task = payload
     }
     
   },

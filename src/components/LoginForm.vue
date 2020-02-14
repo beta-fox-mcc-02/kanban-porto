@@ -28,7 +28,7 @@
                 <div class="row">
                   <div class="col s12 center">
                     <p>Or sign in with Google account</p>
-                    <div class="g-signin2" data-onsuccess="onSignIn">GOOGLE</div>
+                    <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure"></GoogleLogin>
                   </div>
                 </div>
             </div>
@@ -38,7 +38,8 @@
           <div class="card z-depth-3 center">
             <div class="card-content">
               <span class="card-title center">Don't have an account?</span>
-              <a href="#modal1" 
+              <a
+                @click.prevent="$emit('registerModalToggle')"
                 class="waves-effect waves-light btn-large" 
               >
                 Register Now!</a>
@@ -50,14 +51,27 @@
 
 <script>
 import axios from 'axios'
+import GoogleLogin from 'vue-google-login';
 export default {
   name: "LoginForm",
 
   data() {
     return {
       user: "",
-      password: ""
+      password: "",
+      params: {
+        client_id: "686966079631-han3ep3d2e6sb78id7b4nqe320ogb33h.apps.googleusercontent.com",
+      },
+      renderParams: {
+                    width: 250,
+                    height: 50,
+                    longtitle: true
+                }
     }
+  },
+
+  components: {
+    GoogleLogin
   },
 
   methods: {
@@ -67,8 +81,8 @@ export default {
         password: this.password
       })
       .then(({data}) => {
-        localStorage.token = data.token
-        localStorage.username = data.username
+        localStorage.token = token
+        localStorage.username = username
         this.user = ''
         this.password = ''
         this.$emit('showContent')
@@ -80,7 +94,36 @@ export default {
         this.$emit('notification', err)
       })
     }
+  },
+
+  onSuccess(){
+    let id_token = googleUser.getAuthResponse().id_token;
+    console.log(id_token);
+    
+    // axios({
+    //   url: 'http://localhost:3000/users/gsignin',
+    //   method: 'post',
+    //   data: {
+    //     id_token
+    // }
+    // })
+    //   .then(({data}) => {
+    //     localStorage.token = data.token
+    //     localStorage.username = data.username
+    //     this.$emit('showContent')
+    //     this.$emit('notification', null, 'Login successful')
+    //   })
+    //   .catch(err => {
+    //     this.$emit('notification', err)
+    //   })
+    
+  },
+
+  onFailure(){
+    this.$emit('notification', "Error sigin with google")
+    localStorage.clear()
   }
+
 }
 </script>
 

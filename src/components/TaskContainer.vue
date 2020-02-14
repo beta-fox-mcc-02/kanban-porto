@@ -7,9 +7,6 @@
             <nav>
               <div class="nav-wrapper z-depth-3" id="backlog-nav">
                 <p>Backlog</p>
-                <!-- <div class="right">
-                  <a href="#" class="btn-floating red" id="add-backlog"><i class="material-icons">add</i></a>
-                </div> -->
               </div>
             </nav>
             <TaskCard
@@ -18,6 +15,8 @@
               :task="task"
               @showContent="showContent"
               @notification="notification"
+              @updateModalToggle="updateModalToggle"
+              @getTask="getTask"
             ></TaskCard>
           </div>
           <div class="col s3" id="todo">
@@ -32,6 +31,8 @@
               :task="task"
               @showContent="showContent"
               @notification="notification"
+              @updateModalToggle="updateModalToggle"
+              @getTask="getTask"
             ></TaskCard>
           </div>
           <div class="col s3" id="ongoing">
@@ -46,6 +47,8 @@
               :task="task"
               @showContent="showContent"
               @notification="notification"
+              @updateModalToggle="updateModalToggle"
+              @getTask="getTask"
             ></TaskCard>
           </div>
           <div class="col s3" id="done">
@@ -60,6 +63,8 @@
               :task="task"
               @showContent="showContent"
               @notification="notification"
+              @updateModalToggle="updateModalToggle"
+              @getTask="getTask"
             ></TaskCard>
           </div>
         </div>
@@ -93,6 +98,14 @@ export default {
 
     notification(err, success) {
       this.$emit('notification', err, success)
+    },
+
+    updateModalToggle(){
+      this.$emit('updateModalToggle')
+    },
+
+    getTask(payload){
+      this.$emit('getTask', payload)
     }
   },
   

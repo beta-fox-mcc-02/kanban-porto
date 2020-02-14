@@ -8,7 +8,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="card-action"> -->
       <!-- next button -->
       <a 
         href="#" 
@@ -51,34 +50,28 @@
 
       <!-- update button -->
       <a 
-        href="#updateModal" 
         class="btn btn-small halfway-fab center"
-        
+        @click.prevent="showUpdate"
       ><i class="material-icons">edit</i></a>
 
       <!-- delete button -->
       <a 
         href="#" 
         class="btn btn-small halfway-fab center"
-        @click.prevent="delteTask(task.CategoryId)"
+        @click.prevent="deleteTask(task.CategoryId)"
       ><i class="material-icons">delete</i></a>
 
-    <!-- </div> -->
-  <TaskUpdate
-    id="updateModal"
-    class="modal"
-  ></TaskUpdate>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import TaskUpdate from './TaskUpdate'
+import App from '../App'
 export default {
   name: 'TaskCard',
   data() {
     return {
-
+      currentTask: this.task
     }
   },
 
@@ -87,7 +80,7 @@ export default {
   },
 
   components: {
-    TaskUpdate
+
   },
 
   methods: {
@@ -123,7 +116,7 @@ export default {
         })
     },
 
-    delteTask(CategoryId) {
+    deleteTask(CategoryId) {
       axios({
         url: `http://localhost:3000/tasks/${this.task.id}/delete`,
         method: 'DELETE',
@@ -138,13 +131,11 @@ export default {
         })
     },
 
-    findOneTask(taskId) {
-
-    },
-
     showUpdate() {
-      this.$modal.show('TaskUpdate')
+      this.$emit('updateModalToggle')
+      this.$emit('getTask', this.task)
     }
+
   },
 
   
@@ -152,7 +143,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   a {
     margin: 0.5rem
   }
