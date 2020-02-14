@@ -2,7 +2,7 @@
     <div>
         <label>KANBAN BOARD</label>
         <button 
-            v-if="statusUser === 'logout'" 
+            v-if="currentPage === 'logout'" 
             @click="login"
         >
         Login</button>
@@ -21,7 +21,7 @@
 export default {
     name: "NavbarKanban",
     props: {
-        statusUser : String
+        currentPage : String
     },
     methods : {
         login() {

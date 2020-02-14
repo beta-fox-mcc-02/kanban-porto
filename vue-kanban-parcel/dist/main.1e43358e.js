@@ -8916,7 +8916,7 @@ exports.default = void 0;
 var _default = {
   name: "NavbarKanban",
   props: {
-    statusUser: String
+    currentPage: String
   },
   methods: {
     login: function login() {
@@ -8944,7 +8944,7 @@ exports.default = _default;
   return _c("div", [
     _c("label", [_vm._v("KANBAN BOARD")]),
     _vm._v(" "),
-    _vm.statusUser === "logout"
+    _vm.currentPage === "logout"
       ? _c("button", { on: { click: _vm.login } }, [_vm._v("\n    Login")])
       : _c("button", { on: { click: _vm.logout } }, [_vm._v("\n    Logout")])
   ])
@@ -11086,6 +11086,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
 var _default = {
   name: "FormLoginKanban",
   data: function data() {
@@ -11107,6 +11108,7 @@ var _default = {
         email: this.dataLogin.emailLogin,
         password: this.dataLogin.passwordLogin
       };
+      console.log();
       (0, _axios.default)({
         url: 'http://localhost:3000/login',
         method: 'post',
@@ -11226,7 +11228,12 @@ exports.default = _default;
             on: { click: _vm.showRegistrationForm }
           },
           [_vm._v("Sign Up")]
-        )
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "g-signin2",
+          attrs: { "data-onsuccess": "onSignIn" }
+        })
       ]
     )
   ])
@@ -11271,6 +11278,39 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -11288,7 +11328,68 @@ exports.default = void 0;
 var _default = {
   name: "FillCardKanban",
   props: {
-    task: Object
+    task: Object,
+    title: Object
+  },
+  methods: {
+    remove: function remove() {
+      var _this = this;
+
+      (0, _axios.default)({
+        url: "http://localhost:3000/tasks/".concat(this.task.id),
+        method: "delete",
+        headers: {
+          access_token: localStorage.access_token
+        }
+      }).then(function (deleted) {
+        _this.$emit('fetch');
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    edit: function edit() {
+      this.$emit('showEdit', this.task);
+    },
+    previousCategoryId: function previousCategoryId() {
+      var _this2 = this;
+
+      var changePreviousId = this.task.CategoryId - 1;
+      console.log(changePreviousId);
+      (0, _axios.default)({
+        url: "http://localhost:3000/tasks/".concat(this.task.id),
+        method: "put",
+        data: {
+          CategoryId: changePreviousId
+        },
+        headers: {
+          access_token: localStorage.access_token
+        }
+      }).then(function (editedPreviousCategory) {
+        _this2.$emit('fetch');
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    nextCategoryId: function nextCategoryId() {
+      var _this3 = this;
+
+      var changeNextId = this.task.CategoryId + 1;
+      console.log(changeNextId);
+      (0, _axios.default)({
+        url: "http://localhost:3000/tasks/".concat(this.task.id),
+        method: "put",
+        data: {
+          CategoryId: changeNextId
+        },
+        headers: {
+          access_token: localStorage.access_token
+        }
+      }).then(function (editedNextCategory) {
+        _this3.$emit('fetch');
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
   }
 };
 exports.default = _default;
@@ -11307,6 +11408,8 @@ exports.default = _default;
   return _c("div", [
     _c("li", [
       _c("div", { staticClass: "card-body" }, [
+        _vm._m(0),
+        _vm._v(" "),
         _c("h4", { staticClass: "card-title" }, [
           _vm._v(_vm._s(_vm.task.title))
         ]),
@@ -11315,18 +11418,67 @@ exports.default = _default;
           _vm._v(_vm._s(_vm.task.description))
         ]),
         _vm._v(" "),
-        _c("a", { staticClass: "btn btn-primary", attrs: { href: "#" } }, [
-          _vm._v("EDIT")
-        ]),
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-primary",
+            attrs: { href: "#" },
+            on: { click: _vm.edit }
+          },
+          [_vm._v("EDIT")]
+        ),
         _vm._v(" "),
-        _c("a", { staticClass: "btn btn-danger", attrs: { href: "#" } }, [
-          _vm._v("DELETE")
-        ])
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-danger",
+            attrs: { href: "#" },
+            on: { click: _vm.remove }
+          },
+          [_vm._v("DELETE")]
+        ),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _vm.title.previous !== ""
+          ? _c(
+              "button",
+              {
+                staticClass: "btn btn-primary btn-sm",
+                attrs: { type: "button" },
+                on: { click: _vm.previousCategoryId }
+              },
+              [_vm._v(_vm._s(_vm.title.previous))]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.title.next !== ""
+          ? _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary btn-sm",
+                attrs: { type: "button" },
+                on: { click: _vm.nextCategoryId }
+              },
+              [_vm._v(_vm._s(_vm.title.next))]
+            )
+          : _vm._e()
       ])
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "span",
+      { staticStyle: { "font-size": "3em", color: "Tomato" } },
+      [_c("i", { staticClass: "fas fa-camera" })]
+    )
+  }
+]
 render._withStripped = true
 
           return {
@@ -11359,7 +11511,7 @@ render._withStripped = true
       
       }
     })();
-},{"_css_loader":"../../../../../../.npm-global/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../node_modules/vue-hot-reload-api/dist/index.js","vue":"../node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CardKanban.vue":[function(require,module,exports) {
+},{"axios":"../node_modules/axios/index.js","_css_loader":"../../../../../../.npm-global/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../node_modules/vue-hot-reload-api/dist/index.js","vue":"../node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CardKanban.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11371,6 +11523,10 @@ var _FillCardKanban = _interopRequireDefault(require("./FillCardKanban"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
+//
+//
 //
 //
 //
@@ -11400,6 +11556,15 @@ var _default = {
       this.tasks.filter(function (task) {
         return title.name;
       });
+    },
+    fetch: function fetch() {
+      this.$emit('fetch');
+    },
+    showEdit: function showEdit(editData) {
+      this.$emit('showEdit', editData);
+    },
+    home: function home() {
+      this.$emit('home');
     }
   },
   computed: {
@@ -11435,7 +11600,8 @@ exports.default = _default;
         return _c("FillCardKanban", {
           key: i,
           staticClass: "card w-75",
-          attrs: { task: task }
+          attrs: { task: task, title: _vm.title },
+          on: { home: _vm.home, fetch: _vm.fetch, showEdit: _vm.showEdit }
         })
       }),
       1
@@ -11503,19 +11669,37 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default = {
   name: "ListsKanban",
   data: function data() {
     return {
       tasks: [],
       titles: [{
-        name: "backlog"
+        name: "BACKLOG",
+        previous: "",
+        next: "TODO"
       }, {
-        name: "todo"
+        name: "TODO",
+        previous: "BACKLOG",
+        next: "DOING"
       }, {
-        name: "doing"
+        name: "DOING",
+        previous: "TODO",
+        next: "DONE"
       }, {
-        name: "done"
+        name: "DONE",
+        previous: "DOING",
+        next: ""
       }]
     };
   },
@@ -11526,7 +11710,6 @@ var _default = {
     fetchData: function fetchData() {
       var _this = this;
 
-      console.log("masuk login");
       var token = localStorage.getItem('access_token');
       (0, _axios.default)({
         url: 'http://localhost:3000/tasks',
@@ -11535,11 +11718,22 @@ var _default = {
           access_token: token
         }
       }).then(function (tasksById) {
-        // console.log( tasksById.data.data, `masuk boy~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
         _this.tasks = tasksById.data.data;
       }).catch(function (err) {
         console.log(err);
       });
+    },
+    showFormAdd: function showFormAdd() {
+      this.$emit('showFormAdd');
+    },
+    home: function home() {
+      this.$emit('home');
+    },
+    fetch: function fetch() {
+      this.fetchData();
+    },
+    showEdit: function showEdit(editData) {
+      this.$emit('showEdit', editData);
     }
   },
   created: function created() {
@@ -11563,14 +11757,29 @@ exports.default = _default;
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    _vm._l(_vm.titles, function(title, i) {
-      return _c("CardKanban", {
-        key: i,
-        staticClass: "list",
-        attrs: { title: title, tasks: _vm.tasks }
+    [
+      _c(
+        "a",
+        {
+          staticClass: "btn btn-primary",
+          attrs: { href: "#" },
+          on: { click: _vm.showFormAdd }
+        },
+        [_vm._v("Add Task")]
+      ),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _vm._l(_vm.titles, function(title, i) {
+        return _c("CardKanban", {
+          key: i,
+          staticClass: "list",
+          attrs: { title: title, tasks: _vm.tasks },
+          on: { home: _vm.home, fetch: _vm.fetch, showEdit: _vm.showEdit }
+        })
       })
-    }),
-    1
+    ],
+    2
   )
 }
 var staticRenderFns = []
@@ -11606,7 +11815,7 @@ render._withStripped = true
       
       }
     })();
-},{"./CardKanban":"src/components/CardKanban.vue","axios":"../node_modules/axios/index.js","_css_loader":"../../../../../../.npm-global/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../node_modules/vue-hot-reload-api/dist/index.js","vue":"../node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/FrameKanban.vue":[function(require,module,exports) {
+},{"./CardKanban":"src/components/CardKanban.vue","axios":"../node_modules/axios/index.js","_css_loader":"../../../../../../.npm-global/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../node_modules/vue-hot-reload-api/dist/index.js","vue":"../node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/AddTaskKanban.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11614,11 +11823,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _FormRegistrationKanban = _interopRequireDefault(require("./FormRegistrationKanban"));
-
-var _FormLoginKanban = _interopRequireDefault(require("./FormLoginKanban"));
-
-var _ListsKanban = _interopRequireDefault(require("./ListsKanban"));
+var _axios = _interopRequireDefault(require("axios"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11641,25 +11846,448 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+var _default = {
+  name: "AddTask",
+  data: function data() {
+    return {
+      newTask: {
+        title: "",
+        description: ""
+      }
+    };
+  },
+  methods: {
+    addTask: function addTask() {
+      var _this = this;
+
+      var newTask = {
+        title: this.newTask.title,
+        description: this.newTask.description
+      };
+      (0, _axios.default)({
+        url: 'http://localhost:3000/tasks',
+        method: 'post',
+        data: newTask,
+        headers: {
+          access_token: localStorage.access_token
+        }
+      }).then(function (task) {
+        _this.$emit('addedTask', 'login');
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+  }
+};
+exports.default = _default;
+        var $c670d6 = exports.default || module.exports;
+      
+      if (typeof $c670d6 === 'function') {
+        $c670d6 = $c670d6.options;
+      }
+    
+        /* template */
+        Object.assign($c670d6, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "form",
+      {
+        staticClass: "form",
+        attrs: { id: "addTask" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.addTask($event)
+          }
+        }
+      },
+      [
+        _c("h3", [_vm._v("ADD TASK")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", [_vm._v("Title")]),
+          _c("br"),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.newTask.title,
+                expression: "newTask.title"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text" },
+            domProps: { value: _vm.newTask.title },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.newTask, "title", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", [_vm._v("Description")]),
+          _c("br"),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.newTask.description,
+                expression: "newTask.description"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text" },
+            domProps: { value: _vm.newTask.description },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.newTask, "description", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+          [_vm._v("Submit")]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$c670d6', $c670d6);
+          } else {
+            api.reload('$c670d6', $c670d6);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"axios":"../node_modules/axios/index.js","_css_loader":"../../../../../../.npm-global/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../node_modules/vue-hot-reload-api/dist/index.js","vue":"../node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/EditTaskKanban.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = {
+  name: "EditKanban",
+  data: function data() {
+    return {
+      editTask: {
+        title: this.editData.title,
+        description: this.editData.description
+      }
+    };
+  },
+  props: {
+    editData: Object
+  },
+  methods: {
+    edit: function edit() {
+      var _this = this;
+
+      var editTaskInput = {
+        title: this.editTask.title,
+        description: this.editTask.description
+      };
+      (0, _axios.default)({
+        url: "http://localhost:3000/tasks/".concat(this.editData.id),
+        method: "put",
+        data: editTaskInput,
+        headers: {
+          access_token: localStorage.access_token
+        }
+      }).then(function (editedUser) {
+        _this.$emit('home');
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+  }
+};
+exports.default = _default;
+        var $789739 = exports.default || module.exports;
+      
+      if (typeof $789739 === 'function') {
+        $789739 = $789739.options;
+      }
+    
+        /* template */
+        Object.assign($789739, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "form",
+      {
+        staticClass: "form",
+        attrs: { id: "editTask" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.edit($event)
+          }
+        }
+      },
+      [
+        _c("h3", [_vm._v("EDIT TASK")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", [_vm._v("Title")]),
+          _c("br"),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.editTask.title,
+                expression: "editTask.title"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text" },
+            domProps: { value: _vm.editTask.title },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.editTask, "title", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", [_vm._v("Description")]),
+          _c("br"),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.editTask.description,
+                expression: "editTask.description"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text" },
+            domProps: { value: _vm.editTask.description },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.editTask, "description", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+          [_vm._v("Submit")]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$789739', $789739);
+          } else {
+            api.reload('$789739', $789739);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"axios":"../node_modules/axios/index.js","_css_loader":"../../../../../../.npm-global/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../node_modules/vue-hot-reload-api/dist/index.js","vue":"../node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/FrameKanban.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _FormRegistrationKanban = _interopRequireDefault(require("./FormRegistrationKanban"));
+
+var _FormLoginKanban = _interopRequireDefault(require("./FormLoginKanban"));
+
+var _ListsKanban = _interopRequireDefault(require("./ListsKanban"));
+
+var _AddTaskKanban = _interopRequireDefault(require("./AddTaskKanban"));
+
+var _EditTaskKanban = _interopRequireDefault(require("./EditTaskKanban"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default = {
   name: "FrameKanban",
+  data: function data() {
+    editData: {}
+  },
   components: {
     FormRegistrationKanban: _FormRegistrationKanban.default,
     FormLoginKanban: _FormLoginKanban.default,
-    ListsKanban: _ListsKanban.default
+    ListsKanban: _ListsKanban.default,
+    AddTaskKanban: _AddTaskKanban.default,
+    EditTaskKanban: _EditTaskKanban.default
   },
   props: {
-    statusUser: String
+    currentPage: String
   },
   methods: {
     showFormRegistration: function showFormRegistration() {
-      this.$emit('changePage', 'notUser');
+      this.$emit('changePage', 'registration');
     },
     changePage: function changePage(status) {
       this.$emit('changePage', 'logout');
     },
     home: function home(status) {
-      this.$emit('home', 'login');
+      this.$emit('changePage', 'login');
+    },
+    showFormAdd: function showFormAdd() {
+      this.$emit('changePage', 'addTask');
+    },
+    addedTask: function addedTask() {
+      this.$emit('changePage', 'login');
+    },
+    showEdit: function showEdit(editData) {
+      this.editData = editData;
+      this.$emit('changePage', 'editTask');
     }
   }
 };
@@ -11680,20 +12308,27 @@ exports.default = _default;
     "div",
     { staticClass: "frame" },
     [
-      _vm.statusUser === "notUser"
+      _vm.currentPage === "registration"
         ? _c("FormRegistrationKanban", { on: { changePage: _vm.changePage } })
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.statusUser === "logout"
+        : _vm.currentPage === "logout"
         ? _c("FormLoginKanban", {
             on: {
               showFormRegistration: _vm.showFormRegistration,
               home: _vm.home
             }
           })
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.statusUser === "login" ? _c("ListsKanban") : _vm._e()
+        : _vm.currentPage === "login"
+        ? _c("ListsKanban", {
+            on: { showFormAdd: _vm.showFormAdd, showEdit: _vm.showEdit }
+          })
+        : _vm.currentPage === "addTask"
+        ? _c("AddTaskKanban", { on: { addedTask: _vm.addedTask } })
+        : _vm.currentPage === "editTask"
+        ? _c("EditTaskKanban", {
+            attrs: { editData: _vm.editData },
+            on: { home: _vm.home }
+          })
+        : _vm._e()
     ],
     1
   )
@@ -11731,7 +12366,7 @@ render._withStripped = true
       
       }
     })();
-},{"./FormRegistrationKanban":"src/components/FormRegistrationKanban.vue","./FormLoginKanban":"src/components/FormLoginKanban.vue","./ListsKanban":"src/components/ListsKanban.vue","_css_loader":"../../../../../../.npm-global/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../node_modules/vue-hot-reload-api/dist/index.js","vue":"../node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
+},{"./FormRegistrationKanban":"src/components/FormRegistrationKanban.vue","./FormLoginKanban":"src/components/FormLoginKanban.vue","./ListsKanban":"src/components/ListsKanban.vue","./AddTaskKanban":"src/components/AddTaskKanban.vue","./EditTaskKanban":"src/components/EditTaskKanban.vue","_css_loader":"../../../../../../.npm-global/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../node_modules/vue-hot-reload-api/dist/index.js","vue":"../node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11763,12 +12398,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
 var _default = {
   name: "KanbanProject",
   data: function data() {
     return {
-      statusUser: "logout"
+      currentPage: 'logout'
     };
   },
   components: {
@@ -11777,11 +12411,17 @@ var _default = {
   },
   methods: {
     changePage: function changePage(status) {
-      this.statusUser = status;
-    },
-    home: function home(status) {
-      this.statusUser = status;
+      this.currentPage = status;
     }
+  },
+  created: function created() {
+    // isLogin(){
+    if (localStorage.access_token) {
+      this.currentPage = "login";
+    } else {
+      this.currentPage = "logout";
+    } // }
+
   }
 };
 exports.default = _default;
@@ -11802,14 +12442,14 @@ exports.default = _default;
     [
       _c("NavbarKanban", {
         staticClass: "navbar app",
-        attrs: { statusUser: _vm.statusUser },
+        attrs: { currentPage: _vm.currentPage },
         on: { changePage: _vm.changePage }
       }),
       _vm._v(" "),
       _c("FrameKanban", {
         staticClass: "frame",
-        attrs: { statusUser: _vm.statusUser },
-        on: { changePage: _vm.changePage, home: _vm.home }
+        attrs: { currentPage: _vm.currentPage },
+        on: { changePage: _vm.changePage }
       })
     ],
     1
@@ -11890,7 +12530,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39179" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41763" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

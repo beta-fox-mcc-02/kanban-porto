@@ -16,6 +16,7 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
             <button type="button" class="btn btn-link" @click="showRegistrationForm">Sign Up</button>
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
         </form>
     </div>
 </template>
@@ -43,6 +44,7 @@ export default {
                 email: this.dataLogin.emailLogin,
                 password: this.dataLogin.passwordLogin
             }
+            console.log()
             axios({
                 url: 'http://localhost:3000/login',
                 method: 'post',

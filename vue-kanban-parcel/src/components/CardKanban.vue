@@ -7,6 +7,10 @@
                 v-for="(task, i) in getCategory"
                 :key="i"
                 :task="task"
+                @home="home"
+                @fetch="fetch"
+                @showEdit="showEdit"
+                :title="title"
             ></FillCardKanban>
         </ul>
         <footer>Add a card...</footer>
@@ -29,6 +33,15 @@ export default {
     methods: {
         fetchData(){
             this.tasks.filter(task => title.name)
+        },
+        fetch(){
+            this.$emit('fetch')
+        },
+        showEdit(editData){
+            this.$emit('showEdit', editData)
+        },
+        home(){
+            this.$emit('home')
         }
     },
     computed: {

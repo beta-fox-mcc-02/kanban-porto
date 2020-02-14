@@ -2,16 +2,15 @@
     <div>
         <NavbarKanban 
             class="navbar app" 
-            :statusUser="statusUser" 
+            :currentPage="currentPage" 
             @changePage="changePage"
         >
         </NavbarKanban>
 
         <FrameKanban 
             class="frame"
-            :statusUser="statusUser"
+            :currentPage="currentPage"
             @changePage="changePage"
-            @home="home"
         >
         </FrameKanban>
     </div>
@@ -26,7 +25,7 @@ export default {
     name: "KanbanProject",
     data() {
         return {
-            statusUser: "logout"
+            currentPage: 'logout'
         }
     }, 
     components: {
@@ -35,11 +34,17 @@ export default {
     },
     methods: {
         changePage(status){
-            this.statusUser = status
-        },
-        home(status){
-            this.statusUser = status
+            this.currentPage = status
         }
+    },
+    created() {
+      // isLogin(){
+        if(localStorage.access_token){
+           this.currentPage = "login"
+        } else {
+          this.currentPage = "logout"
+        }
+      // }
     }
 }
 </script>

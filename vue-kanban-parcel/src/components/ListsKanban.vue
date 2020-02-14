@@ -1,10 +1,20 @@
 <template>
     <div>
+        <a 
+            href="#" 
+            class="btn btn-primary"
+            @click="showFormAdd"
+        >Add Task</a>
+
+        <br>
         <CardKanban
             v-for="(title, i) in titles"
             :key="i"
             :title="title"
             :tasks="tasks"
+            @home="home"
+            @fetch="fetch"
+            @showEdit="showEdit"
             class="list"
         ></CardKanban>
     </div>
@@ -21,16 +31,25 @@ export default {
         return {
             tasks: [],
             titles: [{
-                name: "backlog"
+                name: "BACKLOG", 
+                previous: "",
+                next: "TODO"
             },
             {
-                name: "todo"
+                name: "TODO", 
+                previous: "BACKLOG",
+                next: "DOING"
+
             },
             {
-                name: "doing"
+                name: "DOING", 
+                previous: "TODO",
+                next: "DONE"
             }, 
             {
-                name: "done"
+                name: "DONE", 
+                previous: "DOING",
+                next: ""
             }]
         }
     },
@@ -39,7 +58,6 @@ export default {
     },
     methods: {
         fetchData(){
-            console.log(`masuk login`)
             let token = localStorage.getItem('access_token')
             axios({
                 url: 'http://localhost:3000/tasks',
@@ -49,13 +67,25 @@ export default {
                 }
             })
                 .then(tasksById => {
-                    // console.log( tasksById.data.data, `masuk boy~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
                     this.tasks = tasksById.data.data
                 })
                 .catch(err => {
                     console.log(err)
                 })
+        }, 
+        showFormAdd(){
+            this.$emit('showFormAdd')
+        },
+        home(){
+            this.$emit('home')
+        },
+        fetch(){
+            this.fetchData()
+        }, 
+        showEdit(editData){
+            this.$emit('showEdit', editData)
         }
+
     },
     created() {
         if(localStorage.access_token) {

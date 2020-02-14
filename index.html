@@ -7,78 +7,133 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
     <title>Kanban Projects!</title>
 </head>
 <body>
-    <div class="ui">
-        <nav class="navbar app">KANBAN BOARD</nav>
+
+    <div id="app" class="ui">
+        <nav class="navbar app">
+            <label>KANBAN BOARD</label>
+            <button @click.prevent="logout">Logout</button>
+        </nav>
         <nav class="navbar board"></nav>
-        <div class="lists">
-            <div class="list">
-                <header>List header</header>
-                <ul>
-                    <li>Lorem ipsum dolor sit amet</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet metus laoreet, ut condimentum</li>
-                </ul>
-                <footer>Add a card...</footer>
+        <div class="frame">
+            
+            <!-- FORM REGIS -->
+            <div  v-if="statusUser === 'notUser'" >
+                <form id="formRegis" class="form" @submit.prevent="registration">
+                    <h3>REGISTRATION</h3>
+                    <div class="form-group">
+                        <label for="firstName">First Name</label><br>
+                        <input type="text" class="form-control" id="firstName"  v-model="dataRegistration.firstNameRegistration">
+                    </div>
+                      <div class="form-group">
+                          <label for="lastName">Last Name</label><br>
+                        <input type="text" class="form-control" id="lastName"  v-model="dataRegistration.lastNameRegistration">
+                    </div>
+                      <div class="form-group">
+                          <label for="necessary">Necessary</label><br>
+                        <input type="text" class="form-control" id="necessary"  v-model="dataRegistration.necessary">
+                    </div>
+                    <div class="form-group">
+                        <label for="emailRegistration" >Email address</label><br>
+                      <input type="email" class="form-control" id="emailRegistration"  aria-describedby="emailHelp" v-model="dataRegistration.emailRegistration">
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordRegis">Password</label><br>
+                      <input type="password" class="form-control" id="passwordRegis" v-model="dataRegistration.passwordRegistration">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>        
             </div>
-            <div class="list">
-                <header>Header</header>
-                <ul>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet</li>
-                    <li>
-                        <img src="holder.js/300x150?auto=yes&bg=#ccc" alt="">
-                        Lorem ipsum dolor sit amet
-                    </li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet metus laoreet, ut condimentum</li>
-                    <li>Lorem ipsum dolor sit amet</li>
-                    <li>Lorem ipsum dolor sit amet</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet metus laoreet, ut condimentum</li>
-                    <li>Lorem ipsum dolor sit amet</li>
-                    <li>Lorem ipsum dolor sit amet</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet</li>
-                    <li>Lorem ipsum dolor sit amet</li>
-                </ul>
-                <footer>Add a card...</footer>
+            
+            <!-- FORM LOGIN  -->
+            <div  v-else-if="statusUser === 'notLogin'" >
+                <form id="formLogin" class="form" @submit.prevent="login">
+                    <h3>LOGIN</h3>
+                    <div class="form-group">
+                        <label for="emailLogin">Email address</label><br>
+                        <input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp" v-model="dataLogin.emailLogin">
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordLogin">Password</label><br>
+                        <input type="password" class="form-control" id="passwordLogin" v-model="dataLogin.passwordLogin">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-link" @click.prevent="showRegistrationForm">Sign Up</button>
+                </form>
             </div>
-            <div class="list">
-                <header>Another List</header>
-                <ul>
-                    <li>Just some text</li>
-                    <li>Just some text</li>
-                </ul>
-                <footer>Add a card...</footer>
+            
+            <!-- LIST TODO -->
+            <div v-else-if="statusUser === 'user'" class="lists">
+                <div class="list">
+                    <header>BACKLOG</header>
+                    <ul>
+                        <li>Lorem ipsum dolor sit amet</li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet</li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet metus laoreet, ut condimentum</li>
+                    </ul>
+                    <footer>Add a card...</footer>
+                </div>
+                <div class="list">
+                    <header>TODO</header>
+                    <ul>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet</li>
+                        <li>
+                            <!-- <img src="holder.js/300x150?auto=yes&bg=#ccc" alt=""> -->
+                            Lorem ipsum dolor sit amet
+                        </li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet metus laoreet, ut condimentum</li>
+                        <li>Lorem ipsum dolor sit amet</li>
+                        <li>Lorem ipsum dolor sit amet</li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet</li>
+                    </ul>
+                    <footer>Add a card...</footer>
+                </div>
+                <div class="list">
+                    <header>DOING</header>
+                    <ul>
+                        <li>Just some text</li>
+                        <li>Just some text</li>
+                    </ul>
+                    <footer>Add a card...</footer>
+                </div>
+                <div class="list">
+                    <header>DONE</header>
+                    <ul>
+                        <li>
+                            <!-- <img src="holder.js/600x400?auto=yes&bg=#ccc" alt=""> -->
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                        </li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet</li>
+                        <li>
+                            <!-- <img src="holder.js/150x150?auto=yes&bg=#ccc" alt=""> -->
+                            Lorem ipsum dolor sit amet
+                        </li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet metus laoreet, ut condimentum</li>
+                        <li>Lorem ipsum dolor sit amet</li>
+                        <li>Lorem ipsum dolor sit amet</li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet</li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet metus laoreet, ut condimentum</li>
+                        <li>Lorem ipsum dolor sit amet</li>
+                        <li>Lorem ipsum dolor sit amet</li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet</li>
+                        <li>Lorem ipsum dolor sit amet</li>
+                    </ul>
+                    <footer>Add a card...</footer>
+                </div>
             </div>
-            <div class="list">
-                <header>Header</header>
-                <ul>
-                    <li>
-                        <img src="holder.js/600x400?auto=yes&bg=#ccc" alt="">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                    </li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet</li>
-                    <li>
-                        <img src="holder.js/150x150?auto=yes&bg=#ccc" alt="">
-                        Lorem ipsum dolor sit amet
-                    </li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet metus laoreet, ut condimentum</li>
-                    <li>Lorem ipsum dolor sit amet</li>
-                    <li>Lorem ipsum dolor sit amet</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet metus laoreet, ut condimentum</li>
-                    <li>Lorem ipsum dolor sit amet</li>
-                    <li>Lorem ipsum dolor sit amet</li>
-                    <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis enim sit amet</li>
-                    <li>Lorem ipsum dolor sit amet</li>
-                </ul>
-                <footer>Add a card...</footer>
-            </div>
+            
+        </div>
     </div>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./src/main.js"></script>
 </body>
 </html>
