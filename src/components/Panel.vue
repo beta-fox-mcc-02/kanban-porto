@@ -7,7 +7,14 @@
       <div class="items border border-light" v-for="task in tasks" :key="task.id">
         <cardVue :task="task" class="m-1"></cardVue>
       </div>
-      <button class="btn btn-light btn-block add-task">Add Task</button>
+
+      <form v-if="addTaskInput" class="my-2" @submit.prevent="addNewTask">
+        <div class="form-group" >
+          <input class="form-control" placeholder="Enter new task" required v-model="newTask">
+        </div>
+      </form>
+
+      <button class="btn btn-light btn-block add-task" @click="showAddTask">Add Task</button>
     </div>
   </div>
 
@@ -25,7 +32,9 @@ export default {
   name: 'Panel',
   data(){
     return {
-      tasks: []
+      tasks: [],
+      addTaskInput: false,
+      newTask: ''
     }
   },
   components: {
@@ -44,7 +53,44 @@ export default {
           res.data.data.map(el => this.tasks.push({id: el.id, title: el.title}))
         })
         .catch(err => {
-          console.log(err);
+          console.log(err.response);
+        })
+    },
+    showAddTask(){
+      if(this.addTaskInput){
+        this.addTaskInput = false;
+        this.newTask = '';
+      }else{
+        this.addTaskInput = true;
+      }
+    },
+    closeInputAddTask(){
+      this.addTaskInput = false;
+      this.newTask = '';
+
+    },
+    addNewTask(){
+      this.addTaskInput = false;
+      // console.log(this.newTask);
+      axios({
+        method: 'POST',
+        url: 'http://localhost:3000/kanban',
+        headers: {
+          access_token: localStorage.access_token
+        },
+        data: {
+          title: this.newTask,
+          CategoryId: this.panelId
+        }
+      })
+        .then(res => {
+          this.tasks = [];
+          this.fetchData();
+          this.newTask = '';
+          console.log(res.data);
+        })
+        .catch(err => {
+          console.log(err.response);
         })
     }
   },
@@ -58,6 +104,17 @@ export default {
 </script>
 
 <style scoped>
+#inputAddTask{
+    width: 200px;
+    height: 50px;
+    padding-right: 50px;
+}
+
+#submitAddTask{
+    margin-left: -50px;
+    height: 20px;
+    width: 50px;
+}
 
 btn .add-task{
   height: 50px;
