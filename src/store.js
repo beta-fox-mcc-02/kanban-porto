@@ -102,7 +102,7 @@ export default new Vuex.Store({
         // BOARDS
         async getBoards({ commit }) {
             try {
-                let response = await axios.get('http://localhost:3000/boards')
+                let response = await axios.get('https://kanban-app-heri.herokuapp.com/boards')
                 commit('updateBoards', response.data.data)
             } catch (e) {
                 console.log(e)
@@ -111,7 +111,7 @@ export default new Vuex.Store({
         async newBoard({ commit }, title) {
             try {
                 const response = await axios.post(
-                    'http://localhost:3000/boards',
+                    'https://kanban-app-heri.herokuapp.com/boards',
                     {
                         title
                     }
@@ -123,7 +123,7 @@ export default new Vuex.Store({
         },
         async getBoard({ commit }, id) {
             try {
-                return axios.get(`http://localhost:3000/boards/${id}`)
+                return axios.get(`https://kanban-app-heri.herokuapp.com/boards/${id}`)
             } catch (e) {
                 console.log(e)
             }
@@ -131,7 +131,7 @@ export default new Vuex.Store({
         removeBoard({ commit }, id) {
             return new Promise((resolve, reject) => {
                 axios
-                    .delete(`http://localhost:3000/boards/${id}`)
+                    .delete(`https://kanban-app-heri.herokuapp.com/boards/${id}`)
                     .then(response => {
                         commit('removeBoard', id)
                     })
@@ -148,7 +148,7 @@ export default new Vuex.Store({
         async register({ commit }, data) {
             return new Promise((resolve, reject) => {
                 axios
-                    .post('http://localhost:3000/users/register', data)
+                    .post('https://kanban-app-heri.herokuapp.com/users/register', data)
                     .then(response => {
                         commit('auth', response.data.token)
                         resolve('/')
@@ -161,7 +161,7 @@ export default new Vuex.Store({
         login({ commit }, data) {
             return new Promise((resolve, reject) => {
                 axios
-                    .post('http://localhost:3000/users/login', data)
+                    .post('https://kanban-app-heri.herokuapp.com/users/login', data)
                     .then(response => {
                         commit('auth', response.data.token)
                         resolve('/')
@@ -181,7 +181,7 @@ export default new Vuex.Store({
         loginWithGoogle({ commit }, id_token) {
             return new Promise((resolve, reject) => {
                 axios
-                    .post('http://localhost:3000/users/gSignIn', { id_token })
+                    .post('https://kanban-app-heri.herokuapp.com/users/gSignIn', { id_token })
                     .then(response => {
                         commit('auth', response.data.token)
                         resolve('/')
@@ -199,7 +199,7 @@ export default new Vuex.Store({
         getLists({ commit }, BoardId) {
             return new Promise((resolve, reject) => {
                 axios
-                    .get(`http://localhost:3000/lists?BoardId=${BoardId}`)
+                    .get(`https://kanban-app-heri.herokuapp.com/lists?BoardId=${BoardId}`)
                     .then(response => {
                         console.log(response)
                         commit('updateLists', response.data.data)
@@ -213,7 +213,7 @@ export default new Vuex.Store({
         newList({ commit }, data) {
             return new Promise((resolve, reject) => {
                 axios
-                    .post('http://localhost:3000/lists', data)
+                    .post('https://kanban-app-heri.herokuapp.com/lists', data)
                     .then(response => {
                         commit('newList', response.data.data)
                         resolve(response.data.data)
@@ -226,7 +226,7 @@ export default new Vuex.Store({
         removeList({ commit }, id) {
             return new Promise((resolve, reject) => {
                 axios
-                    .delete(`http://localhost:3000/lists/${id}`)
+                    .delete(`https://kanban-app-heri.herokuapp.com/lists/${id}`)
                     .then(response => {
                         commit('removeList', id)
                         resolve()
@@ -240,7 +240,7 @@ export default new Vuex.Store({
             // cari ListId, terus push ya ke Cardnya
             return new Promise((resolve, reject) => {
                 axios
-                    .post('http://localhost:3000/cards', data)
+                    .post('https://kanban-app-heri.herokuapp.com/cards', data)
                     .then(response => {
                         commit('newCard', response.data.data)
                         resolve(response.data.data)
@@ -259,7 +259,7 @@ export default new Vuex.Store({
             console.log(data)
             return new Promise((resolve, reject) => {
                 axios
-                    .patch(`http://localhost:3000/cards/${data.id}`, data)
+                    .patch(`https://kanban-app-heri.herokuapp.com/cards/${data.id}`, data)
                     .then(response => {
                         console.log(response)
                         commit('UPDATE_CARD', response.data.data)
@@ -274,7 +274,7 @@ export default new Vuex.Store({
         getOneCard({ commit }, id) {
             return new Promise((resolve, reject) => {
                 axios
-                    .get(`http://localhost:3000/cards/${id}`)
+                    .get(`https://kanban-app-heri.herokuapp.com/cards/${id}`)
                     .then(response => {
                         commit('SET_CARD', response.data.data)
                         resolve(response.data.data)
@@ -287,7 +287,7 @@ export default new Vuex.Store({
         deleteCard({ commit }, id) {
             return new Promise((resolve, reject) => {
                 axios
-                    .delete(`http://localhost:3000/cards/${id}`)
+                    .delete(`https://kanban-app-heri.herokuapp.com/cards/${id}`)
                     .then(response => {
                         commit('DELETE_CARD', id)
                         resolve(response.data.data)
@@ -304,7 +304,7 @@ export default new Vuex.Store({
         newItem({ commit }, data) {
             return new Promise((resolve, reject) => {
                 axios
-                    .post(`http://localhost:3000/items`, data)
+                    .post(`https://kanban-app-heri.herokuapp.com/items`, data)
                     .then(response => {
                         commit('SET_ITEM', response.data.data)
                         resolve(response.data.data)
@@ -318,7 +318,7 @@ export default new Vuex.Store({
         updateItem({ commit }, id) {
             return new Promise((resolve, reject) => {
                 axios
-                    .patch(`http://localhost:3000/items/${id}`)
+                    .patch(`https://kanban-app-heri.herokuapp.com/items/${id}`)
                     .then(response => {
                         commit('UPDATE_ITEM', response.data.data)
                         resolve(response.data.data)
@@ -332,7 +332,7 @@ export default new Vuex.Store({
             console.log(id)
             return new Promise((resolve, reject) => {
                 axios
-                    .delete(`http://localhost:3000/items/${id}`)
+                    .delete(`https://kanban-app-heri.herokuapp.com/items/${id}`)
                     .then(response => {
                         commit('DELETE_ITEM', id)
                         resolve(response.data.data)
