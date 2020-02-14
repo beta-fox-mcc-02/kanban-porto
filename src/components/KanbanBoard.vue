@@ -16,13 +16,17 @@
               <a href="#" v-on:click="deleteTask(data.id)"
                 ><i class="fa fa-trash"></i
               ></a>
+              <a href="#" v-on:click="moveTask(data.id, data.title, 2)"
+                ><i class="fa fa-chevron-circle-right"></i
+              ></a>
             </div>
           </div>
-          <div class="add-backlog">
-            <a href="#"
-              ><i class="fa fa-plus-circle" v-on:click="taskForm">Add new</i></a
-            >
-          </div>
+        </div>
+        <div class="add-backlog">
+          <a href="#"
+            ><i class="fa fa-plus-circle" v-on:click="kanbanForm">Add new</i></a
+          >
+          Set to product <i class="fa fa-chevron-circle-right"></i>
         </div>
       </div>
     </div>
@@ -36,19 +40,24 @@
               {{ data.title }}
             </div>
             <div class="product-action">
-              <i class="fa fa-edit"></i>
-              <i class="fa fa-trash"></i>
+              <a href="#" v-on:click="moveTask(data.id, data.title, 1)"
+                ><i class="fa fa-chevron-circle-left"></i
+              ></a>
+              <a href="#" v-on:click="editForm(data.id)">
+                <i class="fa fa-edit"></i
+              ></a>
+              <a href="#" v-on:click="deleteTask(data.id)">
+                <i class="fa fa-trash"></i
+              ></a>
+              <a href="#" v-on:click="moveTask(data.id, data.title, 3)"
+                ><i class="fa fa-chevron-circle-right"></i
+              ></a>
             </div>
           </div>
-          <div class="product-list">
-            <div class="product-desc">
-              List here....
-            </div>
-            <div class="product-action">
-              <i class="fa fa-edit"></i>
-              <i class="fa fa-trash"></i>
-            </div>
-          </div>
+        </div>
+        <div class="add-product">
+          <i class="fa fa-chevron-circle-left"> Set to backlog</i>
+          Set to product <i class="fa fa-chevron-circle-right"></i>
         </div>
       </div>
     </div>
@@ -66,46 +75,26 @@
               {{ data.title }}
             </div>
             <div class="development-action">
-              <i class="fa fa-edit"></i>
-              <i class="fa fa-trash"></i>
+              <a href="#" v-on:click="moveTask(data.id, data.title, 2)"
+                ><i class="fa fa-chevron-circle-left"></i
+              ></a>
+              <a href="#" v-on:click="editForm(data.id)">
+                <i class="fa fa-edit"></i
+              ></a>
+              <a href="#" v-on:click="deleteTask(data.id)">
+                <i class="fa fa-trash"></i
+              ></a>
+              <a href="#" v-on:click="moveTask(data.id, data.title, 4)"
+                ><i class="fa fa-chevron-circle-right"></i
+              ></a>
             </div>
           </div>
-          <div class="development-list">
-            <div class="development-desc">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi
-              culpa ab repellendus sint odio, placeat quidem esse enim vero
-              excepturi error omnis deleniti facilis maiores recusandae tempora
-              unde quia quo?
-            </div>
-            <div class="development-action">
-              <i class="fa fa-edit"></i>
-              <i class="fa fa-trash"></i>
-            </div>
-          </div>
-          <div class="development-list">
-            <div class="development-desc">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi
-              culpa ab repellendus sint odio, placeat quidem esse enim vero
-              excepturi error omnis deleniti facilis maiores recusandae tempora
-              unde quia quo?
-            </div>
-            <div class="development-action">
-              <i class="fa fa-edit"></i>
-              <i class="fa fa-trash"></i>
-            </div>
-          </div>
-          <div class="development-list">
-            <div class="development-desc">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi
-              culpa ab repellendus sint odio, placeat quidem esse enim vero
-              excepturi error omnis deleniti facilis maiores recusandae tempora
-              unde quia quo?
-            </div>
-            <div class="development-action">
-              <i class="fa fa-edit"></i>
-              <i class="fa fa-trash"></i>
-            </div>
-          </div>
+        </div>
+        <div class="add-development">
+          <i class="fa fa-chevron-circle-left" v-on:click="kanbanForm">
+            Set to product</i
+          >
+          Set to done <i class="fa fa-chevron-circle-right"></i>
         </div>
       </div>
     </div>
@@ -119,10 +108,22 @@
               {{ data.title }}
             </div>
             <div class="done-action">
-              <i class="fa fa-edit"></i>
-              <i class="fa fa-trash"></i>
+              <a href="#" v-on:click="moveTask(data.id, data.title, 3)"
+                ><i class="fa fa-chevron-circle-left"></i
+              ></a>
+              <a href="#" v-on:click="editForm(data.id)"
+                ><i class="fa fa-edit"></i
+              ></a>
+              <a href="#" v-on:click="deleteTask(data.id)">
+                <i class="fa fa-trash"></i
+              ></a>
             </div>
           </div>
+        </div>
+        <div class="add-done">
+          <i class="fa fa-chevron-circle-left" v-on:click="kanbanForm">
+            Set to development</i
+          >
         </div>
       </div>
     </div>
@@ -142,14 +143,15 @@ export default {
       edit: {
         title: ""
       },
-      backlog: "",
-      product: "",
-      development: "",
-      done: ""
+      backlog: [],
+      product: [],
+      development: [],
+      done: []
     };
   },
   methods: {
     fetchAll() {
+      console.log("masuk ke fetch");
       const access_token = localStorage.getItem("access_token");
       axios({
         method: "get",
@@ -159,8 +161,20 @@ export default {
         }
       })
         .then(response => {
-          console.log(response.data.data[0].title);
-          this.backlog = response.data.data;
+          response.data.data.forEach(data => {
+            if (data.CategoryId === 1) {
+              //   console.log(data);
+              this.backlog.push(data);
+            } else if (data.CategoryId === 2) {
+              this.product.push(data);
+            } else if (data.CategoryId === 3) {
+              this.development.push(data);
+            } else if (data.CategoryId === 4) {
+              this.done.push(data);
+            }
+          });
+          //   this.backlog = response.data.data;
+          //   console.log(response.data.data[0].CategoryId);
         })
         .catch(err => {
           console.log(err);
@@ -176,12 +190,52 @@ export default {
         }
       })
         .then(data => {
-          this.kanban();
+          this.backlog = [];
+          this.product = [];
+          this.development = [];
+          this.done = [];
           console.log(data);
+          this.fetchAll();
         })
         .catch(err => {
           console.log(err);
         });
+    },
+    moveTask(id, title, CategoryId) {
+      console.log("masuk moveTask");
+      const access_token = localStorage.getItem("access_token");
+      //   console.log(access_token);
+      axios({
+        method: "put",
+        url: `http://localhost:3000/update/${id}`,
+        data: {
+          title: title,
+          CategoryId: CategoryId
+        },
+        headers: {
+          access_token
+        }
+      })
+        .then(response => {
+          this.backlog = [];
+          this.product = [];
+          this.development = [];
+          this.done = [];
+          console.log(response);
+          console.log("Backlog edited");
+          this.fetchAll();
+        })
+        .catch(err => {
+          console.log(err, "error movetask");
+        });
+    },
+    kanbanForm() {
+      this.$emit("changePage", "kanbanForm");
+    }
+  },
+  created() {
+    if (localStorage) {
+      this.fetchAll();
     }
   }
 };

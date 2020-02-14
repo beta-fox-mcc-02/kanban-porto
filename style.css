@@ -43,7 +43,7 @@ a {
     width: 30%;
     /* border-radius: 7px; */
     /* height: ; */
-    /* height: fit-content; */
+    height: fit-content;
 }
 
 .backlog-content {
@@ -141,33 +141,35 @@ a {
 
 .add-backlog {
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
+    /* background-color: yellow; */
     margin: 5px;
 }
 
 .add-product {
     display: flex;
-    align-items: flex-end;
-    justify-content: end;
+    /* align-items: flex-end; */
+    justify-content: space-between;
     margin: 5px;
 }
 
 .add-development {
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
     margin: 5px;
 }
 
 .add-done {
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
     margin: 5px;
 }
 
 .backlog-list {
     display: flex;
-    padding: 4px;
-    justify-content: space-between;
+    padding: 2px;
+    flex-direction: column;
+    justify-content: space-around;
     background-color: whitesmoke;
     margin: 2px;
     border-radius: 5px;
@@ -176,6 +178,7 @@ a {
 .product-list {
     display: flex;
     padding: 4px;
+    flex-direction: column;
     justify-content: space-between;
     background-color: whitesmoke;
     margin: 2px;
@@ -185,6 +188,7 @@ a {
 .development-list {
     display: flex;
     padding: 4px;
+    flex-direction: column;
     justify-content: space-between;
     background-color: whitesmoke;
     margin: 2px;
@@ -194,10 +198,31 @@ a {
 .done-list {
     display: flex;
     padding: 4px;
+    flex-direction: column;
     justify-content: space-between;
     background-color: whitesmoke;
     margin: 2px;
     border-radius: 5px;
+}
+
+.backlog-action {
+    display: flex;
+    justify-content: space-around;
+}
+
+.product-action {
+    display: flex;
+    justify-content: space-around;
+}
+
+.development-action {
+    display: flex;
+    justify-content: space-around;
+}
+
+.done-action {
+    display: flex;
+    justify-content: space-around;
 }
 
 .container-login {

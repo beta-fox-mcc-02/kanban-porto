@@ -1,7 +1,7 @@
 <template>
   <div class="container-menu">
     <ul class="kanban">
-      <li v-if="page === 'kanban' || page === 'task'">
+      <li v-if="page === 'kanban'">
         <a href="#">Dashboard</a>
       </li>
       <li v-if="page === 'kanban' || page === 'task'">
