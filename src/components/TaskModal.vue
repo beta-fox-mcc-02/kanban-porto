@@ -12,6 +12,7 @@
             type="text"
             v-model="title"
             required
+            autofocus
             class="form-control input-title-task"
           />
         </form>

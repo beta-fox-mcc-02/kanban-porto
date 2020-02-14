@@ -13,6 +13,7 @@
             <TaskCategory
               @updateTask="updateTask"
               @openModalDelete="openModalDelete"
+              @editCategory="editCategory"
               v-for="cat in categories"
               :key="cat.id"
               :id="cat.id"
@@ -169,6 +170,24 @@ export default {
     },
     deleteUserTask() {
       this.deleteTask();
+    },
+    editCategory(value) {
+      axios({
+        method: "PUT",
+        url: BASE_URL + "/categories/" + value.id,
+        headers: {
+          Authorization: "Bearer " + localStorage.token
+        },
+        data: {
+          name: value.name
+        }
+      })
+        .then(response => {
+          this.getCategories();
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   beforeRouteEnter(to, from, next) {

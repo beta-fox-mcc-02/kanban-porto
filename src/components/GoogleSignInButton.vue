@@ -1,7 +1,9 @@
 <template>
-  <div class="google-container">
-    <div id="google-signin-btn"></div>
-  </div>
+  <g-signin-button
+    :params="googleSignInParams"
+    @success="onSignInSuccess"
+    @error="onSignInError"
+  >Sign in with Google</g-signin-button>
 </template>
 
 <script>
@@ -9,8 +11,16 @@ const BASE_URL = "http://localhost:3000";
 import axios from "axios";
 export default {
   name: "GoogleSigninButton",
+  data() {
+    return {
+      googleSignInParams: {
+        client_id:
+          "1048507427899-gsqkp04ope3jfofhb78d43hvm3g7urct.apps.googleusercontent.com"
+      }
+    };
+  },
   methods: {
-    onSignIn(user) {
+    onSignInSuccess(user) {
       const token = user.getAuthResponse().id_token;
       axios({
         method: "POST",
@@ -27,39 +37,23 @@ export default {
           console.log(err);
         });
     },
-    signOut() {
-      var auth2 = gapi.auth2.getAuthInstance();
-      auth2.signOut().then(() => {
-        // location.reload(true);
-      });
-    },
-    onFailure(error) {
+    onSignInError(error) {
       console.log(error);
-    },
-    renderGoogleLoginButton() {
-      gapi.signin2.render("google-signin-btn", {
-        onsuccess: this.onSignIn,
-        onfailure: this.onFailure,
-        longtitle: true,
-        theme: "dark",
-        width: 390,
-        height: 50
-      });
     }
-  },
-  mounted() {
-    let recaptchaScript = document.createElement("script");
-    recaptchaScript.setAttribute(
-      "src",
-      "https://apis.google.com/js/platform.js?onload=triggerGoogleLoaded"
-    );
-    document.body.appendChild(recaptchaScript);
-    window.addEventListener("google-loaded", this.renderGoogleLoginButton);
   }
 };
 </script>
 <style lang="scss" scoped>
-.google-container {
+.g-signin-button {
   margin-top: 10px;
+  display: inline-block;
+  padding: 10px;
+  border-radius: 3px;
+  width: 100%;
+  text-align: center;
+  background-color: #3c82f7;
+  color: #fff;
+  box-shadow: 0 3px 0 #0f69ff;
+  cursor: pointer;
 }
 </style>

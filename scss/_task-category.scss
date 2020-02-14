@@ -12,6 +12,22 @@
   border-radius: 5px;
   padding: 10px;
   flex: 1 auto;
+
+  .category-heading {
+    a {
+      display: block;
+      width: 100%;
+    }
+
+    form {
+      width: 90%;
+    }
+
+    .category-heading-wrapper {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
 }
 
 .add-task-container {

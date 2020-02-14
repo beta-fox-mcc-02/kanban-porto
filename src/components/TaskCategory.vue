@@ -1,7 +1,21 @@
 <template>
   <div :id="category.id" class="category-list-wrapper">
     <div :id="category.id" class="category-content">
-      <div class="category-heading">{{ category.name }}</div>
+      <div class="category-heading">
+        <div class="category-heading-wrapper">
+          <form @submit.prevent="editCategory" v-if="isEditCategory">
+            <input
+              @blur="cancelEditCategory"
+              class="inline-edit-input"
+              type="text"
+              autofocus
+              v-model="categoryName"
+            />
+          </form>
+          <a @click="toggleFormEditCategory" v-if="!isEditCategory">{{ category.name }}</a>
+          <i @click="deleteCategory" class="fa fa-minus-square-o" aria-hidden="true"></i>
+        </div>
+      </div>
       <label>{{ tasks.length }} {{ tasks.length && tasks.length > 1 ? 'Tasks' : 'Task' }}</label>
     </div>
     <draggable
@@ -60,6 +74,13 @@ export default {
   methods: {
     toggleForm() {
       this.isAddTask = !this.isAddTask;
+    },
+    toggleFormEditCategory() {
+      this.isEditCategory = !this.isEditCategory;
+    },
+    cancelEditCategory() {
+      this.isEditCategory = !this.editCategory;
+      this.categoryName = this.category.name;
     },
     addNewTask() {
       axios({
@@ -125,21 +146,42 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    editCategory() {
+      this.isEditCategory = !this.isEditCategory;
+      this.$emit("editCategory", {
+        id: this.category.id,
+        name: this.categoryName
+      });
+    },
+    deleteCategory() {
+      console.log("here");
+    },
+    openDeleteCategory() {
+      this.isDeleteCategory = !this.isDeleteCategory;
+    },
+    cancelDeleteCategory() {
+      this.isDeleteCategory = !this.isDeleteCategory;
     }
   },
   data() {
     return {
       isAddTask: false,
       newTask: "",
-      tasks: []
+      tasks: [],
+      categoryName: "",
+      isEditCategory: false,
+      isDeleteCategory: false
     };
   },
   created() {
     this.tasks = this.category.Tasks;
+    this.categoryName = this.category.name;
   },
   watch: {
     category(val) {
       this.tasks = val.Tasks;
+      this.categoryName = val.name;
     }
   }
 };
