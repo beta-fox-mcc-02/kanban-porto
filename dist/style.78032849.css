@@ -1,0 +1,73 @@
+body{
+	font-family: sans-serif;
+    /* background: #d5f0f3; */
+    /* background-image: url('https://png.pngtree.com/thumb_back/fw800/back_pic/03/53/97/38579957bbd87ba.jpg'); */
+    /* background-image: url('https://www.google.com/imgres?imgurl=https%3A%2F%2Fpreviews.123rf.com%2Fimages%2Fnexusplexus%2Fnexusplexus1507%2Fnexusplexus150711640%2F42391981-moderne-concept-de-la-technologie-de-communication-avec-un-t%25C3%25A9l%25C3%25A9phone-mobile-sur-fond-%25C3%25A9lev%25C3%25A9-tech.jpg&imgrefurl=https%3A%2F%2Ffr.123rf.com%2Fphoto_42391981_moderne-concept-de-la-technologie-de-communication-avec-un-t%25C3%25A9l%25C3%25A9phone-mobile-sur-fond-%25C3%25A9lev%25C3%25A9-tech.html&tbnid=MOQ1qjxt3WPlQM&vet=10CAUQxiAoA2oXChMIwNLa9JvL5wIVAAAAAB0AAAAAEBg..i&docid=TzCL2_b0aoZZmM&w=1300&h=780&itg=1&q=build%20software%20background&hl=id&safe=active&ved=0CAUQxiAoA2oXChMIwNLa9JvL5wIVAAAAAB0AAAAAEBg'); */
+    background-image: url('https://businessfirstfamily.com/wp-content/uploads/2017/02/technology-background-build-app.jpg');
+    
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+ 
+h1
+{
+	text-align: center;
+	/*ketebalan font*/
+	font-weight: 300;
+}
+ 
+.login {
+	width: 350px;
+	background: white;
+	/*meletakkan form ke tengah*/
+	margin: 80px auto;
+	padding: 30px 20px;
+}
+ 
+label{
+	font-size: 11pt;
+}
+ 
+.form_login{
+	/*membuat lebar form penuh*/
+	box-sizing : border-box;
+	width: 100%;
+	padding: 10px;
+	font-size: 11pt;
+	margin-bottom: 20px;
+}
+ 
+.btn_login{
+	background: #292cec;
+	color: white;
+	font-size: 11pt;
+	width: 100%;
+	border: none;
+	border-radius: 3px;
+	padding: 10px 20px;
+}
+ 
+.link{
+	color: #232323;
+	text-decoration: none;
+	font-size: 10pt;
+}
+
+.btn-group-justified {
+	display: table;
+	width: 100%;
+	table-layout: fixed;
+	border-collapse: separate; }
+	.btn-group-justified .btn,
+	.btn-group-justified .btn-group {
+	  float: none;
+	  display: table-cell;
+	  width: 1%; }
+	  .btn-group-justified .btn .btn,
+	  .btn-group-justified .btn-group .btn {
+		width: 100%; }
+	  .btn-group-justified .btn .dropdown-menu,
+	  .btn-group-justified .btn-group .dropdown-menu {
+		left: auto; }
+
+/*# sourceMappingURL=/style.78032849.css.map */
