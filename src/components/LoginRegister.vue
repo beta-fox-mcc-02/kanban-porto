@@ -115,6 +115,7 @@ export default {
     },
     onSignInSuccess (googleUser) {
         const id_token = googleUser.getAuthResponse().id_token;
+        console.log(id_token)
         this.googleSignIn(id_token)
         .then(user=>{
           console.log(user);
@@ -152,5 +153,10 @@ export default {
 .g-signin-button:hover{
   cursor: pointer;
 }
+
+.login-form{
+  margin: 80px auto;
+}
+
 
 </style>

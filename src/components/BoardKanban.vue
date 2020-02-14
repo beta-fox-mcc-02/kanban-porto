@@ -1,6 +1,6 @@
 <template>
   <div class="col-sm-6 col-md-4" id="board">
-    <h6 class="lead font-weight-light">{{category.name}}</h6>
+    <h6 class="lead font-weight-light title-category">{{category.name}}</h6>
     <div class="card-body b-kanban">
         <CardKanban
         v-for="task in category.task"
@@ -18,8 +18,8 @@
         <input type="text" class="form-control" placeholder="Enter New Task" required v-model="input">
       </div>
     </form>
-        <a href="" id="add-task" @click.prevent="close" v-if="addTask"><span class="glyphicon glyphicon-remove"></span> close</a>
-        <a href="" id="add-task" @click.prevent="add" v-if="!addTask"><span class="glyphicon glyphicon-plus"></span> add new task</a>
+        <a href="" class="add-task" @click.prevent="close" v-if="addTask"><span class="glyphicon glyphicon-remove"></span> close</a>
+        <a href="" class="add-task" @click.prevent="add" v-if="!addTask"><span class="glyphicon glyphicon-plus"></span> add new task</a>
   </div>
 </template>
 
@@ -86,7 +86,7 @@ export default {
       let data = {title,CategoryId}
       axios({
         method : 'POST',
-        url : 'http://localhost:4000/tasks',
+        url : '/tasks',
         headers : {
           token : localStorage.token
         },
@@ -110,27 +110,33 @@ export default {
 
 <style>
 #board{
-  background-color: darkgray;
-  border-radius : 3px;
+  background-color: #d2d2d291;
+  border-radius: 5px;
   width: 23%;
   margin : 10px 1%;
   padding-bottom: 5px; 
 }
 
 .b-kanban{
-  max-height:200px ;
+  height: max-content;
+  max-height:70vh;
   overflow-y: auto;
 }
 
-#add-task{
+.add-task{
   text-decoration: none;
   margin-bottom: 10px;
+  color: #124a69cf;
 }
 
 #add-form{
   width: 100%;
 }
 
+.title-category{
+  font-family: 'Palanquin Dark', sans-serif;
+  color: #124a69cf
+}
 /* .form-control{
   margin: 5px 0;
   border-radius: 5px;

@@ -7,7 +7,7 @@
         </p>
         <div id="action-task">
           <a href="" @click.prevent="editBotton"><span class="glyphicon glyphicon-pencil"></span></a>
-          <a href="" @click.prevent="deleteCard"><span class="glyphicon glyphicon-trash"></span></a>
+          <a href="" @click.prevent="deleteCard"><span class="glyphicon glyphicon-trash del"></span></a>
           <div>
             <a href="" @click.prevent='prevBotton' v-if="IdCategory!=1"><span class="glyphicon glyphicon-chevron-left"></span></a>
             <a href="" @click.prevent='nextBotton' v-if="IdCategory!=4"><span class="glyphicon glyphicon-chevron-right"></span></a>
@@ -104,7 +104,7 @@ export default {
 #action-task{
   display: flex;
   justify-content: space-between;
-  background-color: aliceblue;
+  background-color: #e1f1fa;
   padding: 2px 10px;
   border-radius: 5px; 
 }
@@ -118,4 +118,7 @@ export default {
   padding: 5px 10px;
 }
 
+.del{
+  color: #da0505;
+}
 </style>

@@ -3,11 +3,14 @@
     <nav class="navbar ">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">#Kanban</a>
+            <a class="navbar-brand" href="#" >
+              <img src="../../public/logo.png" width="100" height="50" alt="">
+            </a>
+          <!-- <a class="navbar-brand" href="#">#Kanban</a> -->
         </div>
         <ul class="nav navbar-nav">
-          <li ><a href="#">Home</a></li>
-          <li ><a href="#">Task</a></li>
+          <!-- <li ><a href="#">Home</a></li>
+          <li ><a href="#">Task</a></li> -->
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li v-if="currentPage=='login'"><a href="#" @click="registerPage"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
@@ -35,9 +38,9 @@ export default {
     logout(){
       localStorage.clear()
       var auth2 = gapi.auth2.getAuthInstance();
-      auth2.signOut().then(function () {
-        console.log('User signed out.');
-      });
+      // auth2.signOut().then(function () {
+      //   console.log('User signed out.');
+      // });
       this.$emit('loginPage', 'login')
     }
   }
@@ -45,5 +48,15 @@ export default {
 </script>
 
 <style>
+.navbar-brand {
+    float: left;
+    height: 50px;
+    padding: 0px 25px;
+    font-size: 18px;
+    line-height: 20px;
+}
 
+.navbar{
+  background-color: #f9f9f9;
+}
 </style>

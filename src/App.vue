@@ -80,7 +80,7 @@ export default {
       })
       .then(({data})=>{
         this.categories = data.categories
-        console.log(this.categories)
+        this.error = ''
         this.currentPage = 'home'
       })
       .catch(err=>{
@@ -90,9 +90,11 @@ export default {
   }, 
   created(){
     if(localStorage.token){
+      this.error=''
       this.currentPage = 'home'
       this.fetchData()
     } else {
+      this.error=''
       this.currentPage = 'login'
     }
   }
