@@ -1,10 +1,11 @@
 <template>
-    <div class="create" v-if="currentPage == 'create'">
+    <div class="create">
+        <p>Create Kanban</p>
         <form class="form-create" method="post" @submit.prevent="create">
             <div class="field">
                 <label class="label">Title</label>
                 <div class="control">
-                    <input class="input" type="text" placeholder="Title" v-model="title">
+                    <input class="input" type="text" placeholder="Title maximal 30 character" v-model="title">
                 </div>
             </div>
 
@@ -33,9 +34,6 @@ export default {
             description:''
         }
     },
-    props:{
-        currentPage: String
-    },
     methods:{
         changePage(page){
             this.$emit('changePage',page)
@@ -46,7 +44,7 @@ export default {
 
             axios({
                 method:"POST",
-                url:"http://localhost:3000",
+                url:"https://secure-retreat-20188.herokuapp.com",
                 headers:{
                     token: localStorage.getItem('token')
                 },

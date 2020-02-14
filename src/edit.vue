@@ -1,17 +1,18 @@
 <template>
-  <div class="edit" v-if="currentPage == 'edit'">
-        <form class="form-create" method="post" @submit.prevent="edit">
+  <div class="edit">
+      <p>Edit Form</p>
+        <form class="form-create" method="post" @submit.prevent="submitEdit">
             <div class="field">
                 <label class="label">Title</label>
                 <div class="control">
-                    <input class="input" type="text" placeholder="Title" v-model="title">
+                    <input class="input" type="text" placeholder="Title" v-model="title" >
                 </div>
             </div>
 
             <div class="field">
                 <label class="label">Description</label>
                 <div class="control">
-                    <textarea class="textarea" placeholder="Description" v-model="description"></textarea>
+                    <textarea class="textarea" placeholder="Description" v-model="description" ></textarea>
                 </div>
             </div>
 
@@ -28,26 +29,39 @@
 export default {
     data(){
         return {
-            title:'',
-            description:''
+            title:this.editData.title,
+            description:this.editData.description
         }
     },
     props:{
-        currentPage:String
+        editData:Object
     },
     methods:{
-        edit(){
+        changePage(page){
+            this.$emit('changePage',page)
+        },
+        submitEdit(){
             const title = this.title
             const description = this.description
-            console.log(this.title,this.description)
+            const { id } = this.editData
 
             axios({
                 method:"PUT",
-                url:"http://localhost:3000/:id",
+                url:`https://secure-retreat-20188.herokuapp.com/${id}`,
                 headers:{
                     token: localStorage.getItem('token')
+                },
+                data:{
+                    title, description
                 }
             })
+                .then(data=>{
+                    this.changePage('home')
+                    console.log(data,'success update')
+                })
+                .catch(err=>{
+                    console.log(err,'error edit vue')
+                })
         }
     }
 }

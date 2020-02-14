@@ -1,5 +1,5 @@
 <template>
-  <div class="login" v-if="currentPage === 'login'">
+  <div class="login" >
         <div>
             <h1>LOGIN</h1>
         </div>
@@ -28,6 +28,7 @@
                 </p>
             </div>
         </form>
+            <a @click="gSignIn"><i class="fab fa-google"></i> Google SignIn</a>
     </div>
 </template>
 
@@ -40,9 +41,6 @@ export default {
             password:''
         }
     },
-    props:{
-        currentPage:String
-    },
     methods:{
         changePage(page){
             console.log(page,'change page login');
@@ -54,7 +52,7 @@ export default {
             
             axios({
                 method:"POST",
-                url:"http://localhost:3000/login",
+                url:"https://secure-retreat-20188.herokuapp.com/login",
                 data:{
                     email, password
                 }
@@ -65,6 +63,26 @@ export default {
                 })
                 .catch(err=>{
                     console.log(err,'error login vue')
+                })
+        },
+        gSignIn(){
+            this.$gAuth.signIn()
+                .then(authCode => {
+                    const token = authCode.getAuthResponse().id_token
+                    axios({
+                        method:"POST",
+                        url:"https://secure-retreat-20188.herokuapp.com/gsignin",
+                        headers:{
+                            token
+                        }
+                    })
+                    .then(({data})=>{
+                        localStorage.setItem('token',data.token)
+                        this.changePage('home')
+                    })
+                })
+                .catch(err=>{
+                    console.log(err,'error gsignin')
                 })
         }
     }

@@ -1,9 +1,10 @@
 <template>
-    <div class="home" v-if="currentPage === 'home'">
+    <div class="home">
        <Card
        :tasks="tasks"
        @fetch="taskFetch"
        @edit="edit"
+       @changePage="changePage"
        ></Card> 
     </div>
 </template>
@@ -21,36 +22,35 @@ export default {
     components:{
         Card
     },
-    props:{
-        currentPage:String
-    },
     methods:{
+        changePage(page){
+            console.log(page,'change page home');
+            this.$emit('changePage',page)
+        },
         taskFetch(){
             axios({
                 method:"GET",
-                url:"http://localhost:3000",
+                url:"https://secure-retreat-20188.herokuapp.com",
                 headers:{
                     token: localStorage.getItem('token')
                 }
             })
                 .then(({data})=>{
                     this.tasks = data.data
-                    console.log(this.tasks  ,'masuk')
-                    return data.data
                 })
                 .catch(err=>{
                     console.log(err, 'error home vue')
                 })
         },
-        edit(id){
-            console.log(id,'home vue')
+        edit(data){
+            this.$emit('edit',data)
         }
     },
     created(){
         if(localStorage.token){
-            console.log('localstorage ada pak');
-            
             this.taskFetch()
+        }else{
+            this.changePage('login')
         }
     }
 }

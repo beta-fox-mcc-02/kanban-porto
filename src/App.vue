@@ -1,11 +1,11 @@
 <template>
     <div>
         <Navbar @changePage="changePage" :currentPage="currentPage"></Navbar>
-        <Home @edit="edit" :currentPage="currentPage"></Home>
-        <Login @changePage="changePage" :currentPage="currentPage"></Login>
-        <Register @changePage="changePage" :currentPage="currentPage"></Register>
-        <Create @changePage="changePage" :currentPage="currentPage"></Create>
-        <Edit :currentPage="currentPage"></Edit>
+        <Home v-if="currentPage === 'home'" @changePage="changePage" @edit="edit" :currentPage="currentPage"></Home>
+        <Login v-if="currentPage === 'login'" @changePage="changePage" :currentPage="currentPage"></Login>
+        <Register v-if="currentPage == 'register'" @changePage="changePage" :currentPage="currentPage"></Register>
+        <Create  v-if="currentPage == 'create'" @changePage="changePage" :currentPage="currentPage"></Create>
+        <Edit v-if="currentPage == 'edit'" @changePage="changePage" :editData="editData" :currentPage="currentPage"></Edit>
     </div>
 </template>
 
@@ -20,7 +20,8 @@ import Edit from './edit.vue'
 export default {
     data () {
         return {
-            currentPage: "edit"
+            currentPage: "home",
+            editData:{}
         }
     },
     components:{
@@ -35,8 +36,13 @@ export default {
         changePage(page){
             this.currentPage = page
         },
-        edit(id){
-            console.log(id,'app vue')
+        edit(data){
+            this.editData = data
+        }
+    },
+    created(){
+        if(localStorage.token){
+            this.currentPage('home')
         }
     }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="register" v-if="currentPage == 'register'">
+  <div class="register">
         <div>
             <h1>REGISTER</h1>
         </div>
@@ -42,9 +42,6 @@
 <script>
 export default {
     name:'register',
-    props:{
-        currentPage:String
-    },
     data() {
         return {
             username:'',
@@ -58,20 +55,20 @@ export default {
             const email = this.email
             const password = this.password
             
-            // axios({
-            //     method: 'POST',
-            //     url: 'http://localhost:3000/register',
-            //     data:{
-            //         username, email, password
-            //     }
-            // })
-            //     .then(data=>{
-            //         console.log(data, 'data register vue')
-            //         this.changePage('login')
-            //     })
-            //     .catch(err=>{
-            //         console.log(err,'error register vue')
-            //     })
+            axios({
+                method: 'POST',
+                url: 'https://secure-retreat-20188.herokuapp.com/register',
+                data:{
+                    username, email, password
+                }
+            })
+                .then(data=>{
+                    console.log(data, 'data register vue')
+                    this.changePage('login')
+                })
+                .catch(err=>{
+                    console.log(err,'error register vue')
+                })
         },
         changePage(page){
             // console.log(page)

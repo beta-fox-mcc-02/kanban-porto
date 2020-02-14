@@ -117,7 +117,168 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"node_modules/vue/dist/vue.runtime.esm.js":[function(require,module,exports) {
+})({"node_modules/vue-google-oauth2/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var googleAuth = function () {
+  function installClient() {
+    var apiUrl = 'https://apis.google.com/js/api.js';
+    return new Promise(resolve => {
+      var script = document.createElement('script');
+      script.src = apiUrl;
+
+      script.onreadystatechange = script.onload = function () {
+        if (!script.readyState || /loaded|complete/.test(script.readyState)) {
+          setTimeout(function () {
+            resolve();
+          }, 500);
+        }
+      };
+
+      document.getElementsByTagName('head')[0].appendChild(script);
+    });
+  }
+
+  function initClient(config) {
+    return new Promise(resolve => {
+      window.gapi.load('auth2', () => {
+        window.gapi.auth2.init(config).then(() => {
+          resolve(window.gapi);
+        });
+      });
+    });
+  }
+
+  function Auth() {
+    if (!(this instanceof Auth)) return new Auth();
+    this.GoogleAuth = null;
+    /* window.gapi.auth2.getAuthInstance() */
+
+    this.isAuthorized = false;
+    this.isInit = false;
+    this.prompt = null;
+
+    this.isLoaded = function () {
+      /* eslint-disable */
+      console.warn('isLoaded() will be deprecated. You can use "this.$gAuth.isInit"');
+      return !!this.GoogleAuth;
+    };
+
+    this.load = (config, prompt) => {
+      installClient().then(() => {
+        return initClient(config);
+      }).then(gapi => {
+        this.GoogleAuth = gapi.auth2.getAuthInstance();
+        this.isInit = true;
+        this.prompt = prompt;
+        this.isAuthorized = this.GoogleAuth.isSignedIn.get();
+      });
+    };
+
+    this.signIn = (successCallback, errorCallback) => {
+      return new Promise((resolve, reject) => {
+        if (!this.GoogleAuth) {
+          if (typeof errorCallback === 'function') errorCallback(false);
+          reject(false);
+          return;
+        }
+
+        this.GoogleAuth.signIn().then(googleUser => {
+          if (typeof successCallback === 'function') successCallback(googleUser);
+          this.isAuthorized = this.GoogleAuth.isSignedIn.get();
+          resolve(googleUser);
+        }).catch(error => {
+          if (typeof errorCallback === 'function') errorCallback(error);
+          reject(error);
+        });
+      });
+    };
+
+    this.getAuthCode = (successCallback, errorCallback) => {
+      return new Promise((resolve, reject) => {
+        if (!this.GoogleAuth) {
+          if (typeof errorCallback === 'function') errorCallback(false);
+          reject(false);
+          return;
+        }
+
+        this.GoogleAuth.grantOfflineAccess({
+          prompt: this.prompt
+        }).then(function (resp) {
+          if (typeof successCallback === 'function') successCallback(resp.code);
+          resolve(resp.code);
+        }).catch(function (error) {
+          if (typeof errorCallback === 'function') errorCallback(error);
+          reject(error);
+        });
+      });
+    };
+
+    this.signOut = (successCallback, errorCallback) => {
+      return new Promise((resolve, reject) => {
+        if (!this.GoogleAuth) {
+          if (typeof errorCallback === 'function') errorCallback(false);
+          reject(false);
+          return;
+        }
+
+        this.GoogleAuth.signOut().then(() => {
+          if (typeof successCallback === 'function') successCallback();
+          this.isAuthorized = false;
+          resolve(true);
+        }).catch(error => {
+          if (typeof errorCallback === 'function') errorCallback(error);
+          reject(error);
+        });
+      });
+    };
+  }
+
+  return new Auth();
+}();
+
+function installGoogleAuthPlugin(Vue, options) {
+  /* eslint-disable */
+  //set config
+  let GoogleAuthConfig = null;
+  let GoogleAuthDefaultConfig = {
+    scope: 'profile email',
+    discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
+  };
+  let prompt = 'select_account';
+
+  if (typeof options === 'object') {
+    GoogleAuthConfig = Object.assign(GoogleAuthDefaultConfig, options);
+    if (options.scope) GoogleAuthConfig.scope = options.scope;
+    if (options.prompt) prompt = options.prompt;
+
+    if (!options.clientId) {
+      console.warn('clientId is required');
+    }
+  } else {
+    console.warn('invalid option type. Object type accepted only');
+  } //Install Vue plugin
+
+
+  Vue.gAuth = googleAuth;
+  Object.defineProperties(Vue.prototype, {
+    $gAuth: {
+      get: function () {
+        return Vue.gAuth;
+      }
+    }
+  });
+  Vue.gAuth.load(GoogleAuthConfig, prompt);
+}
+
+var _default = installGoogleAuthPlugin;
+exports.default = _default;
+},{}],"node_modules/vue/dist/vue.runtime.esm.js":[function(require,module,exports) {
 var global = arguments[3];
 "use strict";
 
@@ -8929,6 +9090,14 @@ var _default = {
   methods: {
     changePage: function changePage(page) {
       this.$emit('changePage', page); // console.log(page)
+    },
+    logout: function logout() {
+      localStorage.clear();
+      this.changePage('login');
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function () {
+        console.log('User signed out.');
+      });
     }
   }
 };
@@ -8953,17 +9122,24 @@ exports.default = _default;
     },
     [
       _c("div", { staticClass: "navbar-brand" }, [
-        _c("img", {
-          attrs: {
-            src: "/kanban-logo2.c1965ced.png",
-            alt: "KanbaN"
-          },
-          on: {
-            click: function($event) {
-              return _vm.changePage("home")
+        _c(
+          "a",
+          {
+            on: {
+              click: function($event) {
+                return _vm.changePage("home")
+              }
             }
-          }
-        })
+          },
+          [
+            _c("img", {
+              attrs: {
+                src: "/kanban-logo2.c1965ced.png",
+                alt: "KanbaN"
+              }
+            })
+          ]
+        )
       ]),
       _vm._v(" "),
       _c(
@@ -9029,11 +9205,7 @@ exports.default = _default;
                       "button",
                       {
                         staticClass: "button is-danger",
-                        on: {
-                          click: function($event) {
-                            return _vm.changePage("login")
-                          }
-                        }
+                        on: { click: _vm.logout }
                       },
                       [_vm._v("Log Out")]
                     )
@@ -9201,40 +9373,66 @@ exports.default = void 0;
 //
 //
 //
-//
-//
-//
-//
 var _default = {
   name: 'card',
   data: function data() {
     return {
-      cards: [],
-      classes: [{
-        id: 1,
-        typeClass: 'BACKLOG'
-      }, {
-        id: 2,
-        typeClass: 'TODO'
-      }, {
-        id: 3,
-        typeClass: 'DONE'
-      }, {
-        id: 4,
-        typeClass: 'COMPLETED'
-      }]
+      cards: []
     };
   },
   props: {
     tasks: Array
   },
   methods: {
+    changePage: function changePage(page) {
+      console.log(page, 'change page card');
+      this.$emit('changePage', page);
+    },
     fetch: function fetch() {
       this.$emit('fetch');
     },
-    edit: function edit(id) {
-      console.log(id, 'card vue');
-      this.$emit('edit', id);
+    edit: function edit(data) {
+      this.$emit('edit', data);
+      this.changePage('edit');
+    },
+    destroy: function destroy(id) {
+      var _this = this;
+
+      axios({
+        method: "DELETE",
+        url: "https://secure-retreat-20188.herokuapp.com/".concat(id),
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      }).then(function () {
+        _this.fetch();
+
+        console.log('success delete');
+      }).catch(function (err) {
+        console.log(err, 'error destroy');
+      });
+    },
+    move: function move(direction, idCategory, id) {
+      var _this2 = this;
+
+      var CategoryId = idCategory;
+      direction == 'right' ? CategoryId++ : CategoryId--;
+      axios({
+        method: "PUT",
+        url: "https://secure-retreat-20188.herokuapp.com/".concat(id),
+        headers: {
+          token: localStorage.getItem('token')
+        },
+        data: {
+          CategoryId: CategoryId
+        }
+      }).then(function (data) {
+        console.log(data, 'anjaay');
+
+        _this2.fetch();
+      }).catch(function (err) {
+        console.log(err, 'error edit vue');
+      });
     }
   },
   computed: {
@@ -9242,7 +9440,6 @@ var _default = {
       var cards = this.tasks.filter(function (el) {
         return el.CategoryId == 1;
       });
-      console.log(this.tasks, 'task pak');
       return cards;
     },
     todo: function todo() {
@@ -9286,9 +9483,10 @@ exports.default = _default;
         "div",
         { staticClass: "body-card" },
         _vm._l(_vm.backlog, function(ref) {
+          var id = ref.id
           var title = ref.title
           var description = ref.description
-          var id = ref.id
+          var CategoryId = ref.CategoryId
           return _c("div", { key: id, staticClass: "card" }, [
             _c("header", { staticClass: "card-header" }, [
               _c("p", { staticClass: "card-header-title" }, [
@@ -9305,7 +9503,11 @@ exports.default = _default;
                   {
                     on: {
                       click: function($event) {
-                        return _vm.edit(id)
+                        return _vm.edit({
+                          id: id,
+                          title: title,
+                          description: description
+                        })
                       }
                     }
                   },
@@ -9317,7 +9519,22 @@ exports.default = _default;
                   ]
                 ),
                 _vm._v(" "),
-                _vm._m(1, true)
+                _c(
+                  "a",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.destroy(id)
+                      }
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fas fa-trash",
+                      staticStyle: { color: "red" }
+                    })
+                  ]
+                )
               ])
             ]),
             _vm._v(" "),
@@ -9328,13 +9545,34 @@ exports.default = _default;
                     _vm._s(description) +
                     "\n                        "
                 ),
-                _vm._v(" "),
                 _c("br"),
                 _c("br")
               ])
             ]),
             _vm._v(" "),
-            _vm._m(2, true)
+            _c("footer", { staticClass: "card-footer" }, [
+              _c(
+                "a",
+                {
+                  on: {
+                    click: function($event) {
+                      return _vm.move("right", CategoryId, id)
+                    }
+                  }
+                },
+                [
+                  _c("i", {
+                    staticClass: "fas fa-arrow-circle-right",
+                    staticStyle: {
+                      color: "yellowgreen",
+                      width: "40px",
+                      height: "50px",
+                      "padding-right": "2px"
+                    }
+                  })
+                ]
+              )
+            ])
           ])
         }),
         0
@@ -9342,7 +9580,7 @@ exports.default = _default;
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "TODO" }, [
-      _vm._m(3),
+      _vm._m(1),
       _vm._v(" "),
       _c(
         "div",
@@ -9351,6 +9589,7 @@ exports.default = _default;
           var title = ref.title
           var description = ref.description
           var id = ref.id
+          var CategoryId = ref.CategoryId
           return _c("div", { key: id, staticClass: "card" }, [
             _c("header", { staticClass: "card-header" }, [
               _c("p", { staticClass: "card-header-title" }, [
@@ -9361,7 +9600,45 @@ exports.default = _default;
                 )
               ]),
               _vm._v(" "),
-              _vm._m(4, true)
+              _c("div", { staticClass: "card-header-icon" }, [
+                _c(
+                  "a",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.edit({
+                          id: id,
+                          title: title,
+                          description: description
+                        })
+                      }
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fas fa-pen",
+                      staticStyle: { "margin-right": "15px", color: "navy" }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.destroy(id)
+                      }
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fas fa-trash",
+                      staticStyle: { color: "red" }
+                    })
+                  ]
+                )
+              ])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "card-content" }, [
@@ -9371,13 +9648,56 @@ exports.default = _default;
                     _vm._s(description) +
                     "\n                        "
                 ),
-                _vm._v(" "),
                 _c("br"),
                 _c("br")
               ])
             ]),
             _vm._v(" "),
-            _vm._m(5, true)
+            _c("footer", { staticClass: "card-footer" }, [
+              _c(
+                "a",
+                {
+                  on: {
+                    click: function($event) {
+                      return _vm.move("left", CategoryId, id)
+                    }
+                  }
+                },
+                [
+                  _c("i", {
+                    staticClass: "fas fa-arrow-circle-left",
+                    staticStyle: {
+                      color: "green",
+                      width: "40px",
+                      height: "50px",
+                      "padding-left": "2px"
+                    }
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  on: {
+                    click: function($event) {
+                      return _vm.move("right", CategoryId, id)
+                    }
+                  }
+                },
+                [
+                  _c("i", {
+                    staticClass: "fas fa-arrow-circle-right",
+                    staticStyle: {
+                      color: "teal",
+                      width: "40px",
+                      height: "50px",
+                      "padding-right": "2px"
+                    }
+                  })
+                ]
+              )
+            ])
           ])
         }),
         0
@@ -9385,7 +9705,7 @@ exports.default = _default;
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "DONE" }, [
-      _vm._m(6),
+      _vm._m(2),
       _vm._v(" "),
       _c(
         "div",
@@ -9394,6 +9714,7 @@ exports.default = _default;
           var title = ref.title
           var description = ref.description
           var id = ref.id
+          var CategoryId = ref.CategoryId
           return _c("div", { key: id, staticClass: "card" }, [
             _c("header", { staticClass: "card-header" }, [
               _c("p", { staticClass: "card-header-title" }, [
@@ -9404,7 +9725,45 @@ exports.default = _default;
                 )
               ]),
               _vm._v(" "),
-              _vm._m(7, true)
+              _c("div", { staticClass: "card-header-icon" }, [
+                _c(
+                  "a",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.edit({
+                          id: id,
+                          title: title,
+                          description: description
+                        })
+                      }
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fas fa-pen",
+                      staticStyle: { "margin-right": "15px", color: "navy" }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.destroy(id)
+                      }
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fas fa-trash",
+                      staticStyle: { color: "red" }
+                    })
+                  ]
+                )
+              ])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "card-content" }, [
@@ -9414,13 +9773,56 @@ exports.default = _default;
                     _vm._s(description) +
                     "\n                        "
                 ),
-                _vm._v(" "),
                 _c("br"),
                 _c("br")
               ])
             ]),
             _vm._v(" "),
-            _vm._m(8, true)
+            _c("footer", { staticClass: "card-footer" }, [
+              _c(
+                "a",
+                {
+                  on: {
+                    click: function($event) {
+                      return _vm.move("left", CategoryId, id)
+                    }
+                  }
+                },
+                [
+                  _c("i", {
+                    staticClass: "fas fa-arrow-circle-left",
+                    staticStyle: {
+                      color: "yellowgreen",
+                      width: "40px",
+                      height: "50px",
+                      "padding-left": "2px"
+                    }
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  on: {
+                    click: function($event) {
+                      return _vm.move("right", CategoryId, id)
+                    }
+                  }
+                },
+                [
+                  _c("i", {
+                    staticClass: "fas fa-arrow-circle-right",
+                    staticStyle: {
+                      color: "blue",
+                      width: "40px",
+                      height: "50px",
+                      "padding-right": "2px"
+                    }
+                  })
+                ]
+              )
+            ])
           ])
         }),
         0
@@ -9428,7 +9830,7 @@ exports.default = _default;
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "COMPLETED" }, [
-      _vm._m(9),
+      _vm._m(3),
       _vm._v(" "),
       _c(
         "div",
@@ -9437,6 +9839,7 @@ exports.default = _default;
           var title = ref.title
           var description = ref.description
           var id = ref.id
+          var CategoryId = ref.CategoryId
           return _c("div", { key: id, staticClass: "card" }, [
             _c("header", { staticClass: "card-header" }, [
               _c("p", { staticClass: "card-header-title" }, [
@@ -9447,7 +9850,45 @@ exports.default = _default;
                 )
               ]),
               _vm._v(" "),
-              _vm._m(10, true)
+              _c("div", { staticClass: "card-header-icon" }, [
+                _c(
+                  "a",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.edit({
+                          id: id,
+                          title: title,
+                          description: description
+                        })
+                      }
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fas fa-pen",
+                      staticStyle: { "margin-right": "15px", color: "navy" }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.destroy(id)
+                      }
+                    }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fas fa-trash",
+                      staticStyle: { color: "red" }
+                    })
+                  ]
+                )
+              ])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "card-content" }, [
@@ -9457,13 +9898,34 @@ exports.default = _default;
                     _vm._s(description) +
                     "\n                        "
                 ),
-                _vm._v(" "),
                 _c("br"),
                 _c("br")
               ])
             ]),
             _vm._v(" "),
-            _vm._m(11, true)
+            _c("footer", { staticClass: "card-footer" }, [
+              _c(
+                "a",
+                {
+                  on: {
+                    click: function($event) {
+                      return _vm.move("left", CategoryId, id)
+                    }
+                  }
+                },
+                [
+                  _c("i", {
+                    staticClass: "fas fa-arrow-circle-left",
+                    staticStyle: {
+                      color: "teal",
+                      width: "40px",
+                      height: "50px",
+                      "padding-left": "2px"
+                    }
+                  })
+                ]
+              )
+            ])
           ])
         }),
         0
@@ -9482,78 +9944,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("a", [
-      _c("i", { staticClass: "fas fa-trash", staticStyle: { color: "red" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("footer", { staticClass: "card-footer" }, [
-      _c("a", {
-        staticClass: "fas fa-arrow-circle-right",
-        staticStyle: {
-          color: "yellowgreen",
-          width: "40px",
-          height: "50px",
-          "padding-right": "2px"
-        },
-        attrs: { href: "#" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "title" }, [_c("h6", [_vm._v("TODO")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header-icon" }, [
-      _c("a", {
-        staticClass: "fas fa-pen",
-        staticStyle: { "margin-right": "15px", color: "navy" },
-        attrs: { href: "#" }
-      }),
-      _vm._v(" "),
-      _c("a", {
-        staticClass: "fas fa-trash",
-        staticStyle: { color: "red" },
-        attrs: { href: "#" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("footer", { staticClass: "card-footer" }, [
-      _c("a", {
-        staticClass: "fas fa-arrow-circle-left",
-        staticStyle: {
-          color: "green",
-          width: "40px",
-          height: "50px",
-          "padding-left": "2px"
-        },
-        attrs: { href: "#" }
-      }),
-      _vm._v(" "),
-      _c("a", {
-        staticClass: "fas fa-arrow-circle-right",
-        staticStyle: {
-          color: "teal",
-          width: "40px",
-          height: "50px",
-          "padding-right": "2px"
-        },
-        attrs: { href: "#" }
-      })
-    ])
   },
   function() {
     var _vm = this
@@ -9565,89 +9956,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header-icon" }, [
-      _c("a", {
-        staticClass: "fas fa-pen",
-        staticStyle: { "margin-right": "15px", color: "navy" },
-        attrs: { href: "#" }
-      }),
-      _vm._v(" "),
-      _c("a", {
-        staticClass: "fas fa-trash",
-        staticStyle: { color: "red" },
-        attrs: { href: "#" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("footer", { staticClass: "card-footer" }, [
-      _c("a", {
-        staticClass: "fas fa-arrow-circle-left",
-        staticStyle: {
-          color: "yellowgreen",
-          width: "40px",
-          height: "50px",
-          "padding-left": "2px"
-        },
-        attrs: { href: "#" }
-      }),
-      _vm._v(" "),
-      _c("a", {
-        staticClass: "fas fa-arrow-circle-right",
-        staticStyle: {
-          color: "blue",
-          width: "40px",
-          height: "50px",
-          "padding-right": "2px"
-        },
-        attrs: { href: "#" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "title" }, [
       _c("h6", [_vm._v("COMPLETED")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header-icon" }, [
-      _c("a", {
-        staticClass: "fas fa-pen",
-        staticStyle: { "margin-right": "15px", color: "navy" },
-        attrs: { href: "#" }
-      }),
-      _vm._v(" "),
-      _c("a", {
-        staticClass: "fas fa-trash",
-        staticStyle: { color: "red" },
-        attrs: { href: "#" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("footer", { staticClass: "card-footer" }, [
-      _c("a", {
-        staticClass: "fas fa-arrow-circle-left",
-        staticStyle: {
-          color: "teal",
-          width: "40px",
-          height: "50px",
-          "padding-left": "2px"
-        },
-        attrs: { href: "#" }
-      })
     ])
   }
 ]
@@ -9705,6 +10015,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
 var _default = {
   name: 'home',
   data: function data() {
@@ -9715,36 +10026,36 @@ var _default = {
   components: {
     Card: _card.default
   },
-  props: {
-    currentPage: String
-  },
   methods: {
+    changePage: function changePage(page) {
+      console.log(page, 'change page home');
+      this.$emit('changePage', page);
+    },
     taskFetch: function taskFetch() {
       var _this = this;
 
       axios({
         method: "GET",
-        url: "http://localhost:3000",
+        url: "https://secure-retreat-20188.herokuapp.com",
         headers: {
           token: localStorage.getItem('token')
         }
       }).then(function (_ref) {
         var data = _ref.data;
         _this.tasks = data.data;
-        console.log(_this.tasks, 'masuk');
-        return data.data;
       }).catch(function (err) {
         console.log(err, 'error home vue');
       });
     },
-    edit: function edit(id) {
-      console.log(id, 'home vue');
+    edit: function edit(data) {
+      this.$emit('edit', data);
     }
   },
   created: function created() {
     if (localStorage.token) {
-      console.log('localstorage ada pak');
       this.taskFetch();
+    } else {
+      this.changePage('login');
     }
   }
 };
@@ -9761,19 +10072,17 @@ exports.default = _default;
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.currentPage === "home"
-    ? _c(
-        "div",
-        { staticClass: "home" },
-        [
-          _c("Card", {
-            attrs: { tasks: _vm.tasks },
-            on: { fetch: _vm.taskFetch, edit: _vm.edit }
-          })
-        ],
-        1
-      )
-    : _vm._e()
+  return _c(
+    "div",
+    { staticClass: "home" },
+    [
+      _c("Card", {
+        attrs: { tasks: _vm.tasks },
+        on: { fetch: _vm.taskFetch, edit: _vm.edit, changePage: _vm.changePage }
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -9848,6 +10157,7 @@ exports.default = void 0;
 //
 //
 //
+//
 var _default = {
   name: 'login',
   data: function data() {
@@ -9855,9 +10165,6 @@ var _default = {
       email: '',
       password: ''
     };
-  },
-  props: {
-    currentPage: String
   },
   methods: {
     changePage: function changePage(page) {
@@ -9871,7 +10178,7 @@ var _default = {
       var password = this.password;
       axios({
         method: "POST",
-        url: "http://localhost:3000/login",
+        url: "https://secure-retreat-20188.herokuapp.com/login",
         data: {
           email: email,
           password: password
@@ -9883,6 +10190,27 @@ var _default = {
         _this.changePage('home');
       }).catch(function (err) {
         console.log(err, 'error login vue');
+      });
+    },
+    gSignIn: function gSignIn() {
+      var _this2 = this;
+
+      this.$gAuth.signIn().then(function (authCode) {
+        var token = authCode.getAuthResponse().id_token;
+        axios({
+          method: "POST",
+          url: "https://secure-retreat-20188.herokuapp.com/gsignin",
+          headers: {
+            token: token
+          }
+        }).then(function (_ref2) {
+          var data = _ref2.data;
+          localStorage.setItem('token', data.token);
+
+          _this2.changePage('home');
+        });
+      }).catch(function (err) {
+        console.log(err, 'error gsignin');
       });
     }
   }
@@ -9900,88 +10228,87 @@ exports.default = _default;
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.currentPage === "login"
-    ? _c("div", { staticClass: "login" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "form",
-          {
-            staticClass: "form-login",
-            attrs: { method: "POST" },
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.login($event)
-              }
-            }
-          },
-          [
-            _c("div", { staticClass: "field" }, [
-              _c(
-                "p",
-                { staticClass: "control has-icons-left has-icons-right" },
-                [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.email,
-                        expression: "email"
-                      }
-                    ],
-                    staticClass: "input",
-                    attrs: { type: "email", placeholder: "Email" },
-                    domProps: { value: _vm.email },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.email = $event.target.value
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm._m(1)
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "field" }, [
-              _c("p", { staticClass: "control has-icons-left" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.password,
-                      expression: "password"
-                    }
-                  ],
-                  staticClass: "input",
-                  attrs: { type: "password", placeholder: "Password" },
-                  domProps: { value: _vm.password },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.password = $event.target.value
-                    }
+  return _c("div", { staticClass: "login" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        staticClass: "form-login",
+        attrs: { method: "POST" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.login($event)
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "field" }, [
+          _c("p", { staticClass: "control has-icons-left has-icons-right" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.email,
+                  expression: "email"
+                }
+              ],
+              staticClass: "input",
+              attrs: { type: "email", placeholder: "Email" },
+              domProps: { value: _vm.email },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
                   }
-                }),
-                _vm._v(" "),
-                _vm._m(2)
-              ])
-            ]),
+                  _vm.email = $event.target.value
+                }
+              }
+            }),
             _vm._v(" "),
-            _vm._m(3)
-          ]
-        )
-      ])
-    : _vm._e()
+            _vm._m(1)
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "field" }, [
+          _c("p", { staticClass: "control has-icons-left" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.password,
+                  expression: "password"
+                }
+              ],
+              staticClass: "input",
+              attrs: { type: "password", placeholder: "Password" },
+              domProps: { value: _vm.password },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.password = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm._m(2)
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(3)
+      ]
+    ),
+    _vm._v(" "),
+    _c("a", { on: { click: _vm.gSignIn } }, [
+      _c("i", { staticClass: "fab fa-google" }),
+      _vm._v(" Google SignIn")
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -10103,9 +10430,6 @@ exports.default = void 0;
 //
 var _default = {
   name: 'register',
-  props: {
-    currentPage: String
-  },
   data: function data() {
     return {
       username: '',
@@ -10115,22 +10439,26 @@ var _default = {
   },
   methods: {
     register: function register() {
+      var _this = this;
+
       var username = this.username;
       var email = this.email;
-      var password = this.password; // axios({
-      //     method: 'POST',
-      //     url: 'http://localhost:3000/register',
-      //     data:{
-      //         username, email, password
-      //     }
-      // })
-      //     .then(data=>{
-      //         console.log(data, 'data register vue')
-      //         this.changePage('login')
-      //     })
-      //     .catch(err=>{
-      //         console.log(err,'error register vue')
-      //     })
+      var password = this.password;
+      axios({
+        method: 'POST',
+        url: 'https://secure-retreat-20188.herokuapp.com/register',
+        data: {
+          username: username,
+          email: email,
+          password: password
+        }
+      }).then(function (data) {
+        console.log(data, 'data register vue');
+
+        _this.changePage('login');
+      }).catch(function (err) {
+        console.log(err, 'error register vue');
+      });
     },
     changePage: function changePage(page) {
       // console.log(page)
@@ -10151,120 +10479,110 @@ exports.default = _default;
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.currentPage == "register"
-    ? _c("div", { staticClass: "register" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "form",
-          {
-            staticClass: "form-register",
-            attrs: { method: "POST" },
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.register($event)
-              }
-            }
-          },
-          [
-            _c("div", { staticClass: "field" }, [
-              _c(
-                "p",
-                { staticClass: "control has-icons-left has-icons-right" },
-                [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.username,
-                        expression: "username"
-                      }
-                    ],
-                    staticClass: "input",
-                    attrs: { type: "username", placeholder: "Username" },
-                    domProps: { value: _vm.username },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.username = $event.target.value
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm._m(1)
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "field" }, [
-              _c(
-                "p",
-                { staticClass: "control has-icons-left has-icons-right" },
-                [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.email,
-                        expression: "email"
-                      }
-                    ],
-                    staticClass: "input",
-                    attrs: { type: "email", placeholder: "Email" },
-                    domProps: { value: _vm.email },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.email = $event.target.value
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm._m(2)
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "field" }, [
-              _c("p", { staticClass: "control has-icons-left" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.password,
-                      expression: "password"
-                    }
-                  ],
-                  staticClass: "input",
-                  attrs: { type: "password", placeholder: "Password" },
-                  domProps: { value: _vm.password },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.password = $event.target.value
-                    }
+  return _c("div", { staticClass: "register" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        staticClass: "form-register",
+        attrs: { method: "POST" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.register($event)
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "field" }, [
+          _c("p", { staticClass: "control has-icons-left has-icons-right" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.username,
+                  expression: "username"
+                }
+              ],
+              staticClass: "input",
+              attrs: { type: "username", placeholder: "Username" },
+              domProps: { value: _vm.username },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
                   }
-                }),
-                _vm._v(" "),
-                _vm._m(3)
-              ])
-            ]),
+                  _vm.username = $event.target.value
+                }
+              }
+            }),
             _vm._v(" "),
-            _vm._m(4)
-          ]
-        )
-      ])
-    : _vm._e()
+            _vm._m(1)
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "field" }, [
+          _c("p", { staticClass: "control has-icons-left has-icons-right" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.email,
+                  expression: "email"
+                }
+              ],
+              staticClass: "input",
+              attrs: { type: "email", placeholder: "Email" },
+              domProps: { value: _vm.email },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.email = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm._m(2)
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "field" }, [
+          _c("p", { staticClass: "control has-icons-left" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.password,
+                  expression: "password"
+                }
+              ],
+              staticClass: "input",
+              attrs: { type: "password", placeholder: "Password" },
+              domProps: { value: _vm.password },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.password = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm._m(3)
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(4)
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -10377,6 +10695,7 @@ exports.default = void 0;
 //
 //
 //
+//
 var _default = {
   name: 'create',
   data: function data() {
@@ -10384,9 +10703,6 @@ var _default = {
       title: '',
       description: ''
     };
-  },
-  props: {
-    currentPage: String
   },
   methods: {
     changePage: function changePage(page) {
@@ -10399,7 +10715,7 @@ var _default = {
       var description = this.description;
       axios({
         method: "POST",
-        url: "http://localhost:3000",
+        url: "https://secure-retreat-20188.herokuapp.com",
         headers: {
           token: localStorage.getItem('token')
         },
@@ -10430,82 +10746,85 @@ exports.default = _default;
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.currentPage == "create"
-    ? _c("div", { staticClass: "create" }, [
-        _c(
-          "form",
-          {
-            staticClass: "form-create",
-            attrs: { method: "post" },
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.create($event)
+  return _c("div", { staticClass: "create" }, [
+    _c("p", [_vm._v("Create Kanban")]),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        staticClass: "form-create",
+        attrs: { method: "post" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.create($event)
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "field" }, [
+          _c("label", { staticClass: "label" }, [_vm._v("Title")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "control" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.title,
+                  expression: "title"
+                }
+              ],
+              staticClass: "input",
+              attrs: {
+                type: "text",
+                placeholder: "Title maximal 30 character"
+              },
+              domProps: { value: _vm.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.title = $event.target.value
+                }
               }
-            }
-          },
-          [
-            _c("div", { staticClass: "field" }, [
-              _c("label", { staticClass: "label" }, [_vm._v("Title")]),
-              _vm._v(" "),
-              _c("div", { staticClass: "control" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.title,
-                      expression: "title"
-                    }
-                  ],
-                  staticClass: "input",
-                  attrs: { type: "text", placeholder: "Title" },
-                  domProps: { value: _vm.title },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.title = $event.target.value
-                    }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "field" }, [
+          _c("label", { staticClass: "label" }, [_vm._v("Description")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "control" }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.description,
+                  expression: "description"
+                }
+              ],
+              staticClass: "textarea",
+              attrs: { placeholder: "Description" },
+              domProps: { value: _vm.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
                   }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "field" }, [
-              _c("label", { staticClass: "label" }, [_vm._v("Description")]),
-              _vm._v(" "),
-              _c("div", { staticClass: "control" }, [
-                _c("textarea", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.description,
-                      expression: "description"
-                    }
-                  ],
-                  staticClass: "textarea",
-                  attrs: { placeholder: "Description" },
-                  domProps: { value: _vm.description },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.description = $event.target.value
-                    }
-                  }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _vm._m(0)
-          ]
-        )
-      ])
-    : _vm._e()
+                  _vm.description = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(0)
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -10588,27 +10907,43 @@ exports.default = void 0;
 //
 //
 //
+//
 var _default = {
   data: function data() {
     return {
-      title: '',
-      description: ''
+      title: this.editData.title,
+      description: this.editData.description
     };
   },
   props: {
-    currentPage: String
+    editData: Object
   },
   methods: {
-    edit: function edit() {
+    changePage: function changePage(page) {
+      this.$emit('changePage', page);
+    },
+    submitEdit: function submitEdit() {
+      var _this = this;
+
       var title = this.title;
       var description = this.description;
-      console.log(this.title, this.description);
+      var id = this.editData.id;
       axios({
         method: "PUT",
-        url: "http://localhost:3000/:id",
+        url: "https://secure-retreat-20188.herokuapp.com/".concat(id),
         headers: {
           token: localStorage.getItem('token')
+        },
+        data: {
+          title: title,
+          description: description
         }
+      }).then(function (data) {
+        _this.changePage('home');
+
+        console.log(data, 'success update');
+      }).catch(function (err) {
+        console.log(err, 'error edit vue');
       });
     }
   }
@@ -10626,82 +10961,82 @@ exports.default = _default;
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.currentPage == "edit"
-    ? _c("div", { staticClass: "edit" }, [
-        _c(
-          "form",
-          {
-            staticClass: "form-create",
-            attrs: { method: "post" },
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.edit($event)
+  return _c("div", { staticClass: "edit" }, [
+    _c("p", [_vm._v("Edit Form")]),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        staticClass: "form-create",
+        attrs: { method: "post" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.submitEdit($event)
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "field" }, [
+          _c("label", { staticClass: "label" }, [_vm._v("Title")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "control" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.title,
+                  expression: "title"
+                }
+              ],
+              staticClass: "input",
+              attrs: { type: "text", placeholder: "Title" },
+              domProps: { value: _vm.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.title = $event.target.value
+                }
               }
-            }
-          },
-          [
-            _c("div", { staticClass: "field" }, [
-              _c("label", { staticClass: "label" }, [_vm._v("Title")]),
-              _vm._v(" "),
-              _c("div", { staticClass: "control" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.title,
-                      expression: "title"
-                    }
-                  ],
-                  staticClass: "input",
-                  attrs: { type: "text", placeholder: "Title" },
-                  domProps: { value: _vm.title },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.title = $event.target.value
-                    }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "field" }, [
+          _c("label", { staticClass: "label" }, [_vm._v("Description")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "control" }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.description,
+                  expression: "description"
+                }
+              ],
+              staticClass: "textarea",
+              attrs: { placeholder: "Description" },
+              domProps: { value: _vm.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
                   }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "field" }, [
-              _c("label", { staticClass: "label" }, [_vm._v("Description")]),
-              _vm._v(" "),
-              _c("div", { staticClass: "control" }, [
-                _c("textarea", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.description,
-                      expression: "description"
-                    }
-                  ],
-                  staticClass: "textarea",
-                  attrs: { placeholder: "Description" },
-                  domProps: { value: _vm.description },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.description = $event.target.value
-                    }
-                  }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _vm._m(0)
-          ]
-        )
-      ])
-    : _vm._e()
+                  _vm.description = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(0)
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -10787,7 +11122,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var _default = {
   data: function data() {
     return {
-      currentPage: "edit"
+      currentPage: "home",
+      editData: {}
     };
   },
   components: {
@@ -10802,8 +11138,13 @@ var _default = {
     changePage: function changePage(page) {
       this.currentPage = page;
     },
-    edit: function edit(id) {
-      console.log(id, 'app vue');
+    edit: function edit(data) {
+      this.editData = data;
+    }
+  },
+  created: function created() {
+    if (localStorage.token) {
+      this.currentPage('home');
     }
   }
 };
@@ -10828,27 +11169,40 @@ exports.default = _default;
         on: { changePage: _vm.changePage }
       }),
       _vm._v(" "),
-      _c("Home", {
-        attrs: { currentPage: _vm.currentPage },
-        on: { edit: _vm.edit }
-      }),
+      _vm.currentPage === "home"
+        ? _c("Home", {
+            attrs: { currentPage: _vm.currentPage },
+            on: { changePage: _vm.changePage, edit: _vm.edit }
+          })
+        : _vm._e(),
       _vm._v(" "),
-      _c("Login", {
-        attrs: { currentPage: _vm.currentPage },
-        on: { changePage: _vm.changePage }
-      }),
+      _vm.currentPage === "login"
+        ? _c("Login", {
+            attrs: { currentPage: _vm.currentPage },
+            on: { changePage: _vm.changePage }
+          })
+        : _vm._e(),
       _vm._v(" "),
-      _c("Register", {
-        attrs: { currentPage: _vm.currentPage },
-        on: { changePage: _vm.changePage }
-      }),
+      _vm.currentPage == "register"
+        ? _c("Register", {
+            attrs: { currentPage: _vm.currentPage },
+            on: { changePage: _vm.changePage }
+          })
+        : _vm._e(),
       _vm._v(" "),
-      _c("Create", {
-        attrs: { currentPage: _vm.currentPage },
-        on: { changePage: _vm.changePage }
-      }),
+      _vm.currentPage == "create"
+        ? _c("Create", {
+            attrs: { currentPage: _vm.currentPage },
+            on: { changePage: _vm.changePage }
+          })
+        : _vm._e(),
       _vm._v(" "),
-      _c("Edit", { attrs: { currentPage: _vm.currentPage } })
+      _vm.currentPage == "edit"
+        ? _c("Edit", {
+            attrs: { editData: _vm.editData, currentPage: _vm.currentPage },
+            on: { changePage: _vm.changePage }
+          })
+        : _vm._e()
     ],
     1
   )
@@ -10894,6 +11248,8 @@ module.hot.accept(reloadCSS);
 },{"_css_loader":"../../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
+var _vueGoogleOauth = _interopRequireDefault(require("vue-google-oauth2"));
+
 var _vue = _interopRequireDefault(require("vue"));
 
 var _App = _interopRequireDefault(require("./App.vue"));
@@ -10902,12 +11258,20 @@ require("../assets/style/style.css");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var gauthOption = {
+  clientId: 'CLIENT_ID.apps.googleusercontent.com',
+  scope: 'profile email',
+  prompt: 'select_account'
+};
+
+_vue.default.use(_vueGoogleOauth.default, gauthOption);
+
 new _vue.default({
   render: function render(h) {
     return h(_App.default);
   }
 }).$mount('#app');
-},{"vue":"node_modules/vue/dist/vue.runtime.esm.js","./App.vue":"src/App.vue","../assets/style/style.css":"assets/style/style.css"}],"../../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"vue-google-oauth2":"node_modules/vue-google-oauth2/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js","./App.vue":"src/App.vue","../assets/style/style.css":"assets/style/style.css"}],"../../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -10935,7 +11299,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33339" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33833" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
