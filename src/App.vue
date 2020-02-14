@@ -1,222 +1,36 @@
 <template>
   <div>
-        <!-- navbar -->
-        <nav class="navbar is-black" role="navigation" aria-label="main navigation">
-            <div class="navbar-brand">
-              <a class="navbar-item" href="#" @click.prevent="showDashboard">KANBAN</a>
-            </div>
-        
-            <div id="kanbanNavbar" class="navbar-menu">
-                <div class="navbar-end">
-                    <div class="navbar-item">
-                        <div class="buttons">
-                        <a class="button is-primary has-text-black" @click="showRegister" v-if="currentPage === 'frontPage'"><strong>Register</strong></a>
-                        <a class="button is-link has-text-black" @click="showLogin" v-if="currentPage === 'frontPage'"><strong>Login</strong></a>
-                        <a class="button is-danger has-text-black" @click="logout" v-if="currentPage === 'dashboard'"><strong>Logout</strong></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>  
-        <!-- register  -->
-        <div class="container has-text-centered"  v-if="currentPage === 'register'">
-            <div class="column is-4 is-offset-4">
-                <div class="box">
-                    <h3 class="title has-text-black">Register</h3>
-                    <!-- <p class="help is-danger">{{ errorMessage }}</p><hr> -->
-                    <form id="register-form" @submit.prevent="createUser">
-                        <div class="field">
-                            <label class="label">Username</label>
-                            <div class="control has-icons-left has-icons-right">
-                                <input class="input is-success" type="text" placeholder="type your username here" id="usernameRegister" v-model="register.username" required>
-                                <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label class="label">Email</label>
-                            <div class="control has-icons-left has-icons-right">
-                              <input class="input is-danger" type="email" placeholder="type your email here" id="emailRegister" v-model="register.email" required>
-                              <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label class="label">Password</label>
-                            <div class="control has-icons-left">
-                              <input class="input is-link" type="password" placeholder="type your password here" id="passwordRegister" v-model="register.password" required>
-                              <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
-                            </div>
-                        </div>
-                        <button type="submit" class="button is-block is-primary is-fullwidth has-text-black">Register</button>
-                    </form>
-                </div>
-                Already have an account? Login <a href="#" @click.prevent="showLogin">here</a>
-            </div>
-        </div>
-        <!-- login  -->
-        <div class="container has-text-centered" v-if="currentPage === 'login'">
-            <div class="column is-4 is-offset-4">
-                <div class="box">
-                    <h3 class="title has-text-black">Login</h3><hr>
-                    <form id="login-form" @submit.prevent="loginUser">
-                        <div class="field">
-                            <label class="label">Email</label>
-                            <div class="control has-icons-left has-icons-right">
-                              <input class="input is-danger" type="email" placeholder="type your email here" id="emailLogin" v-model="login.email" required>
-                              <span class="icon is-small is-left"><i class="fas fa-envelope"></i></span>
-                            </div>
-                            <!-- <p class="help is-danger">invalid email format</p> -->
-                        </div>
-                        <div class="field">
-                            <label class="label">Password</label>
-                            <div class="control has-icons-left">
-                              <input class="input is-link" type="password" placeholder="type your password here" id="passwordLogin" v-model="login.password" required>
-                              <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
-                            </div>
-                            <!-- <p class="help is-danger">invalid password</p> -->
-                        </div>
-                        <button type="submit" class="button is-block is-primary is-fullwidth has-text-black">Login</button>
-                    </form>
-                </div>
-                <p class="has-text-grey">
-                    Not registered yet? Create a new account <a href="#" @click.prevent="showRegister">here</a>
-                </p>
-            </div>
-        </div>
-        <!-- dashboard kanban-->
-        <div class="container has-text-centered" v-if="currentPage === 'dashboard'">
-            <div class="box">
-                <h1 class="title has-text-black">Kanban Dashboard</h1><hr>
-                <div class="columns is-centered cards-container">
-                    <div class="column">
-                        <article class="message is-black">
-                            <div class="message-header">
-                              <p>Back Log</p>
-                            </div>
-                            <div class="message-body">
-                                <div class="board-item" v-for='task in backlogTask' v-bind:key="task.id">
-                                    <div class="board-item-content box"><span>{{ task.title }}</span><br>
-                                        <a href="#" @click="renderEditTask(task.id)"><i class="fas fa-edit"></i></a>
-                                        <a href="#" @click="deleteTask(task.id)"><i class="fas fa-trash-alt"></i></a>
-                                    </div><br>
-                                </div>
-                            </div>
-                            <button class="button is-black" @click="showAddForm">Add&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-plus-circle"></i></button>
-                        </article>
-                    </div>
-                    <div class="column">
-                        <article class="message is-warning">
-                            <div class="message-header">
-                              <p>Todo</p>
-                            </div>
-                            <div class="message-body">
-                                <div class="board-item" v-for='task in todoTask' v-bind:key="task.id">
-                                    <div class="board-item-content box"><span>{{ task.title }}</span><br>
-                                        <a href="#" @click="renderEditTask(task.id)"><i class="fas fa-edit"></i></a>
-                                        <a href="#" @click="deleteTask(task.id)"><i class="fas fa-trash-alt"></i></a>
-                                    </div><br>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    <div class="column">
-                        <article class="message is-info">
-                            <div class="message-header">
-                              <p>Ongoing</p>
-                            </div>
-                            <div class="message-body">
-                                <div class="board-item" v-for='task in ongoingTask' v-bind:key="task.id">
-                                    <div class="board-item-content box"><span>{{ task.title }}</span><br>
-                                        <a href="#" @click="renderEditTask(task.id)"><i class="fas fa-edit"></i></a>
-                                        <a href="#" @click="deleteTask(task.id)"><i class="fas fa-trash-alt"></i></a>
-                                    </div><br>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    <div class="column">
-                        <article class="message is-success">
-                            <div class="message-header">
-                              <p>Done</p>
-                            </div>
-                            <div class="message-body">
-                                <div class="board-item" v-for='task in doneTask' v-bind:key="task.id">
-                                    <div class="board-item-content box"><span>{{ task.title }}</span><br>
-                                        <a href="#" @click="renderEditTask(task.id)"><i class="fas fa-edit"></i></a>
-                                        <a href="#" @click="deleteTask(task.id)"><i class="fas fa-trash-alt"></i></a>
-                                    </div><br>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </div>   
-        <!-- add form  -->
-        <div class="container has-text-centered"  v-if="currentPage === 'addFormPage'">
-            <div class="column is-4 is-offset-4">
-                <div class="box">
-                    <form id="add-form" @submit.prevent="addTask">
-                        <div class="field">
-                            <h3 class="title has-text-black">Add New Task</h3><hr>
-                            <label class="label">Title</label>
-                            <div class="control has-icons-left has-icons-right">
-                              <input class="input is-info" type="text" placeholder="type your task here" v-model="newTask.title" required>
-                            </div>
-                        </div>
-                        <button class="button is-grey" @click="showDashboard">Cancel&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-times-circle"></i></button>
-                        <button type="submit" class="button is-black">Submit&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-plus-circle"></i></button>
-                    </form>
-                </div> 
-            </div>
-        </div>
-        <!-- edit form -->
-        <div class="container has-text-left" v-if="currentPage === 'editFormPage'">
-            <div class="column is-4 is-offset-4">
-                <div class="box">
-                    <form id="edit-form" @submit.prevent="editTask(editTaskObj.id)">
-                        <div class="field">
-                            <h3 class="title has-text-black">Edit Task</h3><hr>
-                            <label class="label">Title</label>
-                            <div class="control">
-                              <input class="input is-info" type="text" placeholder="type your task here" v-model="editTaskObj.title" required>
-                            </div>
-                            <label class="label">Category</label>
-                            <div class="control">
-                                <div class="select">
-                                  <select v-model="editTaskObj.category">
-                                    <option selected disabled>Select</option>
-                                    <option value="BACKLOG" class="has-text-black">BACKLOG</option>
-                                    <option value="TODO" class="has-text-warning">TODO</option>
-                                    <option value="ONGOING" class="has-text-link">ONGOING</option>
-                                    <option value="DONE"class="has-text-success">DONE</option>
-                                  </select>
-                                </div>
-                              </div>
-                        </div>
-                        <button class="button is-grey" @click="showDashboard">Cancel&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-times-circle"></i></button>
-                        <button type="submit" class="button is-black">Edit&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-check-circle"></i></button>
-                    </form>
-                </div> 
-            </div>
-        </div>  
+        <MainNavbar :currentPage='currentPage' @showDashboard='showDashboard' @showRegister='showRegister' @showLogin='showLogin' @logout='logout'></MainNavbar>
+        <RegisterForm :currentPage='currentPage' @changePage='changePage'></RegisterForm>
+        <LoginForm :currentPage='currentPage' @changePage="changePage" @fetchAll="fetchAll" @showRegister="showRegister"></LoginForm>
+        <Dashboard :currentPage='currentPage' :tasks='tasks' @showAddForm='showAddForm' @renderEditTask='renderEditTask' @deleteTask='deleteTask'></Dashboard>
+        <AddForm :newTask='newTask' :currentPage='currentPage' @fetchAll='fetchAll' @changePage='changePage' @showDashboard='showDashboard'></AddForm>
+        <EditForm :currentPage='currentPage' :editTaskObj='editTaskObj' @editTask='editTask' @showDashboard='showDashboard'></EditForm>
   </div>
 </template>
 
 <script>
+import MainNavbar from './components/MainNavbar'
+import RegisterForm from './components/RegisterForm'
+import LoginForm from './components/LoginForm'
+import Dashboard from './components/Dashboard'
+import AddForm from './components/AddForm'
+import EditForm from './components/EditForm'
+import axios from 'axios'
+
 export default {
   name: 'App',
+  components: {
+      MainNavbar,
+      RegisterForm,
+      LoginForm,
+      Dashboard,
+      AddForm,
+      EditForm
+  },
   data() {
     return {
      currentPage: 'frontPage',
-     register: {
-         username: '',
-         email: '',
-         password: ''
-     },
-     login: {
-         email: '',
-         password: ''
-     },
      errorMessage: '',
      tasks: [],
      newTask: { 
@@ -225,48 +39,7 @@ export default {
      editTaskObj: {}      
     }
   },
-      computed: {
-        //task section
-        backlogTask() {
-            let result = []
-            this.tasks.forEach(task => {
-                if(task.category === 'BACKLOG') {
-                    result.push(task)
-                }
-            })
-            return result
-        },
 
-        todoTask() {
-            let result = []
-            this.tasks.forEach(task => {
-                if(task.category === 'TODO') {
-                    result.push(task)
-                }
-            })
-            return result
-        },
-
-        ongoingTask() {
-            let result = []
-            this.tasks.forEach(task => {
-                if(task.category === 'ONGOING') {
-                    result.push(task)
-                }
-            })
-            return result
-        },
-
-        doneTask() {
-            let result = []
-            this.tasks.forEach(task => {
-                if(task.category === 'DONE') {
-                    result.push(task)
-                }
-            })
-            return result
-        }
-    },
     methods: {
         showRegister: function() {
             this.currentPage = 'register'
@@ -284,43 +57,9 @@ export default {
             this.currentPage = 'dashboard'
         },
         //user section
-        createUser() {
-            axios({
-                method: 'POST',
-                url: `http://localhost:3000/register`,
-                data: {
-                    username: this.register.username,
-                    email: this.register.email,
-                    password: this.register.password
-                }
-            })
-            .then(user => {
-                this.currentPage = 'login'
-            })
-            .catch(response => {
-                console.log(response)
-            })
-        },
-        loginUser() {
-            axios({
-                method: 'POST',
-                url: `http://localhost:3000/login`,
-                data: {
-                    email: this.login.email,
-                    password: this.login.password
-                }
-            })
-            .then(({data}) => {
-                localStorage.setItem('access_token', data.access_token)
-                this.fetchAll()
-                this.currentPage = 'dashboard'
-            })
-            .catch(response => {
-                console.log(response)
-            })
-        },
         checkToken() {
             if(localStorage.getItem(`access_token`)) {
+                console.log('masuk checkToken')
                 this.currentPage = 'dashboard'
                 this.fetchAll()
             } else {
@@ -341,20 +80,6 @@ export default {
             .then(response => {
                 this.tasks = response.data.data
                 console.log(response.data.data)
-            })
-            .catch(response => 
-                console.log(response))
-        },
-        addTask() {
-            axios({
-                method: 'POST',
-                url: `http://localhost:3000/tasks`,
-                data: {title: this.newTask.title},
-                headers: {access_token: localStorage.access_token}
-            })
-            .then(response => {
-                this.fetchAll()
-                this.currentPage = 'dashboard'
             })
             .catch(response => 
                 console.log(response))
@@ -405,11 +130,15 @@ export default {
             .catch(response => {
                 console.log(response)
             })
+        },
+        changePage(currentPage) {
+            this.currentPage = currentPage
         }
 
     },
     created() {
         this.checkToken()
+        
     }
 }
 </script>
