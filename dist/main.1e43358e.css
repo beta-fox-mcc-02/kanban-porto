@@ -1,0 +1,149 @@
+* {
+  margin: 0;
+}
+
+.register, .login{
+  width: 600px;
+  height: 400px;
+  background-color: whitesmoke;
+  margin: 60px auto;
+  display: flex;  
+  justify-content: center;  
+  align-items: center;  
+  flex-direction: column;
+  border-radius: 5em;
+}
+
+.create, .edit{
+  width: 600px;
+  height: 400px;
+  background-color: whitesmoke;
+  margin: 60px auto;
+  display: flex;  
+  justify-content: center;  
+  align-items: center;  
+  flex-direction: column;
+  border-radius: 5em;
+}
+
+.textarea{
+  resize: none;
+}
+
+.register h1, .login h1{
+  font-size: 45px;
+  padding-bottom: 30px;
+  padding-right: 15px;
+}
+
+.form-register, .form-login, .form-create {
+  height: 200px;
+  width: 350px;
+}
+
+.navbar-brand {
+  width: 210px;
+  height: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+body {
+  background-image: url("https://picsum.photos/2000");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+  height: 100vh;
+}
+
+.title {
+  padding: 12px 0;
+  border-radius: 1em 1em 0em 0em;
+  text-align: center;
+  color: ivory;
+  height: auto;
+  margin-bottom: 0;
+}
+
+.cards{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.body-card {
+  max-height: 58vh;
+  overflow: auto;
+}
+
+.card {
+  height: auto;
+  margin: 0 20px;
+  margin-bottom: 20px;
+}
+
+.card-footer{
+  height: 50px;
+  border: 0;
+}
+
+.BACKLOG .card-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.TODO .card-footer, .DONE .card-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.home {
+  margin-top: 70px;
+  
+  padding: 0;
+}
+
+.home .BACKLOG, .home .TODO, .home .DONE, .home .COMPLETED {
+  height: 75vh;
+  width: 20vw;
+  border-radius: 2em;
+  background-color: rgba(117, 111, 111, 0.5);
+}
+
+.home .BACKLOG {
+  border: solid green 1px;
+}
+
+.home .TODO {
+  border: solid yellowgreen 1px;
+}
+
+.home .DONE {
+  border: solid teal 1px;
+}
+
+.home .COMPLETED {
+  border: solid blue 1px;
+}
+
+.home .BACKLOG .title {
+  background-color: green;
+}
+
+.home .TODO .title {
+  background-color: yellowgreen;
+}
+
+.home .DONE .title {
+  background-color: teal;
+}
+
+.home .COMPLETED .title {
+  background-color: blue;
+}
+
+
+
+
+/*# sourceMappingURL=/main.1e43358e.css.map */

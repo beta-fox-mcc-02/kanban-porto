@@ -1,7 +1,8 @@
 new Vue({
     el: ".body",
     data: {
-        currentPage: 'home',
+        currentPage: 'login',
+        cards:[],
         form_register: {
             username: '',
             email: '',
@@ -32,7 +33,7 @@ new Vue({
         },
         login() {
             const { email, password } = this.form_login
-            console.log(email, password);
+            // console.log(email, password);
             axios({
                 method: "POST",
                 url: "http://localhost:3000/login",
@@ -40,15 +41,48 @@ new Vue({
                     email, password
                 }
             })
-                .then(data => {
+                .then(({ data }) => {
                     console.log(data, 'data client')
+                    // localStorage.setItem('token', data.token)
+                    this.currentPage = 'home'
+                    this.fetchKanban()
                 })
                 .catch(err => {
                     console.log(err, 'error axios login')
+                    this.currentPage = 'login'
                 })
         },
-        card(){
-            
+        fetchKanban() {
+            axios({
+                method: "GET",
+                url: "http://localhost:3000"
+            })
+                .then(({data}) => {
+                    for(el of data.data){
+                        this.cards.push(el)
+                    }
+                })
+                .catch(err => {
+                    console.log(err, 'error kanban')
+                })
+        }
+    },
+    computed:{
+        backlog(){
+            let cards = this.cards.filter(el => el.CategoryId == 1)
+            return cards
+        },
+        todo(){
+            let cards = this.cards.filter(el => el.CategoryId == 2)
+            return cards
+        },
+        done(){
+            let cards = this.cards.filter(el => el.CategoryId == 3)
+            return cards
+        },
+        completed(){
+            let cards = this.cards.filter(el => el.CategoryId == 4)
+            return cards
         }
     }
 })

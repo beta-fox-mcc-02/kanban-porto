@@ -6,14 +6,37 @@
   width: 600px;
   height: 400px;
   background-color: whitesmoke;
-  margin: 80px auto;
+  margin: 60px auto;
   display: flex;  
   justify-content: center;  
   align-items: center;  
   flex-direction: column;
+  border-radius: 5em;
 }
 
-.form-register, .form-login{
+.create, .edit{
+  width: 600px;
+  height: 400px;
+  background-color: whitesmoke;
+  margin: 60px auto;
+  display: flex;  
+  justify-content: center;  
+  align-items: center;  
+  flex-direction: column;
+  border-radius: 5em;
+}
+
+.textarea{
+  resize: none;
+}
+
+.register h1, .login h1{
+  font-size: 45px;
+  padding-bottom: 30px;
+  padding-right: 15px;
+}
+
+.form-register, .form-login, .form-create {
   height: 200px;
   width: 350px;
 }
@@ -44,6 +67,11 @@ body {
   margin-bottom: 0;
 }
 
+.cards{
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .body-card {
   max-height: 58vh;
   overflow: auto;
@@ -72,8 +100,7 @@ body {
 
 .home {
   margin-top: 70px;
-  display: flex;
-  justify-content: space-evenly;
+  
   padding: 0;
 }
 

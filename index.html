@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>KanbaN</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
-    <link rel="stylesheet" href="./assets/style/style.css">
+    <!-- <link rel="stylesheet" href="./assets/style/style.css"> -->
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   </head>
   <body>
-    <div class="body">
+    <div id="app">
         <!-- NAVBAR -->
-        <nav class="navbar is-white" role="navigation" aria-label="main navigation">
+        <!-- <nav class="navbar is-white" role="navigation" aria-label="main navigation">
             <div class="navbar-brand" >
                 <img src="./assets/img/kanban-logo2.png" alt="KanbaN" @click="currentPage = 'home'">
             <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -25,25 +25,26 @@
                 <div class="navbar-item">
                 <div class="buttons">
                     <button class="button is-primary" @click="currentPage = 'register'">Sign Up</button>
+                    <button class="button is-warning" @click="currentPage = 'login'">Log In</button>
                     <button class="button is-danger" @click="currentPage = 'login'">Log Out</button>
                 </div>
                 </div>
             </div>
             </div>
-        </nav>
+        </nav> -->
         
         <!-- HOME -->
-        <div class="container" v-if="currentPage === 'home'">
+        <!-- <div class="container" v-if="currentPage === 'home'">
             <div class="home">
                 <div class="BACKLOG">
                     <div class="title">
                         <h6>BACKLOG</h6>
                     </div>
                     <div class="body-card">
-                        <div class="card">
+                        <div class="card" v-for="{ title, description, id } in backlog" :key="id">
                             <header class="card-header">
                                 <p class="card-header-title">
-                                Title
+                                    {{ title }}
                                 </p>
                                 <div class="card-header-icon">
                                     <a href="#" class="fas fa-pen" style="margin-right: 15px; color: navy;"></a>
@@ -52,118 +53,8 @@
                             </header>
                             <div class="card-content">
                                 <div class="content">
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci ea incidunt maxime excepturi tenetur explicabo qui totam voluptatum quia, nihil officiis hic nemo soluta error voluptate quos modi inventore earum?
-                                <br><br>
-                                <time>Time</time>
-                                </div>
-                            </div>
-                            <footer class="card-footer">
-                                <a href="#" class="fas fa-arrow-circle-right" style="color: yellowgreen;width: 40px;height: 50px;padding-right: 2px;"></a>
-                            </footer>
-                        </div>
-                        <div class="card">
-                            <header class="card-header">
-                                <p class="card-header-title">
-                                Title
-                                </p>
-                                <div class="card-header-icon">
-                                    <a href="#" class="fas fa-pen" style="margin-right: 15px; color: navy;"></a>
-                                    <a href="#" class="fas fa-trash" style="color: red;"></a>
-                                </div>
-                            </header>
-                            <div class="card-content">
-                                <div class="content">
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci ea incidunt maxime excepturi tenetur explicabo qui totam voluptatum quia, nihil officiis hic nemo soluta error voluptate quos modi inventore earum?
-                                <br><br>
-                                <time>Time</time>
-                                </div>
-                            </div>
-                            <footer class="card-footer">
-                                <a href="#" class="fas fa-arrow-circle-right" style="color: yellowgreen;width: 40px;height: 50px;padding-right: 2px;"></a>
-                            </footer>
-                        </div>
-                        <div class="card">
-                            <header class="card-header">
-                                <p class="card-header-title">
-                                Title
-                                </p>
-                                <div class="card-header-icon">
-                                    <a href="#" class="fas fa-plus" style="margin-right: 15px; color: green;"></a>
-                                    <a href="#" class="fas fa-pen" style="margin-right: 15px; color: navy;"></a>
-                                    <a href="#" class="fas fa-trash" style="color: red;"></a>
-                                </div>
-                            </header>
-                            <div class="card-content">
-                                <div class="content">
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci ea incidunt maxime excepturi tenetur explicabo qui totam voluptatum quia, nihil officiis hic nemo soluta error voluptate quos modi inventore earum?
-                                <br><br>
-                                <time>Time</time>
-                                </div>
-                            </div>
-                            <footer class="card-footer">
-                                <a href="#" class="fas fa-arrow-circle-right" style="color: yellowgreen;width: 40px;height: 50px;padding-right: 2px;"></a>
-                            </footer>
-                        </div>
-                        <div class="card">
-                            <header class="card-header">
-                                <p class="card-header-title">
-                                Title
-                                </p>
-                                <div class="card-header-icon">
-                                    <a href="#" class="fas fa-plus" style="margin-right: 15px; color: green;"></a>
-                                    <a href="#" class="fas fa-pen" style="margin-right: 15px; color: navy;"></a>
-                                    <a href="#" class="fas fa-trash" style="color: red;"></a>
-                                </div>
-                            </header>
-                            <div class="card-content">
-                                <div class="content">
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci ea incidunt maxime excepturi tenetur explicabo qui totam voluptatum quia, nihil officiis hic nemo soluta error voluptate quos modi inventore earum?
-                                <br><br>
-                                <time>Time</time>
-                                </div>
-                            </div>
-                            <footer class="card-footer">
-                                <a href="#" class="fas fa-arrow-circle-right" style="color: yellowgreen;width: 40px;height: 50px;padding-right: 2px;"></a>
-                            </footer>
-                        </div>
-                        <div class="card">
-                            <header class="card-header">
-                                <p class="card-header-title">
-                                Title
-                                </p>
-                                <div class="card-header-icon">
-                                    <a href="#" class="fas fa-plus" style="margin-right: 15px; color: green;"></a>
-                                    <a href="#" class="fas fa-pen" style="margin-right: 15px; color: navy;"></a>
-                                    <a href="#" class="fas fa-trash" style="color: red;"></a>
-                                </div>
-                            </header>
-                            <div class="card-content">
-                                <div class="content">
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci ea incidunt maxime excepturi tenetur explicabo qui totam voluptatum quia, nihil officiis hic nemo soluta error voluptate quos modi inventore earum?
-                                <br><br>
-                                <time>Time</time>
-                                </div>
-                            </div>
-                            <footer class="card-footer">
-                                <a href="#" class="fas fa-arrow-circle-right" style="color: yellowgreen;width: 40px;height: 50px;padding-right: 2px;"></a>
-                            </footer>
-                        </div>
-                        <div class="card">
-                            <header class="card-header">
-                                <p class="card-header-title">
-                                Title
-                                </p>
-                                <div class="card-header-icon">
-                                    <a href="#" class="fas fa-plus" style="margin-right: 15px; color: green;"></a>
-                                    <a href="#" class="fas fa-pen" style="margin-right: 15px; color: navy;"></a>
-                                    <a href="#" class="fas fa-trash" style="color: red;"></a>
-                                </div>
-                            </header>
-                            <div class="card-content">
-                                <div class="content">
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci ea incidunt maxime excepturi tenetur explicabo qui totam voluptatum quia, nihil officiis hic nemo soluta error voluptate quos modi inventore earum?
-                                <br><br>
-                                <time>Time</time>
+                                    {{ description }}
+                                    <br><br>
                                 </div>
                             </div>
                             <footer class="card-footer">
@@ -177,18 +68,10 @@
                         <h6>TODO</h6>
                     </div>
                     <div class="body-card">
-                        
-                    </div>
-                </div>
-                <div class="DONE">
-                    <div class="title">
-                        <h6>DONE</h6>
-                    </div>
-                    <div class="body-card">
-                        <div class="card">
+                        <div class="card" v-for="{ title, description, id } in todo" :key="id">
                             <header class="card-header">
                                 <p class="card-header-title">
-                                Title
+                                {{ title }}
                                 </p>
                                 <div class="card-header-icon">
                                     <a href="#" class="fas fa-pen" style="margin-right: 15px; color: navy;"></a>
@@ -197,9 +80,36 @@
                             </header>
                             <div class="card-content">
                                 <div class="content">
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci ea incidunt maxime excepturi tenetur explicabo qui totam voluptatum quia, nihil officiis hic nemo soluta error voluptate quos modi inventore earum?
-                                <br><br>
-                                <time>Time</time>
+                                    {{ description }}
+                                    <br><br>
+                                </div>
+                            </div>
+                            <footer class="card-footer">
+                                <a href="#" class="fas fa-arrow-circle-left" style="color: green;width: 40px;height: 50px;padding-left: 2px;"></a>
+                                <a href="#" class="fas fa-arrow-circle-right" style="color: teal;width: 40px;height: 50px;padding-right: 2px;"></a>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+                <div class="DONE">
+                    <div class="title">
+                        <h6>DONE</h6>
+                    </div>
+                    <div class="body-card">
+                        <div class="card" v-for="{ title, description, id } in done" :key="id">
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    {{ title }}
+                                </p>
+                                <div class="card-header-icon">
+                                    <a href="#" class="fas fa-pen" style="margin-right: 15px; color: navy;"></a>
+                                    <a href="#" class="fas fa-trash" style="color: red;"></a>
+                                </div>
+                            </header>
+                            <div class="card-content">
+                                <div class="content">
+                                    {{ description }}
+                                    <br><br>
                                 </div>
                             </div>
                             <footer class="card-footer">
@@ -214,10 +124,10 @@
                         <h6>COMPLETED</h6>
                     </div>
                     <div class="body-card">
-                        <div class="card">
+                        <div class="card" v-for="{ title, description, id } in completed" :key="id">
                             <header class="card-header">
                                 <p class="card-header-title">
-                                Title
+                                    {{ title }}
                                 </p>
                                 <div class="card-header-icon">
                                     <a href="#" class="fas fa-pen" style="margin-right: 15px; color: navy;"></a>
@@ -226,9 +136,8 @@
                             </header>
                             <div class="card-content">
                                 <div class="content">
-                                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci ea incidunt maxime excepturi tenetur explicabo qui totam voluptatum quia, nihil officiis hic nemo soluta error voluptate quos modi inventore earum?
-                                <br><br>
-                                <time>Time</time>
+                                    {{ description }}
+                                    <br><br>
                                 </div>
                             </div>
                             <footer class="card-footer">
@@ -238,13 +147,13 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- REGISTER -->
-        <div class="container" v-else-if="currentPage === 'register'">
+        <!-- <div class="container" v-else-if="currentPage === 'register'">
             <div class="register">
                 <div>
-                    <h1 style="font-size: 27px;">REGISTER</h1>
+                    <h1>REGISTER</h1>
                 </div>
                 <form class="form-register" method="POST" @submit.prevent="register">
                     <div class="field">
@@ -280,13 +189,13 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </div> -->
         
         <!-- LOGIN -->
-        <div class="container" v-else-if="currentPage === 'login'">
+        <!-- <div class="container" v-else-if="currentPage === 'login'">
             <div class="login">
                 <div>
-                    <h1 style="font-size: 27px;">LOGIN</h1>
+                    <h1>LOGIN</h1>
                 </div>
                 <form class="form-login" method="POST" @submit.prevent="login">
                     <div class="field">
@@ -314,15 +223,15 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </div> -->
 
     </div>
     
     
 
-    <script src="[![](https://data.jsdelivr.com/v1/package/npm/bulma/badge)](https://www.jsdelivr.com/package/npm/bulma)"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="[![](https://data.jsdelivr.com/v1/package/npm/bulma/badge)](https://www.jsdelivr.com/package/npm/bulma)"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="./assets/js/main.js"></script>
+    <script src="./src/main.js"></script>
 </body>
 </html>
