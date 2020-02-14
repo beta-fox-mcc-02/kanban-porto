@@ -50,9 +50,9 @@
                                 <label>{{task.description}}</label>
                               </div>
                               <div class="card-footer text-center" style="padding: 0.1rem">
-                                <a class="btn text-warning" ><i class="fas fa-angle-double-left"></i></a>
+                                <a class="btn text-warning" @click="back(board.id, task.id)"><i class="fas fa-angle-double-left"></i></a>
                                 <a class="btn text-danger" @click='deleteTask(task.id)'><i class="fa fa-trash" aria-hidden="true"></i></a>
-                                <a class="btn text-success" ><i class="fas fa-angle-double-right"></i></a>
+                                <a class="btn text-success"  @click="next(board.id, task.id)"><i class="fas fa-angle-double-right"></i></a>
                               </div>
                             </div>
                           </div>
@@ -77,7 +77,8 @@ export default {
         tasks : [],
         categoryName : '',
         taskName : '',
-        taskDescription : ''
+        taskDescription : '',
+        count : 0
     }
   },
   components : {
@@ -85,6 +86,44 @@ export default {
     Search
   },
   methods : {
+    next(category, task){
+      const CategoryId = category+1
+      axios.patch(`http://localhost:3000/tasks/${task}`, {
+        CategoryId
+      }, {
+        headers : {
+          token : localStorage.token,
+          id : localStorage.id
+        }
+      })
+      .then(({data}) => {
+        this.count = this.count++ 
+        this.readTask()
+        this.readCategory()
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    back(category, task){
+      const CategoryId = category-1
+      axios.patch(`http://localhost:3000/tasks/${task}`, {
+        CategoryId
+      }, {
+        headers : {
+          token : localStorage.token,
+          id : localStorage.id
+        }
+      })
+      .then(({data}) => {
+        this.count = this.count--
+        this.readTask()
+        this.readCategory()
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
     deleteTask(id){
       axios.delete(`http://localhost:3000/tasks/${id}`, {
           headers : {
@@ -167,7 +206,13 @@ export default {
     this.readTask()
   },
   computed : {
-    
+    checkLength(){
+      return this.count
+    },
+    boardLength(){
+      console.log(this.boards.length)
+      return this.boards.length
+    }
   }
 }
 </script>
