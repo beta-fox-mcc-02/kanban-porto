@@ -34,6 +34,8 @@ export default {
     },
     methods: {
         changePage(page) {
+            console.log('BAPANYA KE TRIGERRRRR', page);
+            
             this.$emit('changePage', page)
         },
         fetch() {

@@ -56,7 +56,8 @@ export default {
                 })
         },
         changePage(page) {
-            this.$emit(page)
+            console.log('KAKENYA KE TRIGGER', page)
+            this.$emit('changePage', page)
         },
     },
     components: {

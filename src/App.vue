@@ -13,13 +13,17 @@
         v-else-if="currentPage === 'login'"
         ></Login>
         <Home 
-        @changePaqe="changePage" 
+        @changePage="changePage" 
         v-else-if="currentPage === 'landing'"
         ></Home>
         <AddTask 
         v-else-if="currentPage === 'addtask'" 
         @changePage="changePage"
         ></AddTask>
+        <EditForm
+        v-else-if="currentPage === 'editForm'"
+        @changePage="changePage"
+        ></EditForm>
     </div>
 </template>
 
@@ -29,12 +33,13 @@ import Register from './components/register'
 import Login from './components/login'
 import Home from './components/home'
 import AddTask from './components/addTask'
+import EditForm from './components/editForm'
 
 
 export default {
     data () {
         return {
-            currentPage: 'register'
+            currentPage: 'login'
         }
     },
     components: {
@@ -42,10 +47,12 @@ export default {
         Register,
         Login,
         Home,
-        AddTask
+        AddTask,
+        EditForm
     },
     methods: {
         changePage(page) {
+            console.log("SUDAAAAAHH MASUUKK SINI YYAASSSS")
             this.currentPage = page
         }
     },

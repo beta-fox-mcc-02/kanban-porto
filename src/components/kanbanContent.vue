@@ -5,7 +5,7 @@
         </div>
         <div class="card-tabs" id="plan-card-title-center">
             <i class="fas fa-user"></i>
-            <i class="fas fa-edit"></i>
+            <a @click="changePage('editForm')"><i class="fas fa-edit"></i></a>
             <a @click="destroy(list.id)"><i class="fas fa-trash-alt" ></i></a>
         </div>
         <div  class="card-content grey lighten-4" id="plan-card-title-bottom">
@@ -41,7 +41,7 @@ export default {
     },
     methods: {
         destroy(id) {
-            console.log(id, "-------")
+            console.log(id)
             axios({
                 method: 'delete',
                 url: `http://localhost:3000/tasks/${id}`,
