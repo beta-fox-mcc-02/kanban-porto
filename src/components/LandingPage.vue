@@ -1,6 +1,5 @@
 <template>
   <div>
-    <navbar></navbar>
     <div class="container margin-atas">
       <h1>NO KANBAN</h1>
       <h1>NO LIFE</h1>
@@ -10,7 +9,7 @@
       </div>
       <div class="row mt-5">
         <div class="col d-flex"> 
-          <modalSign class="mx-1" sign="Login"></modalSign>
+          <modalSign class="mx-1" sign="Login" @login="login"></modalSign>
           <modalSign class="mx-1" sign="Register"></modalSign>
           <b-button @click="googleSign" pill class="pjg-10" variant="primary">Sign with <i class="fab fa-google"></b-button>
         </div>
@@ -22,39 +21,42 @@
 </template>
 
 <script>
-import navbar from './NavbarN'
 import modalSign from './ModalSign'
+import axios from '../helpers/axios'
 export default {
   name: 'LandingPage',
   components: {
-    navbar,
     modalSign
   },
   methods: {
     googleSign () {
       this.$gAuth.signIn()
-        .then(GoogleUser => {
-          console.log('user', GoogleUser)
-          // GoogleUser.getId() : Get the user's unique ID string.
-          // GoogleUser.getBasicProfile() : Get the user's basic profile information.
-          // GoogleUser.getAuthResponse() : Get the response object from the user's auth session. access_token and so on
-          this.isSignIn = this.$gAuth.isAuthorized
+        .then(googleUser => {
+          // console.log('user', googleUser)
+          const id_token = googleUser.getAuthResponse().id_token
+          // this.isSignIn = this.$gAuth.isAuthorized
+          return axios({
+            method: 'POST',
+            url: '/auth/googleSign',
+            data: {
+              id_token
+            }
+          })
         })
-        .catch(error  => {
+        .then(({ data }) => {
+          console.log(data)
+          localStorage.token = data.token
+          localStorage.id = data.id
+          this.$emit('login')
+        })
+        .catch(err  => {
           //on fail do something
-          console.log(error, 'ini error')
+          console.log(err.response)
+          console.log(err, 'ini error')
         })
     },
-    googleSignOut () {
-      this.$gAuth.signOut()
-        .then(() => {
-          // things to do when sign-out succeeds
-          console.log('user sign out')
-        })
-        .catch(error  => {
-          // things to do when sign-out fails
-          console.log('error sign out', error)
-        })
+    login () {
+      this.$emit('login')
     }
   }
 }

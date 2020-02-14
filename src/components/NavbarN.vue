@@ -6,10 +6,10 @@
             
             <div id="navbarSupportedContent" class="collapse navbar-collapse">
                 <ul class="navbar-nav ml-auto">
-                    <li v-if="loggedIn" class="nav-item"><a href="#" class="nav-link text-uppercase font-weight-bold">Add Task</a></li>
-                    <li v-if="loggedIn" class="nav-item"><a href="#" class="nav-link text-uppercase font-weight-bold">Logout</a></li>
-                    <li v-if="!loggedIn" class="nav-item"><a href="#" class="nav-link text-uppercase font-weight-bold">Register</a></li>
-                    <li v-if="!loggedIn" class="nav-item"><a href="#" class="nav-link text-uppercase font-weight-bold">Login</a></li>
+                    <li v-if="isLoggedIn" class="nav-item"><a href="#" class="nav-link text-uppercase font-weight-bold">Add Task</a></li>
+                    <li v-if="isLoggedIn" @click="logout" class="nav-item"><a href="#" class="nav-link text-uppercase font-weight-bold">Logout</a></li>
+                    <li v-if="!isLoggedIn" class="nav-item"><a href="#" class="nav-link text-uppercase font-weight-bold">Register</a></li>
+                    <li v-if="!isLoggedIn" class="nav-item"><a href="#" class="nav-link text-uppercase font-weight-bold">Login</a></li>
                 </ul>
             </div>
         </div>
@@ -19,11 +19,15 @@
 
 <script>
 export default {
-  data() {
-    return {
-      loggedIn: false
+  name: 'NavbarN',
+  methods: {
+    logout () {
+      this.$emit('logout')
     }
   },
+  props: {
+    isLoggedIn: Boolean
+  }
 }
 </script>
 

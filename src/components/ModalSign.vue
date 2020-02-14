@@ -77,7 +77,6 @@
         else this.register()
       },
       login () {
-        console.log('masuk ke login')
         let loader = this.$loading.show({
           canCancel: false,
           loader: 'bars',
@@ -94,7 +93,10 @@
           .then(({ data }) => {
             loader.hide()
             console.log(data)
-            this.hideModal()
+            localStorage.token = data.token
+            localStorage.id = data.id
+            this.$emit('login')
+            // this.hideModal()
           })
           .catch(err => {
             console.log(err.response)
@@ -123,6 +125,9 @@
           .then(({ data }) => {
             console.log(data)
             loader.hide()
+            localStorage.token = data.token
+            localStorage.id = data.id
+            this.$emit('login')
           })
           .catch(err => {
             console.log(err.response)
