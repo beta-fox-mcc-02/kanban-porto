@@ -1,0 +1,111 @@
+new Vue({
+    el : "#app",
+    data : {
+        currentPage : 'homePage',
+        username : '',
+        email : '',
+        password : '',
+        myOrg : [],
+        orgName : '',
+        board : [],
+        categoryName : '',
+    },
+    methods : {
+        login(){
+            axios.post('http://localhost:3000/login',{
+                username : this.username,
+                email : this.email,
+                password : this.password
+            })
+            .then(result => {
+                console.log(result.data.data.token)
+                localStorage.token = result.data.data.token
+                this.currentPage = 'mainPage'
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        },
+        register(){
+            axios.post('http://localhost:3000/register',{
+                username : this.username,
+                email : this.email,
+                password : this.password
+            })
+            .then(result => {
+                console.log(result.data.data)
+                localStorage.token = result.data.data.token
+                this.currentPage = 'mainPage'
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        },
+        listOrganization (){
+            this.currentPage = 'mainPage'
+            axios.get('http://localhost:3000/organizations', {
+                headers : {
+                    token : localStorage.token
+                }
+            })
+            .then(({data}) => {
+                console.log(data)
+                this.myOrg = data
+                // data.data
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        },
+        addOrg(){
+            axios.post('http://localhost:3000/organizations/creates', {
+                name : this.orgName
+            },
+            {
+                headers : {
+                    token : localStorage.token
+                }
+            })
+            .then(res => {
+                this.listOrganization()
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        },
+        readCategory(id){
+            axios.get('http://localhost:3000/tasks', {
+                headers : {
+                    token : localStorage.token,
+                    id
+                }
+            })
+            .then(({data}) => {
+                localStorage.id = id
+                this.currentPage = 'Task Page'
+                this.board = data
+            })
+        },
+        addCategory(){
+            axios.post('http://localhost:3000/tasks/category',{
+                category : this.categoryName
+            },
+            {
+                headers : {
+                    token : localStorage.token,
+                    id : localStorage.id
+                }
+            })
+            .then(({data}) => {
+                console.log(data)
+                this.readCategory()
+            })
+        }
+    },
+    created (){
+        this.listOrganization()
+        this.addOrg()
+        this.readCategory()
+    }
+})
+

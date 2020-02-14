@@ -1,0 +1,13 @@
+.bg {
+    background-image: url("http://www.r3veblog.com/wp-content/uploads/2012/05/tumblr_m2mpjwhzSR1qkxa03o1_1280.png");
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#homePage .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
