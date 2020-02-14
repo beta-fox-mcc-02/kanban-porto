@@ -48,7 +48,7 @@ export default {
             this.currentPage = 'showUsers'
             axios({
                 method: "GET",
-                url: "https://desolate-mountain-17477.herokuapp.com//user/findAll"
+                url: "https://desolate-mountain-17477.herokuapp.com/user/findAll"
             })
             .then((result) => this.users = result.data.result)
             .catch((err) => console.log(err))
