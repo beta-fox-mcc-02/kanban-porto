@@ -94,6 +94,7 @@ export default {
       this.userEmail = ''
     })
     .catch(err =>{
+      console.log('user not found/registered');
       console.log(err);
     })
   }

@@ -82,6 +82,9 @@ export default {
         url: `/project/${this.projectId}`,
         data: {
           name: this.projectName
+        },
+        headers:{
+          token: localStorage.token
         }
       })
         .then(({ data }) => {
@@ -110,7 +113,10 @@ export default {
     removeProject(id) {
       axios({
         method: "delete",
-        url: `/project/${id}`
+        url: `/project/${id}`,
+        headers:{
+          token: localStorage.token
+        }
       })
         .then(({ data }) => {
           // this.fetchProject();

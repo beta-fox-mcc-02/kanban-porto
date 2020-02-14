@@ -17,9 +17,6 @@
             <!-- <div class="g-signin2" @click.prevent="onSignIn" data-onsuccess="onSignIn"></div> -->
             <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" ></GoogleLogin>
             
-            <GoogleLogin :params="params" :logoutButton=true :onSuccess="logout">
-         <a href="#" >Sign out</a>
-         </GoogleLogin>
       </div>
 </template>
 <script>
@@ -119,13 +116,12 @@ export default {
             
         },
          changePage(laman){
-             console.log('dari login page',laman);
-             this.$emit('change-Page', laman)
+            console.log('dari login page',laman);
+            this.$emit('change-Page', laman)
+
+            this.$emit('fetch-project', laman)
+
         },
-        logout(){
-            console.log('user sign out');
-            
-        }
     }
 }
 </script>

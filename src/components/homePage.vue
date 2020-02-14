@@ -45,7 +45,6 @@ export default {
     return {
       projectName: "",
       projectForm: false,
-      projects: [],
       projectEdit: false,
       projectId: null,
       warning:''
@@ -57,7 +56,8 @@ export default {
   },
   props: {
     page: String,
-    socket: Object
+    socket: Object,
+    projects: Array
   },
   methods: {
     projectUpdate() {
@@ -137,47 +137,61 @@ export default {
           console.log(err);
         });
     },
-    fetchProject() {
-      axios({
-        method: "get",
-        url: "user/project",
-        headers:{
-          token: localStorage.token
-        }
-      })
-        .then(({ data }) => {
-          if(data.length > 0){
-            console.log(data);
-            this.projects = data;
-            this.warning= ''
+    // fetchProject() {
+    //   axios({
+    //     method: "get",
+    //     url: "user/project",
+    //     headers:{
+    //       token: localStorage.token
+    //     }
+    //   })
+    //     .then(({ data }) => {
+    //       if(data.length > 0){
+    //         console.log(data);
+    //         this.projects = data;
+    //         this.warning= ''
 
-          }else{
-            // console.log('blm ada data');
-            this.projects = []
-            this.warning= 'you dont have any project'
-          }
+    //       }else{
+    //         // console.log('blm ada data');
+    //         this.projects = []
+    //         this.warning= 'you dont have any project'
+    //       }
           
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //     });
+    // }
+  },
+  computed:{
+    dataEmpty(){
+      //  if(data.length > 0){
+      //       console.log(data);
+      //       this.projects = data;
+      //       this.warning= ''
+
+      //     }else{
+      //       // console.log('blm ada data');
+      //       this.projects = []
+      //       this.warning= 'you dont have any project'
+      //     }
     }
   },
   created: function() {
     if (localStorage.token) {
-      this.fetchProject();
-      this.page = "home";
-      this.socket.on("project", data => {
-        // console.log(data, 'ini dari io');
-        this.warning= ''
-        this.projects.push(data);
-      });
-      //project hrs reactivve
+      // this.fetchProject();
+      // this.page = "home";
+      // this.socket.on("project", data => {
+      //   // console.log(data, 'ini dari io');
+      //   this.warning= ''
+      //   // this.projects.push(data);
+      // });
+      // //project hrs reactivve
 
-      this.socket.on("fetchProject", data => {
-        // console.log('kepanggil');
-        this.fetchProject();
-      });
+      // this.socket.on("fetchProject", data => {
+      //   // console.log('kepanggil');
+      //   this.fetchProject();
+      // });
     }
   }
 };

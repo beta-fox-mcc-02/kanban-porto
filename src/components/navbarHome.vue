@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light" v-if="page !== 'login'">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light" v-if="page !== 'login' && page !== 'register'">
     <a class="navbar-brand" href="#" @click.prevent="changePage('home')">Kanbaban</a>
     <button
       class="navbar-toggler"
