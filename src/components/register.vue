@@ -90,7 +90,7 @@ export default {
             var id_token = googleUser.getAuthResponse().id_token;
             axios({
                 method: "POST",
-                url: "http://localhost:3000/user/glogin",
+                url: "https://desolate-mountain-17477.herokuapp.com/user/glogin",
                 data: { id_token }
             })
             .then((result) => { 
