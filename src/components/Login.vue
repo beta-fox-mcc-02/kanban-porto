@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '../config/axios';
 
 export default {
   name: 'Login',
@@ -40,7 +40,7 @@ export default {
 
       axios({
         method: 'POST',
-        url: 'http://localhost:3000/login',
+        url: '/login',
         data
       })
         .then(res => {

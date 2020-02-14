@@ -29,7 +29,7 @@
 
 <script>
 import cardVue from './Card';
-import axios from 'axios';
+import axios from '../config/axios';
 
 export default {
   props: {
@@ -54,7 +54,7 @@ export default {
     fetchData(){
       axios({
         method: 'GET',
-        url: `http://localhost:3000/kanban/${this.panelId}`,
+        url: `/kanban/${this.panelId}`,
         headers: {
           access_token: localStorage.access_token
         }
@@ -85,7 +85,7 @@ export default {
       this.addTaskInput = false;
       axios({
         method: 'POST',
-        url: 'http://localhost:3000/kanban',
+        url: '/kanban',
         headers: {
           access_token: localStorage.access_token
         },

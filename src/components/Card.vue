@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '../config/axios';
 
 export default {
   props : {
@@ -54,7 +54,7 @@ export default {
     deleteTask(){
       axios({
         method: 'DELETE',
-        url: `http://localhost:3000/kanban/${this.task.id}`,
+        url: `/kanban/${this.task.id}`,
         headers: {
           access_token: localStorage.access_token
         }
@@ -70,7 +70,7 @@ export default {
     showEditForm(){
       axios({
         method: 'GET',
-        url: `http://localhost:3000/kanban/card/${this.task.id}`,
+        url: `/kanban/card/${this.task.id}`,
         headers: {
           access_token: localStorage.access_token
         }
@@ -86,7 +86,7 @@ export default {
     editTask(){
       axios({
         method: 'PUT',
-        url: `http://localhost:3000/kanban/${this.task.id}`,
+        url: `/kanban/${this.task.id}`,
         headers: {
           access_token: localStorage.access_token
         },
@@ -110,7 +110,7 @@ export default {
       console.log(catId);
       axios({
         method: 'DELETE',
-        url: `http://localhost:3000/kanban/${this.task.id}`,
+        url: `/kanban/${this.task.id}`,
         headers: {
           access_token: localStorage.access_token
         },
@@ -118,7 +118,7 @@ export default {
         .then(res => {
           return axios({
             method: 'POST',
-            url: `http://localhost:3000/kanban`,
+            url: `/kanban`,
             headers: {
               access_token: localStorage.access_token
             },

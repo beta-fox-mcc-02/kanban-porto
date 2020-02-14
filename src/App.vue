@@ -6,7 +6,7 @@
         :currentPage="currentPage">
     </NavbarVue>
 
-    <div class="container mt-5">
+    <div class="container mt-3">
 
       <!-- alert -->
       <AlertVue
@@ -67,7 +67,6 @@ import PanelVue from './components/Panel.vue';
 import AlertVue from './components/Alert.vue';
 import LoginVue from './components/Login.vue';
 import RegisterVue from './components/Register.vue';
-import axios from 'axios';
 
 
 export default {

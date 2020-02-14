@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '../config/axios';
 import GSignInButton from 'vue-google-signin-button'
 
 // function 
@@ -64,7 +64,7 @@ export default {
 
       axios({
         method: 'POST',
-        url: 'http://localhost:3000/register',
+        url: '/register',
         data
       })
         .then(res => {
@@ -83,7 +83,7 @@ export default {
       const id_token = googleUser.getAuthResponse().id_token;
       axios({
         method: 'POST',
-        url: 'http://localhost:3000/gSignIn',
+        url: '/gSignIn',
         data: {
           id_token
         }
