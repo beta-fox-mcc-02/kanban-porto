@@ -43,14 +43,21 @@ export default {
                 }
             }) 
                 .then((response) => {
+                    this.notifSuccess('register success')
                     this.changePage('login')
                 })
                 .catch(err => {
-                    console.log(err)
+                    this.notifFailed(err.response.data.msg)
                 })
         },
         changePage(page) {
             this.$emit('changePage', page)
+        },
+        notifSuccess(msg) {
+            this.$emit('notifSuccess', msg)
+        },
+        notifFailed(msg) {
+            this.$emit('notifFailed', msg)
         }
     }
 }

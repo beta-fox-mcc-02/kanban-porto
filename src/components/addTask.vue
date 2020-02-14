@@ -40,7 +40,7 @@ export default {
                     this.changePage('landing')
                 })
                 .catch(err => {
-                    this.notifFailed(err.responseJSON.msg[0])
+                    this.notifFailed(err.response.data.msg)
                     // console.log(err)
                 })
         },

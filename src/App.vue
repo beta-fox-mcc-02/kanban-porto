@@ -6,6 +6,8 @@
         ></Navbar>
         <Register 
         @changePage="changePage" 
+        @notifSuccess="notifSuccess"
+        @notifFailed="notifFailed"
         v-if="currentPage === 'register'"
         ></Register>
         <Login 
@@ -18,6 +20,7 @@
         @changePage="changePage" 
         @formEdit="formEdit"
         @notifFailed="notifFailed"
+        @notifSuccess="notifSuccess"
         v-else-if="currentPage === 'landing'"
         ></Home>
         <AddTask 

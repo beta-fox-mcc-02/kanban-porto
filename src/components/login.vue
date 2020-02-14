@@ -42,8 +42,7 @@ export default {
                     this.changePage('landing')
                 })
                 .catch(err => {
-                    console.log(err)
-                    // this.notifFailed(err.responseJSON.msg[0])
+                    this.notifFailed(err.response.data.msg)
                 })
         },
         googleLogin () {
@@ -63,7 +62,7 @@ export default {
                     this.changePage('landing')
                 })
                 .catch(err => {
-                    console.log(err)
+                    this.notifFailed('login failed')
                 })
         },
         changePage(page) {
