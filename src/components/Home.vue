@@ -18,7 +18,7 @@
             <p class="nav-link" style="cursor: pointer">My Project</p>
           </li>
         </ul>
-        <button type="button" class="btn btn-danger mr-4" @click="logout">
+        <button type="button" class="btn btn-danger mr-4" @click="logout" :logoutButton="true">
           <i class="fas fa-sign-out-alt"></i>
         </button>
       </div>
@@ -165,8 +165,13 @@
 
 <script>
 import axios from "axios";
+import GoogleLogin from "vue-google-login";
+
 export default {
   name: `Home`,
+  components: {
+    GoogleLogin
+  },
   data() {
     return {
       myProject: [],

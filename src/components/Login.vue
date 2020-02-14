@@ -73,8 +73,7 @@ export default {
       email: "",
       password: "",
       params: {
-        client_id:
-          "1015788743329-4uql0o2rtksdcogqg07fim9g858m099n.apps.googleusercontent.com"
+        client_id: "1015788743329-4uql0o2rtksdcogqg07fim9g858m099n.apps.googleusercontent.com"
       },
       // only needed if you want to render the button with the google ui
       renderParams: {
@@ -107,11 +106,24 @@ export default {
     changePage(page) {
       this.$emit("changePage", page);
     },
-    onSuccess(googleUser) {
-      console.log(googleUser);
 
-      // This only gets the user information: id, name, imageUrl and email
-      console.log(googleUser.getBasicProfile());
+    onSuccess(googleUser) {
+      let token = googleUser.getAuthResponse().id_token;
+      
+      axios({
+        method: `POST`,
+        url: `http://localhost:3000/users/gSignIn`,
+        data: {
+          token
+        }
+      })
+        .then(({data})=> {
+
+        })
+        .catch(err => {          
+          console.log(err);          
+        })
+
     },
     onFailure(googleUser) {}
   }
