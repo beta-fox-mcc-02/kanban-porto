@@ -48,7 +48,7 @@
                                       <div class="card-header">
                                         <label>{{task.title}}</label>
                                         <a class="btn text-right"  data-toggle="modal" :data-target="'#edit'+task.id"><i class="fas fa-edit"></i></a>
-                                        <div class="modal fade" :key="'edit'+task.id" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal fade" :id="'edit'+task.id" tabindex="-1" role="dialog" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                           <div class="modal-content" style="width: 50%;">
                                             <div class="card card-signup z-depth-0 text-center">
