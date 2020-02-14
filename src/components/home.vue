@@ -59,11 +59,9 @@ export default {
                 })
         },
         changePage(page) {
-            console.log('KAKENYA KE TRIGGER', page)
             this.$emit('changePage', page)
         },
         formEdit(id, title, CategoryId, UserId) {
-            console.log(title, CategoryId, UserId, "INIII DARIIIIIIIIIII USEEERRRRRRRR")
             this.$emit('formEdit', id, title, CategoryId, UserId)
         },
         notifFailed(msg) {

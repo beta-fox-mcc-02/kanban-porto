@@ -13,6 +13,8 @@
             :key="i"
             :next="next"
             :list="list"
+            @notifSuccess="notifSuccess"
+            @notifFailed="notifFailed"
             @fetch="fetch"
             @changePage="changePage"
             ></NextBack>
@@ -40,7 +42,6 @@ export default {
     },
     methods: {
         destroy(id) {
-            console.log(id)
             axios({
                 method: 'delete',
                 url: `http://localhost:3000/tasks/${id}`,
@@ -64,7 +65,6 @@ export default {
             this.$emit('fetch')
         },
         changePageEdit(id, title, CategoryId, UserId) {
-            console.log(title, CategoryId, UserId, "DARIIIIIII KAONTEEENNNNNNNNNN")
             this.$emit('formEdit', id, title, CategoryId, UserId)
             this.changePage('editForm')
         },

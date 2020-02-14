@@ -9,8 +9,9 @@
                 <input type="password" required v-model="password">
                 <button type="submit" class="btn btn-primary">SUBMIT</button>
             </form>
-            <br> 
-            <button type="button" @click="googleLogin">GOOGLE LOGIN</button>
+            <br>
+            <h3 style="font-family: 'Lemonada', cursive; font-size: 25px">Or Login via:</h3>
+            <a @click="googleLogin"><i class="fab fa-google" style="font-size: 25px"></i></a>
         </div>
     </div>
 </template>
@@ -59,6 +60,7 @@ export default {
                 })
                 .then(data =>  {
                     localStorage.setItem('token', data.data.token)
+                    this.notifSuccess('login success')
                     this.changePage('landing')
                 })
                 .catch(err => {

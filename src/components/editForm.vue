@@ -58,9 +58,6 @@ export default {
         notifFailed(msg) {
             this.$emit('notifFailed', msg)
         }
-    },
-    created () {
-        console.log(this.id)
     }
 }
 </script>

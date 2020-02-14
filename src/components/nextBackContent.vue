@@ -39,10 +39,11 @@ export default {
             })
                 .then(data => {
                     this.fetch()
+                    this.notifSuccess('task updated')
                     this.changePage('landing')
                 })
                 .catch(err => {
-                    console.log(err)
+                    this.notifFailed('updated task failed')
                 })
         },
         fetch() {
@@ -50,6 +51,12 @@ export default {
         },
         changePage(page) {
             this.$emit('changePage', page)
+        },
+        notifSuccess(msg) {
+            this.$emit('notifSuccess', msg)
+        },
+        notifFailed(msg) {
+            this.$emit('notifFailed', msg)
         }
     }
 

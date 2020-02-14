@@ -1,7 +1,8 @@
 <template>
     <div>
         <Navbar 
-        @changePage="changePage" 
+        @changePage="changePage"
+        @notifSuccess="notifSuccess" 
         :currentPage="currentPage"
         ></Navbar>
         <Register 

@@ -31,10 +31,14 @@ export default {
         },
         logout () {
             localStorage.clear()
+            this.notifSuccess('logout success')
             this.changePage('login')
         },
         addTask () {
             this.changePage('addtask')
+        },
+        notifSuccess(msg) {
+            this.$emit('notifSuccess', msg)
         }
     }
 }

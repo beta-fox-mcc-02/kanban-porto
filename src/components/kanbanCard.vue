@@ -36,16 +36,13 @@ export default {
         kanbanContent
     },
     methods: {
-        changePage(page) {
-            console.log('BAPANYA KE TRIGERRRRR', page);
-            
+        changePage(page) {           
             this.$emit('changePage', page)
         },
         fetch() {
             this.$emit('fetch')
         },
         formEdit(id, title, CategoryId, UserId)  {
-            console.log(title, CategoryId, UserId, "DARIIIIIII KANBVAANN CARRDDD > B+VUEEEE")
             this.$emit('formEdit', id, title, CategoryId, UserId)
         },
         notifSuccess(msg) {

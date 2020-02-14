@@ -27,7 +27,6 @@ export default {
                 method: 'post',
                 url: 'http://localhost:3000/tasks',
                 data: {
-                    // title: this.taskData,
                     title: this.taskData,
                     category: 1
                 }, 
@@ -41,7 +40,6 @@ export default {
                 })
                 .catch(err => {
                     this.notifFailed(err.response.data.msg)
-                    // console.log(err)
                 })
         },
         changePage(page) {
