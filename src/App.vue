@@ -67,6 +67,7 @@ import AlertVue from './components/Alert.vue';
 import LoginVue from './components/Login.vue';
 import RegisterVue from './components/Register.vue';
 
+
 export default {
   name: 'App',
   data(){

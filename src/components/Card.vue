@@ -68,7 +68,20 @@ export default {
         })
     },
     showEditForm(){
-      this.isEditTask = true;
+      axios({
+        method: 'GET',
+        url: `http://localhost:3000/kanban/card/${this.task.id}`,
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+        .then(res => {
+          this.isEditTask = true;
+          this.editedTask = res.data.data.title;
+        })
+        .catch(err => {
+          console.log(err.response);
+        })
     },
     editTask(){
       axios({
@@ -133,6 +146,10 @@ export default {
 <style scoped>
 .fa-trash-alt{
   color: red;
+}
+
+.fa-arrow-right, .fa-arrow-left{
+  color:rgb(51, 117, 45);
 }
 
 </style>
