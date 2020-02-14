@@ -10,8 +10,8 @@
             <i class="fas fa-ellipsis-v" v-else-if="!validUser" v-bind:style="!validUser ? 'background-color: white; color: red; border-radius: 50%; cursor: not-allowed' : ''"></i>
             <i class="far fa-trash-alt" v-if="validUser" v-on:click="deleteTask(task.id)"></i>
             <i class="far fa-trash-alt" v-else-if="!validUser" v-bind:style="!validUser ? 'background-color: white; color: red; border-radius: 50%; cursor: not-allowed' : ''"></i>
-            <form class="update-form" v-if="showForm" v-on:submit.prevent="editTask">
-                <div>
+            <form class="update-form" v-if="showForm" v-on:submit.prevent="editTask(task.id)">
+                <div class="title-form">
                     <label>New title</label>
                     <input type="text" v-bind:value="title">
                 </div>
@@ -86,8 +86,34 @@ export default {
                 console.log(err)
             })
         },
-        editTask(){
-            console.log(this.title, this.tag)
+        editTask(taskId){
+            let token = localStorage.getItem('access_token')
+            axios({
+                method: "PUT",
+                url: `http://localhost:3000/task/update/${taskId}`,
+                headers: { token },
+                data: {
+                    title: this.title,
+                    tag: this.tag,
+                    category: this.changeCategory
+                }
+            })
+            .then((result) => {
+                this.clearInputs()
+                this.$emit('changePage', { page:'member' })
+            })
+            .catch((err) => {
+                this.clearInputs()
+            })
+        },
+        clearInputs(){
+            this.title = '',
+            this.tag = '',
+            this.currentPage = '',
+            this.changeCategory = '',
+            this.showForm = false,
+            this.categoryNames = [],
+            this.validUser = true
         }
     }
 }
