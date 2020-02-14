@@ -1,9 +1,9 @@
 <template>
   <div>
-    <landingPage></landingPage>
+    <landingPage v-if="currentPage === 'landing'"></landingPage>
     <!-- <register-page v-if="currentPage === 'register'"></register-page>
-    <login-page v-if="currentPage === 'login'"></login-page>
-    <kanban-board v-if="currentPage === 'kanban'"></kanban-board> -->
+    <login-page v-if="currentPage === 'login'"></login-page> -->
+    <kanban-board v-if="currentPage === 'kanban'"></kanban-board> 
   </div>
 </template>
 
@@ -17,7 +17,13 @@ export default {
   name: 'App',
   data() {
     return {
-      currentPage: 'register'
+      currentPage: ''
+    }
+  },
+  methods: {
+    checkLogin () {
+      if (localStorage.token) this.currentPage = 'kanban'
+      else this.currentPage = 'landing'
     }
   },
   components: {
@@ -25,6 +31,9 @@ export default {
     registerPage,
     kanbanBoard,
     landingPage
+  },
+  created () {
+    this.checkLogin()
   }
 }
 </script>

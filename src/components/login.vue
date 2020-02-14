@@ -1,24 +1,25 @@
 <template>
-  <div id="login">
-    ini login
+  <div>
+    
   </div>
 </template>
 
 <script>
-
-
-export default {
-  name: 'login',
-  data() {
-    return {
-      isSignIn: ''
+  export default {
+    data() {
+      return {
+        form: {
+          email: '',
+          name: ''
+        },
+        show: true
+      }
+    },
+    methods: {
+      onSubmit(evt) {
+        evt.preventDefault()
+        alert(JSON.stringify(this.form))
+      }
     }
   }
-}
 </script>
-
-<style scoped>
-  .pointer {
-    cursor: pointer;
-  }
-</style>
