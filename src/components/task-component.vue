@@ -200,7 +200,7 @@ export default {
     },
     readCategory(){
       console.log('masuuuk')
-        axios.get('https://quiet-depths-10928.herokuapp.com/category', {
+        axios.get('https://quiet-depths-10928.herokuapp.com/tasks/category', {
             headers : {
                 token : localStorage.token,
                 id : localStorage.id
