@@ -24,11 +24,11 @@
                     </router-link>
                 </header>
                 <footer class="card-footer">
-                    <a href="#" class="card-footer-item">Edit</a>
+                    <a href="#" class="card-footer-item">Collaborator</a>
                     <a
                         href="#"
                         class="card-footer-item"
-                        @click="deleteBoard(board.id)"
+                        @click="deleteBoard($event, board.id)"
                     >
                         Delete
                     </a>
@@ -56,6 +56,17 @@ export default {
                     this.$store.dispatch('newBoard', value)
                 }
             })
+        },
+        deleteBoard(e, id) {
+            e.preventDefault()
+            this.$store
+                .dispatch('removeBoard', id)
+                .then(result => {
+                    this.$buefy.toast.open(`Success deleting board.`)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
     }
 }

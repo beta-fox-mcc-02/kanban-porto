@@ -1,8 +1,14 @@
 <template>
     <nav class="panel">
-        <p class="panel-heading">
+        <h1 class="panel-heading">
             {{ list.title }}
-        </p>
+            <a>
+                <i
+                    class="mdi mdi-trash-can-outline is-pulled-right"
+                    @click="deleteList"
+                ></i>
+            </a>
+        </h1>
 
         <Card v-for="card in list.Cards" :key="card.id" :card="card"></Card>
         <form @submit.prevent="addCard">
@@ -33,7 +39,7 @@ export default {
     },
     methods: {
         deleteList(id) {
-            this.$store.dispatch('removeList', id)
+            this.$store.dispatch('removeList', this.list.id)
         },
         prompt() {
             this.$buefy.dialog.prompt({
