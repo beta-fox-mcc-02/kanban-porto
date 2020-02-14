@@ -34,7 +34,7 @@
             v-model="email"
           />
           <input
-            type="text"
+            type="password"
             id="password"
             class="fadeIn third"
             placeholder="password"
@@ -84,13 +84,13 @@ export default {
           name: this.name
         }
       })
-         .then(({data}) => {
-            console.log(data);
-            this.changePage('login')
-         })
-         .catch (err => {
-            console.log(err);            
-         })
+        .then(({ data }) => {
+          console.log(data);
+          this.changePage("login");
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };
@@ -211,7 +211,8 @@ input[type="reset"]:active {
   transform: scale(0.95);
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
   background-color: #f6f6f6;
   border: none;
   color: #0d0d0d;

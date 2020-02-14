@@ -15,12 +15,18 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto justify-content-center" style="margin-top: 15px">
           <li class="nav-item">
-            <p class="nav-link" style="cursor: pointer">My Project</p>
+            <p class="nav-link" style="cursor: pointer" @click="backToHome">My Project</p>
           </li>
         </ul>
-        <button type="button" class="btn btn-danger mr-4 shadow" @click="logout">
+        <GoogleLogin
+          type="button"
+          class="btn btn-danger mr-4"
+          :onSuccess="logout"
+          :params="params"
+          :logoutButton="true"
+        >
           <i class="fas fa-sign-out-alt"></i>
-        </button>
+        </GoogleLogin>
       </div>
     </nav>
 
@@ -185,11 +191,12 @@
 <script>
 import axios from "axios";
 import Box from "./Box";
-
+import GoogleLogin from "vue-google-login";
 export default {
   name: `Kanban`,
   components: {
-    Box
+    Box,
+    GoogleLogin
   },
   props: ["openProjectTasks", "openProjectId"],
   data() {
@@ -216,12 +223,26 @@ export default {
       addTask: {
         taskTitle: ""
       },
-      userList: []
+      userList: [],
+      params: {
+        client_id:
+          "1015788743329-4uql0o2rtksdcogqg07fim9g858m099n.apps.googleusercontent.com"
+      },
+      // only needed if you want to render the button with the google ui
+      renderParams: {
+        width: 250,
+        height: 50,
+        longtitle: true
+      }
     };
   },
   methods: {
+    backToHome() {
+      this.$emit("changePage", "home");
+    },
     logout() {
       localStorage.removeItem(`token`);
+      localStorage.removeItem(`id`);
       this.$emit("changePage", "login");
     },
     getProject(id) {
@@ -256,7 +277,7 @@ export default {
         }
       })
         .then(({ data }) => {
-          console.log(data, `ke fetch lagi nih`);          
+          console.log(data, `ke fetch lagi nih`);
           this.currentProject = data;
         })
         .catch(err => {
@@ -291,10 +312,22 @@ export default {
         }
       })
         .then(({ data }) => {
-          this.fetchProject(this.openProjectId)
+
+          Toastify({
+            text: "Add Collaborator successfully",
+            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            className: "info"
+          }).showToast();
+          this.fetchProject(this.openProjectId);
         })
         .catch(err => {
-          console.log(err, `user already in this project`);
+          console.log(err, ``);
+          Toastify({
+            text: "user already in this project",
+            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            className: "info"
+          }).showToast();
+          this.fetchProject(this.openProjectId);
         });
     },
     kickFromProject(id) {
@@ -302,17 +335,20 @@ export default {
         method: `DELETE`,
         url: `http://localhost:3000/projects/collaborator/${id}`,
         headers: {
-          token :localStorage.token
+          token: localStorage.token
         }
       })
         .then(data => {
-          console.log(`removed`);
+          Toastify({
+            text: "Remove Collaborator successfully",
+            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            className: "info"
+          }).showToast();
           this.fetchProject(this.openProjectId);
         })
         .catch(err => {
           console.log(err);
-          
-        })
+        });
     }
   },
   created() {

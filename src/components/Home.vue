@@ -10,7 +10,7 @@
         alt
         style="max-width: 60px"
       />
-      <a class="navbar-brand pl-0 ml-0" href="#">GanBan</a>
+      <a class="navbar-brand pl-0 ml-0" href="#" >GanBan</a>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto justify-content-center" style="margin-top: 15px">
@@ -18,13 +18,22 @@
             <p class="nav-link" style="cursor: pointer">My Project</p>
           </li>
         </ul>
-        <button type="button" class="btn btn-danger mr-4" @click="logout" :logoutButton="true">
+        <GoogleLogin
+          type="button"
+          class="btn btn-danger mr-4"
+          :onSuccess="logout"
+          :params="params"
+          :logoutButton="true"
+        >
           <i class="fas fa-sign-out-alt"></i>
-        </button>
+        </GoogleLogin>
       </div>
     </nav>
 
-    <h1 class="text-center mt-5 mb-5" style="color: white">My Project</h1>
+    <h1
+      class="text-center mt-5 mb-5"
+      style="color: white; font-family: 'Lacquer', sans-serif;"
+    >My Project</h1>
 
     <div class="container">
       <div class="row" style="display: flex; justify-content: space-around">
@@ -43,13 +52,13 @@
 
               <div class="text-center">
                 <button
-                  class="btn btn-info mx-2 btn-sm"
+                  class="btn btn-info mx-1 btn-sm"
                   data-toggle="modal"
                   data-target="#exampleModalCenter"
                   @click="fetchUpdate(project.id)"
-                >Edit</button>
-                <button class="btn btn-success mx-2 btn-sm" @click="openProject(project.id)">Open</button>
-                <button class="btn btn-danger mx-2 btn-sm" @click="deleteProject(project.id)">Delete</button>
+                ><i class="fas fa-pen"></i></button>
+                <button class="btn btn-success mx-1 btn-sm" @click="openProject(project.id)"><i class="fas fa-eye"></i></button>
+                <button class="btn btn-danger mx-1 btn-sm" @click="deleteProject(project.id)"><i class="fas fa-trash"></i></button>
               </div>
             </div>
           </div>
@@ -115,7 +124,7 @@
     </div>
 
     <!-- content modal create -->
-     <div
+    <div
       class="modal fade"
       id="exampleModalCenter2"
       tabindex="-1"
@@ -179,14 +188,25 @@ export default {
         title: "",
         id: ""
       },
-      createProject : {
-         title: ''
+      createProject: {
+        title: ""
+      },
+      params: {
+        client_id:
+          "1015788743329-4uql0o2rtksdcogqg07fim9g858m099n.apps.googleusercontent.com"
+      },
+      // only needed if you want to render the button with the google ui
+      renderParams: {
+        width: 250,
+        height: 50,
+        longtitle: true
       }
     };
   },
   methods: {
     logout() {
       localStorage.removeItem(`token`);
+      localStorage.removeItem(`id`);
       this.$emit("changePage", "login");
     },
     fetchProject() {
@@ -216,7 +236,11 @@ export default {
         }
       })
         .then(({ data }) => {
-          console.log(data);
+          Toastify({
+            text: "Project removed",
+            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            className: "info"
+          }).showToast();
           this.fetchProject();
         })
         .catch(err => {
@@ -257,27 +281,27 @@ export default {
           console.log(err);
         });
     },
-    createNewProject () {
-       axios({
-          method: `POST`,
-          url: `http://localhost:3000/projects`,
-          data: {
-             title: this.createProject.title
-          },
-          headers: {
-             token: localStorage.token
-          }
-       })
-         .then(({data}) => {
-            this.fetchProject()
-         })
-         .catch(err => {
-            console.log(err);            
-         })
+    createNewProject() {
+      axios({
+        method: `POST`,
+        url: `http://localhost:3000/projects`,
+        data: {
+          title: this.createProject.title
+        },
+        headers: {
+          token: localStorage.token
+        }
+      })
+        .then(({ data }) => {
+          this.fetchProject();
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     openProject(id) {
-      this.$emit('changePage', 'kanban')
-      this.$emit('getProject', id)
+      this.$emit("changePage", "kanban");
+      this.$emit("getProject", id);
     }
   },
   created() {

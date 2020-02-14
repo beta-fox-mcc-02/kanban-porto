@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="wrapper fadeInDown" style="margin-top: 50px">
+    <div class="wrapper fadeInDown" style="margin-top: 10px">
       <div id="formContent">
         <!-- Tabs Titles -->
 
@@ -26,7 +26,7 @@
             v-model="email"
           />
           <input
-            type="text"
+            type="password"
             id="password"
             class="fadeIn third"
             placeholder="password"
@@ -42,7 +42,6 @@
           :onSuccess="onSuccess"
           :onFailure="onFailure"
         ></GoogleLogin>
-        <GoogleLogin :params="params" :logoutButton="true">Logout</GoogleLogin>
         <!-- to register -->
         <div id="formFooter">
           <p>
@@ -73,7 +72,8 @@ export default {
       email: "",
       password: "",
       params: {
-        client_id: "1015788743329-4uql0o2rtksdcogqg07fim9g858m099n.apps.googleusercontent.com"
+        client_id:
+          "1015788743329-4uql0o2rtksdcogqg07fim9g858m099n.apps.googleusercontent.com"
       },
       // only needed if you want to render the button with the google ui
       renderParams: {
@@ -109,7 +109,7 @@ export default {
 
     onSuccess(googleUser) {
       let token = googleUser.getAuthResponse().id_token;
-      
+
       axios({
         method: `POST`,
         url: `http://localhost:3000/users/gSignIn`,
@@ -117,13 +117,14 @@ export default {
           token
         }
       })
-        .then(({data})=> {
-
+        .then(({ data }) => {
+          localStorage.setItem(`token`, data.token);
+          localStorage.setItem(`id`, data.id);
+          this.$emit("changePage", "home");
         })
-        .catch(err => {          
-          console.log(err);          
-        })
-
+        .catch(err => {
+          console.log(err);
+        });
     },
     onFailure(googleUser) {}
   }
@@ -245,7 +246,7 @@ input[type="reset"]:active {
   transform: scale(0.95);
 }
 
-input[type="text"] {
+input[type="text"], input[type="password"] {
   background-color: #f6f6f6;
   border: none;
   color: #0d0d0d;
