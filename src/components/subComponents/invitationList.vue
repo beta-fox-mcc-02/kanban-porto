@@ -78,7 +78,7 @@ export default {
                 }
             })
             .then(({data}) => {
-                console.log(data)
+                // console.log(data)
                 this.invitation = data
             })
             .catch(err => {

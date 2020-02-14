@@ -26,7 +26,7 @@
                                                 <label for="name">Name your Organization</label>
                                                 <input type="text" v-model="orgName" name="orgName" class="form-control" placeholder="input your organization" required>
                                             </div>
-                                            <button type="submit" class="btn btn-primary text-light">Add Organization</button>
+                                            <button type="submit" class="btn btn-primary text-light" >Add Organization</button>
                                         </form>
                                       </div>
                                     </div>
@@ -36,10 +36,13 @@
                           <Invitation class="text-right" @org='listOrganization'></Invitation>
                         </div>
                         <div class="card-body">
-                          <table class="table">
+                          <table class="table text-center">
+                            <thead>
+                              <th>Your Organization</th>
+                            </thead>
                             <tbody>
                               <tr v-for='org in myOrg' :key="org.id">
-                                <td class="btn btn-light" @click='readCategory(org.id)'>{{org.name}}</td>
+                                <td class="btn" @click='readCategory(org.id)'>{{org.name}}</td>
                               </tr>
                             </tbody>
                           </table>
@@ -79,7 +82,7 @@ export default {
                 }
             })
             .then(({data}) => {
-                console.log(data)
+                // console.log(data)
                 this.myOrg = data
                 // data.data
             })

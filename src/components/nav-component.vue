@@ -7,18 +7,18 @@
           <section id="nav" v-if='currentPage != "homePage"'>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                  <li class="nav-item active">
+                  <!-- <li class="nav-item active">
                     <a class="nav-link btn" >Home <span class="sr-only">(current)</span></a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link btn" >Task</a>
-                  </li>
+                  </li> -->
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle btn" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Option
+                      <i class="fas fa-cog"></i>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item btn" id="logout" @click="logout">logout</a>
+                      <a class="dropdown-item btn" id="logout" @click="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
                       <!-- <a class="dropdown-item" >Another action</a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" >Something else here</a> -->

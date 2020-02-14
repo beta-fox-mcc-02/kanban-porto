@@ -49,6 +49,7 @@
                                 </form>
                             </div>
                           </div>
+                          <button v-google-signin-button="clientId" class="google-signin-button"><i class="fab fa-google"></i></button>
                       </div>
                   </div>
               </div>
@@ -57,12 +58,14 @@
 
 <script>
 import axios from 'axios'
+import GoogleSignInButton from 'vue-google-signin-button-directive'
 export default {
     data () {
         return {
         username : '',
         email : '',
         password : '',
+        clientId: '386401714130-08rc74g14ec5768bo9b7b18mr2i9t8ad.apps.googleusercontent.com'
         }
     },
     methods : {
@@ -72,9 +75,9 @@ export default {
                 email : this.email,
                 password : this.password
             })
-            .then(result => {
-                console.log(result.data.data.token)
-                localStorage.token = result.data.data.token
+            .then(({data}) => {
+                // console.log(data.data.token)
+                localStorage.token = data.data.token
                 this.$emit('currentPage', 'mainPage')
             })
             .catch(err => {
@@ -87,23 +90,45 @@ export default {
                 email : this.email,
                 password : this.password
             })
-            .then(result => {
-                console.log(result.data.data)
-                localStorage.token = result.data.data.token
+            .then(({data}) => {
+                // console.log(data.data)
+                localStorage.token = data.data.token
                 this.$emit('currentPage', 'mainPage')
             })
             .catch(err => {
                 console.log(err)
             })
+        },
+        OnGoogleAuthSuccess (idToken) {
+        // Receive the idToken and make your magic with the backend
+            axios.post('http://localhost:3000/gLogin', {
+                gToken : idToken
+            })
+            .then(({data}) => {
+                localStorage.token = data.token
+                this.$emit('currentPage', 'mainPage')
+            })
+        },
+        OnGoogleAuthFail (error) {
+            console.log(error)
         }
     }
 }
 </script>
 
-<style scoped>
-    .container {
+<style>
+    /* .container {
         display: flex;
         justify-content : 'center';
         align-items : center;
+    } */
+    .google-signin-button {
+        color: white;
+        background-color: red;
+        height: 50px;
+        font-size: 16px;
+        border-radius: 10px;
+        padding: 10px 20px 25px 20px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 </style>

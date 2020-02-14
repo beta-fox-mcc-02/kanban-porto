@@ -78,6 +78,7 @@ export default {
         categoryName : '',
         taskName : '',
         taskDescription : '',
+
     }
   },
   components : {
@@ -162,7 +163,7 @@ export default {
       })
       .then(({data}) => {
         this.tasks = data.result
-        console.log(this.tasks)
+        // console.log(this.tasks)
       })
       .catch(err => {
         console.log(err)
@@ -182,7 +183,7 @@ export default {
             }
         })
         .then(({data}) => {
-            console.log(data)
+            // console.log(data)
             this.readCategory()
         })
     },
@@ -195,7 +196,7 @@ export default {
             }
         })
         .then(({data}) => {
-          console.log(data.result)
+          // console.log(data.result)
             this.boards = data.result
         })
     }
