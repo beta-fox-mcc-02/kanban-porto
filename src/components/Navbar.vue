@@ -6,7 +6,7 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
+        <!-- <ul class="navbar-nav mr-auto"> -->
             <!-- <li class="nav-item active">
                 <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
@@ -27,11 +27,11 @@
         <li class="nav-item">
             <a class="nav-link disabled" href="#">Disabled</a>
         </li> -->
-        </ul>
+        <!-- </ul> -->
         <!-- <li class="nav-item">
             
         </li> -->
-        <button class="btn btn-primary mr-2" type="submit"><i class="fa fa-plus"></i></button>
+        <button class="btn btn-primary mr-2" type="submit" @click.prevent='createTask'><i class="fa fa-plus"></i></button>
         <button class="btn btn-info mr-2" type="submit" @click.prevent='logout'><i class="fa fa-sign-out"></i></button>
         
         <!-- <form class="form-inline my-2 my-lg-0">
@@ -49,6 +49,9 @@ export default {
         logout(){
             this.$emit('logout', 'Login');
             localStorage.clear();
+        },
+        createTask(){
+            this.$emit('createTask');
         }
     }
 }

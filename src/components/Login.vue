@@ -2,7 +2,7 @@
     <div class="login">
         <h1>Login Form</h1> <br>
         <form @submit.prevent="userLogin">
-            <label>Username</label>
+            <label>Email</label>
             <input v-model="email" type="text" name="" class="form_login" placeholder="Input your email...">
 
             <label>Password</label>
@@ -13,9 +13,11 @@
             <center><label>OR</label></center>
 
             <GoogleLogin :params="params" :onSuccess="onSuccess" :onFailure="onFailure" class="btn_login">Google Sign-in</GoogleLogin>
+<!--             
+            <br><br><br>
+            <center><label>No account?</label></center>
 
-            <br><br>
-            <label>No account?</label><a href="">Create one!</a>
+            <input type="submit" id="login-button" class="btn_login" value="Create one!"><br> -->
             <!-- <div id="login-gsignin">
                 <section id="section-login">
                     <div class="g-signin2" data-onsuccess="onSignIn" data-width=310 data-height=41></div>
@@ -27,7 +29,7 @@
 
 <script>
 import axios from "axios";
- import GoogleLogin from 'vue-google-login';
+import GoogleLogin from 'vue-google-login';
 export default {
     name: "loginPage",
     data() {
@@ -75,7 +77,7 @@ export default {
             // console.log(1, googleUser);
  
             // This only gets the user information: id, name, imageUrl and email
-            console.log(2, googleUser.getBasicProfile().zu);
+            // console.log(2, googleUser.getBasicProfile().zu);
 
             axios({
                 method: "post",
@@ -86,9 +88,11 @@ export default {
                 }
             })
                 .then(success => {
+                    console.log(1);
+                    
                     const { token, email } = success.data;
 
-                    this.$emit('showContent', "contentPage");
+                    this.$emit('showContent', "Home");
                     localStorage.setItem("token", token);
                 })
                 .catch(err => {

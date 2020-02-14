@@ -10697,6 +10697,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
 var _default = {
   name: "loginPage",
   data: function data() {
@@ -10747,7 +10749,7 @@ var _default = {
 
       // console.log(1, googleUser);
       // This only gets the user information: id, name, imageUrl and email
-      console.log(2, googleUser.getBasicProfile().zu);
+      // console.log(2, googleUser.getBasicProfile().zu);
       (0, _axios.default)({
         method: "post",
         url: "http://localhost:3000/users/signin",
@@ -10756,11 +10758,12 @@ var _default = {
           password: this.password
         }
       }).then(function (success) {
+        console.log(1);
         var _success$data2 = success.data,
             token = _success$data2.token,
             email = _success$data2.email;
 
-        _this2.$emit('showContent', "contentPage");
+        _this2.$emit('showContent', "Home");
 
         localStorage.setItem("token", token);
       }).catch(function (err) {
@@ -10806,7 +10809,7 @@ exports.default = _default;
         }
       },
       [
-        _c("label", [_vm._v("Username")]),
+        _c("label", [_vm._v("Email")]),
         _vm._v(" "),
         _c("input", {
           directives: [
@@ -10877,13 +10880,7 @@ exports.default = _default;
             }
           },
           [_vm._v("Google Sign-in")]
-        ),
-        _vm._v(" "),
-        _c("br"),
-        _c("br"),
-        _vm._v(" "),
-        _c("label", [_vm._v("No account?")]),
-        _c("a", { attrs: { href: "" } }, [_vm._v("Create one!")])
+        )
       ],
       1
     )
@@ -10929,6 +10926,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 //
 //
 //
@@ -10951,6 +10953,23 @@ var _default = {
   methods: {
     editTask: function editTask() {
       this.$emit('editTask', this.task.id);
+    },
+    createTask: function createTask() {
+      this.$emit('createTask', this.task.title);
+    },
+    deleteTask: function deleteTask() {
+      var _this = this;
+
+      (0, _axios.default)({
+        method: "delete",
+        url: "http://localhost:3000/board/" + this.task.id
+      }).then(function (success) {
+        _this.$emit('showContent', "Login");
+      }).catch(function (err) {
+        console.log(err);
+
+        _this.$emit("error-message", "Email or password dismatch");
+      });
     },
     forwardTask: function forwardTask() {
       this.$emit('forwardTask', this.task.id, this.task.CategoryId);
@@ -10996,7 +11015,20 @@ exports.default = _default;
             [_c("i", { staticClass: "fa fa-edit" })]
           ),
           _vm._v(" "),
-          _vm._m(0),
+          _c(
+            "a",
+            {
+              staticClass: "btn btn-danger",
+              attrs: { href: "#" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.deleteTask($event)
+                }
+              }
+            },
+            [_c("i", { staticClass: "fa fa-trash" })]
+          ),
           _vm._v(" "),
           _c(
             "a",
@@ -11017,16 +11049,7 @@ exports.default = _default;
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("a", { staticClass: "btn btn-danger", attrs: { href: "#" } }, [
-      _c("i", { staticClass: "fa fa-trash" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
           return {
@@ -11059,7 +11082,7 @@ render._withStripped = true
       
       }
     })();
-},{"_css_loader":"../../../../../../../usr/lib/node_modules/parcel/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/Category.vue":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","_css_loader":"../../../../../../../usr/lib/node_modules/parcel/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/Category.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11071,6 +11094,7 @@ var _TaskCard = _interopRequireDefault(require("./TaskCard"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
 //
 //
 //
@@ -11118,6 +11142,9 @@ var _default = {
     },
     editTask: function editTask(id) {
       this.$emit('editTask', id);
+    },
+    createTask: function createTask() {
+      this.$emit('createTask');
     },
     forwardTask: function forwardTask(id, category) {
       var _this2 = this;
@@ -11176,7 +11203,11 @@ exports.default = _default;
         return _c("TaskCard", {
           key: task.id,
           attrs: { task: task },
-          on: { editTask: _vm.editTask, forwardTask: _vm.forwardTask }
+          on: {
+            editTask: _vm.editTask,
+            createTask: _vm.createTask,
+            forwardTask: _vm.forwardTask
+          }
         })
       })
     ],
@@ -11402,6 +11433,9 @@ var _default = {
     logout: function logout() {
       this.$emit('logout', 'Login');
       localStorage.clear();
+    },
+    createTask: function createTask() {
+      this.$emit('createTask');
     }
   }
 };
@@ -11435,9 +11469,20 @@ exports.default = _default;
           attrs: { id: "navbarSupportedContent" }
         },
         [
-          _c("ul", { staticClass: "navbar-nav mr-auto" }),
-          _vm._v(" "),
-          _vm._m(1),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary mr-2",
+              attrs: { type: "submit" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.createTask($event)
+                }
+              }
+            },
+            [_c("i", { staticClass: "fa fa-plus" })]
+          ),
           _vm._v(" "),
           _c(
             "button",
@@ -11477,16 +11522,6 @@ var staticRenderFns = [
         }
       },
       [_c("span", { staticClass: "navbar-toggler-icon" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "btn btn-primary mr-2", attrs: { type: "submit" } },
-      [_c("i", { staticClass: "fa fa-plus" })]
     )
   }
 ]
@@ -11546,37 +11581,40 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 var _default = {
+  name: "KanbanAdd",
+  // props: {
+  //     title: String
+  // },
   data: function data() {
-    return {};
+    return {
+      title: ""
+    };
+  },
+  methods: {
+    createTask: function createTask() {
+      var _this = this;
+
+      console.log('Create');
+      (0, _axios.default)({
+        method: "post",
+        url: "http://localhost:3000/board/",
+        headers: {
+          "token": localStorage.token
+        },
+        data: {
+          title: this.title
+        }
+      }).then(function (result) {
+        console.log(_this.title);
+
+        _this.$emit("showContent", "Home");
+      }).catch(function (err) {
+        console.log(err);
+
+        _this.$emit("error-message", "Email or password dismatch");
+      });
+    }
   }
 };
 exports.default = _default;
@@ -11592,102 +11630,56 @@ exports.default = _default;
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row newpost" }, [
-    _vm._m(0),
+  return _c("div", { staticClass: "login" }, [
+    _c("h1", [_vm._v("Create Task Form")]),
     _vm._v(" "),
-    _c("div", { staticClass: "col-12" }, [
-      _c("div", { staticClass: "card-text-center" }, [
-        _c("div", { staticClass: "card-header" }, [_vm._v("Add New Kanban")]),
+    _c("br"),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.createTask($event)
+          }
+        }
+      },
+      [
+        _c("label", [_vm._v("Title")]),
         _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "cardcontent nopadding" }, [
-            _c(
-              "form",
-              {
-                attrs: { method: "post" },
-                on: {
-                  submit: function($event) {
-                    $event.preventDefault()
-                    return _vm.addKanban($event)
-                  }
-                }
-              },
-              [
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.title,
-                          expression: "title"
-                        }
-                      ],
-                      staticStyle: { width: "100%" },
-                      attrs: {
-                        type: "text",
-                        placeholder: "Pleace enter the title here"
-                      },
-                      domProps: { value: _vm.title },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.title = $event.target.value
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.title,
-                          expression: "title"
-                        }
-                      ],
-                      staticStyle: { width: "100%" },
-                      attrs: {
-                        type: "text",
-                        placeholder: "Pleace enter the title here"
-                      },
-                      domProps: { value: _vm.title },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.title = $event.target.value
-                        }
-                      }
-                    })
-                  ])
-                ])
-              ]
-            )
-          ])
-        ])
-      ])
-    ])
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.title,
+              expression: "title"
+            }
+          ],
+          staticClass: "form_create",
+          attrs: { type: "text", name: "" },
+          domProps: { value: _vm.title },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.title = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "btn_login",
+          attrs: { type: "submit", id: "save-button", value: "Save" }
+        }),
+        _c("br")
+      ]
+    )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col" }, [
-      _c("h1", [_vm._v("Add New Kanban")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
           return {
@@ -11895,6 +11887,226 @@ render._withStripped = true
       
       }
     })();
+},{"axios":"node_modules/axios/index.js","_css_loader":"../../../../../../../usr/lib/node_modules/parcel/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/Register.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = {
+  name: "registerPage",
+  data: function data() {
+    return {
+      email: "",
+      password: "",
+      confirmpassword: ""
+    };
+  },
+  methods: {
+    userRegister: function userRegister() {
+      var _this = this;
+
+      console.log(this.email, this.password);
+
+      if (this.password === this.confirmpassword) {
+        (0, _axios.default)({
+          method: "post",
+          url: "http://localhost:3000/users/register",
+          data: {
+            email: this.email,
+            password: this.password
+          }
+        }).then(function (success) {
+          _this.$emit('showContent', "Login");
+        }).catch(function (err) {
+          console.log(err);
+
+          _this.$emit("error-message", "Email or password dismatch");
+        });
+      } else {}
+    },
+    toRegister: function toRegister() {
+      this.$emit("change-page", "register");
+    }
+  }
+};
+exports.default = _default;
+        var $690ddb = exports.default || module.exports;
+      
+      if (typeof $690ddb === 'function') {
+        $690ddb = $690ddb.options;
+      }
+    
+        /* template */
+        Object.assign($690ddb, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "login" }, [
+    _c("h1", [_vm._v("Register Form")]),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.userRegister($event)
+          }
+        }
+      },
+      [
+        _c("label", [_vm._v("Email")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.email,
+              expression: "email"
+            }
+          ],
+          staticClass: "form_login",
+          attrs: { type: "text", name: "", placeholder: "Input your email..." },
+          domProps: { value: _vm.email },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.email = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("label", [_vm._v("Password")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.password,
+              expression: "password"
+            }
+          ],
+          staticClass: "form_login",
+          attrs: {
+            type: "password",
+            name: "password",
+            placeholder: "Input your password..."
+          },
+          domProps: { value: _vm.password },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.password = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("label", [_vm._v("Confirm Password")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.confirmpassword,
+              expression: "confirmpassword"
+            }
+          ],
+          staticClass: "form_login",
+          attrs: {
+            type: "password",
+            name: "confirmpassword",
+            placeholder: "Input your confirm password..."
+          },
+          domProps: { value: _vm.confirmpassword },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.confirmpassword = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "btn_login",
+          attrs: { type: "submit", id: "login-button", value: "Register" }
+        }),
+        _c("br")
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$690ddb', $690ddb);
+          } else {
+            api.reload('$690ddb', $690ddb);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
 },{"axios":"node_modules/axios/index.js","_css_loader":"../../../../../../../usr/lib/node_modules/parcel/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
 "use strict";
 
@@ -11912,6 +12124,8 @@ var _Navbar = _interopRequireDefault(require("./components/Navbar.vue"));
 var _KanbanCreate = _interopRequireDefault(require("./components/KanbanCreate.vue"));
 
 var _KanbanEdit = _interopRequireDefault(require("./components/KanbanEdit.vue"));
+
+var _Register = _interopRequireDefault(require("./components/Register.vue"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11945,11 +12159,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
-//
-//
-//
-// import FormRegister from './components/Register.vue'
 var _default = {
   name: 'App',
   data: function data() {
@@ -11963,10 +12172,8 @@ var _default = {
     Navbar: _Navbar.default,
     Login: _Login.default,
     KanbanCreate: _KanbanCreate.default,
-    KanbanEdit: _KanbanEdit.default // loginPage: loginPage,
-    // kanbanPage
-    // , FormRegister
-
+    KanbanEdit: _KanbanEdit.default,
+    Register: _Register.default
   },
   methods: {
     changePage: function changePage(page) {
@@ -11975,10 +12182,16 @@ var _default = {
     editTask: function editTask(id) {
       this.editId = id;
       this.currentPage = 'Edit';
+    },
+    createTask: function createTask() {
+      this.currentPage = 'Create';
+    },
+    register: function register() {
+      this.currentPage = 'Register';
     }
   },
-  created: function created() {// if(!localStorage.getItem("token")) this.currentPage = "Login";
-    // else this.currentPage = "dashboard";
+  created: function created() {
+    if (!localStorage.getItem("token")) this.currentPage = "Login";else this.currentPage = "Home";
   }
 };
 exports.default = _default;
@@ -11998,7 +12211,9 @@ exports.default = _default;
     "div",
     [
       _vm.currentPage === "Home"
-        ? _c("Navbar", { on: { logout: _vm.changePage } })
+        ? _c("Navbar", {
+            on: { logout: _vm.changePage, createTask: _vm.createTask }
+          })
         : _vm._e(),
       _vm._v(" "),
       _vm.currentPage === "Home"
@@ -12018,6 +12233,10 @@ exports.default = _default;
             attrs: { editId: _vm.editId },
             on: { showContent: _vm.changePage }
           })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.currentPage === "Register"
+        ? _c("Register", { on: { showContent: _vm.changePage } })
         : _vm._e()
     ],
     1
@@ -12056,7 +12275,7 @@ render._withStripped = true
       
       }
     })();
-},{"./components/Login.vue":"src/components/Login.vue","./components/Kanban.vue":"src/components/Kanban.vue","./components/Navbar.vue":"src/components/Navbar.vue","./components/KanbanCreate.vue":"src/components/KanbanCreate.vue","./components/KanbanEdit.vue":"src/components/KanbanEdit.vue","_css_loader":"../../../../../../../usr/lib/node_modules/parcel/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/main.js":[function(require,module,exports) {
+},{"./components/Login.vue":"src/components/Login.vue","./components/Kanban.vue":"src/components/Kanban.vue","./components/Navbar.vue":"src/components/Navbar.vue","./components/KanbanCreate.vue":"src/components/KanbanCreate.vue","./components/KanbanEdit.vue":"src/components/KanbanEdit.vue","./components/Register.vue":"src/components/Register.vue","_css_loader":"../../../../../../../usr/lib/node_modules/parcel/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
 var _vue = _interopRequireDefault(require("vue"));
@@ -12098,7 +12317,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40493" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37521" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

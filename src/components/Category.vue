@@ -6,6 +6,7 @@
                 v-bind:key="task.id"
                 v-bind:task="task"
                 @editTask="editTask"
+                @createTask="createTask"
                 @forwardTask="forwardTask"
         ></TaskCard>
     </div>
@@ -49,6 +50,9 @@ export default {
         },
         editTask(id) {
             this.$emit('editTask', id);
+        },
+        createTask() {
+            this.$emit('createTask');
         },
         forwardTask(id, category) {
             axios({

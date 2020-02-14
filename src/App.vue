@@ -1,17 +1,9 @@
 <template>
 <div>
-    <!-- <loginPage v-on:showContent="showContent" v-if="currentPage === 'login'"></loginPage>
-    <kanbanPage v-if="currentPage === 'contentPage'"></kanbanPage> -->
-<!--    
-    <FormRegister
-        v-if="currentPage === 'Register'"
-    ></FormRegister>
-    <FormKanban
-        v-if="currentPage === 'Task'"
-    ></FormKanban> -->
     <Navbar
         v-if="currentPage === 'Home'"
         @logout = 'changePage'
+        @createTask= 'createTask'
     ></Navbar>
     <kanban-page v-if="currentPage === 'Home'"
         @editTask="editTask"
@@ -24,11 +16,15 @@
         v-if="currentPage === 'Create'"
         @showContent = 'changePage'
     ></KanbanCreate>
-        <KanbanEdit
+    <KanbanEdit
         v-if="currentPage === 'Edit'"
         @showContent = 'changePage'
         v-bind:editId = 'editId'
     ></KanbanEdit>
+    <Register
+        v-if="currentPage === 'Register'"
+        @showContent = 'changePage'
+    ></Register>
 </div>
 </template>
 
@@ -38,7 +34,8 @@ import Kanban from './components/Kanban.vue';
 import Navbar from './components/Navbar.vue';
 import KanbanCreate from './components/KanbanCreate.vue';
 import KanbanEdit from './components/KanbanEdit.vue';
-// import FormRegister from './components/Register.vue'
+import Register from './components/Register.vue';
+
 export default {
     name: 'App',
     data(){
@@ -52,10 +49,8 @@ export default {
         Navbar,
         Login,
         KanbanCreate,
-        KanbanEdit
-        // loginPage: loginPage,
-        // kanbanPage
-        // , FormRegister
+        KanbanEdit,
+        Register
     },
     methods: {
         changePage(page) {
@@ -64,11 +59,17 @@ export default {
         editTask(id) {
             this.editId = id;
             this.currentPage = 'Edit'
+        },
+        createTask() {
+            this.currentPage = 'Create'
+        },
+        register(){
+            this.currentPage = 'Register'
         }
     },
     created() {
-        // if(!localStorage.getItem("token")) this.currentPage = "Login";
-        // else this.currentPage = "dashboard";
+        if(!localStorage.getItem("token")) this.currentPage = "Login";
+        else this.currentPage = "Home";
     }
 }
 </script>

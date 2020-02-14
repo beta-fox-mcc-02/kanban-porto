@@ -1,54 +1,57 @@
 <template>
+    <div class="login">
+        <h1>Create Task Form</h1> <br>
+        <form @submit.prevent="createTask">
+            <label>Title</label>
+            <input v-model="title" type="text" name="" class="form_create" >
 
-  <div class="row newpost">
-      <div class="col">
-          <h1>Add New Kanban</h1>
-      </div>
-      <div class="col-12">
-          <div class="card-text-center">
-              <div class="card-header">Add New Kanban</div>
-              <div class="card-body">
-                  <div class="cardcontent nopadding">
-                      <form method="post" v-on:submit.prevent="addKanban">
-                          <div class="row">
-                              <div class="col">
-                                  <input
-                                    v-model="title"
-                                    type="text"
-                                    style="width: 100%;"
-                                    placeholder="Pleace enter the title here"
-                                    >
-                              </div>
-                          </div>
-                          <div class="row">
-                              <div class="col">
-                                  <input
-                                    v-model="title"
-                                    type="text"
-                                    style="width: 100%;"
-                                    placeholder="Pleace enter the title here"
-                                    >
-                              </div>
-                          </div>
-                      </form>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+            <input type="submit" id="save-button" class="btn_login" value="Save"><br>
+        </form>		
+    </div>
 </template>
 
 <script>
 import axios from "axios";
+
 export default {
+    name: "KanbanAdd",
+    // props: {
+    //     title: String
+    // },
     data() {
-        return{
+        return {
+            title: ""
+        };
+    },
+    methods: {
+        createTask() {
+            console.log('Create');
             
+            axios({
+                method: "post",
+                url: "http://localhost:3000/board/",
+                headers: {
+                    "token" : localStorage.token
+                },
+                data: {
+                    title : this.title
+                }
+            })
+                .then(result => {
+                    console.log(this.title);
+                    
+                    this.$emit("showContent", "Home")
+                })
+                .catch(err => {
+                    console.log(err);
+                    
+                    this.$emit("error-message",
+                    "Email or password dismatch");
+                })
         }
     }
 }
 </script>
 
 <style>
-
 </style>
