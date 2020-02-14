@@ -3,7 +3,7 @@ import axios from 'axios'
 const isAuthenticated = () => {
   return axios({
     method: 'GET',
-    url: 'http://localhost:3000/users',
+    url: 'https://guarded-thicket-00309.herokuapp.com/users',
     headers: {
       Authorization: 'Bearer ' + localStorage.token
     }
