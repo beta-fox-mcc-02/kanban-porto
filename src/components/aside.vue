@@ -9,8 +9,8 @@
                     <div id="users-container" v-for="user in users" v-bind:key="user.name">
                         <div class="desc">
                             <div class="user"> {{user.name}} </div>
-                            <div  v-if="user.totalTask > 2"> Has {{user.totalTask}} Tasks </div>
-                            <div v-else-if="user.totalTask == 1"> Has only{{user.totalTask}} Task </div>
+                            <div  v-if="user.totalTask >= 2"> Has {{user.totalTask}} Tasks </div>
+                            <div v-else-if="user.totalTask == 1"> Has only {{user.totalTask}} Task </div>
                             <div v-else> Has no Task </div>
                         </div>
                     </div>
@@ -45,15 +45,17 @@ export default {
             this.$emit('changePage', { page: fromChild.page })
         },
         showUsers() {
-            this.currentPage = 'showUsers'
             axios({
                 method: "GET",
                 url: "https://desolate-mountain-17477.herokuapp.com/user/findAll"
             })
-            .then((result) => this.users = result.data.result)
+            .then((result) => {
+                this.users = result.data.result
+                this.currentPage = 'showUsers'
+            })
             .catch((err) => console.log(err))
         },
-        close() { this.currentPage = '' }
+        close() { this.currentPage = 'member' }
     },
     components: { AddTaskComponent }
 }
