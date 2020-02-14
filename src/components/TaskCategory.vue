@@ -60,9 +60,8 @@
 </template>
 
 <script>
-const BASE_URL = "http://localhost:3000";
 import draggable from "vuedraggable";
-import axios from "axios";
+import axios from "../config";
 import Task from "./Task";
 export default {
   name: "TaskCategory",
@@ -85,7 +84,7 @@ export default {
     addNewTask() {
       axios({
         method: "POST",
-        url: BASE_URL + "/tasks",
+        url: "/tasks",
         headers: {
           Authorization: "Bearer " + localStorage.token
         },
@@ -106,7 +105,7 @@ export default {
     fetchTasks() {
       axios({
         method: "GET",
-        url: BASE_URL + "/tasks/category/" + this.category.id,
+        url: "/tasks/category/" + this.category.id,
         headers: {
           Authorization: "Bearer " + localStorage.token
         }
@@ -132,7 +131,7 @@ export default {
       const task = evt.draggedContext.element;
       axios({
         method: "PUT",
-        url: BASE_URL + "/tasks/" + task.id,
+        url: "/tasks/" + task.id,
         headers: {
           Authorization: "Bearer " + localStorage.token
         },

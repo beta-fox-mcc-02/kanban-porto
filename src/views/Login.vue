@@ -51,12 +51,11 @@
 </template>
 
 <script>
-const BASE_URL = "http://localhost:3000";
 import GoogleSigninButton from "../components/GoogleSigninButton";
 import ButtonLoading from "../components/ButtonLoading";
 import Alert from "../components/Alert";
 import isAuthenticated from "../helpers/isAuthenticated";
-import axios from "axios";
+import axios from "../config";
 export default {
   name: "Login",
   components: {
@@ -75,11 +74,14 @@ export default {
   methods: {
     login() {
       this.isLoading = true;
-      axios
-        .post(BASE_URL + "/users/login", {
+      axios({
+        method: "POST",
+        url: "/users/login",
+        data: {
           email: this.email,
           password: this.password
-        })
+        }
+      })
         .then(response => {
           localStorage.token = response.data.token;
           this.isLoading = false;

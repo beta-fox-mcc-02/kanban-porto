@@ -67,8 +67,7 @@
 </template>
 
 <script>
-import axios from "axios";
-const BASE_URL = "http://localhost:3000";
+import axios from "../config";
 export default {
   name: "TaskModal",
   props: ["taskId"],
@@ -86,7 +85,7 @@ export default {
     getTask() {
       axios({
         method: "GET",
-        url: BASE_URL + "/tasks/" + this.taskId,
+        url: "/tasks/" + this.taskId,
         headers: {
           Authorization: "Bearer " + localStorage.token
         }
@@ -123,7 +122,7 @@ export default {
     editTask() {
       axios({
         method: "PUT",
-        url: BASE_URL + "/tasks/" + this.taskId,
+        url: "/tasks/" + this.taskId,
         headers: {
           Authorization: "Bearer " + localStorage.token
         },

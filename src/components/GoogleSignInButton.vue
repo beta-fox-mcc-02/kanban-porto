@@ -7,8 +7,7 @@
 </template>
 
 <script>
-const BASE_URL = "http://localhost:3000";
-import axios from "axios";
+import axios from "../config";
 export default {
   name: "GoogleSigninButton",
   data() {
@@ -24,7 +23,7 @@ export default {
       const token = user.getAuthResponse().id_token;
       axios({
         method: "POST",
-        url: BASE_URL + "/users/gLogin",
+        url: "/users/gLogin",
         headers: {
           token
         }

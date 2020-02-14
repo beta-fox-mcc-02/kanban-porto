@@ -86,12 +86,11 @@
 </template>
 
 <script>
-const BASE_URL = "http://localhost:3000";
 import GoogleSigninButton from "../components/GoogleSigninButton";
 import ButtonLoading from "../components/ButtonLoading";
 import Alert from "../components/Alert";
 import isAuthenticated from "../helpers/isAuthenticated";
-import axios from "axios";
+import axios from "../config";
 export default {
   name: "Register",
   components: {
@@ -113,14 +112,17 @@ export default {
   methods: {
     registerUser() {
       this.isLoading = true;
-      axios
-        .post(BASE_URL + "/users/register", {
+      axios({
+        method: "POST",
+        url: "/users/register",
+        data: {
           email: this.email,
           username: this.username,
           password: this.password,
           first_name: this.firstname,
           last_name: this.lastname
-        })
+        }
+      })
         .then(response => {
           localStorage.token = response.data.token;
           this.isLoading = false;

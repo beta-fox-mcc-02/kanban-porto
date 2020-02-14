@@ -72,8 +72,7 @@ import DeleteModal from "../components/DeleteModal";
 import isAuthenticated from "../helpers/isAuthenticated";
 import draggable from "vuedraggable";
 import { Fragment } from "vue-fragment";
-import axios from "axios";
-const BASE_URL = "http://localhost:3000";
+import axios from "../config";
 export default {
   name: "Board",
   components: {
@@ -106,7 +105,7 @@ export default {
     addCategory() {
       axios({
         method: "POST",
-        url: BASE_URL + "/categories",
+        url: "/categories",
         headers: {
           Authorization: "Bearer " + localStorage.token
         },
@@ -126,7 +125,7 @@ export default {
     getCategories() {
       axios({
         method: "GET",
-        url: BASE_URL + "/categories",
+        url: "/categories",
         headers: {
           Authorization: "Bearer " + localStorage.token
         }
@@ -155,7 +154,7 @@ export default {
     deleteTask() {
       axios({
         method: "DELETE",
-        url: BASE_URL + "/tasks/" + this.taskId,
+        url: "/tasks/" + this.taskId,
         headers: {
           Authorization: "Bearer " + localStorage.token
         }
@@ -174,7 +173,7 @@ export default {
     editCategory(value) {
       axios({
         method: "PUT",
-        url: BASE_URL + "/categories/" + value.id,
+        url: "/categories/" + value.id,
         headers: {
           Authorization: "Bearer " + localStorage.token
         },
