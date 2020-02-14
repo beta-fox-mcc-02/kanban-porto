@@ -1,11 +1,11 @@
 <template>
     <div class="card" id="card-title">
+        {{ list }}
         <div class="card-content">
             <p> {{ list.title }} </p>
         </div>
         <div class="card-tabs" id="plan-card-title-center">
-            <i class="fas fa-user"></i>
-            <a @click="changePage('editForm')"><i class="fas fa-edit"></i></a>
+            <a @click="changePageEdit(list.title, list.CategoryId, list.UserId)"><i class="fas fa-edit"></i></a>
             <a @click="destroy(list.id)"><i class="fas fa-trash-alt" ></i></a>
         </div>
         <div  class="card-content grey lighten-4" id="plan-card-title-bottom">
@@ -62,6 +62,11 @@ export default {
         },
         fetch() {
             this.$emit('fetch')
+        },
+        changePageEdit(title, CategoryId, UserId) {
+            console.log(title, CategoryId, UserId, "DARIIIIIII KAONTEEENNNNNNNNNN")
+            this.$emit('formEdit', title, CategoryId, UserId)
+            this.changePage('editForm')
         }
     }, 
     computed: {

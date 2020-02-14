@@ -10,6 +10,7 @@
         :task="getCategory"
         @changePage="changePage"
         @fetch="fetch"
+        @formEdit="formEdit"
         ></kanbanContent>
     </div>
 </template>
@@ -40,6 +41,10 @@ export default {
         },
         fetch() {
             this.$emit('fetch')
+        },
+        formEdit(title, CategoryId, UserId)  {
+            console.log(title, CategoryId, UserId, "DARIIIIIII KANBVAANN CARRDDD > B+VUEEEE")
+            this.$emit('formEdit', title, CategoryId, UserId)
         }
     },
     computed: {

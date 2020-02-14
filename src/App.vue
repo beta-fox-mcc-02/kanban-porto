@@ -14,6 +14,7 @@
         ></Login>
         <Home 
         @changePage="changePage" 
+        @formEdit="formEdit"
         v-else-if="currentPage === 'landing'"
         ></Home>
         <AddTask 
@@ -22,6 +23,9 @@
         ></AddTask>
         <EditForm
         v-else-if="currentPage === 'editForm'"
+        :title="title"
+        :CategoryId="CategoryId"
+        :UserId="UserId"
         @changePage="changePage"
         ></EditForm>
     </div>
@@ -39,7 +43,10 @@ import EditForm from './components/editForm'
 export default {
     data () {
         return {
-            currentPage: 'login'
+            currentPage: 'login',
+            title: "",
+            CategoryId: "",
+            UserId: ""
         }
     },
     components: {
@@ -54,6 +61,12 @@ export default {
         changePage(page) {
             console.log("SUDAAAAAHH MASUUKK SINI YYAASSSS")
             this.currentPage = page
+        },
+        formEdit (title, CategoryId, UserId) {
+            console.log(title, CategoryId, UserId, "PUYEEENNGGSSSSS")
+            this.title = title
+            this.CategoryId = CategoryId
+            this.UserId = UserId
         }
     },
     created() {

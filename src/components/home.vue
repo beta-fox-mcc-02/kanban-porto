@@ -7,6 +7,7 @@
         :tasks="tasks"
         @changePage="changePage"
         @fetch="fetchTask"
+        @formEdit="formEdit"
         ></kanbanCard>
     </div>
 </template>
@@ -59,6 +60,10 @@ export default {
             console.log('KAKENYA KE TRIGGER', page)
             this.$emit('changePage', page)
         },
+        formEdit(title, CategoryId, UserId) {
+            console.log(title, CategoryId, UserId, "INIII DARIIIIIIIIIII USEEERRRRRRRR")
+            this.$emit('formEdit', title, CategoryId, UserId)
+        }
     },
     components: {
         kanbanCard
