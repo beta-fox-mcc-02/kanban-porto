@@ -73,9 +73,23 @@ export default {
         },
         onSignInSuccess (googleUser) {
         var id_token = googleUser.getAuthResponse().id_token;
+            axios({
+                method: 'POST',
+                url: `http://localhost:3000/googleSignIn`,
+                headers: {access_token: id_token}
+            })
+            .then(({data}) => {
+                localStorage.setItem('access_token', data.access_token)
+                this.$emit('fetchAll')
+                // this.currentPage = 'dashboard'
+                this.$emit('changePage','dashboard')
+            })
+            .catch(response => {
+                console.log(response)
+            })
         },
         onSignInError (error) {
-        console.log('OH NOES', error)
+            console.log('OH NOES', error)
         }
     }
 }

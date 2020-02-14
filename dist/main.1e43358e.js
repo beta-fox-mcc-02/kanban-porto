@@ -9438,7 +9438,26 @@ var _default = {
       this.$emit('showRegister');
     },
     onSignInSuccess: function onSignInSuccess(googleUser) {
+      var _this2 = this;
+
       var id_token = googleUser.getAuthResponse().id_token;
+      axios({
+        method: 'POST',
+        url: "http://localhost:3000/googleSignIn",
+        headers: {
+          access_token: id_token
+        }
+      }).then(function (_ref2) {
+        var data = _ref2.data;
+        localStorage.setItem('access_token', data.access_token);
+
+        _this2.$emit('fetchAll'); // this.currentPage = 'dashboard'
+
+
+        _this2.$emit('changePage', 'dashboard');
+      }).catch(function (response) {
+        console.log(response);
+      });
     },
     onSignInError: function onSignInError(error) {
       console.log('OH NOES', error);
@@ -12639,7 +12658,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39663" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35953" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
