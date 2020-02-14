@@ -34,22 +34,29 @@
                             </span>
                         </div>
                     </div>
-                    <div class="field is-grouped is-vcentered">
-                        <p class="control">
-                            <input
-                                type="submit"
-                                value="Login"
-                                class="button is-primary"
-                            />
-                        </p>
-                        <p class="control">
-                            <a
-                                class="button is-light"
-                                @click="$router.push({ path: '/register' })"
-                            >
-                                Sign up
-                            </a>
-                        </p>
+
+                    <div class="buttons">
+                        <input
+                            type="submit"
+                            value="Login"
+                            class="button is-primary is-fullwidth"
+                        />
+
+                        <a
+                            class="button is-light is-fullwidth"
+                            @click="$router.push({ path: '/register' })"
+                        >
+                            Sign up
+                        </a>
+
+                        <GoogleLogin
+                            class="button is-danger is-fullwidth"
+                            :params="params"
+                            :onSuccess="onSuccess"
+                            :onFailure="onFailure"
+                            ><i class="mdi mdi-google"></i> &nbsp; Login with
+                            Google</GoogleLogin
+                        >
                     </div>
                 </form>
             </div>
@@ -58,11 +65,22 @@
 </template>
 
 <script>
+import GoogleLogin from 'vue-google-login'
 export default {
     data: () => {
         return {
             email: null,
-            password: null
+            password: null,
+            params: {
+                client_id:
+                    '249183931894-1jutc455mahrotsme8v47pttjo430g0e.apps.googleusercontent.com'
+            },
+            // only needed if you want to render the button with the google ui
+            renderParams: {
+                width: 250,
+                height: 50,
+                longtitle: true
+            }
         }
     },
     methods: {
@@ -80,7 +98,29 @@ export default {
                 .catch(e => {
                     console.log(e)
                 })
+        },
+        onSuccess(googleUser) {
+            // console.log(googleUser)
+
+            // This only gets the user information: id, name, imageUrl and email
+            // console.log(googleUser.getBasicProfile())
+            var id_token = googleUser.getAuthResponse().id_token
+
+            this.$store
+                .dispatch('loginWithGoogle', id_token)
+                .then(path => {
+                    this.$router.push({ path })
+                })
+                .catch(e => {
+                    console.log(e)
+                })
+        },
+        onFailure(err) {
+            console.log(err)
         }
+    },
+    components: {
+        GoogleLogin
     }
 }
 </script>
