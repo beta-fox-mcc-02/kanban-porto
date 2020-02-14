@@ -1,5 +1,9 @@
 <template>
   <section class="container">
+        <loading :active.sync="isLoading" 
+        :can-cancel="true" 
+        :on-cancel="onCancel"
+        :is-full-page="fullPage"></loading>
         <div>
             <span class="content-tag" v-bind:style="task.tag === 'low priority' ? 'background-color: #3d92a2' : 'background-color: #b71b1b'"> {{ task.tag }} </span>
             <span class="content-title">{{task.title}}</span>
@@ -37,6 +41,8 @@
 
 <script>
 import axios from 'axios'
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css'
 
 export default {
     name: 'MainCards-Child',
@@ -48,12 +54,15 @@ export default {
             changeCategory: '',
             showForm: false,
             categoryNames: [],
-            validUser: true
+            validUser: true,
+            isLoading: false,
+            fullPage: true
         }
     },
     props: {
         task: Object
     },
+    components: { Loading },
     methods: {
         deleteTask(taskId){
             let token = localStorage.getItem('access_token')
@@ -89,7 +98,10 @@ export default {
         },
         editTask(taskId){
             let token = localStorage.getItem('access_token')
-            console.log(this.title)
+            this.isLoading = true;
+            setTimeout(() => {
+                this.isLoading = false
+            },1000)
             axios({
                 method: "PUT",
                 url: `https://desolate-mountain-17477.herokuapp.com/task/update/${taskId}`,
@@ -120,6 +132,9 @@ export default {
         closeForm() {
             this.clearInputs()
             this.$emit('changePage', { page: 'member' })
+        },
+        onCancel() {
+            console.log(`cancel`)
         }
     }
 }

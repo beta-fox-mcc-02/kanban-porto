@@ -1,5 +1,9 @@
 <template>
     <div class="add-task">
+        <loading :active.sync="isLoading" 
+        :can-cancel="true" 
+        :on-cancel="onCancel"
+        :is-full-page="fullPage"></loading>
         <section id="add-task-header">
             <H1>ADD NEW TASK HERE</H1>
         </section>
@@ -26,18 +30,28 @@
 </template>
 
 <script>
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css'
+
 export default {
     data() {
         return {
             taskTitle: '',
             taskTag: '',
             unfilledInput: false,
-            errorMessage: ''
+            errorMessage: '',
+            isLoading: false,
+            fullPage: true
         }
     },
+    components: { Loading },
     methods: {
         addTask() {
             if(this.taskTitle && this.taskTag) {
+                this.isLoading = true;
+                setTimeout(() => {
+                    this.isLoading = false
+                },1000)
                 let token = localStorage.getItem('access_token')
                 axios({
                     method: "POST",
@@ -63,6 +77,9 @@ export default {
             this.taskTitle = '',
             this.taskTag = '',
             this.unfilledInput = false
+        },
+        onCancel() {
+            console.log(`cancel`)
         }
     }
 }

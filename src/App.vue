@@ -1,5 +1,9 @@
 <template>
     <div>
+        <loading :active.sync="isLoading" 
+        :can-cancel="true" 
+        :on-cancel="onCancel"
+        :is-full-page="fullPage"></loading>
         <RegisterComponent v-if="currentPage === 'register'" v-on:changePage="changePage"></RegisterComponent>
         <LoginComponent v-else-if="currentPage === 'login'" v-on:changePage="changePage"></LoginComponent>
         <div v-else-if="currentPage == 'member'">
@@ -16,6 +20,8 @@ import LoginComponent from './components/login.vue'
 import MainComponent from './components/main.vue'
 import HeaderComponent from './components/header.vue'
 import AsideComponent from './components/aside.vue'
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css'
 
 export default {
     name: 'App',
@@ -23,12 +29,18 @@ export default {
         return {
             currentPage: 'register',
             categories: [],
-            loginUserName: ''
+            loginUserName: '',
+            isLoading: false,
+            fullPage: true
         }
     },
-    components: { RegisterComponent, LoginComponent, MainComponent, HeaderComponent, AsideComponent },
+    components: { RegisterComponent, LoginComponent, MainComponent, HeaderComponent, AsideComponent, Loading },
     methods: {
         changePage(fromChild) {
+            this.isLoading = true;
+            setTimeout(() => {
+                this.isLoading = false
+            },800)
             this.currentPage = fromChild.page
             if(fromChild.page === 'member') {
                 if(fromChild.token) {
@@ -41,6 +53,10 @@ export default {
             else if (fromChild.page === 'register') localStorage.clear()
         },
         fetchAll() {
+            this.isLoading = true;
+            setTimeout(() => {
+                this.isLoading = false
+            },2000)
             let token = localStorage.getItem('access_token')
             axios({
                 method: "GET",
@@ -51,8 +67,10 @@ export default {
                 console.log(result)
                 this.categories = result.data})
             .catch((err) => console.log(err))
+        },
+        onCancel() {
+            console.log(`cancel`)
         }
-
     },
     created() {
         let access_token = localStorage.getItem('access_token')
