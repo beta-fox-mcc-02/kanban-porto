@@ -14,7 +14,7 @@
                 <i class="far fa-times-circle" v-on:click="closeForm"></i>
                 <div class="title-form">
                     <label>New title</label>
-                    <input type="text" v-bind:value="title">
+                    <input type="text" v-model="title">
                 </div>
                 <div>
                     <label>New priority</label>
@@ -72,7 +72,7 @@ export default {
             let token = localStorage.getItem('access_token')
             axios({
                 method: 'GET',
-                url: `https://desolate-mountain-17477.herokuapp.com/task/update/${taskId}`,
+                url: `http://localhost:3000/task/update/${taskId}`,
                 headers: { token }
             })
             .then((result) => {
@@ -89,9 +89,10 @@ export default {
         },
         editTask(taskId){
             let token = localStorage.getItem('access_token')
+            console.log(this.title)
             axios({
                 method: "PUT",
-                url: `https://desolate-mountain-17477.herokuapp.com/task/update/${taskId}`,
+                url: `http://localhost:3000/task/update/${taskId}`,
                 headers: { token },
                 data: {
                     title: this.title,
