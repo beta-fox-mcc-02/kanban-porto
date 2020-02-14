@@ -103,7 +103,7 @@ export default {
           this.tasks = [];
           this.fetchData();
           this.newTask = '';
-          this.$emit('loadingPage', false);
+          // this.$emit('loadingPage', false);
         })
         .catch(err => {
           this.$emit('loadingPage', false);

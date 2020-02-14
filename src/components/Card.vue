@@ -61,7 +61,7 @@ export default {
         }
       })
         .then(res => {
-          this.$emit('loadingPage', false);
+          // this.$emit('loadingPage', false);
           console.log('success delete data');
           this.$emit('fetchDataAgain')
         })
@@ -103,7 +103,7 @@ export default {
         }
       })
         .then(res => {
-          this.$emit('loadingPage', false);
+          // this.$emit('loadingPage', false);
           console.log('success update data');
           this.$emit('fetchDataAgain');
         })
@@ -138,7 +138,7 @@ export default {
           })
         })
         .then(res => {
-          this.$emit('loadingPage', false);
+          // this.$emit('loadingPage', false);
           console.log(res.data);
           this.$emit('fetchDataAgain');
           this.$emit('reloadOtherCategory', catId)

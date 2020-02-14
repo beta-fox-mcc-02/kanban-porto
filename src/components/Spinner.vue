@@ -22,6 +22,7 @@ export default {
   margin-left: -50px;
   margin-top: -50px;
   background-size: 100%;
+  z-index: 99;
 }
 
 </style>
