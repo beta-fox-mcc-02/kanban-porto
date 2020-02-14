@@ -15,6 +15,7 @@
               @openModalDelete="openModalDelete"
               v-for="cat in categories"
               :key="cat.id"
+              :id="cat.id"
               :category="cat"
             ></TaskCategory>
           </draggable>
@@ -146,7 +147,6 @@ export default {
     openModalDelete(payload) {
       this.isOpenModalDelete = payload.isOpen;
       this.taskId = payload.taskId;
-      console.log(this.taskId);
     },
     closeModalDelete(payload) {
       this.isOpenModalDelete = payload;

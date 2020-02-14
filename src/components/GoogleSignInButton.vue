@@ -5,12 +5,27 @@
 </template>
 
 <script>
+const BASE_URL = "http://localhost:3000";
+import axios from "axios";
 export default {
   name: "GoogleSigninButton",
   methods: {
     onSignIn(user) {
-      const profile = user.getBasicProfile();
-      this.profile = profile;
+      const token = user.getAuthResponse().id_token;
+      axios({
+        method: "POST",
+        url: BASE_URL + "/users/gLogin",
+        headers: {
+          token
+        }
+      })
+        .then(response => {
+          localStorage.token = response.data.token;
+          this.$router.push({ path: "/board" });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     signOut() {
       var auth2 = gapi.auth2.getAuthInstance();

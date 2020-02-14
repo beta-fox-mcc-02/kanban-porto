@@ -128,7 +128,8 @@ export default {
         },
         data: {
           title: this.title,
-          description: this.description
+          description: this.description,
+          category_id: this.task.category_id
         }
       })
         .then(response => {

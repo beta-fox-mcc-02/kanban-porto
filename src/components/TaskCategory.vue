@@ -1,10 +1,16 @@
 <template>
-  <div class="category-list-wrapper">
-    <div class="category-content">
+  <div :id="category.id" class="category-list-wrapper">
+    <div :id="category.id" class="category-content">
       <div class="category-heading">{{ category.name }}</div>
       <label>{{ tasks.length }} {{ tasks.length && tasks.length > 1 ? 'Tasks' : 'Task' }}</label>
     </div>
-    <draggable group="people" v-model="tasks" @start="drag=true" @end="drag=false">
+    <draggable
+      :move="checkMove"
+      group="people"
+      v-model="tasks"
+      @start="drag=true"
+      @end="drag=false"
+    >
       <Task
         @openModalDelete="openModalDelete"
         @updateTask="updateTask"
@@ -52,9 +58,6 @@ export default {
   },
   props: ["category"],
   methods: {
-    checkMove(event) {
-      console.log(event);
-    },
     toggleForm() {
       this.isAddTask = !this.isAddTask;
     },
@@ -102,6 +105,26 @@ export default {
     },
     openModalDelete(payload) {
       this.$emit("openModalDelete", payload);
+    },
+    checkMove(evt) {
+      const categoryId = evt.to.previousElementSibling.id;
+      const task = evt.draggedContext.element;
+      axios({
+        method: "PUT",
+        url: BASE_URL + "/tasks/" + task.id,
+        headers: {
+          Authorization: "Bearer " + localStorage.token
+        },
+        data: {
+          title: task.title,
+          description: task.description,
+          category_id: +categoryId
+        }
+      })
+        .then(response => {})
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   data() {
