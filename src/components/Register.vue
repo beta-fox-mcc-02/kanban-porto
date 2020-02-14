@@ -14,7 +14,8 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '../config/axios'
+
 export default {
    name: "Register",
    data: function() {
@@ -32,7 +33,7 @@ export default {
          let password = this.password
          axios({
             method: "POST",
-            url: "http://localhost:3000/users/register",
+            url: "/users/register",
             responseType: 'json',
             data : {
                name,

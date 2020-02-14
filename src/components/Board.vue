@@ -2,7 +2,7 @@
   <div class="row">
      <div class="col">
          <div class="text-center mb-3">
-            <h1 >Kanban</h1>
+            <h1 >Kanban Windows 98 Theme</h1>
             <input class="btn btn-primary" type="submit" href="#" value="Add Category" @click="inputCreate">
             <div v-if="status">
                <form @submit="createCategory">
@@ -13,9 +13,17 @@
          </div>
          <div class="flex">
             <Category 
-            v-for="category in categories.categories" 
+            v-for="category in categories" 
             :key="category.id" 
-            :category="category" class="card-category m-2" @deleteCat="deleteCat" @fetchCat="fetchCat">  
+            :category="category" 
+            class="card-category m-2" 
+            @deleteCat="deleteCat" 
+            @fetchCat="fetchCat"
+            :start="start"
+            :end="end"
+            @prev="prev"
+            @next="next"
+            :allCategory="allCategory">  
       
             </Category>
          </div>
@@ -24,7 +32,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '../config/axios'
 import Category from './Category'
 
 export default {
@@ -33,7 +41,10 @@ export default {
          task : '',
          categories : [],
          status : false,
-         name : ''
+         name : '',
+         startCat : '',
+         endCat : '',
+         allCategory: ''
       }
    },
    components :{
@@ -43,7 +54,7 @@ export default {
       createCategory () {
          axios({
             method: 'POST',
-            url : 'http://localhost:3000/categories',
+            url : '/categories',
             headers : {
                token : localStorage.token
             },
@@ -63,14 +74,18 @@ export default {
       fetchCategories () {
          axios({
             method: 'GET',
-            url : 'http://localhost:3000/categories',
+            url : '/categories',
             headers : {
                token : localStorage.token
             }
          })
             .then(response => {
-               console.log(response, 'fetch categories')
-               this.categories = response.data
+               console.log(response.data.categories, 'fetch categories')
+               this.categories = response.data.categories
+               this.allCategory = response.data.categories
+               // console.log(this.categories.categories)
+               this.start = this.categories[0].id
+               this.end = this.categories[this.categories.length - 1].id
             })
             .catch(err => {
                console.log(err, 'fail fetch categories')
@@ -80,7 +95,7 @@ export default {
          console.log('delete categories')
          axios({
             method: 'DELETE',
-            url: `http://localhost:3000/categories/${id}`, 
+            url: `/categories/${id}`, 
             headers : {
                token : localStorage.token
             }
@@ -109,6 +124,13 @@ export default {
       },
       fetchCat() {
          this.fetchCategories()
+      },
+      next(catId, taskId) {
+         console.log(catId, taskId)
+
+      },
+      prev(catId, taskId) {
+         console.log(catId, taskId)
       }
    },
    created () {
@@ -131,7 +153,7 @@ export default {
    }
    .card-category {
       background-color: teal;
-      overflow: scroll;
+      overflow: auto;
       height: 400px
    }
 </style>>

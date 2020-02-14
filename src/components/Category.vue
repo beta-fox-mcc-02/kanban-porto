@@ -15,7 +15,15 @@
          <Task 
          v-for="task in listTasks" 
          :key="task.id" 
-         :task="task" @deleteTask="deleteTask" @updateTask="updateTask" :editModal="editModal">
+         :task="task" 
+         @deleteTask="deleteTask" 
+         @updateTask="updateTask" 
+         :editModal="editModal"
+         :start="start"
+         :end="end"
+         :categoryId="category.id"
+         @prev="prev"
+         @next="next">
 
          </Task>
          <div class="btn-new-task">
@@ -31,8 +39,6 @@
             <input type="text" v-model="title" required>
             <label>Description</label>
             <input type="description" v-model="description">
-            <select>
-            </select>
             <button type="submit" @click.prevent="updatingTask">Save</button>
          </div>
          <button type="submit" @click="closeModal">Close</button> 
@@ -41,7 +47,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '../config/axios'
 import Task from './Task'
 
 export default {
@@ -61,7 +67,7 @@ export default {
          catShow : true
       }
    },
-   props : ["category"],
+   props : ["category", "start", "end", "allCategory"],
    methods : {
       addTask () {
          console.log('add task')
@@ -71,7 +77,7 @@ export default {
          let categoryId = this.category.id
          axios({
             method: "GET",
-            url : `http://localhost:3000/tasks/category/${categoryId}`,
+            url : `/tasks/category/${categoryId}`,
             headers : {
                token : localStorage.token
             }
@@ -86,7 +92,7 @@ export default {
       addNewTask() {
          axios({
             method: 'POST',
-            url: `http://localhost:3000/tasks`,
+            url: `/tasks`,
             headers : {
                token : localStorage.token
             },
@@ -107,7 +113,7 @@ export default {
       deleteTask(id) {
          axios({
             method: "DELETE",
-            url : `http://localhost:3000/tasks/${id}`,
+            url : `/tasks/${id}`,
             headers : {
                token : localStorage.token
             }
@@ -140,7 +146,7 @@ export default {
          // console.log('masuk get task by id')
          axios({
             method: 'GET',
-            url : `http://localhost:3000/tasks/${id}`,
+            url : `/tasks/${id}`,
             headers : {
                token : localStorage.token
             }
@@ -158,22 +164,32 @@ export default {
                console.log(err)
             })
       },
-      updatingTask() {
-         console.log('masuk updating task')
-         console.log(this.taskId, this.title, this.description)
+      updatingTask(catId, taskId) {
+         // console.log(catId, 'updating task 2')
+         // console.log('masuk updating task')
+         // console.log(this.taskId, this.title, this.description, catId)
          let newDescription
          if(this.description) {
             newDescription = this.description
          } else {
             newDescription = null
          }
+         let CategoryId
          let id = this.taskId
+         if(catId && taskId) {
+            id = taskId
+            CategoryId = catId
+         } else {
+            CategoryId = null
+         }  
+         console.log(CategoryId, id)
          axios({
             method: "PUT",
-            url: `http://localhost:3000/tasks/${id}`,
+            url: `/tasks/${id}`,
             data : {
                title : this.title,
-               description : newDescription
+               description : newDescription,
+               CategoryId
             },
             headers : {
                token : localStorage.token
@@ -193,7 +209,7 @@ export default {
          console.log(id)
          axios({
             method: 'GET',
-            url : `http://localhost:3000/categories/${id}`,
+            url : `/categories/${id}`,
             headers : {
                token : localStorage.token
             }
@@ -223,7 +239,7 @@ export default {
          // this.$emit('updateCategory', this.category.id, this.categoryName)
          axios({
             method: 'PUT',
-            url : `http://localhost:3000/categories/${id}`,
+            url : `/categories/${id}`,
             headers : {
                token : localStorage.token
             },
@@ -239,6 +255,45 @@ export default {
             .catch(err => {  
                console.log(err, 'error update category')
             })
+      },
+      next(catId, taskId) {
+         // console.log(catId, taskId)
+         // console.log(catId, 'next 1')
+         // console.log(this.allCategory)
+         let status = true
+         let i = 0 
+         while(status) {
+            if(this.allCategory[i].id === +catId) {
+               catId = this.allCategory[i+1].id
+               status = false
+            } else {
+               i++
+            }
+         }
+         // console.log(catId, 'next 2', taskId)
+         this.updatingTask(catId, taskId)
+         // this.$emit('next', catId, taskId)
+      },
+      prev(catId, taskId) {
+         // console.log(catId, taskId)
+         // console.log(this.allCategory)
+         
+         let status = true
+         let i = this.allCategory.length-1
+         while(status) {
+            if(this.allCategory[i].id === +catId) {
+               catId = this.allCategory[i-1].id
+               status = false
+            } else {
+               i--
+            }
+            if(i <= 0) {
+               status = false
+            }
+         }   
+         // console.log(catId, 'next 2', taskId)
+         this.updatingTask(catId, taskId)
+         // this.$emit('prev', catId, taskId)
       }
    },
    watch : {
@@ -255,6 +310,13 @@ export default {
    computed: {
       listTasks () {
          return this.tasks
+      },
+      firstCat () {
+         let i = 0
+         
+      },
+      lastCat () {
+         
       }
    }
 }

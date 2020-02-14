@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '../config/axios'
 import Google from '../components/GoogleSignIn'
 
 export default {
@@ -37,7 +37,7 @@ export default {
          let password = this.password
          axios({
             method: "POST",
-            url: "http://localhost:3000/users/login",
+            url: "/users/login",
             data : {
                email,
                password

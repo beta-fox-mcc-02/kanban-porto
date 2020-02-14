@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '../config/axios'
 
 export default {
    data () {
@@ -33,7 +33,7 @@ export default {
          // console.log(token)
          axios({
             method: 'POST',
-            url : 'http://localhost:3000/users/gSignIn',
+            url : '/users/gSignIn',
             headers : {
                idtoken: token
             }
