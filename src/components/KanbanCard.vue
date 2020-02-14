@@ -7,7 +7,7 @@
         </div>
         <b-dropdown text="" variant="danger">
           <b-dropdown-item @click="toogleEditForm" href="#">Edit</b-dropdown-item>
-          <b-dropdown-item href="#">Delete</b-dropdown-item>
+          <b-dropdown-item @click="deleteTask(task.id)" href="#">Delete</b-dropdown-item>
         </b-dropdown>
       </div>
       <b-form-input v-if="edit" v-model="title" placeholder="Edit..." @keyup.enter="updateTitle(task.id)"></b-form-input>
@@ -34,20 +34,42 @@ export default {
       else this.edit = true
     },
     updateTitle (id) {
+      if (this.title !== '') {
+        axios({
+          method: 'put',
+          url: `/task/${id}`,
+          headers: {
+            token: localStorage.token
+          },
+          data: {
+            title: this.title
+          }
+        })
+          .then(({ data }) => {
+            console.log('Berhasil update', data)
+            this.$emit('fetchCategories')
+          })
+          .catch(err => {
+            console.log(err.response)
+          })
+      }
+      this.toogleEditForm()
+    },
+    deleteTask (id) {
       axios({
-        method: 'put',
+        method: 'delete',
         url: `/task/${id}`,
         headers: {
           token: localStorage.token
         }
       })
         .then(({ data }) => {
-          console.log('Berhasil update', data)
-          this.toogleEditForm()
-        })
-        .catch(err => {
-          console.log(err.response)
-        })
+            console.log(data)
+            this.$emit('fetchCategories')
+          })
+          .catch(({ response }) => {
+            console.log(response)
+          })
     }
   }
 }

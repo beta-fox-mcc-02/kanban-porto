@@ -1,7 +1,7 @@
 <template>
   <div id="kanban" class="container m-atas-10">
     <div class="row">
-      <kanbanCategory v-for="category in categories" :key="category.id" :category="category"></kanbanCategory>
+      <kanbanCategory @fetchCategories="fetchCategories" v-for="category in categories" :key="category.id" :category="category"></kanbanCategory>
     </div>
   </div>
 </template>
