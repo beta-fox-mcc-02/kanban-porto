@@ -8,6 +8,8 @@
         :key="i"
         :list="category"
         :task="getCategory"
+        @notifSuccess="notifSuccess"
+        @notifFailed="notifFailed"
         @changePage="changePage"
         @fetch="fetch"
         @formEdit="formEdit"
@@ -45,6 +47,12 @@ export default {
         formEdit(id, title, CategoryId, UserId)  {
             console.log(title, CategoryId, UserId, "DARIIIIIII KANBVAANN CARRDDD > B+VUEEEE")
             this.$emit('formEdit', id, title, CategoryId, UserId)
+        },
+        notifSuccess(msg) {
+            this.$emit('notifSuccess', msg)
+        },
+        notifFailed(msg) {
+            this.$emit('notifFailed', msg)
         }
     },
     computed: {

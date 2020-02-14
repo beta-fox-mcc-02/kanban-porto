@@ -5,6 +5,8 @@
         :key="i" 
         :box="box"
         :tasks="tasks"
+        @notifSuccess="notifSuccess"
+        @notifFailed="notifFailed"
         @changePage="changePage"
         @fetch="fetchTask"
         @formEdit="formEdit"
@@ -50,11 +52,10 @@ export default {
                 }
             })
                 .then(({data}) => {
-                    console.log(data.tasks, " << trigger")
                     this.tasks = data.tasks
                 })
                 .catch(err => {
-                    console.log(err)
+                    this.notifFailed('fetch failed')
                 })
         },
         changePage(page) {
@@ -64,6 +65,12 @@ export default {
         formEdit(id, title, CategoryId, UserId) {
             console.log(title, CategoryId, UserId, "INIII DARIIIIIIIIIII USEEERRRRRRRR")
             this.$emit('formEdit', id, title, CategoryId, UserId)
+        },
+        notifFailed(msg) {
+            this.$emit('notfifFailed', msg)
+        },
+        notifSuccess(msg) {
+            this.$emit('notifSuccess', msg)
         }
     },
     components: {

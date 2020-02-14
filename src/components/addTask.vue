@@ -27,6 +27,7 @@ export default {
                 method: 'post',
                 url: 'http://localhost:3000/tasks',
                 data: {
+                    // title: this.taskData,
                     title: this.taskData,
                     category: 1
                 }, 
@@ -35,14 +36,22 @@ export default {
                 }
             })
                 .then(data => {
+                    this.notifSuccess('sucess add task')
                     this.changePage('landing')
                 })
                 .catch(err => {
-                    console.log(err)
+                    this.notifFailed(err.responseJSON.msg[0])
+                    // console.log(err)
                 })
         },
         changePage(page) {
             this.$emit('changePage', page)
+        },
+        notifSuccess(msg) {
+            this.$emit('notifSuccess', msg)
+        },
+        notifFailed(msg) {
+            this.$emit('notifFailed', msg)
         }
     },
 }

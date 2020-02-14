@@ -41,13 +41,22 @@ export default {
                 }
 
             })
-            .then(data => {
-                this.changePage('landing')
-            })
-            .catch(err => console.log(err))
+                .then(data => {
+                    this.notifSuccess('sucess edit task')
+                    this.changePage('landing')
+                })
+                .catch(err => {
+                    this.notifFailed(err.responseJSON.msg[0])
+                })
         },
         changePage(page) {
             this.$emit('changePage', page)
+        },
+        notifSuccess(msg) {
+            this.$emit('notifSuccess', msg)
+        },
+        notifFailed(msg) {
+            this.$emit('notifFailed', msg)
         }
     },
     created () {

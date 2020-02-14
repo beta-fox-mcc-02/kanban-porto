@@ -50,10 +50,11 @@ export default {
             })
                 .then(data => {
                     this.fetch()
+                    this.notifSuccess('successs deleted')
                     this.changePage('landing')
                 })
                 .catch(err => {
-                    console.log(err)
+                    this.notifFailed(err.responseJSON.msg[0])
                 })
         },
         changePage(page) {
@@ -66,6 +67,12 @@ export default {
             console.log(title, CategoryId, UserId, "DARIIIIIII KAONTEEENNNNNNNNNN")
             this.$emit('formEdit', id, title, CategoryId, UserId)
             this.changePage('editForm')
+        },
+        notifSuccess(msg) {
+            this.$emit('notifSuccess', msg)
+        },
+        notifFailed(msg) {
+            this.$emit('notifFailed', msg)
         }
     }, 
     computed: {

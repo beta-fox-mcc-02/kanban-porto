@@ -10,7 +10,7 @@
                 <button type="submit" class="btn btn-primary">SUBMIT</button>
             </form>
             <br> 
-            <button type="button" class="g-signin2" @click="googleLogin">GOOGLE LOGIN</button>
+            <button type="button" @click="googleLogin">GOOGLE LOGIN</button>
         </div>
     </div>
 </template>
@@ -38,10 +38,12 @@ export default {
             })
                 .then(({data}) => {
                     localStorage.setItem('token', data.token)
+                    this.notifSuccess('login success')
                     this.changePage('landing')
                 })
                 .catch(err => {
                     console.log(err)
+                    // this.notifFailed(err.responseJSON.msg[0])
                 })
         },
         googleLogin () {
@@ -66,6 +68,12 @@ export default {
         },
         changePage(page) {
             this.$emit('changePage', page)
+        },
+        notifSuccess(msg) {
+            this.$emit('notifSuccess', msg)
+        },
+        notifFailed(msg) {
+            this.$emit('notifFailed', msg)
         }
     } 
 
