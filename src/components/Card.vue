@@ -52,6 +52,7 @@ export default {
   },
   methods: {
     deleteTask(){
+      this.$emit('loadingPage', true);
       axios({
         method: 'DELETE',
         url: `/kanban/${this.task.id}`,
@@ -60,14 +61,17 @@ export default {
         }
       })
         .then(res => {
+          this.$emit('loadingPage', false);
           console.log('success delete data');
           this.$emit('fetchDataAgain')
         })
         .catch(err => {
+          this.$emit('loadingPage', false);
           console.log(err.response.data);
         })
     },
     showEditForm(){
+      this.$emit('loadingPage', true);
       axios({
         method: 'GET',
         url: `/kanban/card/${this.task.id}`,
@@ -76,14 +80,17 @@ export default {
         }
       })
         .then(res => {
+          this.$emit('loadingPage', false);
           this.isEditTask = true;
           this.editedTask = res.data.data.title;
         })
         .catch(err => {
+          this.$emit('loadingPage', false);
           console.log(err.response);
         })
     },
     editTask(){
+      this.$emit('loadingPage', true);
       axios({
         method: 'PUT',
         url: `/kanban/${this.task.id}`,
@@ -96,10 +103,12 @@ export default {
         }
       })
         .then(res => {
+          this.$emit('loadingPage', false);
           console.log('success update data');
           this.$emit('fetchDataAgain');
         })
         .catch(err => {
+          this.$emit('loadingPage', false);
           console.log(err.response.data);
         })
     },
@@ -107,7 +116,7 @@ export default {
       let catId;
       if(direction === 'left') catId = this.CategoryId - 1;
       else catId = this.CategoryId + 1;
-      console.log(catId);
+      this.$emit('loadingPage', true);
       axios({
         method: 'DELETE',
         url: `/kanban/${this.task.id}`,
@@ -129,11 +138,13 @@ export default {
           })
         })
         .then(res => {
+          this.$emit('loadingPage', false);
           console.log(res.data);
           this.$emit('fetchDataAgain');
           this.$emit('reloadOtherCategory', catId)
         })
         .catch(err => {
+          this.$emit('loadingPage', false);
           console.log(err.response.data);
         })
     }

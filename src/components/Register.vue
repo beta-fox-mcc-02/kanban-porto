@@ -55,27 +55,28 @@ export default {
       this.$emit('changePageTo', page)
     },
     register(){
+      this.$emit('loadingPage', true);
       const data = {
         username: this.registerInput.username,
         email: this.registerInput.email,
         password: this.registerInput.password
       }
-      const self = this;
-
       axios({
         method: 'POST',
         url: '/register',
         data
       })
         .then(res => {
+          this.$emit('loadingPage', false);
+          this.changePageTo('home');
           localStorage.access_token = res.data.access_token;
           this.registerInput.username = '';
           this.registerInput.email = '';
           this.registerInput.password = '';
-          console.log(self);
-          self.changePageTo('home');
         })
         .catch(err => {
+          this.$emit('loadingPage', false);
+          this.changePageTo('register');
           this.$emit('renderErrorMessage', err.response.data);
         })
     },

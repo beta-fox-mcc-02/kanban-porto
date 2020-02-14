@@ -10,7 +10,8 @@
           class="m-1" 
           @fetchDataAgain="fetchDataAgain"
           :CategoryId="panelId"
-          @reloadOtherCategory="reloadOtherCategory">
+          @reloadOtherCategory="reloadOtherCategory"
+          @loadingPage="loadingPage">
         </cardVue>
 
       </div>
@@ -52,6 +53,7 @@ export default {
   },
   methods: {
     fetchData(){
+      this.$emit('loadingPage', true);
       axios({
         method: 'GET',
         url: `/kanban/${this.panelId}`,
@@ -60,10 +62,12 @@ export default {
         }
       })
         .then(res => {
+          this.$emit('loadingPage', false);
           res.data.data.map(el => this.tasks.push({id: el.id, title: el.title}))
         })
         .catch(err => {
           console.log(err.response);
+          this.$emit('loadingPage', false);
           this.$emit('changePageTo', 'register')
           this.$emit('renderErrorMessage', err.response.data);
         })
@@ -83,6 +87,7 @@ export default {
     },
     addNewTask(){
       this.addTaskInput = false;
+      this.$emit('loadingPage', true);
       axios({
         method: 'POST',
         url: '/kanban',
@@ -98,9 +103,10 @@ export default {
           this.tasks = [];
           this.fetchData();
           this.newTask = '';
-          console.log(res.data);
+          this.$emit('loadingPage', false);
         })
         .catch(err => {
+          this.$emit('loadingPage', false);
           console.log(err.response);
           this.$emit('renderErrorMessage', err.response.data);
         })
@@ -119,6 +125,9 @@ export default {
       if(this.reloadCat === this.panelId){
         console.log('mausk');
       }
+    },
+    loadingPage(payload){
+      this.$emit('loadingPage', payload);
     }
   },
   created(){

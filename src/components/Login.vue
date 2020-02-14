@@ -33,6 +33,7 @@ export default {
       this.$emit('changePageTo', page)
     },
     login(){
+      this.$emit('loadingPage', true);
       const data = {
         email: this.loginInput.email,
         password: this.loginInput.password
@@ -44,12 +45,15 @@ export default {
         data
       })
         .then(res => {
+          this.$emit('loadingPage', false);
           localStorage.access_token = res.data.access_token;
           this.loginInput.email = '';
           this.loginInput.password = '';
           this.changePageTo('home');
         })
         .catch(err => {
+          this.$emit('loadingPage', false);
+          this.changePageTo('register');
           this.$emit('renderErrorMessage', err.response.data);
         })
     }
