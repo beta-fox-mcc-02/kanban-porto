@@ -41,21 +41,26 @@
                             class="text-right text-dark">
                             </CreateTask>
                           </div>
-                          <div class="card-body" v-for="task in filterTask(board.id)" :key="task.id">
-                            <div class="card text-left" >
-                              <div class="card-header">
-                                <label>{{task.title}}</label>
-                              </div>
-                              <div class="card-body">
-                                <label>{{task.description}}</label>
-                              </div>
-                              <div class="card-footer text-center" style="padding: 0.1rem">
-                                <a class="btn text-warning" v-if="index != 0" @click="back(board.id, task.id)"><i class="fas fa-angle-double-left"></i></a>
-                                <a class="btn text-danger" @click='deleteTask(task.id)'><i class="fa fa-trash" aria-hidden="true"></i></a>
-                                <a class="btn text-success" v-if="index < boardLength-1" @click="next(board.id, task.id)"><i class="fas fa-angle-double-right"></i></a>
-                              </div>
-                            </div>
-                          </div>
+                          <!-- <draggable v-model="boards"> -->
+                              <transition-group>
+                                  <div class="card-body drag-item" v-for="task in filterTask(board.id)" :key="task.id" >
+                                    <div class="card text-left" >
+                                      <div class="card-header">
+                                        <label>{{task.title}}</label>
+                                      </div>
+                                      <div class="card-body">
+                                        <label>{{task.description}}</label>
+                                      </div>
+                                      <div class="card-footer text-center" style="padding: 0.1rem">
+                                        <a class="btn text-warning" v-if="index != 0" @click="back(board.id, task.id)"><i class="fas fa-angle-double-left"></i></a>
+                                        <a class="btn text-danger" @click='deleteTask(task.id)'><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                        <a class="btn text-success" v-if="index < boardLength-1" @click="next(board.id, task.id)"><i class="fas fa-angle-double-right"></i></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                              </transition-group>
+                          <!-- </draggable> -->
+                          
                         </div>
                       </div>
                     </div>
@@ -70,6 +75,7 @@
 import axios from 'axios'
 import CreateTask from './subComponents/taskForm'
 import Search from './subComponents/searchUser'
+import draggable from 'vuedraggable'
 export default {
   data () {
     return {
@@ -83,7 +89,8 @@ export default {
   },
   components : {
     CreateTask,
-    Search
+    Search,
+    draggable
   },
   methods : {
     next(category, task){

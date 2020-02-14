@@ -20,11 +20,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Email address</label>
-                                        <input type="email" v-model="email" name="email" id="email" class="form-control" placeholder="input your email">
+                                        <input type="email" v-model="email" name="email" id="email" class="form-control" placeholder="input your email" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="password">Password</label>
-                                        <input type="password" v-model="password" name="password" id="password" class="form-control" placeholder="input your password">
+                                        <input type="password" v-model="password" name="password" id="password" class="form-control" placeholder="input your password" required>
                                     </div>
                                     <button type="submit" class="btn btn-primary text-light">Login</button>
                                 </form>
@@ -39,11 +39,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Email address</label>
-                                        <input type="email" v-model="email" name="email" id="emailRegister" class="form-control" placeholder="input your email">
+                                        <input type="email" v-model="email" name="email" id="emailRegister" class="form-control" placeholder="input your email" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="password">Password</label>
-                                        <input type="password" v-model="password" name="password" id="passwordRegister" class="form-control" placeholder="input your password">
+                                        <input type="password" v-model="password" name="password" id="passwordRegister" class="form-control" placeholder="input your password" required>
                                     </div>
                                     <button type="submit" class="btn btn-primary text-light">Register</button>
                                 </form>
