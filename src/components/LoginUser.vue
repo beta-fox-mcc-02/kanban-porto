@@ -20,21 +20,36 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
+                    <h4>OR</h4>
+                    <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure"></GoogleLogin>
+                    <br><a v-on:click="registerCommand" style="cursor:pointer;">Register</a>
                 </center>
         </div>
     </div>
 </template>
 
 <script>
+import GoogleLogin from 'vue-google-login';
 import axios from 'axios'
 
 export default {
     name : 'LoginUser',
+    components : {
+        GoogleLogin
+    },
     data () {
         return {
             login : {
                 email : "",
                 password : ""
+            },
+            params: {
+                client_id: "967015570633-a405l1qnha9u0cft0dg2qdkrsb0af6br.apps.googleusercontent.com"
+                },
+            renderParams: {
+                width: 250,
+                height: 50,
+                longtitle: true
             }
         }
     },
@@ -53,8 +68,8 @@ export default {
                     this.$emit('loginSuccess', data.access_token)
                     
                 })
-                .catch(response => {
-                    console.log(response.data)
+                .catch(err => {
+                    console.log(err.response)
                 })
         },
         reset() {
@@ -62,6 +77,32 @@ export default {
                 email : "",
                 password : ""
             }
+        },
+        onSuccess(googleUser) {
+            const id_token = googleUser.getAuthResponse().id_token;
+
+            axios({
+                method: "POST",
+                url : "http://localhost:3000/googleSign",
+                data : {
+                    id_token : id_token
+                }
+            })
+                .then(({ data }) => {
+                    this.reset()
+                    this.$emit('loginSuccess', data.accesToken)
+                })
+                .catch(err => {
+                    console.log(err.response)
+                })
+        },
+        
+        onFailure() {
+            console.log('ERROR ON FAILURE ON GOOGLE SIGN')
+
+        },
+        registerCommand() {
+            this.$emit('registerCommand')
         }
     }
 }

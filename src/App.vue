@@ -7,7 +7,8 @@
             
         <LoginUser 
             v-else-if="currentPage === 'loginPage'" 
-            @loginSuccess="moveToMainView">
+            @loginSuccess="moveToMainView"
+            @registerCommand="moveToRegister">
             </LoginUser>
 
         <MainView 
@@ -19,6 +20,7 @@
             @showEditForm="showEditForm"
             @updateSucces="backMainPage"
             @refetch="backMainPage"
+            
             >
             </MainView>
         
@@ -71,17 +73,18 @@ export default {
             this.fetch()
             this.currentPage = 'mainHomePage'
         },
+        moveToRegister() {
+            this.currentPage = "registerPage"
+        },
         formAdd() {
             this.currentPage = 'addTaskPage'
         },
 
         backMainPage() {
-            console.log('APP')
             this.fetch()
             this.checkToken()
         },
         showEditForm(dataTaskToEdit) {
-            console.log(dataTaskToEdit, '1111111111111122---------')
             this.dataTaskToEdit = dataTaskToEdit
             this.currentPage = 'updateTaskPage'
         },
@@ -94,7 +97,6 @@ export default {
                 }
             })
                 .then(response => {
-                    console.log(response.data.data, " <<<")
                     this.tasks = response.data.data
                     this.user = response.data.user
                 })

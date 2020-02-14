@@ -6,7 +6,6 @@
             <a v-on:click="showFormEdit(task.id)" style="cursor: pointer">Edit</a>
             <a v-on:click="deleteTask(task.id)" style="cursor: pointer"><i class="fas fa-trash-alt"></i></a>
         </div>
-        <!-- <b-button id="show-btn" @click="$bvModal.show('bv-modal-example')">Open Modal</b-button> -->
 
         <b-modal :id="`bv-modal-example${task.id}`" hide-footer>
  
@@ -26,11 +25,9 @@
                         <label>Category : </label>
                         <select name="status" v-model="dataTask.CategoryId">
                             <option v-for="category in categories" v-bind:key="category.id" v-bind:value="category.id">{{category.name}}</option>
-                            <!-- <option v-for="category in categories" :selected="category.id === dataTask.CategoryId ? true : false" v-bind:key="category.id">{{category.name}}</option> -->
                         </select>
                     </div>
                     <br>
-                    <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
                     <b-button class="mt-3 btn btn-primary" block type="submit" style="background-color:blue">Submit</b-button>
                 </form>
             </center>
@@ -65,14 +62,9 @@ export default {
                 }
             })
                 .then(response => {
-                    console.log(response.data)
-                    // this.currentPage = 'mainHomePage'
-                    // this.fetch()
-                    console.log('CARD')
                     this.$emit('deleteTask')
                 })
                 .catch(err => {
-                    console.log('MASUK CATCH CARD')
                     console.log(err.response)
                 })
         },
@@ -86,11 +78,8 @@ export default {
                 }
             })
                 .then(response => {
-                    console.log('MASUK THEN AXIOS FIND BY PK')
                     this.dataTask = response.data.dataTask
-                    console.log(this.dataTask.title, '==============')
                     this.categories = response.data.dataCategories
-                    console.log(this.categories, '------------')
                     this.$bvModal.show(`bv-modal-example${id}`)
                 })
                 .catch(response => {
@@ -98,7 +87,6 @@ export default {
                 })  
         },
         updateTask(id){
-            console.log('MASUK UPDATE MAIN.JS')
             axios({
                 method : "PUT",
                 url : `http://localhost:3000/tasks/` + id,
@@ -112,6 +100,7 @@ export default {
                 }
             })
                 .then(response => {
+                    this.$bvModal.hide(`bv-modal-example${id}`)
                     this.$emit('updateSucces')
                 })
                 .catch(err => {

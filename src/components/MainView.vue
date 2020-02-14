@@ -125,7 +125,6 @@ export default {
                 url : "http://localhost:3000/categories"
             })
                 .then(({ data }) => {
-                    console.log(data)
                     this.categories = data.data
                 })
                 .catch(err => {
@@ -134,7 +133,6 @@ export default {
         },
 
         deleteTask() {
-            console.log('MAIN VIEW')
             this.$emit('deleteTask')
         },
         showFormAdd () {
@@ -159,15 +157,12 @@ export default {
                     console.log('MASUK THEN')
                     this.$bvModal.hide(`add-task`)
                     this.$emit('refetch')
-                    // this.fetch()
-                    // this.currentPage = 'mainHomePage'
                 })
                 .catch(response => {
                     console.log(response.data)
                 })
         },
         showEditForm(dataTaskToEdit) {
-            console.log(dataTaskToEdit, '===================')
             this.$emit('showEditForm', dataTaskToEdit)
         },
         updateSucces() {

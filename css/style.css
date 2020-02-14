@@ -10,6 +10,14 @@
     padding : 100px auto;
 }
 
+#register {
+    height : 100vh;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    padding : 100px auto;
+}
+
 .main-view {
     display : flex;
     flex-direction: row;

@@ -30,7 +30,6 @@ export default {
     },
     methods : {
         deleteTask() {
-            console.log('CATEGORY')
             this.$emit('deleteTask')
         },
         showEditForm(dataTaskToEdit) {
