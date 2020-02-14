@@ -7,17 +7,22 @@
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item @click="changePage('home')" class="home">Home</b-nav-item>
+        <b-nav-item @click="changeNav('show-project'), changePage('home')">My Projects</b-nav-item>
+        <b-nav-item @click="changeNav('create-project'), changePage('home')">Create Projects</b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
         <b-nav-item-dropdown right>
-          <!-- Using 'button-content' slot -->
           <template v-slot:button-content>
             <em>{{ currentUser }}</em>
           </template>
-          <b-dropdown-item @click="logout('landing')">Sign Out</b-dropdown-item>
+          <GoogleLogin 
+            class="btn m-0 pl-5 text-center"
+            :params="params"
+            :logoutButton='true'
+            :onSuccess="logout"
+          >Logout</GoogleLogin>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
@@ -26,25 +31,36 @@
 </template>
 
 <script>
+import GoogleLogin from 'vue-google-login'
 export default {
   name: 'BaseNavbar',
   data () {
     return {
-      currentUser: ''
+      currentUser: '',
+      params: {
+        client_id: '206242195437-vvsm0ghpb6clbkrk7e7fmj5hemvdj81b.apps.googleusercontent.com'
+      }
     }
   },
+  components: {
+    GoogleLogin
+  },
   props: {
-    currentPage: String
+    currentPage: String,
+    currentNav: String
   },
   methods: {
-    logout (page) {
+    logout () {
       localStorage.clear()
-      this.$emit('changePage', page)
+      this.$emit('changePage', 'landing')
     },
     changePage(page) {
       localStorage.removeItem('projectId')
       localStorage.removeItem('projectName')
       this.$emit('changePage', page)
+    },
+    changeNav(nav) {
+      this.$emit('changeNav', nav)
     }
   },
   created () {
@@ -56,6 +72,5 @@ export default {
 <style scoped>
   .home {
     font-size: 1rem !important;
-    color: white !important;
   }
 </style>

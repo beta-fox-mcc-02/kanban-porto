@@ -19,11 +19,16 @@
   <BaseNavbar
     v-if="currentPage !== 'sign-in' && currentPage !== 'landing' && currentPage !== 'sign-up'"
     @changePage="changePage"
-    :currentPage="currentPage">
+    @changeNav="changeNav"
+    :currentNav="currentNav"
+    :currentPage="currentPage"
+    >
   </BaseNavbar>
 
   <HomePage
     v-if="currentPage === 'home'"
+    :currentNav="currentNav"
+    @changeNav="changeNav"
     @toBoard="toBoard">
   </HomePage>
 
@@ -48,7 +53,8 @@ export default {
   data () {
     return {
       currentPage: 'landing',
-      projectId: ''
+      projectId: '',
+      currentNav: 'show-project'
     }
   },
   components: {
@@ -66,6 +72,9 @@ export default {
     toBoard (page, id) {
       this.currentPage = page
       this.projectId = id
+    },
+    changeNav(nav) {
+      this.currentNav = nav
     }
   },
   created () {

@@ -17,7 +17,7 @@
 
 <script>
 import ProjectBoard from './ProjectBoard'
-import Axios from 'axios'
+import Axios from '../config'
 export default {
   name: 'ProjectPage',
   data () {
@@ -54,16 +54,15 @@ export default {
     fetchBoard () {
       Axios({
         method: 'GET',
-        url: 'http://localhost:3000/tasks/'+this.projectId,
+        url: '/tasks/'+this.projectId,
         headers: {
           token: localStorage.token
         }
       })
       .then(({ data }) => {
         this.tasks = data
-        console.log(this.tasks)
       })
-      .catch(err => console.log(err))
+      .catch(_ => {})
     }
   },
   created () {

@@ -40,7 +40,7 @@
 
 <script>
 import TaskCard from './TaskCard'
-import Axios from 'axios'
+import Axios from '../config'
 export default {
   name: 'ProjectBoard',
   data () {
@@ -71,7 +71,7 @@ export default {
     createTask () {
       Axios({
         method: 'POST',
-        url: 'http://localhost:3000/tasks',
+        url: '/tasks',
         headers: {
           token: localStorage.token
         },
@@ -87,7 +87,7 @@ export default {
         this.description = ''
         this.$emit('fetchBoard')
       })
-      .catch(err => console.log(err))
+      .catch(_ => {})
     },
     fetchBoard () {
       this.$emit('fetchBoard')

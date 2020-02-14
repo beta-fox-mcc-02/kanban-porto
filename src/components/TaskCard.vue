@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import Axios from 'axios'
+import Axios from '../config'
 export default {
   name: 'TaskCard',
   data () {
@@ -63,7 +63,7 @@ export default {
       }
       Axios({
         method: 'PATCH',
-        url: 'http://localhost:3000/tasks/' + id,
+        url: '/tasks/' + id,
         data: {
           category
         },
@@ -74,7 +74,7 @@ export default {
       .then(_ => {
         this.$emit('fetchBoard')
       })
-      .catch(err => console.log(err))
+      .catch(_ => {})
     },
     forward (id) {
       let category = ''
@@ -87,7 +87,7 @@ export default {
       }
       Axios({
         method: 'PATCH',
-        url: `http://localhost:3000/tasks/${id}`,
+        url: `/tasks/${id}`,
         data: {
           category
         },
@@ -98,12 +98,12 @@ export default {
       .then(_ => {
         this.$emit('fetchBoard')
       })
-      .catch(err => console.log(err))
+      .catch(_ => {})
     },
     deleteTask (id) {
       Axios({
         method: 'DELETE',
-        url: `http://localhost:3000/tasks/${id}`,
+        url: `/tasks/${id}`,
         headers: {
           token: localStorage.token
         }
@@ -111,7 +111,7 @@ export default {
       .then(_ => {
         this.$emit('fetchBoard')
       })
-      .catch(err => console.log(err))
+      .catch(_ => {})
     }
   },
   created () {

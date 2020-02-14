@@ -1,11 +1,9 @@
 <template>
   <div class="container py-3">
     <div class="row d-flex justify-content-around">
-      <div class="col-sm-3">
-        <b-card class="shadow">
-          <a @click.prevent="changeNav('show-project')" class="mt-2 active" >My Projects</a><br>
-          <a @click.prevent="changeNav('create-project')" class="mt-2" >Create Project</a>
-        </b-card>
+      <div class="col-sm-8 text-center" v-if="currentNav === 'show-project' && projects.length == 0" style="max-height: 90vh; overflow: auto;">
+        <h2 class="text-white">Oops..!! No Project To Display <br> <span style="cursor: pointer;" @click="changeNav('create-project')">Create Project Now</span></h2>
+        <img src="https://image.freepik.com/free-vector/man-sitting-bar_107173-4533.jpg" alt="image">
       </div>
       <div class="col-sm-8" v-if="currentNav === 'show-project'" style="max-height: 90vh; overflow: auto;">
         <ProjectCard 
@@ -29,25 +27,26 @@
 <script>
 import CreateProject from './CreateProject'
 import ProjectCard from './ProjectCard'
-import axios from 'axios'
+import axios from '../config'
 export default {
   name: 'HomePage',
   data () {
     return {
-      projects: [],
-      currentNav: 'show-project',
-      active: 'active'
+      projects: []
     }
   },
   components: {
     CreateProject,
     ProjectCard
   },
+  props: {
+    currentNav: String
+  },
   methods: {
     fetchProjects () {
       axios({
         method: 'GET',
-        url: 'http://localhost:3000/projects',
+        url: '/projects',
         headers: {
           token: localStorage.token
         }
@@ -55,15 +54,11 @@ export default {
       .then(({ data }) => {
         this.projects = data
       })
-      .catch(err => console.log(err))
+      .catch(_ => {})
     },
     changeNav (nav) {
-      if(nav === 'show-project'){
-        this.fetchProjects()
-        this.currentNav = nav
-      }else {
-        this.currentNav = nav
-      }
+      this.fetchProjects()
+      this.$emit('changeNav', nav)
     },
     changePage(page, id, name) {
       this.$emit('toBoard', page, id)
@@ -76,18 +71,7 @@ export default {
 </script>
 
 <style scoped>
-  a {
-    padding-left: 1rem;
-  }
-  a:hover {
-    background-color: grey;
-    color: white;
-    cursor: pointer;
-  }
-
-  a:active {
-    background-color: grey;
-    color: white;
-    cursor: pointer;
+  img {
+    width: 50%
   }
 </style>

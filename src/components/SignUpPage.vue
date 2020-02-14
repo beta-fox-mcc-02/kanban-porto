@@ -23,9 +23,9 @@
             </div>
             <div class="button text-center">
               <button type="submit" class="btn btn-primary">Sign Up</button>
-              <button type="button" class="btn btn-primary" @click="changePage('sign-in')">Sign In</button>
             </div>
           </form>
+          <span class="text-center">Already have an account ?<br> Sign In <em @click="changePage('sign-in')" style="cursor: pointer;">Here !<em></span>
         </div>
       </div>
       <div class="col-lg-5 text-white">
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '../config'
 export default {
   name: 'SignUpPage',
   data () {
@@ -55,7 +55,7 @@ export default {
     signUp () {
       axios({
         method: 'POST',
-        url: 'http://localhost:3000/signup',
+        url: '/signup',
         data: {
           name: this.name,
           email: this.email,
@@ -70,7 +70,7 @@ export default {
         localStorage.currentUser = data.name
         this.$emit('changePage', 'sign-in')
       })
-      .catch(err => console.log(err))
+      .catch(_ => {})
     },
     changePage (page) {
       this.$emit('changePage', page)

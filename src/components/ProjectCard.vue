@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import Axios from 'axios'
+import Axios from '../config'
 export default {
   name: 'ProjectCard',
   data () {
@@ -107,17 +107,17 @@ export default {
     fetchUser () {
       Axios({
         method: 'GET',
-        url: `http://localhost:3000/users`
+        url: `/users`
       })
       .then(({ data }) => {
         this.users = data
       })
-      .catch(err => console.log(err))
+      .catch(_ => {})
     },
     inviteMember (id) {
       Axios({
         method: 'POST',
-        url: `http://localhost:3000/projects/invite`,
+        url: `/projects/invite`,
         data: {
           UserId: id,
           ProjectId: this.project.id
@@ -129,12 +129,12 @@ export default {
       .then (({ data }) => {
         this.fecthProjectById(this.project.id)
       })
-      .catch(err => console.log(err))
+      .catch(_ => {})
     },
     fecthProjectById (id) {
       Axios({
         method: 'GET',
-        url: `http://localhost:3000/projects/${id}`,
+        url: `/projects/${id}`,
         headers: {
           token : localStorage.token
         }
@@ -143,12 +143,12 @@ export default {
         this.projectMembers = data.Users
         this.search = ''
       })
-      .catch(err => console.log(err))
+      .catch(_ => {})
     },
     deleteProject (id) {
       Axios({
         method: 'DELETE',
-        url: `http://localhost:3000/projects/${id}`,
+        url: `/projects/${id}`,
         headers: {
           token: localStorage.token
         }
@@ -156,7 +156,7 @@ export default {
       .then(_=> {
         this.$emit('changeNav', 'show-project')
       })
-      .catch(err => console.log(err))
+      .catch(_ => {})
     }
   },
   created () {

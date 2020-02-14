@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import Axios from 'axios'
+import Axios from '../config'
   export default {
     name: 'create-project',
     data() {
@@ -42,7 +42,7 @@ import Axios from 'axios'
       createProject () {
         Axios({
           method: 'POST',
-          url: 'http://localhost:3000/projects',
+          url: '/projects',
           data: {
             name: this.name,
             description: this.description
@@ -54,7 +54,7 @@ import Axios from 'axios'
         .then(({ data }) => {
           this.$emit('changeNav', 'show-project')
         })
-        .catch(err => console.log(err))
+        .catch(_=> {})
       }
     }
   }
