@@ -227,7 +227,6 @@ export default {
         }
       })
         .then(({ data }) => {
-          console.log(data);
           this.editProject.title = data.title;
           this.editProject.id = data.id;
         })
@@ -247,7 +246,6 @@ export default {
         }
       })
         .then(({ data }) => {
-          console.log(data);
           this.fetchProject();
         })
         .catch(err => {
@@ -266,7 +264,6 @@ export default {
           }
        })
          .then(({data}) => {
-            console.log(data, `created`);
             this.fetchProject()
          })
          .catch(err => {

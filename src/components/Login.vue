@@ -34,8 +34,16 @@
           />
           <input type="submit" class="fadeIn fourth" value="Log In" />
         </form>
-
-        <!-- Remind Passowrd -->
+        <GoogleLogin
+          class="mb-3 p-0"
+          style="margin-left: 21%"
+          :params="params"
+          :renderParams="renderParams"
+          :onSuccess="onSuccess"
+          :onFailure="onFailure"
+        ></GoogleLogin>
+        <GoogleLogin :params="params" :logoutButton="true">Logout</GoogleLogin>
+        <!-- to register -->
         <div id="formFooter">
           <p>
             Dont' have an account?
@@ -53,13 +61,27 @@
 
 <script>
 import axios from "axios";
+import GoogleLogin from "vue-google-login";
 
 export default {
   name: `Login`,
+  components: {
+    GoogleLogin
+  },
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      params: {
+        client_id:
+          "1015788743329-4uql0o2rtksdcogqg07fim9g858m099n.apps.googleusercontent.com"
+      },
+      // only needed if you want to render the button with the google ui
+      renderParams: {
+        width: 250,
+        height: 50,
+        longtitle: true
+      }
     };
   },
   methods: {
@@ -72,18 +94,26 @@ export default {
           password: this.password
         }
       })
-        .then(({data}) => {
-          console.log(data);
-          localStorage.setItem(`token`, data.token)
-          this.$emit('changePage', 'home')
+        .then(({ data }) => {
+          localStorage.setItem(`token`, data.token);
+          localStorage.setItem(`id`, data.id);
+
+          this.$emit("changePage", "home");
         })
         .catch(err => {
-          console.log(err);          
-        })
+          console.log(err);
+        });
     },
     changePage(page) {
-      this.$emit('changePage', page)
-    }
+      this.$emit("changePage", page);
+    },
+    onSuccess(googleUser) {
+      console.log(googleUser);
+
+      // This only gets the user information: id, name, imageUrl and email
+      console.log(googleUser.getBasicProfile());
+    },
+    onFailure(googleUser) {}
   }
 };
 </script>

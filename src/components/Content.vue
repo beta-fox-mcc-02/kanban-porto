@@ -74,7 +74,6 @@ export default {
          }
       })
          .then(({data}) => {
-            console.log(data, `updated`);    
             this.$emit('getProject', this.tasks.ProjectId)         
          })
          .catch(err => {
@@ -105,7 +104,6 @@ export default {
          }
       })
          .then(({data}) => {
-            console.log(data, `updated`);   
             this.$emit('getProject', this.tasks.ProjectId)         
          })
          .catch(err => {
@@ -121,7 +119,6 @@ export default {
          }
       })
          .then(({data}) => {
-            console.log(`deleted`);
             this.$emit('getProject', this.tasks.ProjectId)            
          })
          .catch(err => {

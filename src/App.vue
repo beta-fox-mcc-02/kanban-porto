@@ -14,6 +14,7 @@
     v-if="page === 'kanban'"
     @changePage='changePage'
     :openProjectTasks='openProjectTasks'
+    :openProjectId='openProjectId'
     @getProject='getProject'
     >
     </Kanban>
@@ -40,6 +41,7 @@ export default {
       message: "halo",
       page: "login",
       openProjectTasks: [],
+      openProjectId : ''
     }
   },
   methods: {
@@ -47,6 +49,7 @@ export default {
       this.page = page;
     },
     getProject (id) {
+      this.openProjectId = id
       axios({
         method: `GET`,
         url: `http://localhost:3000/projects/${id}`,
@@ -55,7 +58,6 @@ export default {
         }
       })
         .then(({data}) => {
-          console.log(data.Tasks, `dapet nih 1 project nya`);
           this.openProjectTasks = data.Tasks
         })
         .catch(err => {
