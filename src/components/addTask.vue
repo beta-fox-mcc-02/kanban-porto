@@ -88,7 +88,7 @@ export default {
       this.title = ''
       this.assignee = ''
       this.desc = ''
-      console.log(data);
+      // console.log(data);
       
 
     })

@@ -26,6 +26,13 @@
             </button>
           </div>
           <div class="modal-body">
+            <div class="alert alert-success" role="alert" 
+            v-if="addedMsg !== ''">
+              {{addedMsg}}
+            </div>
+            <div class="alert alert-danger" role="alert" v-if="warning !== ''">
+              {{warning}}
+            </div>
               <label for="exampleInputEmail1">User's Email</label>
               <input
                 class="form-control"
@@ -36,7 +43,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary" @click.prevent="addUser" data-dismiss="modal">Add</button>
+            <button type="submit" class="btn btn-primary" @click.prevent="addUser" >Add</button>
           </div>
         </div>
       </div>
@@ -50,7 +57,9 @@ name: 'addUser'
 export default {
   data(){
     return{
-      userEmail:''
+      userEmail:'',
+      warning:'',
+      addedMsg:''
     }
   },
   props:{
@@ -71,15 +80,18 @@ export default {
       }
     })
     .then(({data})=>{
-      console.log(data);
+      // console.log(data);
       
+        this.addedMsg = 'user added to this project'
       if(data.id){
         console.log('user added to this project');
+        this.warning = ''
       }else{
         console.log('user already in this project');
+        this.warning = 'user already in this project'
+         this.addedMsg= ''
       }
       this.userEmail = ''
-      addUserForm= false
     })
     .catch(err =>{
       console.log(err);

@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="page == 'home'">
+  <div class="container mt-4" v-if="page == 'home'">
     <div class="row">
     </div>
     <div class="float-right">
@@ -23,6 +23,7 @@
 
     <h1>projects</h1>
     <div class="container row">
+      <h3>{{warning}}</h3>
       <porjectCard
         v-for="project in projects"
         :key="project.id"
@@ -46,7 +47,8 @@ export default {
       projectForm: false,
       projects: [],
       projectEdit: false,
-      projectId: null
+      projectId: null,
+      warning:''
     };
   },
   components:{
@@ -138,10 +140,23 @@ export default {
     fetchProject() {
       axios({
         method: "get",
-        url: "/project"
+        url: "user/project",
+        headers:{
+          token: localStorage.token
+        }
       })
         .then(({ data }) => {
-          this.projects = data;
+          if(data.length > 0){
+            console.log(data);
+            this.projects = data;
+            this.warning= ''
+
+          }else{
+            // console.log('blm ada data');
+            this.projects = []
+            this.warning= 'you dont have any project'
+          }
+          
         })
         .catch(err => {
           console.log(err);
@@ -154,10 +169,13 @@ export default {
       this.page = "home";
       this.socket.on("project", data => {
         // console.log(data, 'ini dari io');
+        this.warning= ''
         this.projects.push(data);
       });
+      //project hrs reactivve
 
       this.socket.on("fetchProject", data => {
+        // console.log('kepanggil');
         this.fetchProject();
       });
     }

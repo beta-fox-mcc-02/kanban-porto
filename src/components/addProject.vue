@@ -60,12 +60,14 @@ export default {
         url: "/project",
         data: {
           name: this.projectName
+        },
+        headers:{
+          token: localStorage.token
         }
       })
         .then(({ data }) => {
-          this.projectName = "";
-          this.projectForm = false;
-          this.fetchProject();
+          this.projectName = '';
+          // this.fetchProject();
           console.log(data);
         })
         .catch(err => {

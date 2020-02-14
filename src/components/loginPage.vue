@@ -14,37 +14,48 @@
               <button type="submit" class="btn btn-primary mb-4">Sign In</button>
             </form>            
             <p><a href="#" @click.prevent="changePage('register')">Register Here</a></p>
-            <div class="g-signin2" @click.prevent="onSignIn" data-onsuccess="onSignIn"></div>
+            <!-- <div class="g-signin2" @click.prevent="onSignIn" data-onsuccess="onSignIn"></div> -->
+            <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" ></GoogleLogin>
+            
+            <GoogleLogin :params="params" :logoutButton=true :onSuccess="logout">
+         <a href="#" >Sign out</a>
+         </GoogleLogin>
       </div>
 </template>
 <script>
-name : 'loginPage'
+import GoogleLogin from 'vue-google-login';
 import axios from '../api/axiosInstance'
+name : 'loginPage'
 export default {
     data (){
         return {
             email:'',
             password:'',
-            
+            params: {
+                    client_id:"510406314847-lvokpsqv9ak9mqehnv8pquumd7e0m6dq.apps.googleusercontent.com"
+                },
+                // only needed if you want to render the button with the google ui
+            renderParams: {
+                width: 250,
+                height: 50,
+                longtitle: true
+            }
         }
     },
     props:{
         page: String
     },
+    components: {
+        GoogleLogin
+    },
     methods:{
-         onSignIn(googleUser) {
-           var id_token = googleUser.getAuthResponse().id_token;
-            // var profile = googleUser.getBasicProfile();
-            // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-            // console.log('Name: ' + profile.getName());
-            // console.log('Image URL: ' + profile.getImageUrl());
-            // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-            // this.page = 'home'   
-
-                let username = profile.getName()
-                console.log(id_token, 'dari onsign');
-                
-             axios({
+          onSuccess(googleUser) {
+            var id_token = googleUser.getAuthResponse().id_token;
+            // console.log(id_token);
+ 
+            // This only gets the user information: id, name, imageUrl and email
+            // console.log(googleUser.getBasicProfile());
+                axios({
                 method: 'post',
                 url: `/user/gSignin`,
                 data: {
@@ -53,7 +64,7 @@ export default {
             })
                 .then(({ data }) => {
                   console.log('disini', data.token);
-                  
+                
                     if(data.token){
                         localStorage.setItem('token', data.token);
                         console.log(data);
@@ -67,6 +78,19 @@ export default {
                     console.log(err)
 
                 })
+        },
+         signIn(googleUser) {
+           var id_token = googleUser.getAuthResponse().id_token;
+            // var profile = googleUser.getBasicProfile();
+            // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            // console.log('Name: ' + profile.getName());
+            // console.log('Image URL: ' + profile.getImageUrl());
+            // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+            // this.page = 'home'   
+
+
+                console.log(id_token, 'dari onsign');
+                
 
         },
         login(){
@@ -97,6 +121,10 @@ export default {
          changePage(laman){
              console.log('dari login page',laman);
              this.$emit('change-Page', laman)
+        },
+        logout(){
+            console.log('user sign out');
+            
         }
     }
 }

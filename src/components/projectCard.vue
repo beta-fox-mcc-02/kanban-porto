@@ -113,7 +113,7 @@ export default {
         url: `/project/${id}`
       })
         .then(({ data }) => {
-          this.fetchProject();
+          // this.fetchProject();
         })
         .catch(err => {
           console.log(err);

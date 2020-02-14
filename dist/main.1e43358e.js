@@ -8546,6 +8546,11 @@ if (inBrowser) {
 
 var _default = Vue;
 exports.default = _default;
+},{}],"node_modules/vue-google-login/dist/vue-google-login.min.js":[function(require,module,exports) {
+var define;
+!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"function"==typeof define&&define.amd?define(["exports"],e):e((t=t||self)["vue-google-login"]={})}(this,function(t){"use strict";var e,n,o=function(t){return e?Promise.resolve(e):(n||(n=function(t){return new Promise(function(n,o){window.onGapiLoad=function(){window.gapi.load("auth2",function(){try{e=window.gapi.auth2.init(Object.assign({},t))}catch(t){o({err:"client_id missing or is incorrect, or if you added extra params maybe they are written incorrectly, did you add it to the component or plugin?"})}n(e)})}})}(t)),n)},i=function(t,e){if(t)return t[e]();return Promise.reject({err:"Script not loaded correctly, did you added the plugin or the client_id to the component?"})},r={load:function(t){return Promise.all([o(t),new Promise(function(t,e){if(!document.getElementById("auth2_script_id")){var n=document.createElement("script");n.setAttribute("src","https://apis.google.com/js/platform.js?onload=onGapiLoad"),n.setAttribute("async",!0),n.setAttribute("defer","defer"),n.setAttribute("id","auth2_script_id"),document.head.appendChild(n)}t()})]).then(function(t){return t[0]})},signIn:function(){return i(e,"signIn")},signOut:function(){return i(e,"signOut")}},s=0;var d=function(t,e,n,o,i,r,s,d,u,a){"boolean"!=typeof s&&(u=d,d=s,s=!1);var c,l="function"==typeof n?n.options:n;if(t&&t.render&&(l.render=t.render,l.staticRenderFns=t.staticRenderFns,l._compiled=!0,i&&(l.functional=!0)),o&&(l._scopeId=o),r?(c=function(t){(t=t||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext)||"undefined"==typeof __VUE_SSR_CONTEXT__||(t=__VUE_SSR_CONTEXT__),e&&e.call(this,u(t)),t&&t._registeredComponents&&t._registeredComponents.add(r)},l._ssrRegister=c):e&&(c=s?function(){e.call(this,a(this.$root.$options.shadowRoot))}:function(t){e.call(this,d(t))}),c)if(l.functional){var f=l.render;l.render=function(t,e){return c.call(e),f(t,e)}}else{var h=l.beforeCreate;l.beforeCreate=h?[].concat(h,c):[c]}return n}({render:function(){var t=this.$createElement,e=this._self._c||t;return this.renderParams&&!this.logoutButton?e("div",{attrs:{id:this.id},on:{click:this.handleClick}}):e("button",{attrs:{id:this.id},on:{click:this.handleClick}},[this._t("default")],2)},staticRenderFns:[]},void 0,{name:"GoogleLogin",props:{params:{type:Object,required:!0},onSuccess:{type:Function,default:function(){}},onFailure:{type:Function,default:function(){}},logoutButton:{type:Boolean,default:!1},renderParams:{type:Object,required:!1}},beforeCreate:function(){this.id="google-signin-btn-".concat(s++)},methods:{handleClick:function(){var t=this,e=this.logoutButton?"signOut":"signIn";r[e]().then(function(e){return t.onSuccess(e)}).catch(function(e){return t.onFailure(e)})}},mounted:function(){var t=this;r.load(this.params).then(function(){t.renderParams&&!1===t.logoutButton&&window.gapi.signin2.render(t.id,t.renderParams)}).catch(function(t){console.log(t)})}},void 0,!1,void 0,void 0,void 0),u={install:function(t,e){t.GoogleAuth=r.load(e)}};t.GoogleLogin=d,t.LoaderPlugin=u,t.default=d,Object.defineProperty(t,"__esModule",{value:!0})});
+
+
 },{}],"node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
 'use strict';
 
@@ -10678,10 +10683,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _vueGoogleLogin = _interopRequireDefault(require("vue-google-login"));
+
 var _axiosInstance = _interopRequireDefault(require("../api/axiosInstance"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
+//
+//
+//
 //
 //
 //
@@ -10707,25 +10719,32 @@ var _default = {
   data: function data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      params: {
+        client_id: "510406314847-lvokpsqv9ak9mqehnv8pquumd7e0m6dq.apps.googleusercontent.com"
+      },
+      // only needed if you want to render the button with the google ui
+      renderParams: {
+        width: 250,
+        height: 50,
+        longtitle: true
+      }
     };
   },
   props: {
     page: String
   },
+  components: {
+    GoogleLogin: _vueGoogleLogin.default
+  },
   methods: {
-    onSignIn: function onSignIn(googleUser) {
+    onSuccess: function onSuccess(googleUser) {
       var _this = this;
 
-      var id_token = googleUser.getAuthResponse().id_token; // var profile = googleUser.getBasicProfile();
-      // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-      // console.log('Name: ' + profile.getName());
-      // console.log('Image URL: ' + profile.getImageUrl());
-      // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-      // this.page = 'home'   
+      var id_token = googleUser.getAuthResponse().id_token; // console.log(id_token);
+      // This only gets the user information: id, name, imageUrl and email
+      // console.log(googleUser.getBasicProfile());
 
-      var username = profile.getName();
-      console.log(id_token, 'dari onsign');
       (0, _axiosInstance.default)({
         method: 'post',
         url: "/user/gSignin",
@@ -10747,6 +10766,16 @@ var _default = {
       }).catch(function (err) {
         console.log(err);
       });
+    },
+    signIn: function signIn(googleUser) {
+      var id_token = googleUser.getAuthResponse().id_token; // var profile = googleUser.getBasicProfile();
+      // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+      // console.log('Name: ' + profile.getName());
+      // console.log('Image URL: ' + profile.getImageUrl());
+      // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+      // this.page = 'home'   
+
+      console.log(id_token, 'dari onsign');
     },
     login: function login() {
       var _this2 = this;
@@ -10777,6 +10806,9 @@ var _default = {
     changePage: function changePage(laman) {
       console.log('dari login page', laman);
       this.$emit('change-Page', laman);
+    },
+    logout: function logout() {
+      console.log('user sign out');
     }
   }
 };
@@ -10915,17 +10947,27 @@ exports.default = _default;
             )
           ]),
           _vm._v(" "),
-          _c("div", {
-            staticClass: "g-signin2",
-            attrs: { "data-onsuccess": "onSignIn" },
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                return _vm.onSignIn($event)
-              }
+          _c("GoogleLogin", {
+            attrs: {
+              params: _vm.params,
+              renderParams: _vm.renderParams,
+              onSuccess: _vm.onSuccess
             }
-          })
-        ]
+          }),
+          _vm._v(" "),
+          _c(
+            "GoogleLogin",
+            {
+              attrs: {
+                params: _vm.params,
+                logoutButton: true,
+                onSuccess: _vm.logout
+              }
+            },
+            [_c("a", { attrs: { href: "#" } }, [_vm._v("Sign out")])]
+          )
+        ],
+        1
       )
     : _vm._e()
 }
@@ -10962,7 +11004,7 @@ render._withStripped = true
       
       }
     })();
-},{"../api/axiosInstance":"src/api/axiosInstance.js","_css_loader":"../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/registerPage.vue":[function(require,module,exports) {
+},{"vue-google-login":"node_modules/vue-google-login/dist/vue-google-login.min.js","../api/axiosInstance":"src/api/axiosInstance.js","_css_loader":"../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/registerPage.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11246,6 +11288,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _vueGoogleLogin = _interopRequireDefault(require("vue-google-login"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
 //
 //
 //
@@ -11282,7 +11329,20 @@ name: "navbarHome";
 
 var _default = {
   data: function data() {
-    return {};
+    return {
+      params: {
+        client_id: "510406314847-lvokpsqv9ak9mqehnv8pquumd7e0m6dq.apps.googleusercontent.com"
+      },
+      // only needed if you want to render the button with the google ui
+      renderParams: {
+        width: 250,
+        height: 50,
+        longtitle: true
+      }
+    };
+  },
+  components: {
+    GoogleLogin: _vueGoogleLogin.default
   },
   props: {
     page: String
@@ -11292,16 +11352,10 @@ var _default = {
       // console.log('dari login page',laman);
       this.$emit("change-Page", laman);
     },
-    signOut: function signOut() {
-      var _this = this;
-
-      var auth2 = gapi.auth2.getAuthInstance();
-      auth2.signOut().then(function () {
-        console.log("User signed out.");
-        localStorage.clear();
-
-        _this.changePage("login");
-      });
+    logout: function logout() {
+      console.log("User signed out.");
+      localStorage.clear();
+      this.changePage("login");
     }
   }
 };
@@ -11347,13 +11401,48 @@ exports.default = _default;
               attrs: { id: "navbarSupportedContent" }
             },
             [
-              _vm._m(1),
-              _vm._v(" "),
-              _c("ul", { staticClass: "nav navbar-nav ml-auto" }, [
-                _c("a", { attrs: { href: "#" }, on: { click: _vm.signOut } }, [
-                  _vm._v("Sign out")
+              _c("ul", { staticClass: "navbar-nav mr-auto" }, [
+                _c("li", { staticClass: "nav-item active" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "nav-link",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.changePage("home")
+                        }
+                      }
+                    },
+                    [
+                      _vm._v("\n          Home\n          "),
+                      _c("span", { staticClass: "sr-only" }, [
+                        _vm._v("(current)")
+                      ])
+                    ]
+                  )
                 ])
-              ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "ul",
+                { staticClass: "nav navbar-nav ml-auto" },
+                [
+                  _c(
+                    "GoogleLogin",
+                    {
+                      attrs: {
+                        params: _vm.params,
+                        logoutButton: true,
+                        onSuccess: _vm.logout
+                      }
+                    },
+                    [_c("a", { attrs: { href: "#" } }, [_vm._v("Sign out")])]
+                  )
+                ],
+                1
+              )
             ]
           )
         ]
@@ -11380,25 +11469,6 @@ var staticRenderFns = [
       },
       [_c("span", { staticClass: "navbar-toggler-icon" })]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "navbar-nav mr-auto" }, [
-      _c("li", { staticClass: "nav-item active" }, [
-        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-          _vm._v("\n          Home\n          "),
-          _c("span", { staticClass: "sr-only" }, [_vm._v("(current)")])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("li", { staticClass: "nav-item" }, [
-        _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-          _vm._v("Link")
-        ])
-      ])
-    ])
   }
 ]
 render._withStripped = true
@@ -11433,7 +11503,7 @@ render._withStripped = true
       
       }
     })();
-},{"_css_loader":"../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/projectCard.vue":[function(require,module,exports) {
+},{"vue-google-login":"node_modules/vue-google-login/dist/vue-google-login.min.js","_css_loader":"../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/projectCard.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11556,15 +11626,12 @@ var _default = {
       this.$emit("change-Page", laman);
     },
     removeProject: function removeProject(id) {
-      var _this2 = this;
-
       (0, _axiosInstance.default)({
         method: "delete",
         url: "/project/".concat(id)
-      }).then(function (_ref2) {
-        var data = _ref2.data;
+      }).then(function (_ref2) {// this.fetchProject();
 
-        _this2.fetchProject();
+        var data = _ref2.data;
       }).catch(function (err) {
         console.log(err);
       });
@@ -11868,13 +11935,13 @@ var _default = {
         url: "/project",
         data: {
           name: this.projectName
+        },
+        headers: {
+          token: localStorage.token
         }
       }).then(function (_ref) {
         var data = _ref.data;
-        _this.projectName = "";
-        _this.projectForm = false;
-
-        _this.fetchProject();
+        _this.projectName = ''; // this.fetchProject();
 
         console.log(data);
       }).catch(function (err) {
@@ -12107,6 +12174,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
 name: "homePage";
 
 var _default = {
@@ -12116,7 +12184,8 @@ var _default = {
       projectForm: false,
       projects: [],
       projectEdit: false,
-      projectId: null
+      projectId: null,
+      warning: ''
     };
   },
   components: {
@@ -12217,10 +12286,22 @@ var _default = {
 
       (0, _axiosInstance.default)({
         method: "get",
-        url: "/project"
+        url: "user/project",
+        headers: {
+          token: localStorage.token
+        }
       }).then(function (_ref4) {
         var data = _ref4.data;
-        _this4.projects = data;
+
+        if (data.length > 0) {
+          console.log(data);
+          _this4.projects = data;
+          _this4.warning = '';
+        } else {
+          // console.log('blm ada data');
+          _this4.projects = [];
+          _this4.warning = 'you dont have any project';
+        }
       }).catch(function (err) {
         console.log(err);
       });
@@ -12234,9 +12315,13 @@ var _default = {
       this.page = "home";
       this.socket.on("project", function (data) {
         // console.log(data, 'ini dari io');
+        _this5.warning = '';
+
         _this5.projects.push(data);
-      });
+      }); //project hrs reactivve
+
       this.socket.on("fetchProject", function (data) {
+        // console.log('kepanggil');
         _this5.fetchProject();
       });
     }
@@ -12256,7 +12341,7 @@ exports.default = _default;
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _vm.page == "home"
-    ? _c("div", { staticClass: "container" }, [
+    ? _c("div", { staticClass: "container mt-4" }, [
         _c("div", { staticClass: "row" }),
         _vm._v(" "),
         _c("div", { staticClass: "float-right" }, [_c("addProject")], 1),
@@ -12319,17 +12404,21 @@ exports.default = _default;
         _c(
           "div",
           { staticClass: "container row" },
-          _vm._l(_vm.projects, function(project) {
-            return _c("porjectCard", {
-              key: project.id,
-              attrs: { project: project },
-              on: {
-                "change-Page": _vm.changePage,
-                "project-Page": _vm.currentProject
-              }
+          [
+            _c("h3", [_vm._v(_vm._s(_vm.warning))]),
+            _vm._v(" "),
+            _vm._l(_vm.projects, function(project) {
+              return _c("porjectCard", {
+                key: project.id,
+                attrs: { project: project },
+                on: {
+                  "change-Page": _vm.changePage,
+                  "project-Page": _vm.currentProject
+                }
+              })
             })
-          }),
-          1
+          ],
+          2
         )
       ])
     : _vm._e()
@@ -12468,8 +12557,7 @@ var _default = {
         // this.tasks = data
         _this.title = '';
         _this.assignee = '';
-        _this.desc = '';
-        console.log(data);
+        _this.desc = ''; // console.log(data);
       }).catch(function (err) {
         console.log(err);
       });
@@ -12764,12 +12852,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 name: 'addUser';
 
 var _default = {
   data: function data() {
     return {
-      userEmail: ''
+      userEmail: '',
+      warning: '',
+      addedMsg: ''
     };
   },
   props: {
@@ -12792,16 +12889,19 @@ var _default = {
         }
       }).then(function (_ref) {
         var data = _ref.data;
-        console.log(data);
+        // console.log(data);
+        _this.addedMsg = 'user added to this project';
 
         if (data.id) {
           console.log('user added to this project');
+          _this.warning = '';
         } else {
           console.log('user already in this project');
+          _this.warning = 'user already in this project';
+          _this.addedMsg = '';
         }
 
         _this.userEmail = '';
-        addUserForm = false;
       }).catch(function (err) {
         console.log(err);
       });
@@ -12859,6 +12959,40 @@ exports.default = _default;
               _vm._m(0),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
+                _vm.addedMsg !== ""
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "alert alert-success",
+                        attrs: { role: "alert" }
+                      },
+                      [
+                        _vm._v(
+                          "\n             " +
+                            _vm._s(_vm.addedMsg) +
+                            "\n           "
+                        )
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.warning !== ""
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "alert alert-danger",
+                        attrs: { role: "alert" }
+                      },
+                      [
+                        _vm._v(
+                          "\n             " +
+                            _vm._s(_vm.warning) +
+                            "\n           "
+                        )
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
                 _c("label", { attrs: { for: "exampleInputEmail1" } }, [
                   _vm._v("User's Email")
                 ]),
@@ -12903,7 +13037,7 @@ exports.default = _default;
                   "button",
                   {
                     staticClass: "btn btn-primary",
-                    attrs: { type: "submit", "data-dismiss": "modal" },
+                    attrs: { type: "submit" },
                     on: {
                       click: function($event) {
                         $event.preventDefault()
@@ -13028,6 +13162,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 name: 'viewUser';
 
 var _default = {
@@ -13053,7 +13195,34 @@ var _default = {
       }).catch(function (err) {
         console.log(err);
       });
+    },
+    removeUser: function removeUser(id) {
+      var _this2 = this;
+
+      (0, _axiosInstance.default)({
+        method: "delete",
+        url: "/project/user/".concat(id, "/").concat(this.currentProject.id)
+      }).then(function (_ref2) {
+        var data = _ref2.data;
+
+        _this2.getUserLits();
+
+        console.log(data);
+      }).catch(function (err) {
+        console.log(err);
+      });
     }
+  },
+  created: function created() {// if(localStorage.token) {
+    //     this.socket.on("userList", data => {
+    //     // console.log('kepanggil');
+    //     this.getUserLits();
+    //   });
+    //   this.socket.on("addedUser", data => {
+    //     // console.log('kepanggil');
+    //     this.userList.push(data)
+    //   });
+    // }
   }
 };
 exports.default = _default;
@@ -13113,14 +13282,29 @@ exports.default = _default;
                 "div",
                 { staticClass: "modal-body" },
                 _vm._l(_vm.userList, function(user, i) {
-                  return _c("div", { key: i }, [
-                    _c("p", [
-                      _vm._v(
-                        "name: " +
-                          _vm._s(user.name) +
-                          ", email: " +
-                          _vm._s(user.email)
-                      )
+                  return _c("div", { key: i, staticClass: "row" }, [
+                    _c("div", { staticClass: "col text-left" }, [
+                      _c("p", [_vm._v(_vm._s(user.email))])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col text-right" }, [
+                      i == 0 ? _c("p", [_vm._v("creator")]) : _vm._e(),
+                      _vm._v(" "),
+                      i !== 0
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-danger mr-3",
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  return _vm.removeUser(user.id)
+                                }
+                              }
+                            },
+                            [_vm._v("X")]
+                          )
+                        : _vm._e()
                     ])
                   ])
                 }),
@@ -13259,11 +13443,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
 name: "kanbanContent";
 
 var _default = {
   data: function data() {
-    return {};
+    return {
+      colors: ['#FF5722', '#2196F3', '#00BCD4', '#8BC34A']
+    };
   },
   props: {
     task: Object,
@@ -13334,26 +13522,77 @@ var _default = {
   computed: {
     nextButton: function nextButton() {
       if (this.box.name == "backLog") {
-        return "Todo";
+        return {
+          text: 'Todo',
+          style: {
+            "background-color": this.colors[1]
+          }
+        };
       } else if (this.box.name == "Todo") {
-        return "Doing";
+        return {
+          text: 'Doing',
+          style: {
+            "background-color": this.colors[2]
+          }
+        };
       } else if (this.box.name == "Doing") {
-        return "Done";
+        return {
+          text: 'Done',
+          style: {
+            "background-color": this.colors[3]
+          }
+        };
       }
     },
     prevButton: function prevButton() {
       if (this.box.name == "Todo") {
-        return "backLog";
+        return {
+          text: 'backLog',
+          style: {
+            "background-color": this.colors[0]
+          }
+        };
       } else if (this.box.name == "Doing") {
-        return "Todo";
+        return {
+          text: 'Todo',
+          style: {
+            "background-color": this.colors[1]
+          }
+        };
       } else if (this.box.name == "Done") {
-        return "Doing";
+        return {
+          text: 'Doing',
+          style: {
+            "background-color": this.colors[2]
+          }
+        };
       }
     },
     getColor: function getColor() {
-      return {
-        "background-color": this.box.color
-      };
+      var warna;
+
+      if (this.box.name == "Todo") {
+        return {
+          text: 'backLog',
+          style: {
+            "background-color": this.colors[0]
+          }
+        };
+      } else if (this.box.name == "Doing") {
+        return {
+          text: 'Todo',
+          style: {
+            "background-color": this.colors[1]
+          }
+        };
+      } else if (this.box.name == "Done") {
+        return {
+          text: 'Doing',
+          style: {
+            "background-color": this.colors[2]
+          }
+        };
+      }
     }
   }
 };
@@ -13391,13 +13630,14 @@ exports.default = _default;
             "button",
             {
               staticClass: "btn-sm m-2",
+              style: _vm.prevButton.style,
               on: {
                 click: function($event) {
                   return _vm.updateCardBackward(_vm.task.id)
                 }
               }
             },
-            [_vm._v(_vm._s(_vm.prevButton))]
+            [_vm._v(_vm._s(_vm.prevButton.text))]
           )
         : _vm._e(),
       _vm._v(" "),
@@ -13405,7 +13645,8 @@ exports.default = _default;
         ? _c(
             "button",
             {
-              staticClass: "btn-sm btn-primary m-2",
+              staticClass: "btn-sm  m-2",
+              style: _vm.nextButton.style,
               on: {
                 click: function($event) {
                   $event.preventDefault()
@@ -13413,7 +13654,7 @@ exports.default = _default;
                 }
               }
             },
-            [_vm._v("\n      " + _vm._s(_vm.nextButton) + "\n    ")]
+            [_vm._v("\n      " + _vm._s(_vm.nextButton.text) + "\n    ")]
           )
         : _vm._e()
     ]),
@@ -13905,13 +14146,7 @@ exports.default = _default;
               )
             : _vm._e(),
           _vm._v(" "),
-          _c("h1", [
-            _vm._v(
-              _vm._s(_vm.currentProject.name) +
-                " " +
-                _vm._s(_vm.currentProject.id)
-            )
-          ])
+          _c("h1", [_vm._v(_vm._s(_vm.currentProject.name))])
         ])
       : _vm._e(),
     _vm._v(" "),
@@ -23102,7 +23337,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36507" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45827" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

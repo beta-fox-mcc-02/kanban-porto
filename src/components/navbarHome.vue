@@ -15,26 +15,41 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="#"
+          @click.prevent="changePage('home')"
+          >
             Home
             <span class="sr-only">(current)</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
       </ul>
       <ul class="nav navbar-nav ml-auto">
-        <a href="#" @click="signOut">Sign out</a>
+         <GoogleLogin :params="params" :logoutButton=true :onSuccess="logout">
+         <a href="#">Sign out</a>
+         </GoogleLogin>
       </ul>
     </div>
   </nav>
 </template>
 <script>
+import GoogleLogin from 'vue-google-login';
 name: "navbarHome";
 export default {
   data() {
-    return {};
+    return {
+      params: {
+        client_id:"510406314847-lvokpsqv9ak9mqehnv8pquumd7e0m6dq.apps.googleusercontent.com"
+      },
+    // only needed if you want to render the button with the google ui
+      renderParams: {
+          width: 250,
+          height: 50,
+          longtitle: true
+      }
+    };
+  },
+  components: {
+      GoogleLogin
   },
   props: {
     page: String
@@ -44,13 +59,11 @@ export default {
       // console.log('dari login page',laman);
       this.$emit("change-Page", laman);
     },
-    signOut() {
-      var auth2 = gapi.auth2.getAuthInstance();
-      auth2.signOut().then(() => {
-        console.log("User signed out.");
-        localStorage.clear();
-        this.changePage("login");
-      });
+    logout() {
+      console.log("User signed out.");
+      localStorage.clear();
+      this.changePage("login");
+      
     }
   }
 };

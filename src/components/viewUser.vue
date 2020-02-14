@@ -17,10 +17,18 @@
       <div class="modal-body">
         <!-- {{userList}} -->
         <div 
+        class="row"
         v-for="(user, i) in userList"
         :key="i"
         >
-          <p>name: {{user.name}}, email: {{user.email}}</p>
+        <div class="col text-left">
+          <p>{{user.email}}</p>
+        </div>
+        <div class="col text-right">
+          <p v-if="i == 0" >creator</p>
+          <button class="btn btn-danger mr-3" v-if="i !== 0" @click.prevent="removeUser(user.id)">X</button>
+        </div>
+
         </div>
       </div>
       <div class="modal-footer">
@@ -59,7 +67,33 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    removeUser(id){
+       axios({
+        method: "delete",
+        url: `/project/user/${id}/${this.currentProject.id}`,
+      })
+        .then(({ data }) => {
+          this.getUserLits();
+          console.log(data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
+  },
+   created: function() {
+    // if(localStorage.token) {
+    //     this.socket.on("userList", data => {
+    //     // console.log('kepanggil');
+    //     this.getUserLits();
+    //   });
+
+    //   this.socket.on("addedUser", data => {
+    //     // console.log('kepanggil');
+    //     this.userList.push(data)
+    //   });
+    // }
   }
 }
 </script>

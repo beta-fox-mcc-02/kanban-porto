@@ -48,7 +48,7 @@
 
   <button type="submit" class="btn btn-primary" >Submit</button>
 </form>
-    <h1>{{currentProject.name}} {{currentProject.id}}</h1>
+    <h1>{{currentProject.name}}</h1>
   </div>
 
     <!-- {{filterin}} -->

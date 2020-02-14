@@ -13,15 +13,17 @@
       <button
         class="btn-sm m-2"
         v-if="box.name !== 'backLog'"
+        :style="prevButton.style"
         @click="updateCardBackward(task.id)"
-      >{{ prevButton }}</button>
+      >{{ prevButton.text }}</button>
  
       <button
-        class="btn-sm btn-primary m-2"
+        class="btn-sm  m-2"
         v-if="box.name !== 'Done'"
         @click.prevent="updateCardForward(task.id)"
-      >
-        {{ nextButton }}
+        :style="nextButton.style"
+        >
+        {{ nextButton.text }}
       </button>
     </div>
     <button class="btn-sm btn-danger m-2" @click="deleteCard(task.id)">
@@ -35,7 +37,14 @@ import axios from "../api/axiosInstance";
 name: "kanbanContent";
 export default {
   data() {
-    return {};
+    return {
+      colors:[
+        '#FF5722',
+        '#2196F3',
+        '#00BCD4',
+        '#8BC34A',
+      ]
+    };
   },
   props: {
     task: Object,
@@ -113,27 +122,78 @@ export default {
   },
   computed: {
     nextButton() {
-      if (this.box.name == "backLog") {
-        return "Todo";
+       if (this.box.name == "backLog") {
+        return {
+          text: 'Todo',
+          style:{
+            "background-color": this.colors[1]
+          }
+        }
       } else if (this.box.name == "Todo") {
-        return "Doing";
+          return {
+          text: 'Doing',
+          style:{
+            "background-color": this.colors[2]
+          }
+        }
       } else if (this.box.name == "Doing") {
-        return "Done";
+         return {
+          text: 'Done',
+          style:{
+            "background-color": this.colors[3]
+          }
+        }
       }
     },
     prevButton() {
-      if (this.box.name == "Todo") {
-        return "backLog";
+       if (this.box.name == "Todo") {
+        return {
+          text: 'backLog',
+          style:{
+            "background-color": this.colors[0]
+          }
+        }
       } else if (this.box.name == "Doing") {
-        return "Todo";
+          return {
+          text: 'Todo',
+          style:{
+            "background-color": this.colors[1]
+          }
+        }
       } else if (this.box.name == "Done") {
-        return "Doing";
+         return {
+          text: 'Doing',
+          style:{
+            "background-color": this.colors[2]
+          }
+        }
       }
     },
     getColor() {
-      return {
-        "background-color": this.box.color
-      };
+      let warna
+      if (this.box.name == "Todo") {
+        return {
+          text: 'backLog',
+          style:{
+            "background-color": this.colors[0]
+          }
+        }
+      } else if (this.box.name == "Doing") {
+          return {
+          text: 'Todo',
+          style:{
+            "background-color": this.colors[1]
+          }
+        }
+      } else if (this.box.name == "Done") {
+         return {
+          text: 'Doing',
+          style:{
+            "background-color": this.colors[2]
+          }
+        }
+      }
+
     }
   }
 };
