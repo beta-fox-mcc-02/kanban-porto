@@ -69,8 +69,19 @@ export default {
         localStorage.token = data.token
         localStorage.currentUser = data.name
         this.$emit('changePage', 'sign-in')
+        this.$toast.open({
+          message: `Account created success ! Please Sign In`,
+          type: 'success',
+          position: 'top-right'
+        })
       })
-      .catch(_ => {})
+      .catch(err => {
+        this.$toast.open({
+          message: `Email has been used ! Please use another email !`,
+          type: 'error',
+          position: 'top-right'
+        })
+      })
     },
     changePage (page) {
       this.$emit('changePage', page)

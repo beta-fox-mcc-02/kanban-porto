@@ -1,11 +1,15 @@
 import Vue from 'vue'
 import App from './App.vue'
-// Bootstrap
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-// Install BootstrapVue
+import VueToast from 'vue-toast-notification';
+import 'vue-toast-notification/dist/index.css';
+
 Vue.use(BootstrapVue)
-// Optionally install the BootstrapVue icon components plugin
-Vue.use(IconsPlugin)
+Vue.use(IconsPlugin) 
+
+
+ 
+Vue.use(VueToast)
 
 new Vue({
   render: h => h(App),
