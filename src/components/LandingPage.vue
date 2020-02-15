@@ -9,8 +9,8 @@
       </div>
       <div class="row mt-5">
         <div class="col d-flex"> 
-          <modalSign class="mx-1" sign="Login" @login="login"></modalSign>
-          <modalSign class="mx-1" sign="Register" @login="login"></modalSign>
+          <modalSign class="mx-1" sign="Login" @login="login" :openModal="openLogin"></modalSign>
+          <modalSign class="mx-1" sign="Register" @login="login" :openModal="openRegister"></modalSign>
           <b-button @click="googleSign" pill class="pjg-10" variant="primary">Sign with <i class="fab fa-google"></b-button>
         </div>
       </div>
@@ -28,6 +28,7 @@ export default {
   components: {
     modalSign
   },
+  props: ['openRegister', 'openLogin'],
   methods: {
     googleSign () {
       this.$gAuth.signIn()

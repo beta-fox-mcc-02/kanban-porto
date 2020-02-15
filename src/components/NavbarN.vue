@@ -25,10 +25,10 @@ export default {
       this.$emit('logout')
     },
     openRegister () {
-      this.$refs[`my-modalRegister`].show()
+      this.$emit('openRegister')
     },
     openLogin () {
-      this.$refs[`my-modalLogin`].show()
+      this.$emit('openLogin')
     },
   },
   props: {

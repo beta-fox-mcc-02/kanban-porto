@@ -1,7 +1,7 @@
 <template>
   <div>
-    <navbar :isLoggedIn="isLoggedIn" @logout="logout"></navbar>
-    <landingPage v-if="!isLoggedIn" @login="login"></landingPage>
+    <navbar :isLoggedIn="isLoggedIn" @logout="logout" @openRegister="openRegisterr" @openLogin="openLogins"></navbar>
+    <landingPage v-if="!isLoggedIn" @login="login" :openRegister="openRegister" :openLogin="openLogin"></landingPage>
     <kanban-board v-if="isLoggedIn"></kanban-board> 
   </div>
 </template>
@@ -16,7 +16,8 @@ export default {
   data() {
     return {
       isLoggedIn: false,
-
+      openRegister: 0,
+      openLogin: 0
     }
   },
   methods: {
@@ -39,6 +40,12 @@ export default {
           // things to do when sign-out fails
           console.log('error sign out', error)
         })
+    },
+    openRegisterr () {
+      this.openRegister++
+    },
+    openLogins () {
+      this.openLogin++
     }
   },
   components: {

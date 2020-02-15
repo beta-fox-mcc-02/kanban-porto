@@ -62,9 +62,7 @@
         password: ''
       }
     },
-    props: {
-      sign: String
-    },
+    props: ['sign', 'openModal'],
     methods: {
       showModal() {
         this.$refs[`my-modal${this.sign}`].show()
@@ -143,10 +141,13 @@
               solid: true
             })
           })
-            
       }
- 
-    }
+    },
+    watch: {
+      openModal: function (newMod, oldMod) {
+        this.showModal()
+      }
+    },
   }
 </script>
 
