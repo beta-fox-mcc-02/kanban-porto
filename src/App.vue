@@ -86,7 +86,7 @@ export default {
     },
 
   findAllTask() {
-    axios.get('http://localhost:3000/tasks', {
+    axios.get('https://immense-refuge-43743.herokuapp.com/tasks', {
       headers: {
         token: localStorage.token
       }

@@ -28,7 +28,16 @@
                 <div class="row">
                   <div class="col s12 center">
                     <p>Or sign in with Google account</p>
-                    <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure"></GoogleLogin>
+                    <div class="row">
+                      <div class="col s3 offset-s2">
+                        <GoogleLogin 
+                          :params="params" 
+                          :renderParams="renderParams" 
+                          :onSuccess="onSuccess" 
+                          :onFailure="onFailure"
+                        ></GoogleLogin>
+                      </div>
+                    </div>
                   </div>
                 </div>
             </div>
@@ -60,13 +69,13 @@ export default {
       user: "",
       password: "",
       params: {
-        client_id: "686966079631-han3ep3d2e6sb78id7b4nqe320ogb33h.apps.googleusercontent.com",
+        client_id: "686966079631-ro2oqjn1jsseu7jt31rhj1p8fhmgcue1.apps.googleusercontent.com",
       },
       renderParams: {
-                    width: 250,
-                    height: 50,
-                    longtitle: true
-                }
+        width: 250,
+        height: 50,
+        longtitle: true
+      }
     }
   },
 
@@ -93,35 +102,33 @@ export default {
         this.password = ''
         this.$emit('notification', err)
       })
+    },
+
+    onSuccess(googleUser){
+      let id_token = googleUser.getAuthResponse().id_token;
+      axios({
+        url:'https://immense-refuge-43743.herokuapp.com/gsignin',
+        method: 'post',
+        data: {
+          id_token
+      }
+      })
+        .then(({data}) => {
+          localStorage.token = data.token
+          localStorage.username = data.username
+          this.$emit('showContent')
+          this.$emit('notification', null, 'Login successful')
+        })
+        .catch(err => {
+          this.$emit('notification', err)
+        })
+      
+    },
+
+    onFailure(){
+      this.$emit('notification', "Error sigin with google")
+      localStorage.clear()
     }
-  },
-
-  onSuccess(){
-    let id_token = googleUser.getAuthResponse().id_token;
-    console.log(id_token);
-    
-    // axios({
-    //   url: 'https://immense-refuge-43743.herokuapp.com/users/gsignin',
-    //   method: 'post',
-    //   data: {
-    //     id_token
-    // }
-    // })
-    //   .then(({data}) => {
-    //     localStorage.token = data.token
-    //     localStorage.username = data.username
-    //     this.$emit('showContent')
-    //     this.$emit('notification', null, 'Login successful')
-    //   })
-    //   .catch(err => {
-    //     this.$emit('notification', err)
-    //   })
-    
-  },
-
-  onFailure(){
-    this.$emit('notification', "Error sigin with google")
-    localStorage.clear()
   }
 
 }
