@@ -138,11 +138,18 @@
         </center>
       </div>
     </div>
+
+    <KanbanForm
+      v-if="page === 'kanbanForm'"
+      @afterAddTask="afterAddTask"
+      @kanbanFromAdd="kanbanFromAdd"
+    ></KanbanForm>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import KanbanForm from "./KanbanForm.vue";
 
 export default {
   name: "KanbanBoard",
@@ -160,6 +167,7 @@ export default {
   props: {
     page: String
   },
+  components: { KanbanForm },
   methods: {
     fetchAll() {
       console.log("masuk ke fetch");
@@ -167,6 +175,7 @@ export default {
       axios({
         method: "get",
         url: "https://frozen-sands-95268.herokuapp.com/task",
+        // url: "http://localhost:3000/task",
         headers: {
           access_token: access_token
         }
@@ -196,6 +205,7 @@ export default {
       axios({
         method: "delete",
         url: `https://frozen-sands-95268.herokuapp.com/delete/${id}`,
+        // url: `http://localhost:3000/delete/${id}`,
         headers: {
           access_token
         }
@@ -219,6 +229,7 @@ export default {
       axios({
         method: "put",
         url: `https://frozen-sands-95268.herokuapp.com/update/${id}`,
+        // url: `http://localhost:3000/update/${id}`,
         data: {
           title: title,
           CategoryId: CategoryId
@@ -246,6 +257,7 @@ export default {
       axios({
         method: "get",
         url: `https://frozen-sands-95268.herokuapp.com/update/${editId}`,
+        // url: `http://localhost:3000/update/${editId}`,
         headers: {
           access_token
         }
@@ -269,6 +281,7 @@ export default {
       axios({
         method: "put",
         url: `https://frozen-sands-95268.herokuapp.com/update/${this.id}`,
+        // url: `http://localhost:3000/update/${this.id}`,
         data: {
           title: this.title,
           CategoryId: this.CategoryId
@@ -301,6 +314,17 @@ export default {
     },
     kanban() {
       this.$emit("changePage", "kanban");
+    },
+    kanbanFromAdd() {
+      return this.$emit("changePage", "kanban");
+    },
+    afterAddTask() {
+      this.backlog = [];
+      this.product = [];
+      this.development = [];
+      this.done = [];
+      this.$emit("changePage", "kanban");
+      return this.fetchAll();
     }
   },
   created() {

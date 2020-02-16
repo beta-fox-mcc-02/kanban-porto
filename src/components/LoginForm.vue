@@ -52,6 +52,7 @@ export default {
       axios({
         method: "post",
         url: "https://frozen-sands-95268.herokuapp.com/login",
+        // url: `http://localhost:3000/login`,
         data: {
           email: email,
           password: password
@@ -80,6 +81,7 @@ export default {
           return axios({
             method: "post",
             url: "https://frozen-sands-95268.herokuapp.com/gsignin",
+            // url: `http://localhost:3000/gsignin`,
             headers: {
               access_token: access_token
             }

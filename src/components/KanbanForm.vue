@@ -32,7 +32,11 @@ export default {
   },
   methods: {
     kanban() {
-      this.$emit("changePage", "kanban");
+      this.$emit("kanbanFromAdd");
+    },
+    afterAdd() {
+      this.$emit("afterAddTask");
+      // this.$emit("")
     },
     addTask() {
       const title = this.title;
@@ -40,6 +44,7 @@ export default {
       axios({
         method: "post",
         url: "https://frozen-sands-95268.herokuapp.com/create",
+        // url: `http://localhost:3000/create`,
         data: {
           title: title,
           CategoryId: 1
@@ -51,7 +56,7 @@ export default {
         .then(response => {
           console.log(response);
           console.log("Backlog added");
-          this.kanban();
+          this.afterAdd();
         })
         .catch(err => {
           console.log(err);

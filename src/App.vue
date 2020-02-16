@@ -4,7 +4,7 @@
     <KanbanBoard @changePage="changePage" :page="page"></KanbanBoard>
     <LoginForm v-if="page === 'login'" @changePage="changePage"></LoginForm>
     <RegisterForm v-else-if="page === 'register'" @changePage="changePage"></RegisterForm>
-    <KanbanForm v-if="page === 'kanbanForm'" @changePage="changePage"></KanbanForm>
+    <!-- <KanbanForm v-if="page === 'kanbanForm'" @changePage="changePage"></KanbanForm> -->
   </div>
 </template>
 
@@ -13,8 +13,7 @@ import NavbarMenu from "./components/NavbarMenu.vue";
 import LoginForm from "./components/LoginForm.vue";
 import RegisterForm from "./components/RegisterForm.vue";
 import KanbanBoard from "./components/KanbanBoard.vue";
-import KanbanForm from "./components/KanbanForm.vue";
-// import UpdateForm from "./components/UpdateForm.vue";
+// import KanbanForm from "./components/KanbanForm.vue";
 
 export default {
   data() {
@@ -26,8 +25,7 @@ export default {
     NavbarMenu,
     LoginForm,
     RegisterForm,
-    KanbanBoard,
-    KanbanForm
+    KanbanBoard
   },
   methods: {
     changePage(page) {
