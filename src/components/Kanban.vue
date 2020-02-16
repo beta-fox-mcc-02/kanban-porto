@@ -7,6 +7,7 @@
                     v-bind:key="category.id"
                     v-bind:category="category"
                     @editTask="editTask"
+                    @deleteTask="deleteTask"
                     @updateData="updateData">
                 </Category>
             </div>
@@ -44,6 +45,10 @@ export default {
         },
         editTask(id) {
             this.$emit('editTask', id);
+        },
+        deleteTask(id) {
+            this.categories = []
+            this.getCategories();
         },
         updateData() {
             this.categories = []

@@ -6,6 +6,7 @@
                 v-bind:key="task.id"
                 v-bind:task="task"
                 @editTask="editTask"
+                @deleteTask="deleteTask"
                 @createTask="createTask"
                 @forwardTask="forwardTask"
         ></TaskCard>
@@ -50,6 +51,9 @@ export default {
         },
         editTask(id) {
             this.$emit('editTask', id);
+        },
+        deleteTask(id) {
+            this.$emit('deleteTask');
         },
         createTask() {
             this.$emit('createTask');

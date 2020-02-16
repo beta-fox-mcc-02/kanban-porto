@@ -3,21 +3,43 @@
         <h1>Login Form</h1> <br>
         <form @submit.prevent="userLogin">
             <label>Email</label>
-            <input v-model="email" type="text" name="" class="form_login" placeholder="Input your email...">
+            <input
+                v-model="email"
+                type="text"
+                class="form_login"
+                placeholder="Input your email..."
+            >
 
             <label>Password</label>
-            <input v-model="password" type="password" name="password" class="form_login" placeholder="Input your password...">
+            <input
+                v-model="password"
+                type="password"
+                name="password"
+                class="form_login"
+                placeholder="Input your password..."
+            >
 
-            <input type="submit" id="login-button" class="btn_login" value="LOGIN"><br>
+            <input
+                type="submit"
+                id="login-button"
+                class="btn_login"
+                value="LOGIN"
+            >
+            
+            <br>
             
             <center><label>OR</label></center>
 
             <GoogleLogin :params="params" :onSuccess="onSuccess" :onFailure="onFailure" class="btn_login">Google Sign-in</GoogleLogin>
-<!--             
+            
             <br><br><br>
-            <center><label>No account?</label></center>
+            <center><label>No account?</label>
+            <a href="#"
+                @click="register"
+            >Register Here</a></center>
 
-            <input type="submit" id="login-button" class="btn_login" value="Create one!"><br> -->
+
+            <!-- <input type="submit" id="login-button" class="btn_login" value="Create one!"><br> -->
             <!-- <div id="login-gsignin">
                 <section id="section-login">
                     <div class="g-signin2" data-onsuccess="onSignIn" data-width=310 data-height=41></div>
@@ -104,6 +126,9 @@ export default {
         },
         onFailure(e) {
             console.log(e)
+        },
+        register(){
+            this.$emit('showContent', "Register");
         }
     }, components: {
         GoogleLogin

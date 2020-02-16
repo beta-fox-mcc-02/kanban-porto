@@ -10699,6 +10699,28 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default = {
   name: "loginPage",
   data: function data() {
@@ -10774,6 +10796,9 @@ var _default = {
     },
     onFailure: function onFailure(e) {
       console.log(e);
+    },
+    register: function register() {
+      this.$emit('showContent', "Register");
     }
   },
   components: {
@@ -10821,7 +10846,7 @@ exports.default = _default;
             }
           ],
           staticClass: "form_login",
-          attrs: { type: "text", name: "", placeholder: "Input your email..." },
+          attrs: { type: "text", placeholder: "Input your email..." },
           domProps: { value: _vm.email },
           on: {
             input: function($event) {
@@ -10865,6 +10890,7 @@ exports.default = _default;
           staticClass: "btn_login",
           attrs: { type: "submit", id: "login-button", value: "LOGIN" }
         }),
+        _vm._v(" "),
         _c("br"),
         _vm._v(" "),
         _c("center", [_c("label", [_vm._v("OR")])]),
@@ -10880,7 +10906,19 @@ exports.default = _default;
             }
           },
           [_vm._v("Google Sign-in")]
-        )
+        ),
+        _vm._v(" "),
+        _c("br"),
+        _c("br"),
+        _c("br"),
+        _vm._v(" "),
+        _c("center", [
+          _c("label", [_vm._v("No account?")]),
+          _vm._v(" "),
+          _c("a", { attrs: { href: "#" }, on: { click: _vm.register } }, [
+            _vm._v("Register Here")
+          ])
+        ])
       ],
       1
     )
@@ -10957,14 +10995,17 @@ var _default = {
     createTask: function createTask() {
       this.$emit('createTask', this.task.title);
     },
-    deleteTask: function deleteTask() {
+    deleteTask: function deleteTask(id) {
       var _this = this;
 
       (0, _axios.default)({
         method: "delete",
-        url: "http://localhost:3000/board/" + this.task.id
+        url: "http://localhost:3000/board/" + id,
+        headers: {
+          "token": localStorage.token
+        }
       }).then(function (success) {
-        _this.$emit('showContent', "Login");
+        _this.$emit('deletedData');
       }).catch(function (err) {
         console.log(err);
 
@@ -11023,7 +11064,7 @@ exports.default = _default;
               on: {
                 click: function($event) {
                   $event.preventDefault()
-                  return _vm.deleteTask($event)
+                  return _vm.deleteTask(_vm.task.id)
                 }
               }
             },
@@ -11108,6 +11149,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
 var _default = {
   name: "Category",
   data: function data() {
@@ -11142,6 +11184,9 @@ var _default = {
     },
     editTask: function editTask(id) {
       this.$emit('editTask', id);
+    },
+    deleteTask: function deleteTask(id) {
+      this.$emit('deleteTask');
     },
     createTask: function createTask() {
       this.$emit('createTask');
@@ -11205,6 +11250,7 @@ exports.default = _default;
           attrs: { task: task },
           on: {
             editTask: _vm.editTask,
+            deleteTask: _vm.deleteTask,
             createTask: _vm.createTask,
             forwardTask: _vm.forwardTask
           }
@@ -11275,6 +11321,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
 var _default = {
   name: "Kanban",
   data: function data() {
@@ -11302,6 +11349,10 @@ var _default = {
     },
     editTask: function editTask(id) {
       this.$emit('editTask', id);
+    },
+    deleteTask: function deleteTask(id) {
+      this.categories = [];
+      this.getCategories();
     },
     updateData: function updateData() {
       this.categories = [];
@@ -11335,7 +11386,11 @@ exports.default = _default;
           return _c("Category", {
             key: category.id,
             attrs: { category: category },
-            on: { editTask: _vm.editTask, updateData: _vm.updateData }
+            on: {
+              editTask: _vm.editTask,
+              deleteTask: _vm.deleteTask,
+              updateData: _vm.updateData
+            }
           })
         }),
         1
@@ -11469,6 +11524,8 @@ exports.default = _default;
           attrs: { id: "navbarSupportedContent" }
         },
         [
+          _c("ul", { staticClass: "navbar-nav mr-auto" }),
+          _vm._v(" "),
           _c(
             "button",
             {
@@ -11595,7 +11652,7 @@ var _default = {
     createTask: function createTask() {
       var _this = this;
 
-      console.log('Create');
+      console.log('Create', this.title, localStorage.token);
       (0, _axios.default)({
         method: "post",
         url: "http://localhost:3000/board/",
@@ -11606,7 +11663,7 @@ var _default = {
           title: this.title
         }
       }).then(function (result) {
-        console.log(_this.title);
+        console.log(result);
 
         _this.$emit("showContent", "Home");
       }).catch(function (err) {
@@ -11919,6 +11976,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
 var _default = {
   name: "registerPage",
   data: function data() {
@@ -11931,8 +11994,6 @@ var _default = {
   methods: {
     userRegister: function userRegister() {
       var _this = this;
-
-      console.log(this.email, this.password);
 
       if (this.password === this.confirmpassword) {
         (0, _axios.default)({
@@ -11953,6 +12014,9 @@ var _default = {
     },
     toRegister: function toRegister() {
       this.$emit("change-page", "register");
+    },
+    login: function login() {
+      this.$emit('showContent', "Login");
     }
   }
 };
@@ -12069,8 +12133,21 @@ exports.default = _default;
           staticClass: "btn_login",
           attrs: { type: "submit", id: "login-button", value: "Register" }
         }),
-        _c("br")
-      ]
+        _c("br"),
+        _vm._v(" "),
+        _c("br"),
+        _c("br"),
+        _c("br"),
+        _vm._v(" "),
+        _c("center", [
+          _c("label", [_vm._v("Already have an account?")]),
+          _vm._v(" "),
+          _c("a", { attrs: { href: "#" }, on: { click: _vm.login } }, [
+            _vm._v("Login")
+          ])
+        ])
+      ],
+      1
     )
   ])
 }
@@ -12317,7 +12394,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37521" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33417" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

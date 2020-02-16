@@ -5,7 +5,7 @@
 
             <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
                 <a href="#" @click.prevent="editTask" class="btn btn-success"><i class="fa fa-edit"></i></a>
-                <a href="#" @click.prevent="deleteTask" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                <a href="#" @click.prevent="deleteTask(task.id)" class="btn btn-danger"><i class="fa fa-trash"></i></a>
                 <a href="#" @click.prevent="forwardTask" class="btn btn-warning"><i class="fa fa-forward"></i></a>
             </div>
         </div>
@@ -26,13 +26,16 @@ export default {
         createTask() {
             this.$emit('createTask', this.task.title);
         },
-        deleteTask() {
+        deleteTask(id) {
             axios({
                 method: "delete",
-                url: "http://localhost:3000/board/" + this.task.id,
+                url: "http://localhost:3000/board/" + id,
+                headers: {
+                    "token": localStorage.token
+                }
             })
                 .then(success => {
-                    this.$emit('showContent', "Login");
+                    this.$emit('deletedData');
                 })
                 .catch(err => {
                     console.log(err);

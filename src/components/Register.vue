@@ -13,6 +13,12 @@
                 <input v-model="confirmpassword" type="password" name="confirmpassword" class="form_login" placeholder="Input your confirm password...">
 
                 <input type="submit" id="login-button" class="btn_login" value="Register"><br>
+
+                <br><br><br>
+                <center><label>Already have an account?</label>
+                <a href="#"
+                    @click="login"
+                >Login</a></center>
             </form>		
         <!-- </div> -->
     </div>
@@ -31,8 +37,6 @@ export default {
     },
     methods: {
         userRegister() {
-            console.log(this.email, this.password);
-            
             if(this.password === this.confirmpassword) {
                 axios({
                     method: "post",
@@ -57,6 +61,9 @@ export default {
         },
         toRegister() {
             this.$emit("change-page", "register");
+        },
+        login(){
+            this.$emit('showContent', "Login");
         }
     }
 }

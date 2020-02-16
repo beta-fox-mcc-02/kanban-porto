@@ -25,7 +25,7 @@ export default {
     },
     methods: {
         createTask() {
-            console.log('Create');
+            console.log('Create', this.title, localStorage.token);
             
             axios({
                 method: "post",
@@ -38,7 +38,7 @@ export default {
                 }
             })
                 .then(result => {
-                    console.log(this.title);
+                    console.log(result);
                     
                     this.$emit("showContent", "Home")
                 })
