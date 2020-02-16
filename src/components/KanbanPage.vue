@@ -6,7 +6,12 @@
         :categoryNameProps="category.name"
         :categoryIdProps="category.id"
       ></CategoryHeader>
-      <Tasks @fetchData="fetchData" :categoryIdProps="category.id" :tasksProps="category.Tasks"></Tasks>
+      <Tasks
+        @fetchData="fetchData"
+        :categoryIdProps="category.id"
+        :tasksProps="category.Tasks"
+        :categoriesID="categoriesID"
+      ></Tasks>
     </div>
     <div class="input-category">
       <small v-if="error" class="error">{{ error }}</small>
@@ -39,7 +44,8 @@ export default {
       data: [],
       categoryName: "",
       error: "",
-      showEditCategory: false
+      showEditCategory: false,
+      categoriesID: []
     };
   },
   components: {
@@ -47,6 +53,19 @@ export default {
     Tasks
   },
   methods: {
+    sortTask(arr) {
+      let i = 0;
+      while (i < arr.length - 1) {
+        if (arr[i].id > arr[i + 1].id) {
+          let temp = arr[i];
+          arr[i] = arr[i + 1];
+          arr[i + 1] = temp;
+          i = 0;
+        } else {
+          i++;
+        }
+      }
+    },
     fetchData() {
       axios({
         method: "get",
@@ -56,11 +75,17 @@ export default {
         }
       })
         .then(response => {
-          console.log(response.data);
+          response.data.forEach(category => {
+            this.sortTask(category.Tasks);
+          });
           this.data = response.data;
+          this.categoriesID = [];
+          response.data.forEach(category => {
+            this.categoriesID.push(category.id);
+          });
         })
         .catch(error => {
-          console.log(error.response.data);
+          console.log(error);
         });
     },
     createCategory() {
@@ -125,5 +150,6 @@ i:hover {
   position: fixed;
   top: 20px;
   right: 40px;
+  z-index: 999;
 }
 </style>

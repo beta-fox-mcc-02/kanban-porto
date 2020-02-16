@@ -8,10 +8,11 @@
     </div>
     <MenuTask
       v-if="showMenu"
+      :categoriesID="categoriesID"
       :categoryIdProps="categoryIdProps"
       :taskId="taskId"
       :taskTitle="taskTitle"
-      @fetchTasks="fetchTasks"
+      @fetchDataCardTask="fetchDataCardTask"
     ></MenuTask>
   </div>
 </template>
@@ -23,7 +24,8 @@ export default {
   props: {
     taskTitle: String,
     categoryIdProps: Number,
-    taskId: Number
+    taskId: Number,
+    categoriesID: Array
   },
   data() {
     return {
@@ -41,8 +43,8 @@ export default {
         this.showMenu = true;
       }
     },
-    fetchTasks() {
-      this.$emit("fetchTasks");
+    fetchDataCardTask() {
+      this.$emit("fetchDataTasksSection");
     }
   }
 };

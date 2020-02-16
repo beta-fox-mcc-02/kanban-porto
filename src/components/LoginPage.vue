@@ -104,12 +104,10 @@ export default {
         }
       })
         .then(response => {
-          console.log("berhasil");
           localStorage.token = response.data.token;
           this.$emit("changePage", "kanban");
         })
         .catch(error => {
-          console.log("gagal");
           this.error = error.response.data.error[0];
         });
     },

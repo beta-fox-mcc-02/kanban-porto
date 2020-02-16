@@ -1,12 +1,13 @@
 <template>
   <div>
     <CardTask
-      v-for="task in tasks"
+      v-for="task in tasksProps"
       :key="task.id"
+      :taskId="task.id"
       :taskTitle="task.title"
       :categoryIdProps="categoryIdProps"
-      :taskId="task.id"
-      @fetchTasks="fetchTasks"
+      @fetchDataTasksSection="fetchDataTasksSection"
+      :categoriesID="categoriesID"
     ></CardTask>
     <div class="add-task">
       <button v-if="showInput" @click="toggleInput" type="button" class="close">
@@ -38,7 +39,8 @@ export default {
   name: "Tasks",
   props: {
     tasksProps: Array,
-    categoryIdProps: Number
+    categoryIdProps: Number,
+    categoriesID: Array
   },
   components: {
     CardTask
@@ -75,7 +77,7 @@ export default {
       })
         .then(response => {
           this.showInput = false;
-          this.fetchTasks();
+          this.$emit("fetchData");
           this.inputTitleTask = "";
         })
         .catch(error => {
@@ -83,26 +85,11 @@ export default {
           this.error = "*" + error.response.data.error[0];
         });
     },
-    fetchTasks() {
-      axios({
-        method: "get",
-        url: `http://localhost:3000/tasks/${this.categoryIdProps}`,
-        headers: {
-          token: localStorage.token
-        }
-      })
-        .then(response => {
-          console.log(response.data);
-          this.tasks = response.data;
-        })
-        .catch(error => {
-          console.log(error.response.data.error);
-        });
+    fetchDataTasksSection() {
+      this.$emit("fetchData");
     }
   },
-  created() {
-    this.fetchTasks();
-  }
+  created() {}
 };
 </script>
 

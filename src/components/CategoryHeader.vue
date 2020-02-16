@@ -111,7 +111,6 @@ export default {
         }
       })
         .then(response => {
-          console.log("berhasil");
           this.showModal = false;
           this.$emit("fetchData");
         })
