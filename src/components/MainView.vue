@@ -122,7 +122,7 @@ export default {
         getAllCategories() {
             axios({
                 method : "GET",
-                url : "http://localhost:3000/categories"
+                url : "https://young-retreat-16880.herokuapp.com/categories"
             })
                 .then(({ data }) => {
                     this.categories = data.data
@@ -144,7 +144,7 @@ export default {
             console.log('MASUK ADD NEW TASK')
             axios({
                 method : "POST",
-                url : "http://localhost:3000/tasks",
+                url : "https://young-retreat-16880.herokuapp.com/tasks",
                 data : {
                     title : this.newTask.title,
                     description : this.newTask.description

@@ -57,7 +57,7 @@ export default {
         loginUser() {
             axios({
                 method : "POST",
-                url : "http://localhost:3000/login",
+                url : "https://young-retreat-16880.herokuapp.com/login",
                 data : {
                     email : this.login.email,
                     password : this.login.password
@@ -66,7 +66,6 @@ export default {
                 .then(({data}) => {
                     this.reset()
                     this.$emit('loginSuccess', data.access_token)
-                    
                 })
                 .catch(err => {
                     console.log(err.response)
@@ -83,7 +82,7 @@ export default {
 
             axios({
                 method: "POST",
-                url : "http://localhost:3000/googleSign",
+                url : "https://young-retreat-16880.herokuapp.com/googleSign",
                 data : {
                     id_token : id_token
                 }

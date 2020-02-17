@@ -56,7 +56,7 @@ export default {
         deleteTask(id) {
             axios({
                 method : "DELETE",
-                url : `http://localhost:3000/tasks/` + id,
+                url : `https://young-retreat-16880.herokuapp.com/tasks/` + id,
                 headers : {
                     token : localStorage.token
                 }
@@ -72,7 +72,7 @@ export default {
             this.currentPage = 'updateTaskPage'
             axios({
                 method : "GET",
-                url : `http://localhost:3000/tasks/` + id,
+                url : `https://young-retreat-16880.herokuapp.com/tasks/` + id,
                 headers : {
                     token : localStorage.token
                 }
@@ -89,7 +89,7 @@ export default {
         updateTask(id){
             axios({
                 method : "PUT",
-                url : `http://localhost:3000/tasks/` + id,
+                url : `https://young-retreat-16880.herokuapp.com/tasks/` + id,
                 data : {
                     title : this.dataTask.title,
                     description : this.dataTask.description,

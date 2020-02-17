@@ -49,7 +49,8 @@ export default {
                 password : ""
             },
             params: {
-                client_id: "967015570633-a405l1qnha9u0cft0dg2qdkrsb0af6br.apps.googleusercontent.com"
+                // client_id: "967015570633-a405l1qnha9u0cft0dg2qdkrsb0af6br.apps.googleusercontent.com"
+                client_id: "202761687018-njs4ug7uuanl4u971cj77ceok473k3qo.apps.googleusercontent.com"
             },
             renderParams: {
                 width: 250,
@@ -60,9 +61,10 @@ export default {
     },
     methods : {
         createUser() {
+            console.log('MASUK CREATE')
             axios({
                 method : "POST",
-                url : "http://localhost:3000/register",
+                url : "https://young-retreat-16880.herokuapp.com/register",
                 data : {
                     name : this.register.name,
                     email : this.register.email,
@@ -92,7 +94,7 @@ export default {
 
             axios({
                 method: "POST",
-                url : "http://localhost:3000/googleSign",
+                url : "https://young-retreat-16880.herokuapp.com/googleSign",
                 data : {
                     id_token : id_token
                 }

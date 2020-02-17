@@ -91,7 +91,7 @@ export default {
         fetch() {
             axios({
                 method : "GET",
-                url : "http://localhost:3000/tasks",
+                url : "https://young-retreat-16880.herokuapp.com/tasks",
                 headers : {
                     token: localStorage.getItem('token')
                 }

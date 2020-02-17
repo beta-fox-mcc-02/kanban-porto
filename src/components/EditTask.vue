@@ -43,7 +43,7 @@ export default {
             console.log('MASUK UPDATE MAIN.JS')
             axios({
                 method : "PUT",
-                url : `http://localhost:3000/tasks/` + id,
+                url : `https://young-retreat-16880.herokuapp.com/tasks/` + id,
                 data : {
                     title : this.dataTask.title,
                     description : this.dataTask.description,
