@@ -106,7 +106,6 @@ export default {
         categoryName : '',
         taskName : '',
         taskDescription : '',
-
     }
   },
   components : {
@@ -257,12 +256,14 @@ export default {
     this.readTask()
   },
   computed : {
-    checkLength(){
-      return this.count
+    taskName(title){
+      this.taskName = title
+      return this.taskName
     },
-    boardLength(){
-      console.log(this.boards.length)
-      return this.boards.length
+    taskDescription(description){
+      // console.log(this.boards.length)
+      this.taskDescription = description
+      return this.taskDescription
     }
   }
 }
