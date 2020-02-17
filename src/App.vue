@@ -27,7 +27,7 @@ export default {
    },
    methods : {
       changePage (page, status) {
-         console.log(page)
+         // console.log(page)
          this.isLogin = status
          this.currentPage = page
       }  

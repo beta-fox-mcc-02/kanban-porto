@@ -1,5 +1,5 @@
 <template>
-   <div class="card m-5 p-5">
+   <div class="card m-5 p-5 w-50 mx-auto">
       <div>
          <h1 class="text-center">Login</h1>
          <form @submit.prevent='login'>

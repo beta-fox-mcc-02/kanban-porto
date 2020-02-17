@@ -4,7 +4,7 @@
          <div>
             {{ task.title }}
             <hr>
-            {{ task.description }}
+            {{ taskDescription }}
          </div>
       </a>
          <div id="flexButton">
@@ -26,7 +26,7 @@ export default {
    props : ['task', 'editModal', 'start', 'end', 'categoryId'],
    methods : {
       deleteTask() {
-         console.log('masuk function delete')
+         // console.log('masuk function delete')
          this.$emit('deleteTask', this.task.id)
       },
       updateTask() {
@@ -49,6 +49,15 @@ export default {
          // console.log(this.task)
          this.$emit('next', this.task.CategoryId, this.task.id)
       }  
+   },
+   computed : {
+      taskDescription () {
+         if(this.task.description) {
+            return this.task.description.substring(0, 10) + '...'
+         } else {
+            return this.task.description
+         }
+      }
    },
    created () {
       // console.log(this.editModal)

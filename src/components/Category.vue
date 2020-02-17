@@ -6,10 +6,10 @@
          <div v-if="catShow">
             <h5 class="card-title text-center title">{{ category.name }}</h5>
          </div>
-         <div v-else>
+         <div v-else style="width:50%">
             <form @submit.prevent="updateCategory">
-               <input type=text v-model="categoryName" required>
-               <input type="submit" class="btn btn-warning" value="edit">
+               <input type="text" style="width: 50px" class="mb-2" v-model="categoryName" required>
+               <input type="submit" class="btn btn-success" value="save">
             </form>
          </div>
          <Task 
@@ -27,21 +27,21 @@
 
          </Task>
          <div class="btn-new-task">
-            <form @submit.prevent="createTask">
-               <input type="text" v-model="newTask" placeholder="new task" required>
+            <form @submit.prevent="createTask" class="newTask">
+               <input type="text" v-model="newTask" placeholder="new task" style="width:70%" required>
                <input type="submit" class="btn btn-primary" value="add">
             </form>
          </div>
      </div>
-     <div v-else>
-        <div class="updateForm"> 
-            <label>Title</label>
-            <input type="text" v-model="title" required>
-            <label>Description</label>
-            <input type="description" v-model="description">
-            <button type="submit" @click.prevent="updatingTask">Save</button>
+     <div v-else class="updateForm">
+        <div class="updateForm pt-5"> 
+            <label for="title"><b>Title</b></label>
+            <input type="text" style="width: 90%" class="mb-2" v-model="title" required>
+            <label for="description"><b>Description</b></label>
+            <textarea type="description" style="width: 90%; height:100px" class="mb-2" v-model="description"></textarea>
+            <button class="btn btn-success mb-2" type="submit" @click.prevent="updatingTask">Save</button>
          </div>
-         <button type="submit" @click="closeModal">Close</button> 
+         <button class="btn btn-danger mr" type="submit" @click="closeModal">Close</button> 
      </div>
   </div>
 </template>
@@ -83,6 +83,7 @@ export default {
             }
          })
             .then(task => {
+               // console.log(task.data.data)
                this.tasks = task.data.data
             })
             .catch(err => {
@@ -102,7 +103,7 @@ export default {
             }
          })
             .then(response => {
-               console.log(response, 'response add')
+               // console.log(response, 'response add')
                this.newTask = ''
                this.fetchTasks()
             })
@@ -182,7 +183,7 @@ export default {
          } else {
             CategoryId = null
          }  
-         console.log(CategoryId, id)
+         // console.log(CategoryId, id)
          axios({
             method: "PUT",
             url: `/tasks/${id}`,
@@ -196,7 +197,7 @@ export default {
             }
          })
             .then(({data}) => {
-               console.log('masuk success updating')
+               // console.log('masuk success updating')
                this.editModal = false
                this.fetchTasks()
             })
@@ -206,7 +207,7 @@ export default {
       },
       getCat() {
          let id = this.category.id
-         console.log(id)
+         // console.log(id)
          axios({
             method: 'GET',
             url : `/categories/${id}`,
@@ -215,7 +216,7 @@ export default {
             }
          })
             .then(({data}) => {
-               console.log(data, 'getCat')
+               // console.log(data, 'getCat')
                this.categoryName = data.data.name
             })
             .catch(err => {
@@ -235,7 +236,7 @@ export default {
       },
       updateCategory() {
          let id  = this.category.id
-         console.log('masuk update category')
+         // console.log('masuk update category')
          // this.$emit('updateCategory', this.category.id, this.categoryName)
          axios({
             method: 'PUT',
@@ -248,12 +249,12 @@ export default {
             }
          })
             .then(data => {
-               console.log(data, 'update category')
+               // console.log(data, 'update category')
                this.catShow = true
                this.$emit('fetchCat')
             })
             .catch(err => {  
-               console.log(err, 'error update category')
+               // console.log(err, 'error update category')
             })
       },
       next(catId, taskId) {
@@ -328,5 +329,13 @@ export default {
    }
    .fa-trash {
       color: red
+   }
+   .newTask {
+      display: flex
+   }
+   .updateForm {
+      display : flex;
+      flex-direction: column;
+      align-items: center
    }
 </style> 

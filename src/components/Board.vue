@@ -3,15 +3,15 @@
      <div class="col">
          <div class="text-center mb-3">
             <h1 >Kanban Windows 98 Theme</h1>
-            <input class="btn btn-primary" type="submit" href="#" value="Add Category" @click="inputCreate">
+            <input class="btn btn-primary mb-2" type="submit" href="#" value="Add Category" @click="inputCreate">
             <div v-if="status">
                <form @submit="createCategory">
                   <input type="text" v-model="name" placeholder="input your new category">
+                  <button class="btn btn-primary" type="submit">+</button>
                </form>
-               <button type="submit" @click="closeForm">X</button>
             </div>
          </div>
-         <div class="flex">
+         <div class="category-task">
             <Category 
             v-for="category in categories" 
             :key="category.id" 
@@ -63,8 +63,9 @@ export default {
             }
          })
             .then(response => {
-               console.lof(response, 'axios board vue create success')
+               // console.log(response, 'axios board vue create success')
                this.status = false
+               this.name = ''
                this.fetchCategories()
             })
             .catch(err => {
@@ -80,7 +81,7 @@ export default {
             }
          })
             .then(response => {
-               console.log(response.data.categories, 'fetch categories')
+               // console.log(response.data.categories, 'fetch categories')
                this.categories = response.data.categories
                this.allCategory = response.data.categories
                // console.log(this.categories.categories)
@@ -92,7 +93,7 @@ export default {
             })
       },
       deleteCategories (id) {
-         console.log('delete categories')
+         // console.log('delete categories')
          axios({
             method: 'DELETE',
             url: `/categories/${id}`, 
@@ -101,7 +102,7 @@ export default {
             }
          })
             .then(data => {
-               console.log(data, 'success delete categories')
+               // console.log(data, 'success delete categories')
                this.fetchCategories()
             })
             .catch(err => {
@@ -119,7 +120,7 @@ export default {
          this.status = false
       },
       deleteCat(id) {
-         console.log(id, 'delete cat')
+         // console.log(id, 'delete cat')
          this.deleteCategories(id)
       },
       fetchCat() {
@@ -148,8 +149,17 @@ export default {
 </script>
 
 <style scoped>
-   .flex {
+   .category-task {
       display : flex;
+      overflow: auto;
+
+   }
+   @media (max-width: 768px) { 
+      .category-task {
+         display : flex;
+         align-items :center;
+         flex-direction: column;
+      }
    }
    .card-category {
       background-color: teal;
