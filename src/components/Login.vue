@@ -114,8 +114,8 @@ export default {
                     
                     const { token, email } = success.data;
 
-                    this.$emit('showContent', "Home");
                     localStorage.setItem("token", token);
+                    this.$emit('showContent', "Home");
                 })
                 .catch(err => {
                     console.log(err);
