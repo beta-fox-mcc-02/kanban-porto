@@ -1,0 +1,214 @@
+* {
+    margin : 0;
+}
+
+#login {
+    height : 100vh;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    padding : 100px auto;
+}
+
+#register {
+    height : 100vh;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    padding : 100px auto;
+}
+
+.main-view {
+    display : flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch; 
+    height: 100vh;
+    
+}
+
+.main-view .option{
+    background-color: #191970;
+    width: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.main-view .option .top ul {
+    margin: auto;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 0;
+}
+
+.main-view .option .bottom ul {
+    margin: auto;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 0;
+}
+
+.main-view .option .top ul li, .main-view .option .bottom ul li {
+    list-style: none;
+    align-items: center
+    /* display : inline; */
+}
+
+.main-view .option .top ul li i, .main-view .option .bottom ul li i {
+    /* margin: 10px 10px 10px 0;
+    border: 1px solid;
+    padding: 5px; */
+    font-size: 18pt;
+    padding: 10px;
+    color: white;
+
+}
+
+.main-view .menu-bar {
+    background-color: #B0C4DE;
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-view .menu-bar .menu-top {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 10px;
+    height: 40vh;
+}
+
+.main-view .menu-bar .menu-top .intro-profile {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    align-items: stretch;
+}
+
+.main-view .menu-bar .menu-top .intro-profile .avatar a i {
+    font-size: 35px;
+    margin-right: 10px;
+}
+
+.main-view .menu-bar .menu-top .intro-profile .name-profile {
+    
+}
+
+.main-view .menu-bar .menu-top .kanban {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.main-view .menu-bar .menu-top .kanban.icon {
+    margin-right: 10px;
+}
+
+.main-view .menu-bar .menu-top .history {
+    height: 60vh;
+}
+
+.main-view .content {
+    background-image: "https://png.pngtree.com/thumb_back/fh260/back_pic/00/04/53/9556248b4747950.png";
+    /* background-color: #FFFFFF; */
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.main-view .content .title {
+    /* background-color: aquamarine; */
+    height : 10vh;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.main-view .content .search {
+    /* background-color: beige; */
+    height: 10vh;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.card-header, .isi-task {
+    /* background-color: #D3D3D3; */
+    background-color: none;
+    
+}
+
+.kanban-board .card {
+    overflow: auto; 
+    max-height: 75vh;
+}
+
+.main-view .content .kanban-board {
+    /* background-color: slategray; */
+    height: 100%;
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.main-view .content h2 {
+    margin-top : 20px;
+    text-align: center;
+}
+
+.main-view .content .kanban-board .backlog {
+    width: 24%;
+    height :100%;
+}
+
+.main-view .content .kanban-board .product {
+
+    width: 24%;
+
+}
+
+.main-view .content .kanban-board .development {
+
+    width: 24%;
+}
+
+.main-view .content .kanban-board .done {
+
+    width: 24%;
+}
+
+.main-view .content .kanban-board .issue-title p {
+    /* font-weight: 100px; */
+}
+
+/* .main-view .content .kanban-board ul li {
+    list-style: none;
+    padding: 0;
+    align-items: center;
+} */
+
+.main-view .content .kanban-board .issue {
+    background-color: #E6E6FA;
+    margin : 15px;
+    width: 90%;
+}
+
+.main-view .content .kanban-board .issue .event-issue {
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
