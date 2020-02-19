@@ -1,0 +1,23 @@
+.dashboard-container {
+    .row {
+        .col {
+            .organization-card {
+                .card-image {
+                    span.card-title {
+                        background-color: transparent;
+                        padding-bottom: 0px;
+                        .row {
+                            background-color: transparent;
+                            display: flex;
+                            flex-flow: column-reverse wrap;
+                            justify-content: flex-end;
+                            button.btn {
+                                margin: 5px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
