@@ -23,7 +23,8 @@
 
 <script>
 
-import axios from 'axios'
+import axios from '../config/index'
+
 
 export default {
     name: "FormLoginKanban",

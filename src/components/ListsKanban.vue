@@ -17,7 +17,7 @@
 <script>
 
 import CardKanban from './CardKanban'
-import axios from 'axios'
+import axios from '../config/index'
 
 export default {
     name: "ListsKanban",
