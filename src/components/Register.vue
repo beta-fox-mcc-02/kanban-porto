@@ -12,17 +12,14 @@
                     <div class="input-field col s12">
                         <input id="new-name" type="text" class="validate" v-model="name">
                         <label for="name">Name</label>
-                        <span class="helper-text" data-error="we want to know your name" data-success="nice name">Helper text</span>
                     </div>
                     <div class="input-field col s12">
                         <input id="new-email" type="email" class="validate" v-model="email">
                         <label for="email">Email</label>
-                        <span class="helper-text" data-error="wrong format" data-success="nice emai">Helper text</span>
                     </div>
                     <div class="input-field col s12">
                         <input id="new-password" type="password" class="validate" minlength="6" v-model="password">
                         <label for="password">Password</label>
-                        <span class="helper-text" data-error="minimum password length is 6 characters" data-success="great password">Helper text</span>
                     </div>
                     <div class="submit-container">
                         <button class="btn waves-effect waves-light form-submit" type="submit" name="action">
