@@ -7,7 +7,7 @@
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <div class="navbar-container">
-                    <div v-if="isLogin" id="logged-user-navbar">
+                    <div v-show="isLogin" id="logged-user-navbar">
                         <li>
                             <a href="#" class="dropdown-trigger" data-target="dropdown1">
                             {{getUserName}}
@@ -15,7 +15,7 @@
                             </a>
                         </li>
                     </div>
-                    <div v-else id="no-user-navbar">
+                    <div v-show="!isLogin" id="no-user-navbar">
                         <li id="sign-up-btn" @click="toRegister"><a href="#">Sign Up</a></li>
                         <li id="sign-in-btn" @click="toLogin"><a href="#">Sign In</a></li>
                     </div>

@@ -63,6 +63,12 @@ export default {
                     this.message = err.response.data
                 })
         }
+    },
+    created () {
+        this.name = ''
+        this.email = ''
+        this.password = ''
+        this.message = ''
     }
 }
 </script>

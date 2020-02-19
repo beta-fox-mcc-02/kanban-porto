@@ -54,6 +54,10 @@ export default {
                     this.message = err.response.data
                 })
         }
+    },
+    created () {
+        this.name = ''
+        this.message = ''
     }
 }
 </script>
