@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>KANBAN PROJECT</title>
+        <meta name="google-signin-client_id" content="146329937386-os4lmh278qt7on593p96os957soc0bdf.apps.googleusercontent.com">
+        <script src="https://kit.fontawesome.com/33c7f9b4f6.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" src="style.css">
+    </head>
+    <body>
+        <div id="app"></div>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <script src="src/main.js"></script>
+    </body>
+</html>
+
+<style>
+
+* {
+    margin: 0;
+}
+
+body{
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #f5f8ff;
+    max-width: 1500px;
+}
+
+header{
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+}
+
+nav#upperbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(112, 163, 173);
+    height: 3rem;
+}
+
+#googlelogin{
+    padding: 0.5rem 4rem;
+}
+
+#googlelogin i{
+    color: rgba(248,80,50,1);
+    font-size: xx-large;
+}
+
+aside#sidebar {
+    width: 5rem;
+    position: fixed;
+    top: 0px;
+    background-color: white;
+    height: 48rem;
+    justify-content: center;
+    align-items: center;
+    font-size: 25pt;
+    display: flex;
+    flex-direction: column;
+    border-right: 0.2rem solid #eaf1f6;
+}
+
+aside#sidebar div{
+    position: relative;
+}
+
+aside#sidebar div button {
+    outline: 0;
+    border-style: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+aside#sidebar div small{
+    position: absolute;
+    font-size: 12pt;
+    white-space: nowrap;
+    background-color: #4da2b3;
+    padding: 0.5rem;
+    color: white;
+    border-radius: 0.3rem;
+    visibility: hidden;
+}
+
+aside#sidebar div span{
+    position: absolute;
+    padding: 1rem;
+    height: 10rem;
+    font-size: 12pt;
+    border-radius: 1rem;
+    box-shadow: 0rem 0rem 1rem #70a3ad;
+    color: white;
+    background-color: #b71b1b69;
+    overflow-y: scroll;
+}
+
+.desc{
+    background-color: white;
+    margin: 0.5rem 0;
+    border-radius: 0.5rem;
+    color: black;
+    text-align: center;
+    padding-bottom: 0.5rem;
+}
+
+.user{
+    min-width: 10rem;
+    background-color: #b71b1b;
+    text-align: center;
+    padding: 0.2rem 0;
+    font-size: 15pt;
+    color: white;
+    font-variant: small-caps;
+    border-radius: 0.5rem 0.5rem 0rem 0rem;
+}
+
+#close-user-desc{
+    cursor: pointer;
+}
+
+#close-user-desc:hover{
+    box-shadow: 0rem 0rem 1rem black;
+    background-color: black;
+    border-radius: 50%;
+}
+
+aside#sidebar div:hover small{
+    visibility: visible;
+}
+
+aside#sidebar div button i{
+    font-size: 30pt;
+    margin: 1rem auto;
+    width: 3rem;
+}
+
+div.upperbar-menu, button#logout{
+    margin: 1.25rem;
+    font-weight: bolder;
+    color: #ffffff;
+    background-color: transparent;
+    border: none;
+    outline: 0;
+    cursor: pointer;
+}
+
+button#logout:hover{
+    text-shadow: 0rem 0rem 1rem white;
+    color: #f1ff28;
+}
+
+main{
+    display: flex;
+    width: 71.5rem;
+    align-items: flex-start;
+    margin-left: 7.5rem;
+}
+
+section.content-box{
+    background-color: rgb(245, 248, 255);
+    margin: 1rem;
+    padding: 0 0.5rem;
+    width: 16rem;
+    max-height: 35rem;
+    margin: 5rem 1rem;
+    text-align: center;
+    border-radius: 0.5rem;
+    box-shadow: 0rem 0.5rem 0.5rem #c3d8d37a;
+    border-top: 0.2rem solid #70a3ad;
+}
+
+div.content-container{
+    max-height: 25rem;
+    overflow-y: scroll;
+    margin-bottom: 2rem;
+}
+
+div.content-container::-webkit-scrollbar{
+    display: none;
+}
+
+div.content-card{
+    background-color: #ffffff;
+    margin: 0.1rem 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    text-align: justify;
+    box-shadow: 0 0.2rem 0.3rem rgb(223, 234, 236);
+    border-radius: 0.3rem;
+    cursor: grab;
+    color: #676464;
+    max-width: 14rem;
+}
+
+div.content-card section{
+    display: flex;
+}
+
+div.content-card section div{
+    display: flex;
+    flex-direction: column;
+    min-width: 11.9rem;
+    word-break: break-word;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+div.content-card section div span.content-tag{
+    padding: 0.3rem;
+    margin: 0.3rem;
+    color: white;
+    width: 5rem;
+    font-style: italic;
+    font-size: 10pt;
+    border-style: double;
+    border-radius: 0.3rem;
+    background-color: #70a3ad;
+}
+
+div.content-card section div span.content-possession{
+    font-size: 10pt;
+    font-style: italic;
+    font-family: 'Times New Roman', Times, serif;
+    border-top: 0.1rem solid #70a3ad;
+    color: #3d91a2d2;
+    font-weight: 900;
+}
+
+div.content-card section span{
+    margin-bottom: 0.2rem;
+    margin-right: 0.5rem;
+}
+
+div.content-card section span i{
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: black;
+}
+
+div.content-card section span i:hover{
+    background-color: rgb(112, 163, 173);
+    border-radius: 50%;
+    color: white;
+}
+
+div.content-card section span form{
+    position: absolute;
+    background-color: #efe41c73;
+    padding: 1rem;
+    box-shadow: 0rem 0rem 0.5rem #a9cbd2;
+    width: 17rem;
+}
+
+div.content-card section span form div{
+    background-color: white;
+    margin: 0.2rem;
+    border-radius: 0.2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+div.content-card section span form div label{
+    margin-left: 0.5rem;
+}
+
+div.content-card section span form div input{
+    width: 9.76rem;
+}
+
+div.content-card section span form div.title-form{
+    padding: 1rem 0;
+}
+
+div.content-card section span form div select, div.content-card section span form button{
+    width: 10rem;
+}
+
+div.content-card section span form button {
+    margin-left: 0.2rem;
+    cursor: pointer;
+    border-radius: 0.2rem;
+    background-color: #70a3ad;
+    padding: 0.5rem;
+    color: white;
+}
+
+div.content-card section span form div select, div.content-card section span form div input{
+    outline: 0;
+    border-style: none;
+    border-radius: inherit;
+    font-variant: small-caps;
+}
+
+div.content-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 3rem;
+}
+
+/* --------------------------------------------- CSS REGISTER & LOGIN FORM --------------------------------------------- */
+div.register, div.login, div.add-task{
+    margin: 5rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    box-shadow: 0rem 0rem 0.5rem #d4e0fb;
+    width: 20rem;
+    height: 30rem;
+    justify-content: space-around;
+}
+
+div.add-task{
+    justify-content: space-evenly;
+}
+
+section#register-header, section#login-header, section#add-task-header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 16rem;
+    padding-bottom: 1rem;
+    border-bottom: 0.1rem solid #ececec;
+}
+
+section#register-header h1, section#login-header h1, section#add-task-header h1{
+    font-size: 20pt;
+    font-weight: 900;
+    text-align: center;
+}
+
+div#register-main div, div#login-main div, div#add-task-main div, div#register-main button, div#login-main button, div#add-task-main button{
+    margin: 0.5rem;
+    padding: 0.5rem;
+    width: 15rem;
+    background-color: white;
+    border-radius: 0.3rem
+}
+
+div#register-main button, div#login-main button, div#add-task-main button{
+    width: 16rem;
+    cursor: pointer;
+    background-color: #4bcccc;
+    border-style: none;
+    color: white;
+    font-weight: 900;
+}
+
+div#register-main div, div#login-main div, div#add-task-main div{
+    background-color: rgb(236, 236, 236);
+}
+
+div#register-main div small, div#login-main div small, div#add-task-main div small{
+    font-style: italic;
+    color: rgb(143, 143, 143);
+}
+
+div#register-main div input, div#login-main div input, div#add-task-main div input{
+    border-style: none;
+    outline: 0;
+    overflow: hidden;
+    width: 13rem;
+    background-color: inherit;
+}
+
+select.tag-selection{
+    border-style: none;
+    outline: 0;
+    overflow: hidden;
+    width: 13rem;
+    background-color: inherit;
+    font-size: 10pt;
+    font-style: italic;
+    cursor: pointer;
+}
+
+.fa-exclamation-triangle{
+    color: red;
+}
+
+.err-message{
+    text-align: center;
+    color: red;
+    font-style: italic;
+    font-size: 10pt;
+    padding-bottom: 0.5rem;
+    width: 15rem;
+    margin: 0 auto;
+}
+
+section#register-footer, section#login-footer{
+    font-size: 10pt;
+    width: 16rem;
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 0.1rem solid #ececec
+}
+
+section#register-footer a, section#login-footer a{
+    text-decoration: none;
+    font-weight: 900;
+    color: rgb(77, 189, 189);
+    cursor: pointer;
+}
+
+</style>
