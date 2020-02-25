@@ -36,6 +36,9 @@
 import axios from 'axios'
 import GoogleLogin from 'vue-google-login'
 
+// const serverUrl = 'http://localhost:3000'
+const serverUrl = 'https://desolate-mountain-17477.herokuapp.com'
+
 export default {
     data() {
         return {
@@ -55,7 +58,7 @@ export default {
             if(this.email && this.password) {
                 axios({
                     method: "POST",
-                    url: "https://desolate-mountain-17477.herokuapp.com/user/register",
+                    url: `${serverUrl}/user/register`,
                     data: {
                         name: this.name,
                         email: this.email,
@@ -90,7 +93,7 @@ export default {
             var id_token = googleUser.getAuthResponse().id_token;
             axios({
                 method: "POST",
-                url: "https://desolate-mountain-17477.herokuapp.com/user/glogin",
+                url: `${serverUrl}/user/glogin`,
                 data: { id_token }
             })
             .then((result) => { 

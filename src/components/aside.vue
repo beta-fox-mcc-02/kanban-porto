@@ -28,6 +28,9 @@
 <script>
 import AddTaskComponent from './TaskCreation.vue'
 
+// const serverUrl = 'http://localhost:3000'
+const serverUrl = 'https://desolate-mountain-17477.herokuapp.com'
+
 export default {
     data() { 
         return {
@@ -47,7 +50,7 @@ export default {
         showUsers() {
             axios({
                 method: "GET",
-                url: "https://desolate-mountain-17477.herokuapp.com/user"
+                url: `${serverUrl}/user`
             })
             .then((result) => {
                 this.users = result.data.result

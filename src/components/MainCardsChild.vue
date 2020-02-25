@@ -44,6 +44,9 @@ import axios from 'axios'
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css'
 
+// const serverUrl = 'http://localhost:3000'
+const serverUrl = 'https://desolate-mountain-17477.herokuapp.com'
+
 export default {
     name: 'MainCards-Child',
     data() {
@@ -68,7 +71,7 @@ export default {
             let token = localStorage.getItem('access_token')
             axios({
                 method: "DELETE",
-                url: `https://desolate-mountain-17477.herokuapp.com/tasks/${taskId}`,
+                url: `${serverUrl}/tasks/${taskId}`,
                 headers: { token }
             })
             .then((data) => {
@@ -81,7 +84,7 @@ export default {
             let token = localStorage.getItem('access_token')
             axios({
                 method: 'GET',
-                url: `https://desolate-mountain-17477.herokuapp.com/tasks/${taskId}`,
+                url: `${serverUrl}/tasks/${taskId}`,
                 headers: { token }
             })
             .then((result) => {
@@ -104,7 +107,7 @@ export default {
             },1000)
             axios({
                 method: "PUT",
-                url: `https://desolate-mountain-17477.herokuapp.com/tasks/${taskId}`,
+                url: `${serverUrl}/tasks/${taskId}`,
                 headers: { token },
                 data: {
                     title: this.title,

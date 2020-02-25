@@ -23,6 +23,9 @@ import AsideComponent from './components/Aside.vue'
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css'
 
+// const serverUrl = 'http://localhost:3000'
+const serverUrl = 'https://desolate-mountain-17477.herokuapp.com'
+
 export default {
     name: 'App',
     data() {
@@ -60,7 +63,7 @@ export default {
             let token = localStorage.getItem('access_token')
             axios({
                 method: "GET",
-                url: "https://desolate-mountain-17477.herokuapp.com/tasks",
+                url: `${serverUrl}/tasks`,
                 headers: { token }
             })
             .then((result) => {

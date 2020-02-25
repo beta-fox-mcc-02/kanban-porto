@@ -25,6 +25,9 @@
 </template>
 
 <script>
+// const serverUrl = 'http://localhost:3000'
+const serverUrl = 'https://desolate-mountain-17477.herokuapp.com'
+
 export default {
     data() {
         return {
@@ -39,7 +42,7 @@ export default {
             if(this.email && this.password) {
                 axios({
                     method: "POST",
-                    url: "https://desolate-mountain-17477.herokuapp.com/user/login",
+                    url: `${serverUrl}/user/login`,
                     data: {
                         email: this.email,
                         password: this.password
