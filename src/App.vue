@@ -15,11 +15,11 @@
 </template>
 
 <script>
-import RegisterComponent from './components/register.vue'
-import LoginComponent from './components/login.vue'
-import MainComponent from './components/main.vue'
-import HeaderComponent from './components/header.vue'
-import AsideComponent from './components/aside.vue'
+import RegisterComponent from './components/Register.vue'
+import LoginComponent from './components/Login.vue'
+import MainComponent from './components/Main.vue'
+import HeaderComponent from './components/Header.vue'
+import AsideComponent from './components/Aside.vue'
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css'
 
@@ -60,7 +60,7 @@ export default {
             let token = localStorage.getItem('access_token')
             axios({
                 method: "GET",
-                url: "https://desolate-mountain-17477.herokuapp.com/task/findAll",
+                url: "https://desolate-mountain-17477.herokuapp.com/tasks",
                 headers: { token }
             })
             .then((result) => {

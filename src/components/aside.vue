@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import AddTaskComponent from './2ndTierComponents/add_newtask.vue'
+import AddTaskComponent from './TaskCreation.vue'
 
 export default {
     data() { 
@@ -47,7 +47,7 @@ export default {
         showUsers() {
             axios({
                 method: "GET",
-                url: "https://desolate-mountain-17477.herokuapp.com/user/findAll"
+                url: "https://desolate-mountain-17477.herokuapp.com/user"
             })
             .then((result) => {
                 this.users = result.data.result

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import MainCardsChild from './3rdTierComponents/mainCardsChild.vue'
+import MainCardsChild from './MainCardsChild.vue'
 
 export default {
     name: 'MainCards',

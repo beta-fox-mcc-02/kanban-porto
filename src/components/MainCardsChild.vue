@@ -68,7 +68,7 @@ export default {
             let token = localStorage.getItem('access_token')
             axios({
                 method: "DELETE",
-                url: `https://desolate-mountain-17477.herokuapp.com/task/delete/${taskId}`,
+                url: `https://desolate-mountain-17477.herokuapp.com/tasks/${taskId}`,
                 headers: { token }
             })
             .then((data) => {
@@ -81,7 +81,7 @@ export default {
             let token = localStorage.getItem('access_token')
             axios({
                 method: 'GET',
-                url: `https://desolate-mountain-17477.herokuapp.com/task/update/${taskId}`,
+                url: `https://desolate-mountain-17477.herokuapp.com/tasks/${taskId}`,
                 headers: { token }
             })
             .then((result) => {
@@ -104,7 +104,7 @@ export default {
             },1000)
             axios({
                 method: "PUT",
-                url: `https://desolate-mountain-17477.herokuapp.com/task/update/${taskId}`,
+                url: `https://desolate-mountain-17477.herokuapp.com/tasks/${taskId}`,
                 headers: { token },
                 data: {
                     title: this.title,

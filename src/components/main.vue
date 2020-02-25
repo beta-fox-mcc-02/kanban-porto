@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import MainCards from './2ndTierComponents/maincards.vue'
+import MainCards from './MainCards.vue'
 
 export default {
     name: 'Main',
