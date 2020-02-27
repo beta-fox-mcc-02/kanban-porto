@@ -79,7 +79,7 @@ export default {
       console.log(id_token)
       axios({
         method: "POST",
-        url: "http://localhost:3000/googlesignin",
+        url: "https://guarded-depths-33701.herokuapp.com/googlesignin",
         data: {
           id_token: id_token
         }
@@ -95,7 +95,7 @@ export default {
     userlogin() {
       axios({
         method: "POST",
-        url: "http://localhost:3000/login",
+        url: "https://guarded-depths-33701.herokuapp.com/login",
         data: {
           email: this.email,
           password: this.password
@@ -120,7 +120,7 @@ export default {
       const id_token = googleUser.getAuthResponse().id_token;
       axios({
         method: "POST",
-        url: "http://localhost:3000/googlesignin",
+        url: "https://guarded-depths-33701.herokuapp.com/googlesignin",
         data: { id_token }
       })
         .then(user => {

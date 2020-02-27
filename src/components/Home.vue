@@ -27,7 +27,7 @@ export default {
     fetchCategories() {
       axios({
         method: "GET",
-        url: "http://localhost:3000/categories",
+        url: "https://guarded-depths-33701.herokuapp.com/categories",
         headers: { token: localStorage.token }
       })
         .then(response => {

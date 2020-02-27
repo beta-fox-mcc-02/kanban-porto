@@ -36,7 +36,7 @@ export default {
             const token = localStorage.token
             axios({
                 method: 'POST',
-                url: 'http://localhost:3000/tasks',
+                url: 'https://guarded-depths-33701.herokuapp.com/tasks',
                 headers: { token },
                 data: {
                     title: this.title,
@@ -47,7 +47,7 @@ export default {
                 this.$emit('showContent', 'contentPage')
             })
             .catch(err => {
-                console.log(err)
+                console.log(err.response)
             })
         }
     },

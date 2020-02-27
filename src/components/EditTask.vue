@@ -39,7 +39,7 @@ export default {
             const token = localStorage.token
             axios({
                 method: 'PUT',
-                url: 'http://localhost:3000/tasks/' + id,
+                url: 'https://guarded-depths-33701.herokuapp.com/tasks/' + id,
                 headers: { token },
                 data: {
                     title: this.editTask.title,

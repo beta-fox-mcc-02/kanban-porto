@@ -54,7 +54,7 @@ export default {
     register() {
       axios({
         method: "POST",
-        url: "http://localhost:3000/register",
+        url: "https://guarded-depths-33701.herokuapp.com/register",
         data: {
             username: this.username,
             email: this.email,

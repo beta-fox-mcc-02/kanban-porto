@@ -30,7 +30,7 @@ export default {
           const token = localStorage.token
           axios({
                 method: 'DELETE',
-                url: 'http://localhost:3000/tasks/' + id,
+                url: 'https://guarded-depths-33701.herokuapp.com/tasks/' + id,
                 headers: { token }
             })
             .then(response => {
@@ -44,7 +44,7 @@ export default {
             const token = localStorage.token
             axios({
                 method: 'PATCH',
-                url: 'http://localhost:3000/tasks/next/' + id,
+                url: 'https://guarded-depths-33701.herokuapp.com/tasks/next/' + id,
                 headers: { token }
             })
             .then(response => {
@@ -58,7 +58,7 @@ export default {
             const token = localStorage.token
             axios({
                 method: 'PATCH',
-                url: 'http://localhost:3000/tasks/previous/' + id,
+                url: 'https://guarded-depths-33701.herokuapp.com/tasks/previous/' + id,
                 headers: { token }
             })
             .then(response => {
