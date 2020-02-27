@@ -69,7 +69,7 @@ export default {
     fetchData() {
       axios({
         method: "get",
-        url: "http://localhost:3000/categories",
+        url: "https://thawing-spire-40854.herokuapp.com/categories",
         headers: {
           token: localStorage.token
         }
@@ -92,7 +92,7 @@ export default {
       this.error = "";
       axios({
         method: "post",
-        url: "http://localhost:3000/categories",
+        url: "https://thawing-spire-40854.herokuapp.com/categories",
         headers: {
           token: localStorage.token
         },

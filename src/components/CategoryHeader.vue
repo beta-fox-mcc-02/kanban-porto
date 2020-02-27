@@ -84,7 +84,7 @@ export default {
       this.error = "";
       axios({
         method: "put",
-        url: `http://localhost:3000/categories/${this.categoryIdProps}`,
+        url: `https://thawing-spire-40854.herokuapp.com/categories/${this.categoryIdProps}`,
         headers: {
           token: localStorage.token
         },
@@ -105,7 +105,7 @@ export default {
     deleteCategory() {
       axios({
         method: "delete",
-        url: `http://localhost:3000/categories/${this.categoryIdProps}`,
+        url: `https://thawing-spire-40854.herokuapp.com/categories/${this.categoryIdProps}`,
         headers: {
           token: localStorage.token
         }

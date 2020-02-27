@@ -40,7 +40,7 @@ export default {
     editTask() {
       axios({
         method: "put",
-        url: `http://localhost:3000/tasks/${this.categoryIdProps}/${this.taskId}`,
+        url: `https://thawing-spire-40854.herokuapp.com/tasks/${this.categoryIdProps}/${this.taskId}`,
         headers: {
           token: localStorage.token
         },
@@ -60,7 +60,7 @@ export default {
     deleteTask() {
       axios({
         method: "delete",
-        url: `http://localhost:3000/tasks/${this.categoryIdProps}/${this.taskId}`,
+        url: `https://thawing-spire-40854.herokuapp.com/tasks/${this.categoryIdProps}/${this.taskId}`,
         headers: {
           token: localStorage.token
         }
@@ -86,7 +86,7 @@ export default {
       if (index != this.categoriesID.length - 1) {
         axios({
           method: "put",
-          url: `http://localhost:3000/tasks/${this.categoryIdProps}/${this.taskId}/updateCategory`,
+          url: `https://thawing-spire-40854.herokuapp.com/tasks/${this.categoryIdProps}/${this.taskId}/updateCategory`,
           headers: {
             token: localStorage.token
           },
@@ -109,7 +109,7 @@ export default {
       if (index != 0) {
         axios({
           method: "put",
-          url: `http://localhost:3000/tasks/${this.categoryIdProps}/${this.taskId}/updateCategory`,
+          url: `https://thawing-spire-40854.herokuapp.com/tasks/${this.categoryIdProps}/${this.taskId}/updateCategory`,
           headers: {
             token: localStorage.token
           },

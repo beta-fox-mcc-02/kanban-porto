@@ -67,7 +67,7 @@ export default {
       this.error = "";
       axios({
         method: "post",
-        url: `http://localhost:3000/tasks/${this.categoryIdProps}`,
+        url: `https://thawing-spire-40854.herokuapp.com/tasks/${this.categoryIdProps}`,
         headers: {
           token: localStorage.token
         },

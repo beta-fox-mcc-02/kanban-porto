@@ -7,7 +7,7 @@
         <form @submit.prevent="login">
           <div class="form-group">
             <label for>Email</label>
-            <input v-model="user.email" type="email" class="form-control" />
+            <input v-model="user.email" type="email" class="form-control" autofocus/>
           </div>
           <div class="form-group">
             <label for>Password</label>
