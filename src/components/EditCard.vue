@@ -59,6 +59,7 @@ export default {
             })
                 .then(({ data }) => {
                     console.log(data)
+                    this.$emit('fetchCategoriesAfterEdit')
                     this.$emit('closeEditForm')
                 })
                 .catch(err => {

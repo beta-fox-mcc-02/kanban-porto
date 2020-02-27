@@ -11487,789 +11487,6 @@ render._withStripped = true
         
       }
     })();
-},{"../config/axios":"src/config/axios.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CatBacklog.vue":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _axios = _interopRequireDefault(require("../config/axios"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default = {
-  name: 'Backlog',
-  props: {
-    backlogs: Array
-  },
-  data: function data() {
-    return {
-      categoryId: null,
-      move: ''
-    };
-  },
-  methods: {
-    editCardForm: function editCardForm(id) {
-      this.$emit('editCardForm', id);
-    },
-    deleteCard: function deleteCard(id) {
-      this.$emit('deleteCard', id);
-    },
-    editCategory: function editCategory(id, catId, moveTo) {
-      var _this = this;
-
-      this.categoryId = catId;
-      this.move = moveTo;
-
-      if (this.move === 'right') {
-        this.categoryId++;
-      } else if (this.move === 'left') {
-        this.categoryId--;
-      }
-
-      (0, _axios.default)({
-        method: 'PUT',
-        url: "/tasks/".concat(id),
-        data: {
-          CategoryId: this.categoryId
-        },
-        headers: {
-          token: localStorage.getItem('token')
-        }
-      }).then(function (_ref) {
-        var data = _ref.data;
-
-        _this.$emit('fetchCategories');
-      }).catch(function (err) {
-        console.log(err.response.data);
-      });
-    }
-  }
-};
-exports.default = _default;
-        var $65b7df = exports.default || module.exports;
-      
-      if (typeof $65b7df === 'function') {
-        $65b7df = $65b7df.options;
-      }
-    
-        /* template */
-        Object.assign($65b7df, (function () {
-          var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "mb-2 all-cards" },
-    _vm._l(_vm.backlogs, function(task) {
-      return _c("div", { key: task.id, staticClass: "my-1 card" }, [
-        _c("div", { staticClass: "p-1 card-body" }, [
-          _c("div", { staticClass: "title-container" }, [
-            _c("p", { staticClass: "m-0 card-title" }, [
-              _vm._v(_vm._s(task.title))
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "description-container" }, [
-            _c("p", { staticClass: "card-text" }, [
-              _vm._v(_vm._s(task.description))
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "action-container" }, [
-            _c("div", [
-              _c("i", {
-                staticClass: "m-1 fas fa-pencil-alt",
-                on: {
-                  click: function($event) {
-                    return _vm.editCardForm(task.id)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("i", {
-                staticClass: "m-1 far fa-trash-alt",
-                on: {
-                  click: function($event) {
-                    return _vm.deleteCard(task.id)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", [
-              _c("i", {
-                staticClass: "fa fa-arrow-right",
-                attrs: { "aria-hidden": "true" },
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.editCategory(task.id, task.CategoryId, "right")
-                  }
-                }
-              })
-            ])
-          ])
-        ])
-      ])
-    }),
-    0
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-          return {
-            render: render,
-            staticRenderFns: staticRenderFns,
-            _compiled: true,
-            _scopeId: null,
-            functional: undefined
-          };
-        })());
-      
-    /* hot reload */
-    (function () {
-      if (module.hot) {
-        var api = require('vue-hot-reload-api');
-        api.install(require('vue'));
-        if (api.compatible) {
-          module.hot.accept();
-          if (!module.hot.data) {
-            api.createRecord('$65b7df', $65b7df);
-          } else {
-            api.reload('$65b7df', $65b7df);
-          }
-        }
-
-        
-      }
-    })();
-},{"../config/axios":"src/config/axios.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CatTodo.vue":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _axios = _interopRequireDefault(require("../config/axios"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default = {
-  name: 'Todo',
-  props: {
-    todos: Array
-  },
-  data: function data() {
-    return {
-      categoryId: null,
-      move: ''
-    };
-  },
-  methods: {
-    editCardForm: function editCardForm(id) {
-      this.$emit('editCardForm', id);
-    },
-    deleteCard: function deleteCard(id) {
-      this.$emit('deleteCard', id);
-    },
-    editCategory: function editCategory(id, catId, moveTo) {
-      var _this = this;
-
-      this.categoryId = catId;
-      this.move = moveTo;
-
-      if (this.move === 'right') {
-        this.categoryId++;
-      } else if (this.move === 'left') {
-        this.categoryId--;
-      }
-
-      (0, _axios.default)({
-        method: 'PUT',
-        url: "/tasks/".concat(id),
-        data: {
-          CategoryId: this.categoryId
-        },
-        headers: {
-          token: localStorage.getItem('token')
-        }
-      }).then(function (_ref) {
-        var data = _ref.data;
-        console.log(data);
-
-        _this.$emit('fetchCategories');
-      }).catch(function (err) {
-        console.log(err.response.data);
-      });
-    }
-  }
-};
-exports.default = _default;
-        var $0bea59 = exports.default || module.exports;
-      
-      if (typeof $0bea59 === 'function') {
-        $0bea59 = $0bea59.options;
-      }
-    
-        /* template */
-        Object.assign($0bea59, (function () {
-          var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "mb-2 all-cards" },
-    _vm._l(_vm.todos, function(task) {
-      return _c("div", { key: task.id, staticClass: "my-1 card" }, [
-        _c("div", { staticClass: "p-1 card-body" }, [
-          _c("div", { staticClass: "title-container" }, [
-            _c("p", { staticClass: "m-0 card-title" }, [
-              _vm._v(_vm._s(task.title))
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "description-container" }, [
-            _c("p", { staticClass: "card-text" }, [
-              _vm._v(_vm._s(task.description))
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "action-container" }, [
-            _c("div", [
-              _c("i", {
-                staticClass: "m-1 fas fa-pencil-alt",
-                on: {
-                  click: function($event) {
-                    return _vm.editCardForm(task.id)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("i", {
-                staticClass: "m-1 far fa-trash-alt",
-                on: {
-                  click: function($event) {
-                    return _vm.deleteCard(task.id)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", [
-              _c("i", {
-                staticClass: "fa fa-arrow-left",
-                attrs: { "aria-hidden": "true" },
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.editCategory(task.id, task.CategoryId, "left")
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("i", {
-                staticClass: "fa fa-arrow-right",
-                attrs: { "aria-hidden": "true" },
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.editCategory(task.id, task.CategoryId, "right")
-                  }
-                }
-              })
-            ])
-          ])
-        ])
-      ])
-    }),
-    0
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-          return {
-            render: render,
-            staticRenderFns: staticRenderFns,
-            _compiled: true,
-            _scopeId: null,
-            functional: undefined
-          };
-        })());
-      
-    /* hot reload */
-    (function () {
-      if (module.hot) {
-        var api = require('vue-hot-reload-api');
-        api.install(require('vue'));
-        if (api.compatible) {
-          module.hot.accept();
-          if (!module.hot.data) {
-            api.createRecord('$0bea59', $0bea59);
-          } else {
-            api.reload('$0bea59', $0bea59);
-          }
-        }
-
-        
-      }
-    })();
-},{"../config/axios":"src/config/axios.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CatDone.vue":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _axios = _interopRequireDefault(require("../config/axios"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default = {
-  name: 'Done',
-  props: {
-    dones: Array
-  },
-  data: function data() {
-    return {
-      categoryId: null,
-      move: ''
-    };
-  },
-  methods: {
-    editCardForm: function editCardForm(id) {
-      this.$emit('editCardForm', id);
-    },
-    deleteCard: function deleteCard(id) {
-      this.$emit('deleteCard', id);
-    },
-    editCategory: function editCategory(id, catId, moveTo) {
-      var _this = this;
-
-      this.categoryId = catId;
-      this.move = moveTo;
-
-      if (this.move === 'right') {
-        this.categoryId++;
-      } else if (this.move === 'left') {
-        this.categoryId--;
-      }
-
-      (0, _axios.default)({
-        method: 'PUT',
-        url: "/tasks/".concat(id),
-        data: {
-          CategoryId: this.categoryId
-        },
-        headers: {
-          token: localStorage.getItem('token')
-        }
-      }).then(function (_ref) {
-        var data = _ref.data;
-        console.log(data);
-
-        _this.$emit('fetchCategories');
-      }).catch(function (err) {
-        console.log(err.response.data);
-      });
-    }
-  }
-};
-exports.default = _default;
-        var $898c00 = exports.default || module.exports;
-      
-      if (typeof $898c00 === 'function') {
-        $898c00 = $898c00.options;
-      }
-    
-        /* template */
-        Object.assign($898c00, (function () {
-          var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "mb-2 all-cards" },
-    _vm._l(_vm.dones, function(task) {
-      return _c("div", { key: task.id, staticClass: "my-1 card" }, [
-        _c("div", { staticClass: "p-1 card-body" }, [
-          _c("div", { staticClass: "title-container" }, [
-            _c("p", { staticClass: "m-0 card-title" }, [
-              _vm._v(_vm._s(task.title))
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "description-container" }, [
-            _c("p", { staticClass: "card-text" }, [
-              _vm._v(_vm._s(task.description))
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "action-container" }, [
-            _c("div", [
-              _c("i", {
-                staticClass: "m-1 fas fa-pencil-alt",
-                on: {
-                  click: function($event) {
-                    return _vm.editCardForm(task.id)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("i", {
-                staticClass: "m-1 far fa-trash-alt",
-                on: {
-                  click: function($event) {
-                    return _vm.deleteCard(task.id)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", [
-              _c("i", {
-                staticClass: "fa fa-arrow-left",
-                attrs: { "aria-hidden": "true" },
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.editCategory(task.id, task.CategoryId, "left")
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("i", {
-                staticClass: "fa fa-arrow-right",
-                attrs: { "aria-hidden": "true" },
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.editCategory(task.id, task.CategoryId, "right")
-                  }
-                }
-              })
-            ])
-          ])
-        ])
-      ])
-    }),
-    0
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-          return {
-            render: render,
-            staticRenderFns: staticRenderFns,
-            _compiled: true,
-            _scopeId: null,
-            functional: undefined
-          };
-        })());
-      
-    /* hot reload */
-    (function () {
-      if (module.hot) {
-        var api = require('vue-hot-reload-api');
-        api.install(require('vue'));
-        if (api.compatible) {
-          module.hot.accept();
-          if (!module.hot.data) {
-            api.createRecord('$898c00', $898c00);
-          } else {
-            api.reload('$898c00', $898c00);
-          }
-        }
-
-        
-      }
-    })();
-},{"../config/axios":"src/config/axios.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/CatComplete.vue":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _axios = _interopRequireDefault(require("../config/axios"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default = {
-  name: 'Complete',
-  props: {
-    completes: Array
-  },
-  data: function data() {
-    return {
-      categoryId: null,
-      move: ''
-    };
-  },
-  methods: {
-    editCardForm: function editCardForm(id) {
-      this.$emit('editCardForm', id);
-    },
-    deleteCard: function deleteCard(id) {
-      this.$emit('deleteCard', id);
-    },
-    editCategory: function editCategory(id, catId, moveTo) {
-      var _this = this;
-
-      this.categoryId = catId;
-      this.move = moveTo;
-
-      if (this.move === 'right') {
-        this.categoryId++;
-      } else if (this.move === 'left') {
-        this.categoryId--;
-      }
-
-      (0, _axios.default)({
-        method: 'PUT',
-        url: "/tasks/".concat(id),
-        data: {
-          CategoryId: this.categoryId
-        },
-        headers: {
-          token: localStorage.getItem('token')
-        }
-      }).then(function (_ref) {
-        var data = _ref.data;
-        console.log(data);
-
-        _this.$emit('fetchCategories');
-      }).catch(function (err) {
-        console.log(err.response.data);
-      });
-    }
-  }
-};
-exports.default = _default;
-        var $4b426c = exports.default || module.exports;
-      
-      if (typeof $4b426c === 'function') {
-        $4b426c = $4b426c.options;
-      }
-    
-        /* template */
-        Object.assign($4b426c, (function () {
-          var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "mb-2 all-cards" },
-    _vm._l(_vm.completes, function(task) {
-      return _c("div", { key: task.id, staticClass: "my-1 card" }, [
-        _c("div", { staticClass: "p-1 card-body" }, [
-          _c("div", { staticClass: "title-container" }, [
-            _c("p", { staticClass: "m-0 card-title" }, [
-              _vm._v(_vm._s(task.title))
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "description-container" }, [
-            _c("p", { staticClass: "card-text" }, [
-              _vm._v(_vm._s(task.description))
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "action-container" }, [
-            _c("div", [
-              _c("i", {
-                staticClass: "m-1 fas fa-pencil-alt",
-                on: {
-                  click: function($event) {
-                    return _vm.editCardForm(task.id)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("i", {
-                staticClass: "m-1 far fa-trash-alt",
-                on: {
-                  click: function($event) {
-                    return _vm.deleteCard(task.id)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", [
-              _c("i", {
-                staticClass: "fa fa-arrow-left",
-                attrs: { "aria-hidden": "true" },
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.editCategory(task.id, task.CategoryId, "left")
-                  }
-                }
-              })
-            ])
-          ])
-        ])
-      ])
-    }),
-    0
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-          return {
-            render: render,
-            staticRenderFns: staticRenderFns,
-            _compiled: true,
-            _scopeId: null,
-            functional: undefined
-          };
-        })());
-      
-    /* hot reload */
-    (function () {
-      if (module.hot) {
-        var api = require('vue-hot-reload-api');
-        api.install(require('vue'));
-        if (api.compatible) {
-          module.hot.accept();
-          if (!module.hot.data) {
-            api.createRecord('$4b426c', $4b426c);
-          } else {
-            api.reload('$4b426c', $4b426c);
-          }
-        }
-
-        
-      }
-    })();
 },{"../config/axios":"src/config/axios.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/EditCard.vue":[function(require,module,exports) {
 "use strict";
 
@@ -12341,6 +11558,8 @@ var _default = {
       }).then(function (_ref) {
         var data = _ref.data;
         console.log(data);
+
+        _this.$emit('fetchCategoriesAfterEdit');
 
         _this.$emit('closeEditForm');
       }).catch(function (err) {
@@ -12505,22 +11724,10 @@ var _axios = _interopRequireDefault(require("../config/axios"));
 
 var _AddCard = _interopRequireDefault(require("./AddCard"));
 
-var _CatBacklog = _interopRequireDefault(require("./CatBacklog"));
-
-var _CatTodo = _interopRequireDefault(require("./CatTodo"));
-
-var _CatDone = _interopRequireDefault(require("./CatDone"));
-
-var _CatComplete = _interopRequireDefault(require("./CatComplete"));
-
 var _EditCard = _interopRequireDefault(require("./EditCard"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//
-//
-//
-//
 //
 //
 //
@@ -12600,10 +11807,6 @@ var _default = {
   },
   components: {
     AddCard: _AddCard.default,
-    CatBacklog: _CatBacklog.default,
-    CatTodo: _CatTodo.default,
-    CatDone: _CatDone.default,
-    CatComplete: _CatComplete.default,
     EditCard: _EditCard.default
   },
   methods: {
@@ -12761,7 +11964,6 @@ var _default = {
 
       if (this.editCardFormUp) {
         this.editCardFormUp = false;
-        this.fetchCategories();
       } else {
         (0, _axios.default)({
           method: 'GET',
@@ -12799,6 +12001,35 @@ var _default = {
     },
     changePage: function changePage(page) {
       this.$emit('changePage', page);
+    },
+    editCategory: function editCategory(id, catId, moveTo) {
+      var _this4 = this;
+
+      this.categoryId = catId;
+      this.move = moveTo;
+
+      if (this.move === 'right') {
+        this.categoryId++;
+      } else if (this.move === 'left') {
+        this.categoryId--;
+      }
+
+      (0, _axios.default)({
+        method: 'PUT',
+        url: "/tasks/".concat(id),
+        data: {
+          CategoryId: this.categoryId
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      }).then(function (_ref4) {
+        var data = _ref4.data;
+
+        _this4.fetchCategories();
+      }).catch(function (err) {
+        console.log(err.response.data);
+      });
     }
   },
   created: function created() {
@@ -12836,49 +12067,94 @@ exports.default = _default;
                 _vm._v(_vm._s(category.name))
               ]),
               _vm._v(" "),
-              _c(
-                "div",
-                [
-                  _vm.backlog === category.name
-                    ? _c("CatBacklog", {
-                        attrs: { backlogs: _vm.backlogs },
-                        on: {
-                          editCardForm: _vm.editCardForm,
-                          deleteCard: _vm.deleteCard,
-                          fetchCategories: _vm.fetchCategories
-                        }
-                      })
-                    : _vm.todo === category.name
-                    ? _c("CatTodo", {
-                        attrs: { todos: _vm.todos },
-                        on: {
-                          editCardForm: _vm.editCardForm,
-                          deleteCard: _vm.deleteCard,
-                          fetchCategories: _vm.fetchCategories
-                        }
-                      })
-                    : _vm.done === category.name
-                    ? _c("CatDone", {
-                        attrs: { dones: _vm.dones },
-                        on: {
-                          editCardForm: _vm.editCardForm,
-                          deleteCard: _vm.deleteCard,
-                          fetchCategories: _vm.fetchCategories
-                        }
-                      })
-                    : _vm.complete === category.name
-                    ? _c("CatComplete", {
-                        attrs: { completes: _vm.completes },
-                        on: {
-                          editCardForm: _vm.editCardForm,
-                          deleteCard: _vm.deleteCard,
-                          fetchCategories: _vm.fetchCategories
-                        }
-                      })
-                    : _vm._e()
-                ],
-                1
-              ),
+              _c("div", [
+                _c(
+                  "div",
+                  { staticClass: "mb-2 all-cards" },
+                  _vm._l(category.Tasks, function(task) {
+                    return _c(
+                      "div",
+                      { key: task.id, staticClass: "my-1 card" },
+                      [
+                        _c("div", { staticClass: "p-1 card-body" }, [
+                          _c("div", { staticClass: "title-container" }, [
+                            _c("p", { staticClass: "m-0 card-title" }, [
+                              _vm._v(_vm._s(task.title))
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "description-container" }, [
+                            _c("p", { staticClass: "card-text" }, [
+                              _vm._v(_vm._s(task.description))
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "action-container" }, [
+                            _c("div", [
+                              _c("i", {
+                                staticClass: "m-1 fas fa-pencil-alt",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.editCardForm(task.id)
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("i", {
+                                staticClass: "m-1 far fa-trash-alt",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.deleteCard(task.id)
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", [
+                              category.id <= _vm.categories.length &&
+                              category.id > 1
+                                ? _c("i", {
+                                    staticClass: "fa fa-arrow-left",
+                                    attrs: { "aria-hidden": "true" },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.editCategory(
+                                          task.id,
+                                          task.CategoryId,
+                                          "left"
+                                        )
+                                      }
+                                    }
+                                  })
+                                : _vm._e(),
+                              _vm._v(" "),
+                              category.id >= 1 &&
+                              category.id < _vm.categories.length
+                                ? _c("i", {
+                                    staticClass: "fa fa-arrow-right",
+                                    attrs: { "aria-hidden": "true" },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.editCategory(
+                                          task.id,
+                                          task.CategoryId,
+                                          "right"
+                                        )
+                                      }
+                                    }
+                                  })
+                                : _vm._e()
+                            ])
+                          ])
+                        ])
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "mt-2 add-card" }, [
                 _c(
@@ -12918,7 +12194,10 @@ exports.default = _default;
         _vm.editCardFormUp
           ? _c("EditCard", {
               attrs: { dataEdit: _vm.dataEdit },
-              on: { closeEditForm: _vm.editCardForm }
+              on: {
+                closeEditForm: _vm.editCardForm,
+                fetchCategoriesAfterEdit: _vm.fetchCategories
+              }
             })
           : _vm._e()
       ],
@@ -12955,7 +12234,7 @@ render._withStripped = true
         
       }
     })();
-},{"../config/axios":"src/config/axios.js","./AddCard":"src/components/AddCard.vue","./CatBacklog":"src/components/CatBacklog.vue","./CatTodo":"src/components/CatTodo.vue","./CatDone":"src/components/CatDone.vue","./CatComplete":"src/components/CatComplete.vue","./EditCard":"src/components/EditCard.vue","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
+},{"../config/axios":"src/config/axios.js","./AddCard":"src/components/AddCard.vue","./EditCard":"src/components/EditCard.vue","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13154,7 +12433,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35175" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45457" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

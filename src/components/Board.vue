@@ -4,35 +4,30 @@
         <div class="px-2 my-2 cards-group" v-for="category in categories" :key="category.id">
           <p class="m-0 p-1 categori">{{ category.name }}</p>
           <div>
-            <CatBacklog 
-              :backlogs="backlogs"
-              v-if="backlog === category.name"
-              @editCardForm="editCardForm"
-              @deleteCard="deleteCard"
-              @fetchCategories="fetchCategories"
-            ></CatBacklog>
-            <CatTodo 
-              :todos="todos"
-              v-else-if="todo === category.name"
-              @editCardForm="editCardForm"
-              @deleteCard="deleteCard"
-              @fetchCategories="fetchCategories"
-            ></CatTodo>
-            <CatDone 
-              :dones="dones"
-              v-else-if="done === category.name"
-              @editCardForm="editCardForm"
-              @deleteCard="deleteCard"
-              @fetchCategories="fetchCategories"
-            ></CatDone>
-            <CatComplete
-              :completes="completes"
-              v-else-if="complete === category.name"
-              @editCardForm="editCardForm"
-              @deleteCard="deleteCard"
-              @fetchCategories="fetchCategories"
-            ></CatComplete>
+            <div class="mb-2 all-cards">
+              <div class="my-1 card" v-for="task in category.Tasks" :key="task.id">
+                <div class="p-1 card-body">
+                    <div class="title-container">
+                    <p class="m-0 card-title">{{ task.title }}</p>
+                    </div>
+                    <div class="description-container">
+                    <p class="card-text">{{ task.description }}</p>
+                    </div>
+                    <div class="action-container">
+                        <div>
+                            <i class="m-1 fas fa-pencil-alt" @click="editCardForm(task.id)"></i>
+                            <i class="m-1 far fa-trash-alt" @click="deleteCard(task.id)"></i>
+                        </div>
+                        <div>
+                            <i class="fa fa-arrow-left" aria-hidden="true" v-if="category.id <= categories.length && category.id > 1" @click.prevent="editCategory(task.id, task.CategoryId, 'left')"></i>
+                            <i class="fa fa-arrow-right" aria-hidden="true" v-if="category.id >= 1 && category.id < categories.length" @click.prevent="editCategory(task.id, task.CategoryId, 'right')"></i>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
           </div>
+
           <div class="mt-2 add-card">
               <p class="icon-add-card" @click="addCardForm(category.id)">
               <i class="fa fa-plus" aria-hidden="true"></i>
@@ -53,6 +48,7 @@
         v-if="editCardFormUp"
         :dataEdit="dataEdit"
         @closeEditForm="editCardForm"
+        @fetchCategoriesAfterEdit="fetchCategories"
       ></EditCard>
   </div>
 </template>
@@ -60,10 +56,6 @@
 <script>
 import axios from '../config/axios'
 import AddCard from './AddCard'
-import CatBacklog from './CatBacklog'
-import CatTodo from './CatTodo'
-import CatDone from './CatDone'
-import CatComplete from './CatComplete'
 import EditCard from './EditCard'
 
 export default {
@@ -90,10 +82,6 @@ export default {
     },
     components: {
       AddCard,
-      CatBacklog,
-      CatTodo,
-      CatDone,
-      CatComplete,
       EditCard
     },
     methods: {
@@ -242,7 +230,6 @@ export default {
       editCardForm(id) {
         if (this.editCardFormUp) {
           this.editCardFormUp = false
-          this.fetchCategories()
         } else {
           axios({
             method: 'GET',
@@ -279,7 +266,34 @@ export default {
       },
       changePage(page) {
         this.$emit('changePage', page)
-      }
+      },
+      editCategory(id, catId, moveTo) {
+          this.categoryId = catId
+          this.move = moveTo
+
+          if (this.move === 'right') {
+              this.categoryId++
+          } else if (this.move === 'left') {
+              this.categoryId--
+          }
+
+          axios({
+              method: 'PUT',
+              url: `/tasks/${id}`,
+              data: {
+                  CategoryId: this.categoryId
+              },
+              headers: {
+                  token: localStorage.getItem('token')
+              }
+          })
+              .then(({ data }) => {
+                  this.fetchCategories()
+              })
+              .catch(err => {
+                  console.log(err.response.data)
+              })
+        }
     },
     created() {
       if (this.isLogedIn) {
