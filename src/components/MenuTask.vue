@@ -13,8 +13,8 @@
     </div>
     <a @click.prevent="deleteTask()" class="dropdown-item" href="#">Delete</a>
     <div class="dropdown-item">
-      <i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
-      <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+      <i @click="moveLeft()" class="fa fa-chevron-circle-left" aria-hidden="true"></i>
+      <i @click="moveRight()" class="fa fa-chevron-circle-right" aria-hidden="true"></i>
     </div>
   </div>
 </template>
@@ -27,20 +27,20 @@ export default {
     return {
       error: "",
       inputTitleTask: "",
-      showInput: false,
-      categoriesID: []
+      showInput: false
     };
   },
   props: {
     categoryIdProps: Number,
     taskId: Number,
-    taskTitle: String
+    taskTitle: String,
+    categoriesID: Array
   },
   methods: {
     editTask() {
       axios({
         method: "put",
-        url: `http://localhost:3000/tasks/${this.categoryIdProps}/${this.taskId}`,
+        url: `https://thawing-spire-40854.herokuapp.com/tasks/${this.categoryIdProps}/${this.taskId}`,
         headers: {
           token: localStorage.token
         },
@@ -49,8 +49,7 @@ export default {
         }
       })
         .then(response => {
-          console.log(response);
-          this.$emit("fetchTasks");
+          this.$emit("fetchDataCardTask");
           this.showInput = false;
         })
         .catch(error => {
@@ -61,26 +60,69 @@ export default {
     deleteTask() {
       axios({
         method: "delete",
-        url: `http://localhost:3000/tasks/${this.categoryIdProps}/${this.taskId}`,
+        url: `https://thawing-spire-40854.herokuapp.com/tasks/${this.categoryIdProps}/${this.taskId}`,
         headers: {
           token: localStorage.token
         }
       })
         .then(response => {
-          console.log(response);
-          this.$emit("fetchTasks");
+          this.$emit("fetchDataCardTask");
         })
         .catch(error => {
           console.log(error.response.data.error);
-          //   this.error = "*" + error.response.data.error[0];
         });
     },
     toggleInput() {
-      console.log("tes");
       if (this.showInput) {
         this.showInput = false;
       } else {
         this.showInput = true;
+      }
+    },
+    moveRight() {
+      let index = this.categoriesID.findIndex(
+        el => el === this.categoryIdProps
+      );
+      if (index != this.categoriesID.length - 1) {
+        axios({
+          method: "put",
+          url: `https://thawing-spire-40854.herokuapp.com/tasks/${this.categoryIdProps}/${this.taskId}/updateCategory`,
+          headers: {
+            token: localStorage.token
+          },
+          data: {
+            category_id: this.categoriesID[index + 1]
+          }
+        })
+          .then(response => {
+            this.$emit("fetchDataCardTask");
+          })
+          .catch(error => {
+            console.log(error.response.data.error);
+          });
+      }
+    },
+    moveLeft() {
+      let index = this.categoriesID.findIndex(
+        el => el === this.categoryIdProps
+      );
+      if (index != 0) {
+        axios({
+          method: "put",
+          url: `https://thawing-spire-40854.herokuapp.com/tasks/${this.categoryIdProps}/${this.taskId}/updateCategory`,
+          headers: {
+            token: localStorage.token
+          },
+          data: {
+            category_id: this.categoriesID[index - 1]
+          }
+        })
+          .then(response => {
+            this.$emit("fetchDataCardTask");
+          })
+          .catch(error => {
+            console.log(error.response.data.error);
+          });
       }
     }
   },

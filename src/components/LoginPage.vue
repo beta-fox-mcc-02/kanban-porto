@@ -7,7 +7,7 @@
         <form @submit.prevent="login">
           <div class="form-group">
             <label for>Email</label>
-            <input v-model="user.email" type="email" class="form-control" />
+            <input v-model="user.email" type="email" class="form-control" autofocus/>
           </div>
           <div class="form-group">
             <label for>Password</label>
@@ -77,7 +77,7 @@ export default {
       this.error = "";
       axios({
         method: "post",
-        url: "http://localhost:3000/login",
+        url: "https://thawing-spire-40854.herokuapp.com/login",
         data: {
           email: this.user.email,
           password: this.user.password
@@ -95,7 +95,7 @@ export default {
       this.error = "";
       axios({
         method: "post",
-        url: "http://localhost:3000/register",
+        url: "https://thawing-spire-40854.herokuapp.com/register",
         data: {
           first_name: this.newUser.first_name,
           last_name: this.newUser.last_name,
@@ -104,12 +104,10 @@ export default {
         }
       })
         .then(response => {
-          console.log("berhasil");
           localStorage.token = response.data.token;
           this.$emit("changePage", "kanban");
         })
         .catch(error => {
-          console.log("gagal");
           this.error = error.response.data.error[0];
         });
     },
