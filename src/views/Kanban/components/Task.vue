@@ -8,8 +8,8 @@
          </div>
       </a>
          <div id="flexButton">
-            <div v-if="+categoryId != +start" @click="prev"><i class="fa fa-chevron-left btn-arr" aria-hidden="true"></i></div>
-            <div v-if="+categoryId != +end" @click="next"><i class="fa fa-chevron-right btn-arr" aria-hidden="true"></i></div>
+            <div v-if="+categoryId != +start" @click.prevent="prev"><i class="fa fa-chevron-left btn-arr" aria-hidden="true"></i></div>
+            <div v-if="+categoryId != +end" @click.prevent="next"><i class="fa fa-chevron-right btn-arr" aria-hidden="true"></i></div>
             <div><a href="#" class="btn btn-danger" @click.prevent="deleteTask"><i class="fa fa-trash" aria-hidden="true"></i></a></div>
          </div>
    </div>

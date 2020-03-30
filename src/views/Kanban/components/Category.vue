@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import axios from '../config/axios'
+import axios from '../../../config/axios'
 import Task from './Task'
 
 export default {
@@ -131,7 +131,7 @@ export default {
          this.addNewTask()
       },
       updateTask(id, status) {
-         // console.log(id, status)
+         console.log(id, status)
          if(status) {
             this.editModal = status
             // console.log('masuk update task')
@@ -168,7 +168,7 @@ export default {
       updatingTask(catId, taskId) {
          // console.log(catId, 'updating task 2')
          // console.log('masuk updating task')
-         // console.log(this.taskId, this.title, this.description, catId)
+         console.log(this.taskId, this.title, this.description, catId)
          let newDescription
          if(this.description) {
             newDescription = this.description
@@ -207,7 +207,7 @@ export default {
       },
       getCat() {
          let id = this.category.id
-         // console.log(id)
+         console.log(id)
          axios({
             method: 'GET',
             url : `/categories/${id}`,
@@ -224,6 +224,7 @@ export default {
             })
       },
       updateCat() {
+        console.log('test')
          if(this.catShow) {
             this.catShow = false
             this.getCat()
@@ -273,6 +274,7 @@ export default {
          }
          // console.log(catId, 'next 2', taskId)
          this.updatingTask(catId, taskId)
+         this.$emit('fetchCat')
          // this.$emit('next', catId, taskId)
       },
       prev(catId, taskId) {
@@ -294,6 +296,7 @@ export default {
          }   
          // console.log(catId, 'next 2', taskId)
          this.updatingTask(catId, taskId)
+         this.$emit('fetchCat')
          // this.$emit('prev', catId, taskId)
       }
    },

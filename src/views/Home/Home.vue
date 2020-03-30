@@ -8,7 +8,12 @@
 
 <script>
 export default {
-
+  props: [
+    'changePage'
+  ],
+  created () {
+    console.log(this.changePage)
+  }
 }
 </script>
 

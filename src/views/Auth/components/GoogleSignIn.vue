@@ -2,13 +2,13 @@
   <g-signin-button
     :params="googleSignInParams"
     @success="onSignInSuccess"
-    @error="onSignInError" class="btn btn-primary">
-    Sign in with Google
+    @error="onSignInError" class="g-signin-button">
+    <i class="fa fa-google-plus" aria-hidden="true"></i> Sign in Google
   </g-signin-button>
 </template>
 
 <script>
-import axios from '../config/axios'
+import axios from '../../../config/axios'
 
 export default {
    data () {
@@ -20,7 +20,7 @@ export default {
           * @type {Object} 
           */
          googleSignInParams: {
-         client_id: '918198967344-kqn9rpdemrj0hib572g6jvkiptt43dhe.apps.googleusercontent.com'
+         client_id: process.env.VUE_APP_CLIENT_ID
          }
       }
    },
@@ -41,6 +41,7 @@ export default {
             .then(({data}) => {
                console.log(data, 'sign in success')
                localStorage.token = data.token
+               localStorage.gToken = true
                this.$emit('changePage', 'board', true)
             })
             .catch(err => {
@@ -56,13 +57,13 @@ export default {
 </script> 
  
 <style>
-.g-signin-button {
-  /* This is where you control how the button looks. Be creative! */
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 3px;
-  background-color: #3c82f7;
-  color: #fff;
-  box-shadow: 0 3px 0 #0f69ff;
-}
+  .g-signin-button {
+    /* This is where you control how the button looks. Be creative! */
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 3px;
+    background-color: #dd4b39;
+    color: #fff;
+    box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.09);
+  }
 </style> 

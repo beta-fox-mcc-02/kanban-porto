@@ -1,53 +1,72 @@
 <template>
-   <div>
-      <Navbar :isLogin="isLogin" @changePage="changePage"></Navbar>
-      <div class="container">
-            <Home v-if="currentPage === 'home'"></Home>
-            <Register @changePage="changePage" v-else-if="currentPage === 'register'"></Register>
-            <Login @changePage="changePage" v-else-if="currentPage === 'login'"></Login>
-            <Board @changePage="changePage" v-else-if="currentPage === 'board'"></Board>
-      </div>
-   </div>
+  <div>
+    <Navbar :isLogin="isLogin" @changePage="changePage"></Navbar>
+    <!-- <Alert v-if="alertStatus"/> -->
+    <div v-if="isLoading">
+      <Loading ></Loading>
+    </div>
+    <div class="container" v-else>
+      <Home 
+        @changePage="changePage"
+        v-if="currentPage === 'home'">
+      </Home>
+      <Auth
+        @changePage="changePage"
+        v-if="currentPage === 'login' || currentPage === 'register'"
+        :currentPage="currentPage">
+      </Auth>
+      <Boards
+        @changePage="changePage"
+        :currentPage="currentPage"
+        v-if="currentPage === 'board'">
+      </Boards>
+    </div>
+  </div>
 </template>
 
 <script>
-import Home from './components/Home'
+import Home from './views/Home/Home'
 import Navbar from './components/Navbar'
-import Register from './components/Register'
-import Login from './components/Login'
-import Board from './components/Board'
+import Boards from './views/Kanban'
+import Auth from './views/Auth/index'
+import Loading from './components/Loading'
 
 export default {
-   name: 'app',
-   data() {
-      return {
-        currentPage: '',
-        isLogin : null
-      };
-   },
-   methods : {
-      changePage (page, status) {
-         // console.log(page)
-         this.isLogin = status
-         this.currentPage = page
-      }  
-   },
-   components : {
-      Home,
-      Navbar,
-      Register,
-      Login,
-      Board
-   },
-   created () {
-      if(localStorage.token) {
-         this.currentPage = 'board'
-         this.isLogin = true
-      } else {
-         this.currentPage = 'login'
-         this.isLogin = false
-      }
-   }
+  name: 'app',
+  data() {
+    return {
+      currentPage: '',
+      isLogin : null,
+      alertStatus: '',
+      isLoading: false
+    };
+  },
+  methods : {
+    changePage (page, status) {
+      console.log(page)
+      this.isLogin = status
+      this.currentPage = page
+    },
+    changeLoading (status) {
+      this.isLoading = status
+    }
+  },
+  components : {
+    Home,
+    Navbar,
+    Boards,
+    Loading,
+    Auth
+  },
+  created () {
+    if(localStorage.token) {
+      this.currentPage = 'board'
+      this.isLogin = true
+    } else {
+      this.currentPage = 'login'
+      this.isLogin = false
+    }
+  }
 };
 </script>
 
