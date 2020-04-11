@@ -1,0 +1,33 @@
+{
+  "name": "kanban-porto",
+  "version": "1.0.0",
+  "description": "This repo for your kanban client",
+  "main": "main.js",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.1",
+    "ajax": "^0.0.4",
+    "axios": "^0.19.2",
+    "vue": "^2.6.11",
+    "vue-google-oauth2": "^1.4.0",
+    "vue-hot-reload-api": "^2.3.4"
+  },
+  "devDependencies": {
+    "@vue/component-compiler-utils": "^3.1.1",
+    "cssnano": "^4.1.10",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tamarazu/kanban-porto.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tamarazu/kanban-porto/issues"
+  },
+  "homepage": "https://github.com/tamarazu/kanban-porto#readme"
+}
