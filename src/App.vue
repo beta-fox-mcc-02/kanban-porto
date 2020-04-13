@@ -1,11 +1,7 @@
 <template>
   <div>
     <Navbar :isLogin="isLogin" @changePage="changePage"></Navbar>
-    <!-- <Alert v-if="alertStatus"/> -->
-    <div v-if="isLoading">
-      <Loading ></Loading>
-    </div>
-    <div class="container" v-else>
+    <div class="container">
       <Home 
         @changePage="changePage"
         v-if="currentPage === 'home'">
@@ -29,7 +25,6 @@ import Home from './views/Home/Home'
 import Navbar from './components/Navbar'
 import Boards from './views/Kanban'
 import Auth from './views/Auth/index'
-import Loading from './components/Loading'
 
 export default {
   name: 'app',
@@ -37,25 +32,19 @@ export default {
     return {
       currentPage: '',
       isLogin : null,
-      alertStatus: '',
-      isLoading: false
+      alertStatus: ''
     };
   },
   methods : {
     changePage (page, status) {
-      console.log(page)
       this.isLogin = status
       this.currentPage = page
-    },
-    changeLoading (status) {
-      this.isLoading = status
     }
   },
   components : {
     Home,
     Navbar,
     Boards,
-    Loading,
     Auth
   },
   created () {

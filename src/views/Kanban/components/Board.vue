@@ -1,39 +1,45 @@
 <template>
-  <div class="row">
-     <div class="col">
-         <div class="text-center mb-3">
-            <h1 >Kanban Windows 98 Theme</h1>
-            <input class="btn btn-primary mb-2" type="submit" href="#" value="Add Category" @click="inputCreate">
-            <div v-if="status">
-               <form @submit="createCategory">
-                  <input type="text" v-model="name" placeholder="input your new category">
-                  <button class="btn btn-primary" type="submit">+</button>
-               </form>
+  <div>
+    <div v-if="isLoading">
+      <Loading ></Loading>
+    </div>
+    <div class="row" v-else>
+      <div class="col">
+          <div class="text-center mb-3">
+              <h1 >Kanban Windows 98 Theme</h1>
+              <input class="btn btn-primary mb-2" type="submit" href="#" value="Add Category" @click="inputCreate">
+              <div v-if="status">
+                <form @submit="createCategory">
+                    <input type="text" v-model="name" placeholder="input your new category">
+                    <button class="btn btn-primary" type="submit">+</button>
+                </form>
+              </div>
+          </div>
+          <div class="category-task container">
+            <div class="row">
+              <Category 
+              v-for="category in getCategories" 
+              :key="category.id" 
+              :category="category" 
+              class="card-category m-2" 
+              @deleteCat="deleteCat" 
+              @fetchCat="fetchCat"
+              :start="start"
+              :end="end"
+              :allCategory="allCategory">  
+        
+              </Category>
             </div>
-         </div>
-         <div class="category-task">
-            <Category 
-            v-for="category in getCategories" 
-            :key="category.id" 
-            :category="category" 
-            class="card-category m-2" 
-            @deleteCat="deleteCat" 
-            @fetchCat="fetchCat"
-            :start="start"
-            :end="end"
-            @prev="prev"
-            @next="next"
-            :allCategory="allCategory">  
-      
-            </Category>
-         </div>
-      </div>
+          </div>
+        </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from '../../../config/axios'
 import Category from './Category'
+import Loading from '../../../components/Loading'
 
 export default {
   data () {
@@ -44,11 +50,13 @@ export default {
       name : '',
       startCat : '',
       endCat : '',
-      allCategory: ''
+      allCategory: '',
+      isLoading: false
     }
   },
   components :{
-    Category
+    Category,
+    Loading
   },
   methods : {
     createCategory () {
@@ -73,6 +81,7 @@ export default {
         })
     },
     fetchCategories () {
+      this.changeLoading(true)
       axios({
         method: 'GET',
         url : '/categories',
@@ -80,11 +89,12 @@ export default {
           token : localStorage.token
         }
       })
-        .then(response => {
-          //  console.log(response, '=== dari fetch ===')
-          // console.log(response.data.categories, 'fetch categories')
-          this.categories = response.data.categories
-          this.allCategory = response.data.categories
+        .then(({ data }) => {
+          //  console.log(data, '=== dari fetch ===')
+          // console.log(data.categories, 'fetch categories')
+          this.categories = data.categories
+          this.allCategory = data.categories
+          // console.log(this.categories, this.allCategory)
           if (this.categories.length !== 0)  {
             // console.log(this.categories.categories)
             this.start = this.categories[0].id
@@ -93,10 +103,12 @@ export default {
         })
         .catch(err => {
           console.log(err, 'fail fetch categories')
+        })  
+        .finally(_ => {
+          this.changeLoading(false)
         })
     },
     deleteCategories (id) {
-      // console.log('delete categories')
       axios({
         method: 'DELETE',
         url: `/categories/${id}`, 
@@ -105,7 +117,6 @@ export default {
         }
       })
         .then(data => {
-          // console.log(data, 'success delete categories')
           this.fetchCategories()
         })
         .catch(err => {
@@ -123,18 +134,13 @@ export default {
       this.status = false
     },
     deleteCat(id) {
-      // console.log(id, 'delete cat')
       this.deleteCategories(id)
     },
     fetchCat() {
-      console.log('sini')
       this.fetchCategories()
     },
-    next(catId, taskId) {
-      console.log(catId, taskId)
-    },
-    prev(catId, taskId) {
-      console.log(catId, taskId)
+    changeLoading (status) {
+      this.isLoading = status
     }
   },
   created () {
@@ -145,11 +151,11 @@ export default {
       return this.categories
     }
   },
-  watch : {
-    // categories(val) {
-    //    console.log(val.categories)
-    //    this.categories = val
-    // }
+  watch: {
+    categories(val) {
+      console.log(val)
+      this.categories = val
+    }
   }
 }
 </script>

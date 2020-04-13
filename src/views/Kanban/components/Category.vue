@@ -1,15 +1,15 @@
 <template>
   <div class="card" style="width: 18rem;">
      <div class="card-body" v-if="!editModal">
-            <a href="#"><i class="fa fa-pencil-square-o" aria-hidden="true" @click="updateCat"></i></a>
-            <a href="#"><i class="fa fa-trash" aria-hidden="true" @click="deleteCat"></i></a>
+         <a href="#"><i class="fa fa-pencil-square-o" aria-hidden="true" @click="updateCat"></i></a>
+         <a href="#"><i class="fa fa-trash" aria-hidden="true" @click="deleteCat"></i></a>
          <div v-if="catShow">
             <h5 class="card-title text-center title">{{ category.name }}</h5>
          </div>
-         <div v-else style="width:50%">
-            <form @submit.prevent="updateCategory">
-               <input type="text" style="width: 50px" class="mb-2" v-model="categoryName" required>
-               <input type="submit" class="btn btn-success" value="save">
+         <div v-else style="width:100%; margin-bottom: 10px">
+            <form @submit.prevent="updateCategory" style="display: flex; justify-content: center; align-items: center">
+               <input type="text" style="width: 80%" v-model="categoryName" required autofocus>
+               <input type="submit" style="height: 30px; width: 20%" class="btn-success" value="save">
             </form>
          </div>
          <Task 
@@ -28,8 +28,8 @@
          </Task>
          <div class="btn-new-task">
             <form @submit.prevent="createTask" class="newTask">
-               <input type="text" v-model="newTask" placeholder="new task" style="width:70%" required>
-               <input type="submit" class="btn btn-primary" value="add">
+               <input type="text" v-model="newTask" placeholder="new task" style="width:80%" required>
+               <input type="submit" style="width: 20%" class="btn btn-primary" value="add">
             </form>
          </div>
      </div>
@@ -82,9 +82,9 @@ export default {
                token : localStorage.token
             }
          })
-            .then(task => {
-               // console.log(task.data.data)
-               this.tasks = task.data.data
+            .then(({ data }) => {
+               // console.log(data, '=====data')
+               this.tasks = data.data
             })
             .catch(err => {
                console.log(err)
@@ -152,7 +152,7 @@ export default {
                token : localStorage.token
             }
          })
-            .then(({data}) => {
+            .then(({ data }) => {
                // console.log(data, 'get one task axios success')
                this.taskId = data.task.id
                this.title = data.task.title
@@ -168,7 +168,7 @@ export default {
       updatingTask(catId, taskId) {
          // console.log(catId, 'updating task 2')
          // console.log('masuk updating task')
-         console.log(this.taskId, this.title, this.description, catId)
+         // console.log(this.taskId, this.title, this.description, catId)
          let newDescription
          if(this.description) {
             newDescription = this.description
@@ -196,10 +196,11 @@ export default {
                token : localStorage.token
             }
          })
-            .then(({data}) => {
-               // console.log('masuk success updating')
+            .then(({ data }) => {
+               // console.log(data, 'masuk success updating')
                this.editModal = false
-               this.fetchTasks()
+               this.$emit('fetchCat')
+               // this.fetchTasks()
             })
             .catch(err => {
                console.log(err, 'masuk error updating')
@@ -207,7 +208,7 @@ export default {
       },
       getCat() {
          let id = this.category.id
-         console.log(id)
+         // console.log(id)
          axios({
             method: 'GET',
             url : `/categories/${id}`,
@@ -224,7 +225,7 @@ export default {
             })
       },
       updateCat() {
-        console.log('test')
+      //   console.log('test')
          if(this.catShow) {
             this.catShow = false
             this.getCat()
@@ -274,7 +275,8 @@ export default {
          }
          // console.log(catId, 'next 2', taskId)
          this.updatingTask(catId, taskId)
-         this.$emit('fetchCat')
+         console.log(this.category, 'next2')
+         // this.$emit('fetchCat')
          // this.$emit('next', catId, taskId)
       },
       prev(catId, taskId) {
@@ -296,7 +298,8 @@ export default {
          }   
          // console.log(catId, 'next 2', taskId)
          this.updatingTask(catId, taskId)
-         this.$emit('fetchCat')
+         console.log(this.category, "prev2")
+         // this.$emit('fetchCat')
          // this.$emit('prev', catId, taskId)
       }
    },

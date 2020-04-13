@@ -1,17 +1,19 @@
 <template>
    <div class="card-task">
-      <a href="#" class="btn flex mb-2 task-style" @click.prevent="updateTask">  
+      <a href="#" class="btn task-style" @click.prevent="updateTask">  
          <div>
             {{ task.title }}
             <hr>
             {{ taskDescription }}
          </div>
       </a>
-         <div id="flexButton">
-            <div v-if="+categoryId != +start" @click.prevent="prev"><i class="fa fa-chevron-left btn-arr" aria-hidden="true"></i></div>
-            <div v-if="+categoryId != +end" @click.prevent="next"><i class="fa fa-chevron-right btn-arr" aria-hidden="true"></i></div>
-            <div><a href="#" class="btn btn-danger" @click.prevent="deleteTask"><i class="fa fa-trash" aria-hidden="true"></i></a></div>
+      <div id="flexButton">
+         <div v-if="+categoryId != +start" @click.prevent="prev"><i class="fa fa-chevron-left btn-arr" aria-hidden="true"></i></div>
+         <div v-if="+categoryId != +end" @click.prevent="next"><i class="fa fa-chevron-right btn-arr" aria-hidden="true"></i></div>
+         <div>
+            <a href="#" class="btn btn-danger" @click.prevent="deleteTask"><i class="fa fa-trash" aria-hidden="true"></i></a>
          </div>
+      </div>
    </div>
 </template>
 
@@ -41,12 +43,12 @@ export default {
          this.$emit('updateTask', this.task.id, modal)
       },
       prev() {
-         // console.log(this.task)
+         console.log(this.task, 'prev')
 
          this.$emit('prev', this.task.CategoryId, this.task.id)
       },
       next() {
-         // console.log(this.task)
+         console.log(this.task, 'next')
          this.$emit('next', this.task.CategoryId, this.task.id)
       }  
    },
@@ -76,7 +78,8 @@ export default {
    }
    .task-style {
       display: hide;
-      background-color: #ccc   
+      background-color: #ccc;
+      width: 100%
    }
    .task-style:hover {
       display: block
@@ -88,7 +91,8 @@ export default {
    }
    #flexButton {
       display : flex;
-      justify-content: space-evenly;
+      justify-content: space-around;
+      align-items: center;
    }
    .btn-arr {
       padding: 4px
