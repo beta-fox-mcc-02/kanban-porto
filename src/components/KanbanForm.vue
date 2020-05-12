@@ -12,6 +12,7 @@
             placeholder="your task title...."
             class="input-text"
             v-model="title"
+            required
           />
           <br />
           <input type="submit" value="Add new backlog" class="button-primary" />

@@ -65,7 +65,11 @@
         <div class="development-content">
           <b>Development</b>
           <div class="development-col">
-            <div class="development-list" v-for="data in development" :key="data.id">
+            <div
+              class="development-list"
+              v-for="data in development"
+              :key="data.id"
+            >
               <div class="development-desc">{{ data.title }}</div>
               <div class="development-action">
                 <a href="#" v-on:click="moveTask(data.id, data.title, 2)">
@@ -84,7 +88,9 @@
             </div>
           </div>
           <div class="add-development">
-            <i class="fa fa-chevron-circle-left" v-on:click="kanbanForm">Set to product</i>
+            <i class="fa fa-chevron-circle-left" v-on:click="kanbanForm"
+              >Set to product</i
+            >
             Set to done
             <i class="fa fa-chevron-circle-right"></i>
           </div>
@@ -111,7 +117,9 @@
             </div>
           </div>
           <div class="add-done">
-            <i class="fa fa-chevron-circle-left" v-on:click="kanbanForm">Set to development</i>
+            <i class="fa fa-chevron-circle-left" v-on:click="kanbanForm"
+              >Set to development</i
+            >
           </div>
         </div>
       </div>
@@ -132,9 +140,15 @@
               v-model="title"
             />
             <br />
-            <input type="submit" value="Add new backlog" class="button-primary" />
+            <input
+              type="submit"
+              value="Add new backlog"
+              class="button-primary"
+            />
           </form>
-          <button class="button-success" v-on:click="kanban">Back to kanban</button>
+          <button class="button-success" v-on:click="kanban">
+            Back to kanban
+          </button>
         </center>
       </div>
     </div>
@@ -161,7 +175,7 @@ export default {
       backlog: [],
       product: [],
       development: [],
-      done: []
+      done: [],
     };
   },
   props: {
@@ -328,7 +342,11 @@ export default {
     }
   },
   created() {
-    this.fetchAll();
+    if (localStorage) {
+      this.fetchAll();
+    } else {
+      this.$emit("changePage", "kanban");
+    }
   }
 };
 </script>

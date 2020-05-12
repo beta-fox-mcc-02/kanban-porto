@@ -19,6 +19,7 @@
   "homepage": "https://github.com/yufias/kanban-porto#readme",
   "dependencies": {
     "axios": "^0.19.2",
+    "toastify-js": "^1.6.2",
     "vue": "^2.6.11",
     "vue-google-oauth2": "^1.4.0",
     "vue-hot-reload-api": "^2.3.4"

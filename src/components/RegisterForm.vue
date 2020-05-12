@@ -1,9 +1,11 @@
 <template>
   <div class="container-register">
+    <h2>Welcome to Kanban APP</h2>
     <div class="register-content">
       <center>
-        <b>Register</b>
+        <b>Sign up</b>
         <hr width="20%" color="steelblue" />
+        <div class="error-msg" v-if="error">{{error}}</div>
         <form id="register-form" v-on:submit.prevent="registerUser">
           <input
             type="text"
@@ -12,6 +14,7 @@
             placeholder="name..."
             class="input-text"
             v-model="name"
+            required
           />
           <br />
           <input
@@ -21,6 +24,7 @@
             placeholder="email addres..."
             class="input-text"
             v-model="email"
+            required
           />
           <br />
           <input
@@ -30,11 +34,14 @@
             placeholder="password...."
             class="input-text"
             v-model="password"
+            required
           />
           <br />
-          <input type="submit" value="register" class="button-primary" />
+          <input type="submit" value="Sign up" class="button-primary" />
         </form>
-        <button class="button-success" v-on:click="loginForm">Login</button>
+        <span>
+          Already have an account? <a href="#" v-on:click="loginForm">Sign in here</a>
+        </span>
       </center>
     </div>
   </div>
@@ -48,7 +55,8 @@ export default {
     return {
       name: "",
       email: "",
-      password: ""
+      password: "",
+      error: ""
     };
   },
   methods: {
@@ -72,6 +80,7 @@ export default {
           this.loginForm();
         })
         .catch(err => {
+          this.error = err.response.data.msg
           console.log(err);
         });
     },
