@@ -50,8 +50,8 @@
 <script>
 import axios from "axios";
 
-// const baseURL = 'https://frozen-sands-95268.herokuapp.com'
-const baseURL = 'http://localhost:3000'
+const baseURL = 'https://frozen-sands-95268.herokuapp.com'
+// const baseURL = 'http://localhost:3000'
 
 export default {
   name: "RegisterForm",
