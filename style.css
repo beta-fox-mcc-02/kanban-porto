@@ -313,3 +313,61 @@ a {
     }
 
 }
+
+@media only screen and (max-width: 768px) {
+    .main-kanban-container {
+        margin: auto;
+        padding-top: 20px;
+    }
+
+    .container-kanban {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        /* background-color: yellowgreen; */
+    }
+
+    .board {
+        width: 90%;
+        margin: auto;
+        /* background-color: brown; */
+    }
+
+    .kanban {
+        list-style: none;
+    }
+
+    .kanban a {
+        display: none;
+    }
+
+    .kanban a.icon {
+        float: right;
+        display: block;
+        position: absolute;
+        right: 20;
+        top: 20;
+        bottom: 20;
+    }
+
+    .kanban.responsive {
+        position: relative;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+    }
+    .kanban.responsive .icon {
+        position: relative;
+        right: 0;
+        top: 0;
+    }
+    .kanban.responsive a {
+        float: none;
+        display: block;
+        position: relative;
+        text-align: right;
+        text-decoration: none;
+        color: white;
+    }
+
+}
