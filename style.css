@@ -43,10 +43,24 @@ body {
 .kanban a {
     color: white;
     text-decoration: none;
+    display: block;
+}
+
+.kanban .icon {
+    display: none;
 }
 
 a {
     text-decoration: none;
+}
+
+.main-kanban-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    padding-top: 30px;
 }
 
 .container-kanban {
@@ -60,7 +74,7 @@ a {
     /* height: 100vh; */
 }
 
-.backlog {
+.board {
     color: black;
     /* background-color: yellow; */
     padding: 8px;
@@ -70,7 +84,7 @@ a {
     height: fit-content;
 }
 
-.backlog-content {
+.board-content {
     background-color: gainsboro;
     border-radius: 7px;
     padding: 8px;
@@ -79,58 +93,7 @@ a {
     /* overflow: auto; */
 }
 
-
-.product {
-    color: black;
-    /* background-color: yellow; */
-    padding: 8px;
-    width: 30%;
-    height: fit-content;
-}
-
-.product-content {
-    background-color: gainsboro;
-    border-radius: 7px;
-    padding: 8px;
-    /* height: 400px; */
-    /* overflow: auto; */
-}
-
-.development {
-    color: black;
-    /* background-color: gainsboro; */
-    padding: 8px;
-    width: 30%;
-    border-radius: 7px;
-    height: fit-content;
-}
-
-.development-content {
-    background-color: gainsboro;
-    border-radius: 7px;
-    padding: 8px;
-    /* height: 400px; */
-    /* overflow: auto; */
-}
-
-.done {
-    color: black;
-    /* background-color: gainsboro; */
-    padding: 8px;
-    width: 30%;
-    border-radius: 7px;
-    height: fit-content;
-}
-
-.done-content {
-    background-color: gainsboro;
-    border-radius: 7px;
-    padding: 8px;
-    /* height: 400px; */
-    /* overflow: auto; */
-}
-
-.backlog-col {
+.board-col {
     margin-top: 6px;
     display: flex;
     flex-direction: column;
@@ -138,114 +101,32 @@ a {
     overflow-y: scroll;
 }
 
-.product-col {
-    margin-top: 6px;
-    display: flex;
-    flex-direction: column;
-    max-height: 400px;
-    overflow-y: scroll;
-}
-
-.development-col {
-    margin-top: 6px;
-    display: flex;
-    flex-direction: column;
-    max-height: 400px;
-    overflow-y: scroll;
-}
-
-.done-col {
-    margin-top: 6px;
-    display: flex;
-    flex-direction: column;
-    max-height: 400px;
-    overflow-y: scroll;
-}
-
-.add-backlog {
+.add-board {
     display: flex;
     justify-content: space-between;
     /* background-color: yellow; */
     margin: 5px;
 }
 
-.add-product {
-    display: flex;
-    /* align-items: flex-end; */
-    justify-content: space-between;
-    margin: 5px;
-}
-
-.add-development {
-    display: flex;
-    justify-content: space-between;
-    margin: 5px;
-}
-
-.add-done {
-    display: flex;
-    justify-content: space-between;
-    margin: 5px;
-}
-
-.backlog-list {
+.board-list {
     display: flex;
     padding: 2px;
     flex-direction: column;
     justify-content: space-around;
     background-color: whitesmoke;
-    margin: 2px;
+    margin: 4px;
     border-radius: 5px;
 }
 
-.product-list {
-    display: flex;
-    padding: 4px;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: whitesmoke;
-    margin: 2px;
-    border-radius: 5px;
+.board-desc {
+    /* padding: 4px; */
+    margin: 4px;
 }
 
-.development-list {
-    display: flex;
-    padding: 4px;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: whitesmoke;
-    margin: 2px;
-    border-radius: 5px;
-}
-
-.done-list {
-    display: flex;
-    padding: 4px;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: whitesmoke;
-    margin: 2px;
-    border-radius: 5px;
-}
-
-.backlog-action {
+.board-action {
     display: flex;
     justify-content: space-around;
-}
-
-.product-action {
-    display: flex;
-    justify-content: space-around;
-}
-
-.development-action {
-    display: flex;
-    justify-content: space-around;
-}
-
-.done-action {
-    display: flex;
-    justify-content: space-around;
+    margin: 4px;
 }
 
 .container-login {
@@ -358,10 +239,29 @@ a {
     background-color: gainsboro;
     border-radius: 7px;
     padding: 15px;
-    width: 40%;
+    width: 90%;
+}
+
+.container-edit {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    /* background-color: aqua; */
+}
+
+.edit-content {
+    background-color: gainsboro;
+    border-radius: 7px;
+    padding: 15px;
+    width: 90%;
 }
 
 @media only screen and (max-width: 576px) {
+    .main-kanban-container {
+        margin: auto;
+        padding-top: 20px;
+    }
+
     .container-kanban {
         display: flex;
         flex-direction: column;
@@ -369,20 +269,47 @@ a {
         /* background-color: yellowgreen; */
     }
 
-    .backlog {
+    .board {
         width: 90%;
+        margin: auto;
         /* background-color: brown; */
     }
 
-    .product {
-        width: 90%;
+    .kanban {
+        list-style: none;
     }
 
-    .development {
-        width: 90%;
+    .kanban a {
+        display: none;
     }
 
-    .done {
-        width: 90%;
+    .kanban a.icon {
+        float: right;
+        display: block;
+        position: absolute;
+        right: 20;
+        top: 20;
+        bottom: 20;
     }
+
+    .kanban.responsive {
+        position: relative;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+    }
+    .kanban.responsive .icon {
+        position: relative;
+        right: 0;
+        top: 0;
+    }
+    .kanban.responsive a {
+        float: none;
+        display: block;
+        position: relative;
+        text-align: right;
+        text-decoration: none;
+        color: white;
+    }
+
 }

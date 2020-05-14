@@ -49,6 +49,10 @@
 
 <script>
 import axios from "axios";
+
+// const baseURL = 'https://frozen-sands-95268.herokuapp.com'
+const baseURL = 'http://localhost:3000'
+
 export default {
   name: "RegisterForm",
   data() {
@@ -66,8 +70,7 @@ export default {
       const password = this.password;
       axios({
         method: "post",
-        url: "https://frozen-sands-95268.herokuapp.com/register",
-        // url: `http://localhost:3000/register`,
+        url: `${baseURL}/register`,
         data: {
           name: name,
           email: email,

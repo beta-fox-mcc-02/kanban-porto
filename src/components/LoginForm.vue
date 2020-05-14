@@ -47,7 +47,7 @@ import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 
 // let baseURL = 'https://frozen-sands-95268.herokuapp.com'
-let baseURL = 'http://localhost:3000'
+const baseURL = 'http://localhost:3000'
 
 export default {
   name: "LoginForm",
