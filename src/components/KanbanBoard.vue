@@ -8,7 +8,7 @@
           <div class="board-content"> 
             <b>Backlog</b>
             <div class="board-col">
-              <div class="board-list" v-for="data in backlog" :key="data.id">
+              <div class="board-list" v-for="data in board.backlog" :key="data.id">
                 <div class="board-desc">{{ data.title }}</div>
                 <div class="board-action">
                   <a href="#" v-on:click="editForm(data.id)">
@@ -38,7 +38,7 @@
           <div class="board-content">
             <b>Product</b>
             <div class="board-col">
-              <div class="board-list" v-for="data in product" :key="data.id">
+              <div class="board-list" v-for="data in board.product" :key="data.id">
                 <div class="board-desc">{{ data.title }}</div>
                 <div class="board-action">
                   <a href="#" v-on:click="moveTask(data.id, data.title, 1)">
@@ -70,7 +70,7 @@
             <div class="board-col">
               <div
                 class="board-list"
-                v-for="data in development"
+                v-for="data in board.development"
                 :key="data.id"
               >
                 <div class="board-desc">{{ data.title }}</div>
@@ -104,7 +104,7 @@
           <div class="board-content">
             <b>Done</b>
             <div class="board-col">
-              <div class="board-list" v-for="data in done" :key="data.id">
+              <div class="board-list" v-for="data in board.done" :key="data.id">
                 <div class="board-desc">{{ data.title }}</div>
                 <div class="board-action">
                   <a href="#" v-on:click="moveTask(data.id, data.title, 3)">
@@ -179,56 +179,22 @@ export default {
       id: "",
       title: "",
       CategoryId: "",
-      backlog: [],
-      product: [],
-      development: [],
-      done: [],
-      loading: false,
-      error: ''
     };
   },
   props: {
-    page: String
+    page: String,
+    board: Object,
+    loading: Boolean,
+    error: String
   },
   components: { KanbanForm },
   methods: {
     fetchAll() {
-      console.log("masuk ke fetch");
-      this.loading = true
-      const access_token = localStorage.getItem("access_token");
-      axios({
-        method: "get",
-        url: `${baseURL}/task`,
-        // url: "http://localhost:3000/task",
-        headers: {
-          access_token: access_token
-        }
-      })
-        .then(response => {
-          response.data.data.forEach(data => {
-            if (data.CategoryId === 1) {
-              //   console.log(data);
-              this.backlog.push(data);
-            } else if (data.CategoryId === 2) {
-              this.product.push(data);
-            } else if (data.CategoryId === 3) {
-              this.development.push(data);
-            } else if (data.CategoryId === 4) {
-              this.done.push(data);
-            }
-          });
-          //   this.backlog = response.data.data;
-          //   console.log(response.data.data[0].CategoryId);
-        })
-        .catch(err => {
-          console.log(err);
-        })
-        .finally(() => {
-          this.loading = false
-        })
+      this.$emit("fetchAll");
     },
     deleteTask(id) {
       const access_token = localStorage.getItem("access_token");
+      this.loading = true
       axios({
         method: "delete",
         url: `${baseURL}/delete/${id}`,
@@ -247,12 +213,15 @@ export default {
         })
         .catch(err => {
           console.log(err);
-        });
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     moveTask(id, title, CategoryId) {
       console.log("masuk moveTask");
       const access_token = localStorage.getItem("access_token");
-      //   console.log(access_token);
+      this.loading = true
       axios({
         method: "put",
         url: `${baseURL}/update/${id}`,
@@ -276,11 +245,15 @@ export default {
         })
         .catch(err => {
           console.log(err, "error movetask");
-        });
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     findOne(editId) {
       console.log(editId, "masuk ke findOne");
       const access_token = localStorage.getItem("access_token");
+      this.loading = true
       axios({
         method: "get",
         url: `${baseURL}/update/${editId}`,
@@ -300,11 +273,15 @@ export default {
         .catch(err => {
           console.log("error findOne");
           console.log(err);
-        });
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     editTask(id) {
       //   console.log(this.id, "dari editTask");
       const access_token = localStorage.getItem("access_token");
+      this.loading = true
       axios({
         method: "put",
         url: `${baseURL}/update/${this.id}`,
@@ -329,7 +306,10 @@ export default {
         })
         .catch(err => {
           console.log(err);
-        });
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     kanbanForm() {
       this.$emit("changePage", "kanbanForm");

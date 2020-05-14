@@ -78,6 +78,7 @@ export default {
           //   this.fetchAll();
           console.log(this.backlog);
           this.$emit("changePage", "kanban");
+          this.$emit("fetchAll")
         })
         .catch(err => {
           this.error = err.response.data.msg
