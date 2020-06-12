@@ -57,9 +57,12 @@
               </div>
             </div>
             <div class="add-board">
-              <i class="fa fa-chevron-circle-left">Set to backlog</i>
-              Set to product
-              <i class="fa fa-chevron-circle-right"></i>
+              <span>
+                <i class="fa fa-chevron-circle-left"> Set to backlog</i>
+              </span>
+              <span>
+                Set to development <i class="fa fa-chevron-circle-right"></i>
+              </span>
             </div>
           </div>
         </div>
@@ -91,11 +94,15 @@
               </div>
             </div>
             <div class="add-board">
-              <i class="fa fa-chevron-circle-left" v-on:click="kanbanForm"
-                >Set to product</i
-              >
-              Set to done
-              <i class="fa fa-chevron-circle-right"></i>
+              <span>
+                <i class="fa fa-chevron-circle-left" v-on:click="kanbanForm"
+                  >Set to product</i
+                >
+              </span>
+              <span>
+                Set to done
+                <i class="fa fa-chevron-circle-right"></i>
+              </span>
             </div>
           </div>
         </div>
@@ -193,67 +200,19 @@ export default {
       this.$emit("fetchAll");
     },
     deleteTask(id) {
-      const access_token = localStorage.getItem("access_token");
-      this.loading = true
-      axios({
-        method: "delete",
-        url: `${baseURL}/delete/${id}`,
-        // url: `http://localhost:3000/delete/${id}`,
-        headers: {
-          access_token
-        }
-      })
-        .then(data => {
-          this.backlog = [];
-          this.product = [];
-          this.development = [];
-          this.done = [];
-          console.log(data);
-          this.fetchAll();
-        })
-        .catch(err => {
-          console.log(err);
-        })
-        .finally(() => {
-          this.loading = false
-        })
+     this.$emit("deleteTask", id)
     },
     moveTask(id, title, CategoryId) {
-      console.log("masuk moveTask");
-      const access_token = localStorage.getItem("access_token");
-      this.loading = true
-      axios({
-        method: "put",
-        url: `${baseURL}/update/${id}`,
-        // url: `http://localhost:3000/update/${id}`,
-        data: {
-          title: title,
-          CategoryId: CategoryId
-        },
-        headers: {
-          access_token
-        }
+      this.$emit("moveTask", {
+        id,
+        title,
+        CategoryId
       })
-        .then(response => {
-          this.backlog = [];
-          this.product = [];
-          this.development = [];
-          this.done = [];
-          console.log(response);
-          console.log("Backlog edited");
-          this.fetchAll();
-        })
-        .catch(err => {
-          console.log(err, "error movetask");
-        })
-        .finally(() => {
-          this.loading = false
-        })
     },
     findOne(editId) {
       console.log(editId, "masuk ke findOne");
       const access_token = localStorage.getItem("access_token");
-      this.loading = true
+      this.$emit("setLoading")
       axios({
         method: "get",
         url: `${baseURL}/update/${editId}`,
@@ -268,20 +227,18 @@ export default {
           this.id = response.data.data.id;
           this.title = response.data.data.title;
           this.CategoryId = response.data.data.CategoryId;
-          //   this.title = "kanban";
         })
         .catch(err => {
           console.log("error findOne");
           console.log(err);
         })
         .finally(() => {
-          this.loading = false
+          this.$emit("setLoading")
         })
     },
     editTask(id) {
-      //   console.log(this.id, "dari editTask");
       const access_token = localStorage.getItem("access_token");
-      this.loading = true
+      this.$emit("setLoading")
       axios({
         method: "put",
         url: `${baseURL}/update/${this.id}`,
@@ -296,26 +253,21 @@ export default {
       })
         .then(response => {
           //   console.log(response);
-          //   console.log("Backlog edited");
-          this.backlog = [];
-          this.product = [];
-          this.development = [];
-          this.done = [];
+          this.$emit("clearBoard")
           this.kanban();
-          this.fetchAll();
+          this.$emit("fetchAll");
         })
         .catch(err => {
           console.log(err);
         })
         .finally(() => {
-          this.loading = false
+          this.$emit("setLoading")
         })
     },
     kanbanForm() {
       this.$emit("changePage", "kanbanForm");
     },
     editForm(id) {
-      //   console.log(id);
       this.findOne(id);
       this.$emit("changePage", "edit");
     },
@@ -326,12 +278,9 @@ export default {
       return this.$emit("changePage", "kanban");
     },
     afterAddTask() {
-      this.backlog = [];
-      this.product = [];
-      this.development = [];
-      this.done = [];
+      this.$emit("clearBoard")
       this.$emit("changePage", "kanban");
-      return this.fetchAll();
+      this.$emit("fetchAll");
     }
   },
   created() {

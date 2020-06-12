@@ -258,7 +258,48 @@ a {
     width: 90%;
 }
 
+.footer {
+    background-color: dodgerblue;
+    color: white;
+    position: absolute;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    bottom: 0;
+    padding-bottom: 4px;
+}
+
+.footer-name {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.footer-name-text {
+    font-size: 24px;
+}
+
+.socmed-icon {
+    height: 24px;
+    width: 24px;
+}
+
 @media only screen and (max-width: 576px) {
+    .login-content {
+        background-color: gainsboro;
+        border-radius: 7px;
+        padding: 15px;
+        width: 80%;
+    }
+
+    .register-content {
+        background-color: gainsboro;
+        border-radius: 7px;
+        padding: 15px;
+        width: 80%;
+    }
+
     .main-kanban-container {
         margin: auto;
         padding-top: 20px;
@@ -299,6 +340,7 @@ a {
         list-style: none;
         display: flex;
         flex-direction: column;
+        right: 50;
     }
     .kanban.responsive .icon {
         position: relative;
@@ -317,6 +359,13 @@ a {
 }
 
 @media only screen and (max-width: 768px) {
+    .login-content {
+        background-color: gainsboro;
+        border-radius: 7px;
+        padding: 15px;
+        width: 80%;
+    }
+
     .main-kanban-container {
         margin: auto;
         padding-top: 20px;
@@ -357,6 +406,7 @@ a {
         list-style: none;
         display: flex;
         flex-direction: column;
+        right: 50;
     }
     .kanban.responsive .icon {
         position: relative;

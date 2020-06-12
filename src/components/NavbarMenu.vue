@@ -1,7 +1,7 @@
 <template>
   <div class="navbar-container" id="topNav">
     <div class="brand-container">
-      <h3 style="color:white;"><i class="fa fa-th-list" style="color:white"/> Kanban APP </h3>
+      <h3 style="color:white;"><i class="fa fa-th-list" style="color:white"/> Kanban</h3>
     </div>
     <div class="container-menu">
       <ul class="kanban" id="kanbanNav">
