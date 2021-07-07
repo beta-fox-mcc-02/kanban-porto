@@ -1,0 +1,161 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+}
+
+/* kanban board begin */
+.header {
+    height: 7vh;
+    background-color: rgba(5, 30, 52);
+    color: #ffffff;
+}
+
+.btn-signOut:hover {
+    cursor: pointer;
+}
+
+.logo {
+    font-family: 'Modak', cursive;
+    font-size: 2.3rem;
+}
+
+.menu-bar {
+    height: max-content;
+}
+
+.team-container {
+    background-color: rgba(93, 93, 93, 0.3);
+    width: max-content;
+    border-radius: 5px;
+}
+
+.team-name {
+    font-size: 1.2rem;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: space-evenly;
+    height: 90vh;
+}
+
+.cards-group {
+    width: 24vw;
+    background-color: rgb(204, 204, 204);
+    height: max-content;
+    max-height: 100%;
+    overflow: auto;
+    border-radius: 5px;
+}
+
+.categori {
+    font-weight: bold;
+}
+
+.all-cards {
+    overflow: auto;
+    height: max-content;
+    max-height: 72vh;
+}
+
+.icon-add-card {
+    color: rgb(75, 75, 75);
+}
+
+.icon-add-card:hover {
+    cursor: pointer;
+    color: rgb(75, 75, 75, 0.5);
+    text-decoration: none;
+}
+
+.card-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.action-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.action-container i:hover {
+    cursor: pointer;
+}
+/* kanban board end */
+
+/* form sign in / sign up begin */
+.form-sign-container {
+    width: 40%;
+    border-radius: 10px;
+    align-self: center;
+}
+
+.title {
+    width: 100%;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.btn-to-login {
+    font-size: 0.8rem;
+}
+
+.btn-to-login:hover {
+    cursor: pointer;
+}
+
+.signInAction {
+    width: 100%;
+    justify-content: space-between;
+}
+
+.btn-to-signUp:hover {
+    cursor: pointer;
+}
+
+.btn-to-signIn:hover {
+    cursor: pointer;
+}
+
+.btn-gSigIn {
+    font-size: 1.2rem;
+    border: 1px solid rgb(182, 182, 182);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.btn-gSigIn:hover {
+    cursor: pointer;
+}
+
+.g-logo {
+    width: 1.5em;
+}
+/* form sign in / sign up end */
+
+/* form add card begin */
+.form-container {
+    position: absolute;
+    top: 10%;
+    width: 40%;
+    border-radius: 10px;
+    background-color: rgba(5, 30, 52);
+    color: #ffffff;
+}
+
+.add-form-action {
+    justify-content: space-between;
+}
+
+.add-form-action p:hover {
+    cursor: pointer;
+}
+/* form add card end */
+
+/*# sourceMappingURL=/main.d2070829.css.map */
